@@ -1,15 +1,11 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+
 import Button from '@material-ui/core/Button';
 
 function App() {
-  const handleClick = () => {
-    alert("Clicked!");
-  }
   return (
     <div className="App">
-      <Button variant="contained" color="primary" onClick={handleClick}>
+      <Button variant="contained" color="primary">
         Hello!
       </Button>
     </div>
