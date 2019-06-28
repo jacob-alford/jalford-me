@@ -1,4 +1,6 @@
 export const themeConstants = {
   mutedGrey:'#6c757d',
-  textLink:'gray'
+  link:'gray',
+  linkActive:'white',
+  headerTextColor:'white'
 }
