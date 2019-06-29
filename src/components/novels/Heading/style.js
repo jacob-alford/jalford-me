@@ -2,11 +2,13 @@ import styled from 'styled-components';
 
 export const StyledHeading = styled.div`
   .container{
-    padding-top:8vh;
-    min-height:25vh;
-    max-height:200px;
-    background: #12c2e9;
-    background: -webkit-linear-gradient(to right, #12c2e9, #c471ed, #f64f59);
-    background: linear-gradient(to right, #12c2e9, #c471ed, #f64f59);
+    height:25vh;
+    min-height:106px;
+    background: #1488CC;
+    background: -webkit-linear-gradient(to right, #2B32B2, #1488CC);
+    background: linear-gradient(to right, #2B32B2, #1488CC);
+    -moz-box-shadow: inset 0 -10px 16px -10px rgba(11,11,11,.6);
+    -webkit-box-shadow: inset 0 -10px 16px -10px rgba(11,11,11,.6);
+    box-shadow: inset 0 -10px 16px -10px rgba(11,11,11,.6);
   }
 `;

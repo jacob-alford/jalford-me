@@ -1,0 +1,12 @@
+import styled from 'styled-components';
+
+export const StyledAbout = styled.div`
+  .image{
+    width:50vw;
+    margin-top:2rem;
+    margin-bottom:2rem;
+    -webkit-box-shadow: 0px 10px 31px -9px rgba(0,0,0,0.19);
+    -moz-box-shadow: 0px 10px 31px -9px rgba(0,0,0,0.19);
+    box-shadow: 0px 10px 31px -9px rgba(0,0,0,0.19);
+  }
+`;

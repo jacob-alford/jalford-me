@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from '@material-ui/core/';
+import { Grid } from '@material-ui/core/';
 
 import Header from '../../paragraphs/Header';
 
@@ -8,9 +8,11 @@ import { StyledHeading } from './style.js';
 export default function Heading(props){
   return (
     <StyledHeading>
-      <Container className="container">
-          <Header />
-      </Container>
+      <Grid container justify="center" alignContent="center" className="container">
+        <Grid item>
+          <Header/>
+        </Grid>
+      </Grid>
     </StyledHeading>
   );
 }
