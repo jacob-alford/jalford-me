@@ -6,9 +6,11 @@ import NavItem from '../../words/NavItem';
 
 import { StyledNavBar } from './style.js';
 
+import { getActiveNavItem } from '../../../functions';
+
 export default function NavBar(props){
-  const { navList } = props;
-  const [activeNavItem, setActiveNavItem] = useState(0);
+  const { navList , path } = props;
+  const [activeNavItem, setActiveNavItem] = useState(getActiveNavItem(path));
   return (
     <StyledNavBar>
       <Grid container direction="row" justify="center" spacing={4}>
