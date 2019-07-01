@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const StyledAbout = styled.div`
   .image{
+    min-width:50vw;
     width:50vw;
     margin-top:35px;
     margin-bottom:2rem;

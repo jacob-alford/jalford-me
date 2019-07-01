@@ -16,11 +16,6 @@ import { homePageImage } from '../../../../config';
 export default function FeaturedHome(props){
   return (
     <StyledFeaturedPhoto>
-      <Container maxWidth="xl" className="heading">
-        <Typography variant="h2">
-          Featured Photo
-        </Typography>
-      </Container>
       <Grid container justify="center" className="cardContainer">
         <Grid item>
           <Card className="imageContainer">

@@ -2,9 +2,6 @@ import styled from 'styled-components';
 // import { constants as c } from '../../../theme';
 
 export const StyledFeaturedPhoto = styled.div`
-  .heading{
-    margin-top:35px;
-  }
   .cardContainer{
     margin-top:35px;
   }
