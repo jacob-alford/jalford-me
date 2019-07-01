@@ -13,3 +13,33 @@ const add = (stack,tape) => {
   }
   else return output.error;
 }
+
+const sub = (stack,tape) => {
+  const op = (num1,num2) => num1 - num2;
+  const output = validateExport(op(stack[0],stack[1]));
+  if(output.result){
+    const tapeMessage = [`${stack[0]}-${stack[1]}`,`&#8195;=${output}`];
+    return [[...tapeMessage,...tape],[output,...stack.slice(2)]];
+  }
+  else return output.error;
+}
+
+const mul = (stack,tape) => {
+  const op = (num1,num2) => num1 * num2;
+  const output = validateExport(op(stack[0],stack[1]));
+  if(output.result){
+    const tapeMessage = [`${stack[0]}x${stack[1]}`,`&#8195;=${output}`];
+    return [[...tapeMessage,...tape],[output,...stack.slice(2)]];
+  }
+  else return output.error;
+}
+
+const div = (stack,tape) => {
+  const op = (num1,num2) => num1 / num2;
+  const output = validateExport(op(stack[0],stack[1]));
+  if(output.result){
+    const tapeMessage = [`${stack[0]}/${stack[1]}`,`&#8195;=${output}`];
+    return [[...tapeMessage,...tape],[output,...stack.slice(2)]];
+  }
+  else return output.error;
+}
