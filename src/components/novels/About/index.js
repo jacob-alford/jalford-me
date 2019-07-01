@@ -8,7 +8,9 @@ import { StyledAbout } from './style.js';
 
 import { aboutContactImage , socialMedia } from '../../../config';
 
-export default function About(props){
+import withPageFade from '../../bindings/wrappers/withPageFade';
+
+function About(props){
   return (
     <StyledAbout>
       <Container fixed>
@@ -54,3 +56,5 @@ export default function About(props){
     </StyledAbout>
   );
 }
+
+export default withPageFade(About);

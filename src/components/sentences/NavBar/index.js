@@ -9,8 +9,13 @@ import { StyledNavBar } from './style.js';
 import { getActiveNavItem } from '../../../functions';
 
 export default function NavBar(props){
-  const { navList , path } = props;
+  const { navList , path , history } = props;
   const [activeNavItem, setActiveNavItem] = useState(getActiveNavItem(path));
+  const handleClick = (index,url) => {
+    setActiveNavItem(index);
+    if(url.includes("http")) window.location.href = url;
+    else history.push(url);
+  }
   return (
     <StyledNavBar>
       <Grid container direction="row" justify="center" spacing={4}>
@@ -20,7 +25,7 @@ export default function NavBar(props){
               active={(activeNavItem === index) ? 1 : 0}
               text={navItem.text}
               url={navItem.url}
-              onClick={() => setActiveNavItem(index)} />
+              onClick={() => handleClick(index,navItem.url)} />
           </Grid>
         ))}
       </Grid>

@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '@material-ui/core/';
-import { Link as RouterLink } from 'react-router-dom';
 
 import { StyledNavItem } from './style.js';
 
 export default function NavItem(props){
-  const { active , url , text } = props;
+  const { active , text } = props;
   return (
     <StyledNavItem active={active}>
-      <Link className="link" component={RouterLink} to={url} {...props}>
+      <Link className="link" {...props}>
         {text}
       </Link>
     </StyledNavItem>

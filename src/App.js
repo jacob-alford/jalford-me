@@ -1,10 +1,11 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router , Switch , Route } from "react-router-dom";
 
 import Heading from './components/novels/Heading';
-import Footer from './components/novels/Footer';
+import Footing from './components/novels/Footer';
 import About from './components/novels/About';
 import Home from './components/novels/Home';
+import Blog from './components/novels/Blog';
 
 import { StyledApp } from './theme';
 
@@ -14,10 +15,13 @@ function App() {
   return (
     <StyledApp>
       <Router>
-        <Heading path={window.location.pathname} />
-        <Route path="/" component={Home} />
-        <Route path="/about" component={About} />
-        <Footer />
+        <Heading />
+        <Switch>
+          <Route path="/about" component={About} />
+          <Route path="/blog" component={Blog} />
+          <Route path="/" component={Home} />
+        </Switch>
+        <Footing />
       </Router>
     </StyledApp>
   );

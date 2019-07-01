@@ -8,7 +8,7 @@ export default function BlogInline(props){
   const { blogPost } = props;
   return (
     <StyledBlogInline>
-      <Paper>
+      <Paper className="listing">
         <Typography variant="h5" className="title" gutterBottom>
           {blogPost.header}
         </Typography>

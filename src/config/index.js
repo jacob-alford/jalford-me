@@ -22,9 +22,18 @@ export const navItems = [
 
 export {meImage as aboutContactImage};
 
-export const homePageImageArray = [
+const homePageImageArray = [
   {img:icecaveImage,caption:"The Ice Cave",body:"A breathtaking diversion in Grants, NM.  It's where I grew up! My family has owned it for generations."},
-  {img:icecaveStore,caption:"The Trading Post"}
+  {img:icecaveStore,caption:"The Trading Post",body:"An olde time store."}
 ];
 
+export const homePageImage = homePageImageArray[0];
+
 export const footerText = "Copyright © 2019 Jacob Alford";
+
+export const blogCategories = [
+  "Philosophy","Movies","Stories"
+];
+export const blogSearchBy = [
+  "Tags" , "Name" , "Date" , "Body"
+];
