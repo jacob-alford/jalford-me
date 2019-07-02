@@ -3,7 +3,7 @@ import { Grid , Container , Typography } from '@material-ui/core/';
 
 import { StyledRPN } from './style.js';
 
-import rpnImage from '../../../../../assets/projects/rpn-header.jpg';
+import rpnImage from '../../../../assets/projects/rpn-header.jpg';
 
 import buttons from './calcFunc.js';
 

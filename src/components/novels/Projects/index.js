@@ -1,4 +1,4 @@
-import { meta as rpnMeta } from './Projects/RPN';
+import { meta as rpnMeta } from './RPN';
 
 export const projectList = [
   rpnMeta
