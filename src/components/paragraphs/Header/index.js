@@ -8,9 +8,9 @@ import { StyledHeader } from './style.js';
 import { navItems } from '../../../config';
 
 export default function Header(props){
-  const { path , history } = props;
+  const { path , history , style } = props;
   return (
-    <StyledHeader>
+    <StyledHeader style={style}>
       <Typography className="title" variant="h1">
         Jacob Alford
       </Typography>

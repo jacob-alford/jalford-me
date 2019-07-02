@@ -25,8 +25,8 @@ function App() {
       <Router>
         <Heading />
         <Switch>
-          {projectList.filter(project => !project.disabled).map(project => (
-            <Route path={project.url} component={project.component} />
+          {projectList.filter(project => !project.disabled).map((project,index) => (
+            <Route key={`projectRoute${index}`} path={project.url} component={project.component} />
           ))}
           <Route path="/about" component={About} />
           <Route path="/blog" component={Blog} />

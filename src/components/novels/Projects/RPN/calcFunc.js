@@ -1,4 +1,5 @@
 function validateExport(num){
+  if(Number.isNaN(num)) return {result:false,error:"Operation results in NaN!"};
   if(typeof num !== "number") return {result:false,error:"Operation doesn't result in a number!"};
   if(!Number.isFinite(num)) return {result:false,error:"Operation results in infinity!"};
   return {result:true,error:null};
@@ -51,6 +52,14 @@ function createConstant(num){
   }
 }
 
+function createNumType(num){
+  return (stack,tape) => {
+    const newStack = [...stack];
+    newStack[0] = Number(newStack[0].toString() + num);
+    return [newStack,tape];
+  }
+}
+
 function displayNum(num){
   return num.toFixed(2);
 }
@@ -60,69 +69,313 @@ function displayStackInline(stack){
   else return stack.toString();
 }
 
-const sin = createSingleOperator(num => Math.sin(num),"sin");
-const cos = createSingleOperator(num => Math.cos(num),"cos");
-const tan = createSingleOperator(num => Math.tan(num),"tan");
-const asin = createSingleOperator(num => Math.asin(num),"asin");
-const acos = createSingleOperator(num => Math.acos(num),"acos");
-const atan = createSingleOperator(num => Math.atan(num),"atan");
+const calcFunctions = {};
 
-const sinInDegMode = createSingleOperator(num => Math.sin((Math.PI/180)*num),"sin");
-const cosInDegMode = createSingleOperator(num => Math.cos((Math.PI/180)*num),"sin");
-const tanInDegMode = createSingleOperator(num => Math.tan((Math.PI/180)*num),"sin");
+// --- Create the number buttons ---
+for(let i=0;i<10;i++){
+  calcFunctions[`type${i}`] = {
+    fn:createNumType(i),
+    colorClass:"number",
+    text:`${i}`,
+    minStack:0
+  }
+}
 
-const pi = createConstant(Math.PI);
-const speedOfLight = createConstant(299792458);
+calcFunctions["plusMinus"] = {
+  fn:(stack,tape) => {
+    const newStack = [...stack];
+    newStack[0] *= -1;
+    return [newStack,tape];
+  },
+  colorClass:"number",
+  text:"&plusmn;",
+  minStack:0
+}
 
-const sum = createReducer((a,c) => a+c,"sum");
-const product = createReducer((a,c) => a*c,"product");
-const mean = createReducer((a,c,i,arr) => a+(c/arr.length),"mean");
+calcFunctions["dot"] = {
+  fn:(stack,tape) => {
+    if(stack[0].toString().includes(".")) return "Unable to add a second decimal point!";
+    const newStack = [...stack];
+    newStack[0] = newStack[0].toString() + ".";
+    return [newStack,tape];
+  },
+  colorClass:"number",
+  text:".",
+  minStack:0
+}
 
-const ln = createSingleOperator(num => Math.log(num),"ln");
-const log10 = createSingleOperator(num => Math.log10(num),"log10");
-const log2 = createSingleOperator(num => Math.log2(num),"log2");
-const x2 = createSingleOperator(num => Math.pow(num,2),num => `${num}^2`);
-const ex = createSingleOperator(num => Math.exp(num),num => `e^${num}`);
-const twoX = createSingleOperator(num => Math.pow(2,num),num => `2^${num}`);
-const tenX = createSingleOperator(num => Math.pow(10,num),num => `10^${num}`);
-const yx = createDoubleOperator((num1,num2) => Math.pow(num1,num2),"^");
-const sqrt = createSingleOperator(num => Math.sqrt(num),"sqrt");
-const xRtY = createDoubleOperator((num1,num2) => Math.pow(num1,1/num2),"&radic;");
-const xinv = createSingleOperator(num => 1/num,num => `1/${num}`);
-const xfact = createSingleOperator(num => {
+calcFunctions["sin"] = {
+  variations:{
+    rad:createSingleOperator(num => Math.sin(num),"sin"),
+    deg:createSingleOperator(num => Math.sin((Math.PI/180)*num),"sin")
+  },
+  colorClass:"function",
+  text:"sin",
+  minStack:1
+}
+calcFunctions["cos"] = {
+  variations:{
+    rad:createSingleOperator(num => Math.cos(num),"cos"),
+    deg:createSingleOperator(num => Math.cos((Math.PI/180)*num),"cos")
+  },
+  colorClass:"function",
+  text:"cos",
+  minStack:1
+}
+calcFunctions["tan"] = {
+  variations:{
+    rad:createSingleOperator(num => Math.tan(num),"tan"),
+    deg:createSingleOperator(num => Math.tan((Math.PI/180)*num),"sin")
+  },
+  colorClass:"function",
+  text:"tan",
+  minStack:1
+}
+calcFunctions["asin"] = {
+  fn:createSingleOperator(num => Math.asin(num),"asin"),
+  colorClass:"function",
+  text:"sin<sup>-1</sup>",
+  minStack:1
+}
+calcFunctions["acos"] = {
+  fn:createSingleOperator(num => Math.acos(num),"acos"),
+  colorClass:"function",
+  text:"cos<sup>-1</sup>",
+  minStack:1
+}
+calcFunctions["atan"] = {
+  fn:createSingleOperator(num => Math.atan(num),"atan"),
+  colorClass:"function",
+  text:"tan<sup>-1</sup>",
+  minStack:1
+}
+
+calcFunctions["pi"] = {
+  fn:createConstant(Math.PI),
+  colorClass:"function",
+  text:"&pi;",
+  minStack:0
+}
+calcFunctions["speedOfLight"] = {
+  fn:createConstant(299792458),
+  colorClass:"function",
+  text:"c",
+  minStack:0
+}
+
+calcFunctions["sum"] = {
+  fn:createReducer((a,c) => a+c,"sum"),
+  colorClass:"function",
+  text:"&Sigma;",
+  minStack:0
+}
+calcFunctions["product"] = {
+  fn:createReducer((a,c) => a*c,"product"),
+  colorClass:"function",
+  text:"&Pi;",
+  minStack:0
+}
+calcFunctions["mean"] = {
+  fn:createReducer((a,c,i,arr) => a+(c/arr.length),"mean"),
+  colorClass:"function",
+  text:"&mu;",
+  minStack:1
+}
+
+calcFunctions["ln"] = {
+  fn:createSingleOperator(num => Math.log(num),"ln"),
+  colorClass:"function",
+  text:"ln",
+  minStack:1
+}
+calcFunctions["log10"] = {
+  fn:createSingleOperator(num => Math.log10(num),"log10"),
+  colorClass:"function",
+  text:"log<sub>10</sub>",
+  minStack:1
+}
+calcFunctions["log2"] = {
+  fn:createSingleOperator(num => Math.log2(num),"log2"),
+  colorClass:"function",
+  text:"log<sub>2</sub>",
+  minStack:1
+}
+calcFunctions["x2"] = {
+  fn:createSingleOperator(num => Math.pow(num,2),num => `${num}^2`),
+  colorClass:"function",
+  text:"x<sup>2</sup>",
+  minStack:1
+}
+calcFunctions["ex"] = {
+  fn:createSingleOperator(num => Math.exp(num),num => `e^${num}`),
+  colorClass:"function",
+  text:"e<sup>x</sup>",
+  minStack:1
+}
+calcFunctions["twoX"] = {
+  fn:createSingleOperator(num => Math.pow(2,num),num => `2^${num}`),
+  colorClass:"function",
+  text:"2<sup>x</sup>",
+  minStack:1
+}
+calcFunctions["tenX"] = {
+  fn:createSingleOperator(num => Math.pow(10,num),num => `10^${num}`),
+  colorClass:"function",
+  text:"10<sup>x</sup>",
+  minStack:1
+}
+calcFunctions["yx"] = {
+  fn:createDoubleOperator((num1,num2) => Math.pow(num1,num2),"^"),
+  colorClass:"function",
+  text:"y<sup>x</sup>",
+  minStack:2
+}
+calcFunctions["sqrt"] = {
+  fn:createSingleOperator(num => Math.sqrt(num),"sqrt"),
+  colorClass:"function",
+  text:`&radic;<span style="text-decoration:overline;">&nbsp;x&nbsp;</span>`,
+  minStack:1
+}
+calcFunctions["xRtY"] = {
+  fn:createDoubleOperator((num1,num2) => Math.pow(num1,1/num2),"&radic;"),
+  colorClass:"function",
+  text:`<sup>x</sup>&radic;<span style="text-decoration:overline;">&nbsp;y&nbsp;</span>`,
+  minStack:2
+}
+calcFunctions["xinv"] = {
+  fn:createSingleOperator(num => 1/num,num => `1/${num}`),
+  colorClass:"function",
+  text:"x<sup>-1</sup>",
+  minStack:1
+}
+calcFunctions["xfact"] = {
+  fn:createSingleOperator(num => {
   function factorial(num){
     if(num > 1) return num * factorial(num - 1);
     else return num;
   }
   return factorial(num);
-},num => `${num}!`);
-const add = createDoubleOperator((num1,num2) => num1 + num2 , "+");
-const sub = createDoubleOperator((num1,num2) => num1 - num2 , "-");
-const mul = createDoubleOperator((num1,num2) => num1 * num2 , "x");
-const div = createDoubleOperator((num1,num2) => num1 / num2 , "/");
+},num => `${num}!`),
+  colorClass:"function",
+  text:"x!",
+  minStack:1
+}
 
-const enter = (stack,tape,number) => {
-  const newStack = [number,...stack];
-  const newTape = [`ENTER ${number}`,...tape];
-  return [newStack,newTape];
+calcFunctions["add"] = {
+  fn:createDoubleOperator((num1,num2) => num1 + num2 , "+"),
+  colorClass:"action",
+  text:"+",
+  minStack:2
 }
-const drop = (stack,tape) => {
-  const newStack = [...stack];
-  const droppedValue = newStack.shift();
-  return [newStack,[`DROP ${droppedValue}`,...tape]];
+calcFunctions["sub"] = {
+  fn:createDoubleOperator((num1,num2) => num1 - num2 , "-"),
+  colorClass:"action",
+  text:"-",
+  minStack:2
 }
-const cancelAll = (stack,tape) => {
-  return [[],["CLEAR ALL",...tape]];
+calcFunctions["mul"] = {
+  fn:createDoubleOperator((num1,num2) => num1 * num2 , "x"),
+  colorClass:"action",
+  text:"&times;",
+  minStack:2
 }
-const mod = createDoubleOperator((num1,num2) => num1%num2 , (num1,num2) => `${num1} mod(${num2})`);
-const roll = (stack,tape) => {
-  const copyStack = [...stack];
-  const firstElement = copyStack.shift();
-  return [[...copyStack,firstElement],["ROLL",...tape]];
+calcFunctions["div"] = {
+  fn:createDoubleOperator((num1,num2) => num1 / num2 , "/"),
+  colorClass:"action",
+  text:"&divide;",
+  minStack:2
 }
-const swap = (stack,tape) => {
-  const copyStack = [...stack];
-  const firstElement = copyStack.shift();
-  const secondElement = copyStack.shift();
-  return [[secondElement,firstElement,...copyStack],[`SWAP(${firstElement},${secondElement})`,...tape]];
+
+calcFunctions["enter"] = {
+  fn:(stack,tape) => {
+    const output = validateExport(stack[0]);
+    if(output.result){
+      const newStack = [0,...stack];
+      const newTape = [`ENTER ${stack[0]}`,...tape];
+      return [newStack,newTape];
+    }else{
+      return "Error!";
+    }
+  },
+  colorClass:"action",
+  text:"enter",
+  minStack:0
 }
+calcFunctions["drop"] = {
+  fn:(stack,tape) => {
+    const newStack = [...stack];
+    const droppedValue = newStack.shift();
+    return [newStack,[`DROP ${droppedValue}`,...tape]];
+  },
+  colorClass:"delete",
+  text:"drop",
+  minStack:0
+}
+calcFunctions["cancelAll"] = {
+  fn:(stack,tape) => {
+    return [[],["CLEAR ALL",...tape]];
+  },
+  colorClass:"delete",
+  text:"AC",
+  minStack:0
+}
+calcFunctions["clear"] = {
+  fn:(stack,tape) => {
+    const newStack = [...stack];
+    newStack.shift();
+    return [[0,...newStack],["CLEAR",...tape]];
+  },
+  colorClass:"delete",
+  text:"C",
+  minStack:0
+}
+calcFunctions["backspace"] = {
+  fn:(stack,tape) => {
+    const newStack = [...stack];
+    if(newStack[0].length < 2) return [newStack,tape];
+    else newStack[0] = newStack[0].toString().slice(0,-1);
+    return [newStack,tape];
+  },
+  colorClass:"delete",
+  text:"&larr;",
+  minStack:0
+}
+calcFunctions["mod"] = {
+  fn:createDoubleOperator((num1,num2) => num1%num2 , (num1,num2) => `${num1} mod(${num2})`),
+  colorClass:"action",
+  text:"mod",
+  minStack:2
+}
+calcFunctions["roll"] = {
+  fn:(stack,tape) => {
+    const output = validateExport(stack[0]);
+    if(output.result){
+      const copyStack = [...stack];
+      const firstElement = copyStack.shift();
+      return [[...copyStack,firstElement],["ROLL",...tape]];
+    }else{
+      return "Error!";
+    }
+  },
+  colorClass:"action",
+  text:"roll",
+  minStack:0
+}
+calcFunctions["swap"] = {
+  fn:(stack,tape) => {
+    const output = validateExport(stack[0]);
+    if(output.result){
+      const copyStack = [...stack];
+      const firstElement = copyStack.shift();
+      const secondElement = copyStack.shift();
+      return [[secondElement,firstElement,...copyStack],[`SWAP(${firstElement},${secondElement})`,...tape]];
+    }else{
+      return "Error!";
+    }
+  },
+  colorClass:"action",
+  text:"swap",
+  minStack:2
+}
+
+export { calcFunctions };
