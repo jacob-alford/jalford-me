@@ -84,11 +84,39 @@ function Stack(props){
   for(let i=renderSlice.length;i<5;i++){
     renderSlice.push(" ");
   }
-  return renderSlice.map(line => (
-    <TableRow className="stackRow">
+  return renderSlice.map((line,index) => (
+    <TableRow key={`stack${index}`} className="stackRow">
       <StackLine text={line} />
     </TableRow>
   )).reverse();
+}
+
+function TapeLine(props){
+  const { text } = props;
+  return (
+    <TableCell className="tapeLine">
+      <Typography variant="h4" dangerouslySetInnerHTML={{__html: text}} />
+    </TableCell>
+  );
+}
+
+function Tape(props){
+  const { tape } = props;
+  if(tape.length < 11){
+    const tapeCopy = [...tape];
+    for(let i=tapeCopy.length;i<11;i++){
+      tapeCopy.push(" ");
+    }
+    return tapeCopy.map((item,index) => (
+      <TableRow key={`tape${index}`} className="tapeRow">
+        <TapeLine text={item} />
+      </TableRow>
+    ));
+  }else return tape.map((item,index) => (
+    <TableRow key={`tape${index}`} className="tapeRow">
+      <TapeLine text={item} />
+    </TableRow>
+  ));
 }
 
 
@@ -110,30 +138,42 @@ function RPN(props){
       alert(output);
       return;
     }
-    console.log(newTape,newStack);
     setDisplay({tape:newTape,stack:newStack});
   }
 
   return (
-    <StyledRPN headerIsOpen={headerIsOpen}>
-      <Grid container className="calcGrid" direction="column">
-        <Grid item className="stackHolder">
-          <Table className="stackDisplay">
-            <TableBody>
-              <Stack stack={display.stack} />
-            </TableBody>
-          </Table>
-        </Grid>
-        <Grid item>
-          <Table className="calcTable">
-            <TableBody>
-              {rows.map((row,index) => (
-                <TableRow key={`row${index}`}>
-                  <Row rowData={row} operate={operate} degRad={isDeg} toggleDegRad={toggleDegRad}/>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+    <StyledRPN headerIsOpen={headerIsOpen} width={window.innerWidth}>
+      <Grid container direction="row" className="classGrid">
+        <Hidden mdDown>
+          <Grid item className="tapeHolder">
+            <Table className="tapeDisplay">
+              <TableBody>
+                <Tape tape={display.tape} />
+              </TableBody>
+            </Table>
+          </Grid>
+        </Hidden>
+        <Grid item className="stackAndButtons">
+          <Grid container direction="column">
+            <Grid item className="stackHolder">
+              <Table className="stackDisplay">
+                <TableBody>
+                  <Stack stack={display.stack} />
+                </TableBody>
+              </Table>
+            </Grid>
+            <Grid item>
+              <Table className="calcTable">
+                <TableBody>
+                  {rows.map((row,index) => (
+                    <TableRow key={`row${index}`}>
+                      <Row rowData={row} operate={operate} degRad={isDeg} toggleDegRad={toggleDegRad}/>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </StyledRPN>

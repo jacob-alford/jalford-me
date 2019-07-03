@@ -1,6 +1,36 @@
 import styled from 'styled-components';
 
 export const StyledRPN = styled.div`
+  @media only screen and (min-width:1280px){
+    .stackAndButtons{
+      width:75%;
+    }
+  }
+  @media only screen and (max-width:1280px){
+    .stackAndButtons{
+      width:100%;
+    }
+  }
+  .stackAndButtons{
+    
+  }
+  .calcGrid{
+    width:100vw;
+  }
+  .tapeHolder{
+    width:25%;
+  }
+  .tapeRow{
+    height:3%;
+    padding-top:0px;
+    padding-bottom:0px;
+    text-align:right;
+    color:white;
+  }
+  .tapeDisplay{
+    height:100%;
+    table-layout:fixed;
+  }
   .stackHolder{
     height:${props => (props.headerIsOpen) ? "37.5vh" : "50vh"};
     transition: height .75s;
@@ -18,9 +48,6 @@ export const StyledRPN = styled.div`
     color:white;
   }
   .stackRow{
-
-  }
-  .calcGrid{
 
   }
   .tableCell{
