@@ -29,7 +29,9 @@ function Row(props){
           className="number tableCell"
           key={`cell${index}`}
           onClick={toggleDegRad}>
-          {(degRad) ? "Deg" : "Rad"}
+          <Typography variant="h6">
+            {(degRad) ? "Deg" : "Rad"}
+          </Typography>
         </TableCell>
       );
     }
@@ -40,7 +42,7 @@ function Row(props){
             className={calcFunctions[button].colorClass + " tableCell"}
             key={`cell${index}`}
             onClick={() => operate(calcFunctions[button].variations.deg,calcFunctions[button].minStack)}>
-            <span dangerouslySetInnerHTML={{__html: calcFunctions[button].text}} />
+            <Typography variant="h6" dangerouslySetInnerHTML={{__html: calcFunctions[button].text}} />
           </TableCell>
         );
       }else{
@@ -49,7 +51,7 @@ function Row(props){
             className={calcFunctions[button].colorClass + " tableCell"}
             key={`cell${index}`}
             onClick={() => operate(calcFunctions[button].variations.rad,calcFunctions[button].minStack)}>
-            <span dangerouslySetInnerHTML={{__html: calcFunctions[button].text}} />
+            <Typography variant="h6" dangerouslySetInnerHTML={{__html: calcFunctions[button].text}} />
           </TableCell>
         );
       }
@@ -59,7 +61,7 @@ function Row(props){
         className={calcFunctions[button].colorClass + " tableCell"}
         key={`cell${index}`}
         onClick={() => operate(calcFunctions[button].fn,calcFunctions[button].minStack)}>
-        <span dangerouslySetInnerHTML={{__html: calcFunctions[button].text}} />
+        <Typography variant="h6" dangerouslySetInnerHTML={{__html: calcFunctions[button].text}} />
       </TableCell>
     );
   });
@@ -69,15 +71,31 @@ function StackLine(props){
   const { text } = props;
   return(
     <TableCell className="stackLine">
-      {text}
+      <Typography variant="h4">
+        {text}
+      </Typography>
     </TableCell>
   );
+}
+
+function Stack(props){
+  const { stack } = props;
+  const renderSlice = stack.slice(0,6);
+  for(let i=renderSlice.length;i<5;i++){
+    renderSlice.push(" ");
+  }
+  return renderSlice.map(line => (
+    <TableRow className="stackRow">
+      <StackLine text={line} />
+    </TableRow>
+  )).reverse();
 }
 
 
 function RPN(props){
   const [display,setDisplay] = useState({tape:[],stack:[0]});
   const [isDeg,setIsDeg] = useState(true);
+  const { headerIsOpen } = props;
   const toggleDegRad = () => {
     setIsDeg(!isDeg);
   }
@@ -97,21 +115,17 @@ function RPN(props){
   }
 
   return (
-    <StyledRPN>
+    <StyledRPN headerIsOpen={headerIsOpen}>
       <Grid container className="calcGrid" direction="column">
-        <Grid item>
+        <Grid item className="stackHolder">
           <Table className="stackDisplay">
             <TableBody>
-              {[...display.stack].reverse().map(item => (
-                <TableRow>
-                  <StackLine text={item} />
-                </TableRow>
-              ))}
+              <Stack stack={display.stack} />
             </TableBody>
           </Table>
         </Grid>
         <Grid item>
-          <Table className="table">
+          <Table className="calcTable">
             <TableBody>
               {rows.map((row,index) => (
                 <TableRow key={`row${index}`}>

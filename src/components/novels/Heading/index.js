@@ -9,19 +9,15 @@ import Header from '../../paragraphs/Header';
 import { StyledHeading } from './style.js';
 
 function Heading(props){
-  const { location , history } = props;
-  const [shouldShow,setShouldShow] = useState(true);
-  const toggleShow = () => {
-    setShouldShow(!shouldShow);
-  }
+  const { location , history , headerIsOpen , setHeaderState } = props;
   return (
     <StyledHeading>
-      <div className="hideButton" onClick={toggleShow}>
-        {(shouldShow) ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+      <div className="hideButton" onClick={setHeaderState}>
+        {(headerIsOpen) ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
       </div>
-      <Grid container justify="center" alignContent="center" className={`container ${(shouldShow) ? null : "hidden"}`}>
+      <Grid container justify="center" alignContent="center" className={`container ${(headerIsOpen) ? null : "hidden"}`}>
         <Grid item>
-          <Header style={(shouldShow) ? null : {visibility:"hidden"}} history={history} path={location.pathname}/>
+          <Header style={(headerIsOpen) ? null : {visibility:"hidden"}} history={history} path={location.pathname}/>
         </Grid>
       </Grid>
     </StyledHeading>

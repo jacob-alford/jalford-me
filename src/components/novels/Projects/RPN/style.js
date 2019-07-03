@@ -1,11 +1,30 @@
 import styled from 'styled-components';
 
 export const StyledRPN = styled.div`
+  .stackHolder{
+    height:${props => (props.headerIsOpen) ? "37.5vh" : "50vh"};
+    transition: height .75s;
+  }
+  .stackDisplay{
+    height:100%;
+    table-layout:fixed;
+    background-image:linear-gradient(black,darkblue);
+  }
+  .stackLine{
+    height:20%;
+    padding-top:0px;
+    padding-bottom:0px;
+    text-align:right;
+    color:white;
+  }
+  .stackRow{
+
+  }
   .calcGrid{
-      height:100vh;
-      width:100%;
+
   }
   .tableCell{
+    text-align:center;
     cursor:pointer;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -14,8 +33,9 @@ export const StyledRPN = styled.div`
         -ms-user-select: none;
             user-select: none;
   }
-  .table{
-    width:100%;
+  .calcTable{
+    height:${props => (props.headerIsOpen) ? "37.5vh" : "50vh"};
+    transition: height .75s;
   }
   .action{
     background-color: #007bff;

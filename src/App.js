@@ -18,15 +18,17 @@ require('typeface-roboto');
 
 function App() {
   const [adminLoginIsOpen,setAdminLoginIsOpen] = useState(false);
+  const [headerIsOpen,setHeaderIsOpen] = useState(true);
+  const toggleHeader = () => setHeaderIsOpen(!headerIsOpen);
   const openAdminLogin = () => setAdminLoginIsOpen(true);
   const closeAdminLogin = () => setAdminLoginIsOpen(false);
   return (
     <StyledApp>
       <Router>
-        <Heading />
+        <Heading headerIsOpen={headerIsOpen} setHeaderState={toggleHeader}/>
         <Switch>
           {projectList.filter(project => !project.disabled).map((project,index) => (
-            <Route key={`projectRoute${index}`} path={project.url} component={project.component} />
+            <Route key={`projectRoute${index}`} path={project.url} component={() => project.component({headerIsOpen:headerIsOpen})}/>
           ))}
           <Route path="/about" component={About} />
           <Route path="/blog" component={Blog} />

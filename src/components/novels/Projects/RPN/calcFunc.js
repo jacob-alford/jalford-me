@@ -305,7 +305,8 @@ calcFunctions["drop"] = {
   fn:(stack,tape) => {
     const newStack = [...stack];
     const droppedValue = newStack.shift();
-    return [newStack,[`DROP ${droppedValue}`,...tape]];
+    if(newStack.length > 0) return [newStack,[`DROP ${droppedValue}`,...tape]];
+    else return [[0],[`DROP ${droppedValue}`,...tape]];
   },
   colorClass:"delete",
   text:"drop",
@@ -313,7 +314,7 @@ calcFunctions["drop"] = {
 }
 calcFunctions["cancelAll"] = {
   fn:(stack,tape) => {
-    return [[],["CLEAR ALL",...tape]];
+    return [[0],["CLEAR ALL",...tape]];
   },
   colorClass:"delete",
   text:"AC",
