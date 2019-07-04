@@ -4,11 +4,15 @@ export const StyledHeading = styled.div`
   .hideButton{
     width:50px;
     height:50px;
-    position:fixed;
+    position:absolute;
     cursor:pointer;
     top:10px;
     left:calc(100% - 50px);
     z-index:1;
+    transition: transform .25s;
+  }
+  .hideButton:hover{
+    transform: translateY(-3px);
   }
   .hidden{
     min-height:0px !important;

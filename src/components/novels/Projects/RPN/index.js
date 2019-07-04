@@ -3,7 +3,7 @@ import { Grid , Container , Typography,
          Table , TableBody, TableCell,
          TableHead, TableRow, Drawer,
          Hidden } from '@material-ui/core/';
-
+import { Reorder } from '@material-ui/icons/';
 import { StyledRPN } from './style.js';
 
 import rpnImage from '../../../../assets/projects/rpn-header.jpg';
@@ -101,19 +101,19 @@ function TapeLine(props){
 }
 
 function Tape(props){
-  const { tape } = props;
+  const { tape , drawer } = props;
   if(tape.length < 11){
     const tapeCopy = [...tape];
     for(let i=tapeCopy.length;i<11;i++){
       tapeCopy.push(" ");
     }
     return tapeCopy.map((item,index) => (
-      <TableRow key={`tape${index}`} className="tapeRow">
+      <TableRow key={`tape${index}`} className="tapeRow" style={{height:(drawer) ? "10vh" : null}}>
         <TapeLine text={item} />
       </TableRow>
     ));
   }else return tape.map((item,index) => (
-    <TableRow key={`tape${index}`} className="tapeRow">
+    <TableRow key={`tape${index}`} className="tapeRow" style={{height:(drawer) ? "10vh" : null}}>
       <TapeLine text={item} />
     </TableRow>
   ));
@@ -123,10 +123,12 @@ function Tape(props){
 function RPN(props){
   const [display,setDisplay] = useState({tape:[],stack:[0]});
   const [isDeg,setIsDeg] = useState(true);
+  const [tapeDrawerIsOpen,setTapeDrawerIsOpen] = useState(false);
   const { headerIsOpen } = props;
   const toggleDegRad = () => {
     setIsDeg(!isDeg);
   }
+  const toggleTapeDrawer = () => setTapeDrawerIsOpen(!tapeDrawerIsOpen);
   const operate = (fn,minCheck) => {
     if(display.stack.length < minCheck){
       alert("not enough items!");
@@ -140,9 +142,22 @@ function RPN(props){
     }
     setDisplay({tape:newTape,stack:newStack});
   }
-
   return (
-    <StyledRPN headerIsOpen={headerIsOpen} width={window.innerWidth}>
+    <StyledRPN headerIsOpen={headerIsOpen} drawerIsOpen={tapeDrawerIsOpen}>
+      <Hidden lgUp>
+        <div className="drawerIcon" onClick={toggleTapeDrawer}>
+          <Reorder />
+        </div>
+        <Drawer open={tapeDrawerIsOpen} onClose={toggleTapeDrawer} anchor="left">
+          <div style={{width:"25vw"}}>
+            <Table className="tapeDisplay">
+              <TableBody>
+                <Tape tape={display.tape} drawer/>
+              </TableBody>
+            </Table>
+          </div>
+        </Drawer>
+      </Hidden>
       <Grid container direction="row" className="classGrid">
         <Hidden mdDown>
           <Grid item className="tapeHolder">
@@ -166,7 +181,7 @@ function RPN(props){
               <Table className="calcTable">
                 <TableBody>
                   {rows.map((row,index) => (
-                    <TableRow key={`row${index}`}>
+                    <TableRow className="calcRow" key={`row${index}`}>
                       <Row rowData={row} operate={operate} degRad={isDeg} toggleDegRad={toggleDegRad}/>
                     </TableRow>
                   ))}

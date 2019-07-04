@@ -6,13 +6,13 @@ export const StyledRPN = styled.div`
       width:75%;
     }
   }
-  @media only screen and (max-width:1280px){
+  @media only screen and (max-width:1279px){
     .stackAndButtons{
       width:100%;
     }
   }
   .stackAndButtons{
-    
+
   }
   .calcGrid{
     width:100vw;
@@ -21,19 +21,42 @@ export const StyledRPN = styled.div`
     width:25%;
   }
   .tapeRow{
-    height:3%;
+    height:${props => (props.headerIsOpen) ? "7.5vh" : "10vh"};
     padding-top:0px;
     padding-bottom:0px;
     text-align:right;
     color:white;
   }
+  .tapeLine{
+
+  }
+  .drawerHolder{
+    width:25vw;
+    position:absolute;
+  }
+  .drawerIcon{
+    width:50px;
+    height:50px;
+    position:absolute;
+    cursor:pointer;
+    top:10px;
+    left:10px;
+    z-index:1;
+    transition: transform .25s;
+    color:red;
+  }
+  .drawerIcon:hover{
+    transform:translateY(-3px);
+  }
   .tapeDisplay{
     height:100%;
     table-layout:fixed;
   }
+  .tapeDrawer{
+
+  }
   .stackHolder{
-    height:${props => (props.headerIsOpen) ? "37.5vh" : "50vh"};
-    transition: height .75s;
+
   }
   .stackDisplay{
     height:100%;
@@ -41,14 +64,11 @@ export const StyledRPN = styled.div`
     background-image:linear-gradient(black,darkblue);
   }
   .stackLine{
-    height:20%;
+    height:${props => (props.headerIsOpen) ? "7.5vh" : "10vh"};
     padding-top:0px;
     padding-bottom:0px;
     text-align:right;
     color:white;
-  }
-  .stackRow{
-
   }
   .tableCell{
     text-align:center;
@@ -61,8 +81,10 @@ export const StyledRPN = styled.div`
             user-select: none;
   }
   .calcTable{
-    height:${props => (props.headerIsOpen) ? "37.5vh" : "50vh"};
     transition: height .75s;
+  }
+  .calcRow{
+    height:${props => (props.headerIsOpen) ? "6.25vh" : "8.333333333vh"};
   }
   .action{
     background-color: #007bff;

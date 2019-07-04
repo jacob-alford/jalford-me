@@ -11,9 +11,9 @@ function createSingleOperator(op,opString){
     if(output.result){
       let tapeMessage;
       if(typeof opString === "string"){
-        tapeMessage = [`${opString}(${op(stack[0])})`,`&#8195;=${displayNum(op(stack[0]))}`];
+        tapeMessage = [`${opString}(${op(stack[0])})`,`&#8195;= ${displayNum(op(stack[0]))}`];
       }else{
-        tapeMessage = [opString(op(stack[0])),`&#8195;=${displayNum(op(stack[0]))}`];
+        tapeMessage = [opString(op(stack[0])),`&#8195;= ${displayNum(op(stack[0]))}`];
       }
       return [[op(stack[0]),...stack.slice(1)],[...tapeMessage,...tape]];
     }
@@ -26,9 +26,9 @@ function createDoubleOperator(op,opString){
     if(output.result){
       let tapeMessage;
       if(typeof opString === "string"){
-        tapeMessage = [`${stack[0]}${opString}${stack[1]}`,`&#8195;=${displayNum(op(stack[0],stack[1]))}`];
+        tapeMessage = [`${stack[0]}${opString}${stack[1]}`,`&#8195;= ${displayNum(op(stack[0],stack[1]))}`];
       }else{
-        tapeMessage = [opString(stack[0],stack[1]),`&#8195;=${displayNum(op(stack[0],stack[1]))}`];
+        tapeMessage = [opString(stack[0],stack[1]),`&#8195;= ${displayNum(op(stack[0],stack[1]))}`];
       }
       return [[op(stack[0],stack[1]),...stack.slice(2)],[...tapeMessage,...tape]];
     }
@@ -40,7 +40,7 @@ function createReducer(op,reduceMsg){
   return (stack,tape) => {
     const output = validateExport(stack.reduce(op,0));
     if(output.result){
-      const tapeMessage = [`${reduceMsg}(${displayStackInline(stack)})`,`&#8195;=${displayNum(stack.reduce(op))}`];
+      const tapeMessage = [`${reduceMsg}(${displayStackInline(stack)})`,`&#8195;= ${displayNum(stack.reduce(op))}`];
       return [[stack.reduce(op)],[...tapeMessage,...tape]];
     }else return output.error;
   }
@@ -125,7 +125,7 @@ calcFunctions["cos"] = {
 calcFunctions["tan"] = {
   variations:{
     rad:createSingleOperator(num => Math.tan(num),"tan"),
-    deg:createSingleOperator(num => Math.tan((Math.PI/180)*num),"sin")
+    deg:createSingleOperator(num => Math.tan((Math.PI/180)*num),"tan")
   },
   colorClass:"function",
   text:"tan",
@@ -280,7 +280,7 @@ calcFunctions["mul"] = {
   minStack:2
 }
 calcFunctions["div"] = {
-  fn:createDoubleOperator((num1,num2) => num1 / num2 , "/"),
+  fn:createDoubleOperator((num1,num2) => num2 / num1 , (num1,num2) => `${num2}/${num1}`),
   colorClass:"action",
   text:"&divide;",
   minStack:2
@@ -333,7 +333,7 @@ calcFunctions["clear"] = {
 calcFunctions["backspace"] = {
   fn:(stack,tape) => {
     const newStack = [...stack];
-    if(newStack[0].length < 2) return [newStack,tape];
+    if(newStack[0].toString().length < 2) return [[0],tape];
     else newStack[0] = newStack[0].toString().slice(0,-1);
     return [newStack,tape];
   },

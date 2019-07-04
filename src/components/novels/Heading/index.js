@@ -13,7 +13,7 @@ function Heading(props){
   return (
     <StyledHeading>
       <div className="hideButton" onClick={setHeaderState}>
-        {(headerIsOpen) ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+        {(headerIsOpen) ? <KeyboardArrowUp style={{color:"red"}}/> : <KeyboardArrowDown style={{color:"red"}} />}
       </div>
       <Grid container justify="center" alignContent="center" className={`container ${(headerIsOpen) ? null : "hidden"}`}>
         <Grid item>
