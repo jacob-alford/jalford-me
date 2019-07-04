@@ -8,8 +8,8 @@ import Header from '../../paragraphs/Header';
 
 import { StyledHeading } from './style.js';
 
-function Heading(props){
-  const { location , history , activeNavItem , setActiveNavItem , headerIsOpen , setHeaderState } = props;
+export default function Heading(props){
+  const { location , headerIsOpen , setHeaderState } = props;
   return (
     <StyledHeading>
       <div className="hideButton" onClick={setHeaderState}>
@@ -17,12 +17,9 @@ function Heading(props){
       </div>
       <Grid container justify="center" alignContent="center" className={`container ${(headerIsOpen) ? null : "hidden"}`}>
         <Grid item>
-          <Header activeNavItem={activeNavItem} setActiveNavItem={setActiveNavItem} style={(headerIsOpen) ? null : {visibility:"hidden"}} history={history} path={location.pathname}/>
+          <Header style={(headerIsOpen) ? null : {visibility:"hidden"}} />
         </Grid>
       </Grid>
     </StyledHeading>
   );
 }
-
-// Supplies the history object to navigation
-export default withRouter(Heading);

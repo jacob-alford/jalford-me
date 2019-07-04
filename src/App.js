@@ -39,7 +39,7 @@ function App() {
           })}
           <Route path="/about" component={About} />
           <Route path="/blog" component={Blog} />
-          <Route path="/" render={props => (<Home setActiveNavItem={setActiveNavItem}/>)} />
+          <Route path="/" component={Home} />
         </Switch>
         <Footing />
       </Router>

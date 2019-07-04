@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import {
   Card,
@@ -12,12 +13,11 @@ import {
 
 import { StyledProjectCard } from './style.js';
 
-export default function ProjectCard(props){
-  const { projectDetails , history , setActiveNavItem } = props;
+function ProjectCard(props){
+  const { projectDetails , history } = props;
   const handleClick = url => {
     if(url.includes("http")) window.location.href = url;
     else history.push(url);
-    setActiveNavItem(2);
   }
   return (
     <StyledProjectCard>
@@ -34,8 +34,8 @@ export default function ProjectCard(props){
           </CardContent>
         </CardActionArea>
         <CardActions>
-          {projectDetails.actions.map(action => (
-            <Button key={Symbol().toString()} variant={action.type} size="small" style={action.style} color={action.color} onClick={() => handleClick(action.url)}>
+          {projectDetails.actions.map((action,index) => (
+            <Button key={`Project${index}`} variant={action.type} size="small" style={action.style} color={action.color} onClick={() => handleClick(action.url)}>
               {action.text}
             </Button>
           ))}
@@ -44,6 +44,8 @@ export default function ProjectCard(props){
     </StyledProjectCard>
   );
 }
+
+export default withRouter(ProjectCard);
 
 ProjectCard.propTypes = {
   projectDetails:PropTypes.shape({

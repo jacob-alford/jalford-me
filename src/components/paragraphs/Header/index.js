@@ -14,7 +14,7 @@ export default function Header(props){
       <Typography className="title" variant="h1">
         Jacob Alford
       </Typography>
-      <NavBar history={history} navList={navItems} path={path} activeNavItem={activeNavItem} setActiveNavItem={setActiveNavItem}/>
+      <NavBar navList={navItems} />
     </StyledHeader>
   );
 }
