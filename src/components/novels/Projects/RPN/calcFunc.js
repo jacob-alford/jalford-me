@@ -40,8 +40,8 @@ function createReducer(op,reduceMsg){
   return (stack,tape) => {
     const output = validateExport(stack.reduce(op,0));
     if(output.result){
-      const tapeMessage = [`${reduceMsg}(${displayStackInline(stack)})`,`&#8195;= ${displayNum(stack.reduce(op))}`];
-      return [[stack.reduce(op)],[...tapeMessage,...tape]];
+      const tapeMessage = [`${reduceMsg}(${displayStackInline(stack)})`,`&#8195;= ${displayNum(stack.reduce(op,0))}`];
+      return [[stack.reduce(op,0)],[...tapeMessage,...tape]];
     }else return output.error;
   }
 }
@@ -54,9 +54,21 @@ function createConstant(num){
 
 function createNumType(num){
   return (stack,tape) => {
-    const newStack = [...stack];
-    newStack[0] = Number(newStack[0].toString() + num);
-    return [newStack,tape];
+    if(stack[0].toString().includes("e")){
+      const newStack = [0,...stack];
+      newStack[0] = Number(newStack[0].toString() + num);
+      return [newStack,tape];
+    }
+    if((Number.isFinite(stack[0]) && !Number.isNaN(stack[0])) || stack[0].toString().includes(".")){
+      const newStack = [...stack];
+      newStack[0] = Number(newStack[0].toString() + num);
+      return [newStack,tape];
+    }else{
+      const newStack = [...stack];
+      newStack[0] = 0;
+      newStack[0] = Number(newStack[0].toString() + num);
+      return [newStack,tape];
+    }
   }
 }
 
@@ -186,7 +198,13 @@ calcFunctions["ln"] = {
   fn:createSingleOperator(num => Math.log(num),"ln"),
   colorClass:"function",
   text:"ln",
-  minStack:1
+  minStack:1,
+  inputCheck: stack => {
+    return {
+      valid: stack[0] > 0,
+      error: "Logarithms only defined for nonzero, positive numbers!"
+    };
+  }
 }
 calcFunctions["log10"] = {
   fn:createSingleOperator(num => Math.log10(num),"log10"),
@@ -234,7 +252,13 @@ calcFunctions["sqrt"] = {
   fn:createSingleOperator(num => Math.sqrt(num),"sqrt"),
   colorClass:"function",
   text:`&radic;<span style="text-decoration:overline;">&nbsp;x&nbsp;</span>`,
-  minStack:1
+  minStack:1,
+  inputCheck: stack => {
+    return {
+      valid: stack[0] >= 0,
+      error: "Square root only defined for positive numbers!"
+    };
+  }
 }
 calcFunctions["xRtY"] = {
   fn:createDoubleOperator((num1,num2) => Math.pow(num1,1/num2),"&radic;"),
@@ -250,15 +274,21 @@ calcFunctions["xinv"] = {
 }
 calcFunctions["xfact"] = {
   fn:createSingleOperator(num => {
-  function factorial(num){
-    if(num > 1) return num * factorial(num - 1);
-    else return num;
-  }
-  return factorial(num);
-},num => `${num}!`),
+    function factorial(num){
+      if(num > 1) return num * factorial(num - 1);
+      else return num;
+    }
+    return factorial(num);
+  },num => `${num}!`),
   colorClass:"function",
   text:"x!",
-  minStack:1
+  minStack:1,
+  inputCheck: stack => {
+    return {
+      valid: stack[0] <= 170,
+      error: "Number too big for factorial!"
+    };
+  }
 }
 
 calcFunctions["add"] = {
@@ -268,7 +298,7 @@ calcFunctions["add"] = {
   minStack:2
 }
 calcFunctions["sub"] = {
-  fn:createDoubleOperator((num1,num2) => num1 - num2 , "-"),
+  fn:createDoubleOperator((num1,num2) => num2 - num1 , (num1,num2) => `${num2}-${num1}`),
   colorClass:"action",
   text:"-",
   minStack:2
@@ -283,7 +313,13 @@ calcFunctions["div"] = {
   fn:createDoubleOperator((num1,num2) => num2 / num1 , (num1,num2) => `${num2}/${num1}`),
   colorClass:"action",
   text:"&divide;",
-  minStack:2
+  minStack:2,
+  inputCheck: stack => {
+    return {
+      valid: stack[0] !== 0,
+      error: "Unable to divide by zero!"
+    };
+  }
 }
 
 calcFunctions["enter"] = {
@@ -294,7 +330,7 @@ calcFunctions["enter"] = {
       const newTape = [`ENTER ${stack[0]}`,...tape];
       return [newStack,newTape];
     }else{
-      return "Error!";
+      return `Error! Message: ${output.error}`;
     }
   },
   colorClass:"action",
@@ -333,9 +369,13 @@ calcFunctions["clear"] = {
 calcFunctions["backspace"] = {
   fn:(stack,tape) => {
     const newStack = [...stack];
-    if(newStack[0].toString().length < 2) return [[0],tape];
-    else newStack[0] = newStack[0].toString().slice(0,-1);
-    return [newStack,tape];
+    if(newStack[0].toString().length > 1){
+      newStack[0] = newStack[0].toString().slice(0,-1);
+      return [newStack,tape];
+    }else{
+      newStack[0] = 0;
+      return [newStack,tape];
+    }
   },
   colorClass:"delete",
   text:"&larr;",

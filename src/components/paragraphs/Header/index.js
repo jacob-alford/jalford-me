@@ -8,13 +8,13 @@ import { StyledHeader } from './style.js';
 import { navItems } from '../../../config';
 
 export default function Header(props){
-  const { path , history , style } = props;
+  const { path , history , style , activeNavItem , setActiveNavItem } = props;
   return (
     <StyledHeader style={style}>
       <Typography className="title" variant="h1">
         Jacob Alford
       </Typography>
-      <NavBar history={history} navList={navItems} path={path}/>
+      <NavBar history={history} navList={navItems} path={path} activeNavItem={activeNavItem} setActiveNavItem={setActiveNavItem}/>
     </StyledHeader>
   );
 }

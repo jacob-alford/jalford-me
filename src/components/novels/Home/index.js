@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from "react-router";
 import { Grid , Container , Typography } from '@material-ui/core/';
 import { FeaturedPhoto } from '../../paragraphs/Home';
 import { ProjectCard } from '../../words/ProjectListing';
@@ -10,6 +11,7 @@ import withPageFade from '../../bindings/wrappers/withPageFade';
 import { projectList } from '../../../config';
 
 function Home(props){
+  const { history , setActiveNavItem } = props;
   return (
     <StyledHome>
       <Container maxWidth="xl" className="heading">
@@ -26,7 +28,7 @@ function Home(props){
       <Grid className="projectDisplay" container justify="center" spacing={3}>
         {projectList.filter(project => project.featured).map(project => (
           <Grid item>
-            <ProjectCard projectDetails={project} />
+            <ProjectCard setActiveNavItem={setActiveNavItem} history={history} projectDetails={project} />
           </Grid>
         ))}
       </Grid>
@@ -34,4 +36,4 @@ function Home(props){
   );
 }
 
-export default withPageFade(Home);
+export default withRouter(withPageFade(Home));

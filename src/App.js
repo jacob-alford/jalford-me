@@ -14,25 +14,32 @@ import { StyledApp } from './theme';
 
 import { projectList } from './config';
 
+import { getActiveNavItem } from './functions';
+
 require('typeface-roboto');
 
 function App() {
+  const path = window.location.pathname;
   const [adminLoginIsOpen,setAdminLoginIsOpen] = useState(false);
   const [headerIsOpen,setHeaderIsOpen] = useState(true);
+  const [activeNavItem, setActiveNavItem] = useState(getActiveNavItem(path));
   const toggleHeader = () => setHeaderIsOpen(!headerIsOpen);
   const openAdminLogin = () => setAdminLoginIsOpen(true);
   const closeAdminLogin = () => setAdminLoginIsOpen(false);
   return (
     <StyledApp>
       <Router>
-        <Heading headerIsOpen={headerIsOpen} setHeaderState={toggleHeader}/>
+        <Heading activeNavItem={activeNavItem} setActiveNavItem={setActiveNavItem} headerIsOpen={headerIsOpen} setHeaderState={toggleHeader}/>
         <Switch>
-          {projectList.filter(project => !project.disabled).map((project,index) => (
-            <Route key={`projectRoute${index}`} path={project.url} component={() => project.component({headerIsOpen:headerIsOpen})}/>
-          ))}
+          {projectList.filter(project => !project.disabled).map((project,index) => {
+            const { component:Component } = project;
+            return (
+              <Route key={`projectRoute${index}`} path={project.url} render={props => (<Component headerIsOpen={headerIsOpen} {...props} />)} />
+            );
+          })}
           <Route path="/about" component={About} />
           <Route path="/blog" component={Blog} />
-          <Route path="/" component={Home} />
+          <Route path="/" render={props => (<Home setActiveNavItem={setActiveNavItem}/>)} />
         </Switch>
         <Footing />
       </Router>

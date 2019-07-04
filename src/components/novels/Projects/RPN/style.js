@@ -28,7 +28,10 @@ export const StyledRPN = styled.div`
     color:white;
   }
   .tapeLine{
-
+    height:${props => (props.headerIsOpen) ? "7.5vh" : "10vh"};
+    padding-top:0px;
+    padding-bottom:0px;
+    text-align:right;
   }
   .drawerHolder{
     width:25vw;
@@ -49,7 +52,6 @@ export const StyledRPN = styled.div`
     transform:translateY(-3px);
   }
   .tapeDisplay{
-    height:100%;
     table-layout:fixed;
   }
   .tapeDrawer{
@@ -61,7 +63,7 @@ export const StyledRPN = styled.div`
   .stackDisplay{
     height:100%;
     table-layout:fixed;
-    background-image:linear-gradient(black,darkblue);
+    background-image:linear-gradient(#03001e,#7303c0,#ec38bc);
   }
   .stackLine{
     height:${props => (props.headerIsOpen) ? "7.5vh" : "10vh"};
@@ -87,20 +89,20 @@ export const StyledRPN = styled.div`
     height:${props => (props.headerIsOpen) ? "6.25vh" : "8.333333333vh"};
   }
   .action{
-    background-color: #007bff;
+    background-color: #2F80ED;
     color:#ffffff;
     transition:background-color .5s;
   }
   .action:hover{
-    background-color:#3a98fc;
+    background-color:#56CCF2;
   }
   .number{
-    background-color:#6c757d;
+    background-color:#03001e;
     color:#ffffff;
     transition:background-color .5s;
   }
   .number:hover{
-    background-color:#999999;
+    background-color:#7303c0;
   }
   .delete{
     background-color:#f8f9fa;

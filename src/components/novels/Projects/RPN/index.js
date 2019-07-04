@@ -11,6 +11,8 @@ import { calcFunctions } from './calcFunc.js';
 
 import buttons from './calcFunc.js';
 
+import withPageFade from '../../../bindings/wrappers/withPageFade';
+
 const rows = [
   [ "deg/rad" , "pi" , "speedOfLight" , "xinv" , "drop" , "clear" , "cancelAll" , "backspace" ],
   [ "mean" , "sum" , "product" , "xfact" , "roll" , "swap" , "mod" , "div" ],
@@ -35,13 +37,13 @@ function Row(props){
         </TableCell>
       );
     }
-    if(button.variations !== undefined){
+    if(calcFunctions[button].variations !== undefined){
       if(degRad){
         return (
           <TableCell
             className={calcFunctions[button].colorClass + " tableCell"}
             key={`cell${index}`}
-            onClick={() => operate(calcFunctions[button].variations.deg,calcFunctions[button].minStack)}>
+            onClick={() => operate(calcFunctions[button].variations.deg,calcFunctions[button].minStack,calcFunctions[button].inputCheck)}>
             <Typography variant="h6" dangerouslySetInnerHTML={{__html: calcFunctions[button].text}} />
           </TableCell>
         );
@@ -50,7 +52,7 @@ function Row(props){
           <TableCell
             className={calcFunctions[button].colorClass + " tableCell"}
             key={`cell${index}`}
-            onClick={() => operate(calcFunctions[button].variations.rad,calcFunctions[button].minStack)}>
+            onClick={() => operate(calcFunctions[button].variations.rad,calcFunctions[button].minStack,calcFunctions[button].inputCheck)}>
             <Typography variant="h6" dangerouslySetInnerHTML={{__html: calcFunctions[button].text}} />
           </TableCell>
         );
@@ -60,7 +62,7 @@ function Row(props){
       <TableCell
         className={calcFunctions[button].colorClass + " tableCell"}
         key={`cell${index}`}
-        onClick={() => operate(calcFunctions[button].fn,calcFunctions[button].minStack)}>
+        onClick={() => operate(calcFunctions[button].fn,calcFunctions[button].minStack,calcFunctions[button].inputCheck)}>
         <Typography variant="h6" dangerouslySetInnerHTML={{__html: calcFunctions[button].text}} />
       </TableCell>
     );
@@ -80,7 +82,7 @@ function StackLine(props){
 
 function Stack(props){
   const { stack } = props;
-  const renderSlice = stack.slice(0,6);
+  const renderSlice = stack.slice(0,5);
   for(let i=renderSlice.length;i<5;i++){
     renderSlice.push(" ");
   }
@@ -102,17 +104,11 @@ function TapeLine(props){
 
 function Tape(props){
   const { tape , drawer } = props;
-  if(tape.length < 11){
-    const tapeCopy = [...tape];
-    for(let i=tapeCopy.length;i<11;i++){
-      tapeCopy.push(" ");
-    }
-    return tapeCopy.map((item,index) => (
-      <TableRow key={`tape${index}`} className="tapeRow" style={{height:(drawer) ? "10vh" : null}}>
-        <TapeLine text={item} />
-      </TableRow>
-    ));
-  }else return tape.map((item,index) => (
+  const tapeCopy = [...tape];
+  for(let i=tapeCopy.length;i<10;i++){
+    tapeCopy.push(" ");
+  }
+  return tapeCopy.splice(0,10).map((item,index) => (
     <TableRow key={`tape${index}`} className="tapeRow" style={{height:(drawer) ? "10vh" : null}}>
       <TapeLine text={item} />
     </TableRow>
@@ -129,10 +125,17 @@ function RPN(props){
     setIsDeg(!isDeg);
   }
   const toggleTapeDrawer = () => setTapeDrawerIsOpen(!tapeDrawerIsOpen);
-  const operate = (fn,minCheck) => {
+  const operate = (fn,minCheck,inputCheck) => {
     if(display.stack.length < minCheck){
-      alert("not enough items!");
+      alert("Not enough items in stack for that operation!");
       return;
+    }
+    if(inputCheck !== undefined){
+      const { valid , error } = inputCheck(display.stack);
+      if(!valid){
+        alert(error);
+        return;
+      }
     }
     const output = fn(display.stack,display.tape);
     const [newStack,newTape] = output;
@@ -142,10 +145,42 @@ function RPN(props){
     }
     setDisplay({tape:newTape,stack:newStack});
   }
+  const handleKeyPress = evt => {
+    if(!Number.isNaN(Number(evt.key))){
+      operate(calcFunctions[`type${evt.key}`].fn,calcFunctions[`type${evt.key}`].minStack,calcFunctions[`type${evt.key}`].inputCheck);
+      evt.preventDefault();
+      return;
+    }
+    if(evt.key === "+"){
+      operate(calcFunctions[`add`].fn,calcFunctions[`add`].minStack,calcFunctions[`add`].inputCheck);
+      evt.preventDefault();
+      return;
+    }
+    if(evt.key === "-"){
+      operate(calcFunctions[`sub`].fn,calcFunctions[`sub`].minStack,calcFunctions[`sub`].inputCheck);
+      evt.preventDefault();
+      return;
+    }
+    if(evt.key === "*"){
+      operate(calcFunctions[`mul`].fn,calcFunctions[`mul`].minStack,calcFunctions[`mul`].inputCheck);
+      evt.preventDefault();
+      return;
+    }
+    if(evt.key === "/"){
+      operate(calcFunctions[`div`].fn,calcFunctions[`div`].minStack,calcFunctions[`div`].inputCheck);
+      evt.preventDefault();
+      return;
+    }
+    if(evt.key === "Enter"){
+      operate(calcFunctions[`enter`].fn,calcFunctions[`enter`].minStack,calcFunctions[`enter`].inputCheck);
+      evt.preventDefault();
+      return;
+    }
+  }
   return (
-    <StyledRPN headerIsOpen={headerIsOpen} drawerIsOpen={tapeDrawerIsOpen}>
+    <StyledRPN headerIsOpen={headerIsOpen} drawerIsOpen={tapeDrawerIsOpen}  tabIndex="0" onKeyPress={handleKeyPress}>
       <Hidden lgUp>
-        <div className="drawerIcon" onClick={toggleTapeDrawer}>
+        <div style={{color:"#20BDFF"}} className="drawerIcon" onClick={toggleTapeDrawer}>
           <Reorder />
         </div>
         <Drawer open={tapeDrawerIsOpen} onClose={toggleTapeDrawer} anchor="left">
@@ -200,7 +235,7 @@ export const meta = {
   featured:true,
   body:"Responsive design calculator, reverse polish notation. Uses keyboard shortcuts!",
   image:rpnImage,
-  component:RPN,
+  component:withPageFade(RPN),
   url:"/projects/rpn",
   actions:[
     {type:'contained',color:"secondary",text:"Demo",url:"/projects/rpn"},

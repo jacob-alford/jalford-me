@@ -43,7 +43,7 @@ function About(props){
         <Grid container justify="center" alignItems="center">
           <Grid item>
             <SocialIcon onClick={() => window.location.href = socialMedia.linkedIn.url}>
-              <Avatar alt="LinkedIn" src={socialMedia.linkedIn.img} />
+              <Avatar alt="LinkedIn" src={socialMedia.linkedIn.img} style={{filter:"invert(1)"}}/>
             </SocialIcon>
           </Grid>
           <Grid item>

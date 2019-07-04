@@ -6,6 +6,7 @@ export const StyledSocialIcon = styled.div`
     margin:10px;
     width:35px;
     height:35px;
+    color:white;
   }
   .iconHolder{
     margin: 20px 15px 20px;

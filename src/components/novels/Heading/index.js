@@ -9,15 +9,15 @@ import Header from '../../paragraphs/Header';
 import { StyledHeading } from './style.js';
 
 function Heading(props){
-  const { location , history , headerIsOpen , setHeaderState } = props;
+  const { location , history , activeNavItem , setActiveNavItem , headerIsOpen , setHeaderState } = props;
   return (
     <StyledHeading>
       <div className="hideButton" onClick={setHeaderState}>
-        {(headerIsOpen) ? <KeyboardArrowUp style={{color:"red"}}/> : <KeyboardArrowDown style={{color:"red"}} />}
+        {(headerIsOpen) ? <KeyboardArrowUp style={{color:"#20BDFF"}}/> : <KeyboardArrowDown style={{color:"#20BDFF"}} />}
       </div>
       <Grid container justify="center" alignContent="center" className={`container ${(headerIsOpen) ? null : "hidden"}`}>
         <Grid item>
-          <Header style={(headerIsOpen) ? null : {visibility:"hidden"}} history={history} path={location.pathname}/>
+          <Header activeNavItem={activeNavItem} setActiveNavItem={setActiveNavItem} style={(headerIsOpen) ? null : {visibility:"hidden"}} history={history} path={location.pathname}/>
         </Grid>
       </Grid>
     </StyledHeading>

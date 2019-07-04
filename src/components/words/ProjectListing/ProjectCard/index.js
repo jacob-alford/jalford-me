@@ -13,7 +13,12 @@ import {
 import { StyledProjectCard } from './style.js';
 
 export default function ProjectCard(props){
-  const { projectDetails } = props;
+  const { projectDetails , history , setActiveNavItem } = props;
+  const handleClick = url => {
+    if(url.includes("http")) window.location.href = url;
+    else history.push(url);
+    setActiveNavItem(2);
+  }
   return (
     <StyledProjectCard>
       <Card className="card">
@@ -30,7 +35,7 @@ export default function ProjectCard(props){
         </CardActionArea>
         <CardActions>
           {projectDetails.actions.map(action => (
-            <Button key={Symbol().toString()} variant={action.type} size="small" style={action.style} color={action.color} href={action.url}>
+            <Button key={Symbol().toString()} variant={action.type} size="small" style={action.style} color={action.color} onClick={() => handleClick(action.url)}>
               {action.text}
             </Button>
           ))}

@@ -16,7 +16,7 @@ export const StyledNavItem = styled.div`
             user-select: none;
   }
   .link:hover{
-    color:${props => (props.active) ? null : c.linkActive};
+    color:${props => (props.active) ? null : c.linkHover};
     text-decoration:none;
   }
 `;

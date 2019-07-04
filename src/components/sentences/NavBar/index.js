@@ -6,11 +6,8 @@ import NavItem from '../../words/NavItem';
 
 import { StyledNavBar } from './style.js';
 
-import { getActiveNavItem } from '../../../functions';
-
 export default function NavBar(props){
-  const { navList , path , history } = props;
-  const [activeNavItem, setActiveNavItem] = useState(getActiveNavItem(path));
+  const { navList , path , history , activeNavItem , setActiveNavItem } = props;
   const handleClick = (index,url) => {
     setActiveNavItem(index);
     if(url.includes("http")) window.location.href = url;
