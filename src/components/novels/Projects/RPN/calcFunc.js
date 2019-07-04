@@ -11,9 +11,9 @@ function createSingleOperator(op,opString){
     if(output.result){
       let tapeMessage;
       if(typeof opString === "string"){
-        tapeMessage = [`${opString}(${op(stack[0])})`,`&#8195;= ${displayNum(op(stack[0]))}`];
+        tapeMessage = [`${opString}(${displayNum(op(stack[0]))})`,`&#8195;= ${displayNum(op(stack[0]))}`];
       }else{
-        tapeMessage = [opString(op(stack[0])),`&#8195;= ${displayNum(op(stack[0]))}`];
+        tapeMessage = [opString(op(displayNum(stack[0]))),`&#8195;= ${displayNum(op(stack[0]))}`];
       }
       return [[op(stack[0]),...stack.slice(1)],[...tapeMessage,...tape]];
     }
@@ -78,6 +78,9 @@ function createNumType(num){
 }
 
 function displayNum(num){
+  if(Number.isInteger(num)){
+    return num;
+  }
   return Number(num).toFixed(4);
 }
 
@@ -89,13 +92,24 @@ function displayStackInline(stack){
 const calcFunctions = {};
 
 // --- Create the number buttons ---
-for(let i=0;i<10;i++){
+for(let i=1;i<10;i++){
   calcFunctions[`type${i}`] = {
     fn:createNumType(i),
     colorClass:"number",
     text:`${i}`,
     minStack:0
   }
+}
+
+calcFunctions['type0'] = {
+  fn:(stack,tape) => {
+    const newStack = [...stack];
+    newStack[0] = newStack[0].toString() + "0";
+    return [newStack,tape];
+  },
+  colorClass:"number",
+  text:`0`,
+  minStack:0
 }
 
 calcFunctions["plusMinus"] = {
@@ -152,13 +166,25 @@ calcFunctions["asin"] = {
   fn:createSingleOperator(num => Math.asin(num),"asin"),
   colorClass:"function",
   text:"sin<sup>-1</sup>",
-  minStack:1
+  minStack:1,
+  inputCheck: stack => {
+    return {
+      valid: stack[0] <= 1 && stack[0] >= -1,
+      error: "Inverse sine only defined for ratios less than or equal to one!"
+    };
+  }
 }
 calcFunctions["acos"] = {
   fn:createSingleOperator(num => Math.acos(num),"acos"),
   colorClass:"function",
   text:"cos<sup>-1</sup>",
-  minStack:1
+  minStack:1,
+  inputCheck: stack => {
+    return {
+      valid: stack[0] <= 1 && stack[0] >= -1,
+      error: "Inverse cosine only defined for ratios less than or equal to one!"
+    };
+  }
 }
 calcFunctions["atan"] = {
   fn:createSingleOperator(num => Math.atan(num),"atan"),
@@ -215,13 +241,25 @@ calcFunctions["log10"] = {
   fn:createSingleOperator(num => Math.log10(num),"log10"),
   colorClass:"function",
   text:"log<sub>10</sub>",
-  minStack:1
+  minStack:1,
+  inputCheck: stack => {
+    return {
+      valid: stack[0] > 0,
+      error: "Logarithms only defined for nonzero, positive numbers!"
+    };
+  }
 }
 calcFunctions["log2"] = {
   fn:createSingleOperator(num => Math.log2(num),"log2"),
   colorClass:"function",
   text:"log<sub>2</sub>",
-  minStack:1
+  minStack:1,
+  inputCheck: stack => {
+    return {
+      valid: stack[0] > 0,
+      error: "Logarithms only defined for nonzero, positive numbers!"
+    };
+  }
 }
 calcFunctions["x2"] = {
   fn:createSingleOperator(num => Math.pow(num,2),num => `${num}^2`),
@@ -326,13 +364,12 @@ calcFunctions["div"] = {
     };
   }
 }
-
 calcFunctions["enter"] = {
   fn:(stack,tape) => {
     const output = validateExport(Number(stack[0]));
     if(output.result){
-      const newStack = [Number(stack[0]),Number(stack[0]),...stack.slice(1)];
-      const newTape = [`ENTER ${Number(stack[0])}`,...tape];
+      const newStack = [0,Number(stack[0]),...stack.slice(1)];
+      const newTape = [`ENTER ${displayNum(Number(stack[0]))}`,...tape];
       return [newStack,newTape];
     }else{
       return `Error! Message: ${output.error}`;
@@ -342,12 +379,12 @@ calcFunctions["enter"] = {
   text:"enter",
   minStack:0
 }
-calcFunctions["enterZero"] = {
+calcFunctions["enterCopy"] = {
   fn:(stack,tape) => {
     const output = validateExport(Number(stack[0]));
     if(output.result){
-      const newStack = [0,Number(stack[0]),...stack.slice(1)];
-      const newTape = [`ENTER ${Number(stack[0])}`,...tape];
+      const newStack = [Number(stack[0]),Number(stack[0]),...stack.slice(1)];
+      const newTape = [`ENTER ${displayNum(Number(stack[0]))}`,...tape];
       return [newStack,newTape];
     }else{
       return `Error! Message: ${output.error}`;
@@ -362,7 +399,7 @@ calcFunctions["drop"] = {
     const newStack = [...stack];
     const droppedValue = newStack.shift();
     if(newStack.length > 0) return [newStack,[`DROP ${droppedValue}`,...tape]];
-    else return [[0],[`DROP ${droppedValue}`,...tape]];
+    else return [[0],[`DROP ${displayNum(droppedValue)}`,...tape]];
   },
   colorClass:"delete",
   text:"drop",
@@ -429,7 +466,7 @@ calcFunctions["swap"] = {
       const copyStack = [...stack];
       const firstElement = copyStack.shift();
       const secondElement = copyStack.shift();
-      return [[secondElement,firstElement,...copyStack],[`SWAP(${firstElement},${secondElement})`,...tape]];
+      return [[secondElement,firstElement,...copyStack],[`SWAP(${displayNum(firstElement)},${displayNum(secondElement)})`,...tape]];
     }else{
       return "Error!";
     }

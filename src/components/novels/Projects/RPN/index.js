@@ -132,7 +132,7 @@ function RPN(props){
   const dismissAlert = () => setHasAlert({status:false,message:""});
   const operate = (fn,minCheck,inputCheck) => {
     if(display.stack.length < minCheck){
-      alert("Not enough items in stack for that operation!");
+      throwAlert("Not enough items in stack for that operation!");
       return;
     }
     if(inputCheck !== undefined){
@@ -155,34 +155,32 @@ function RPN(props){
       operate(calcFunctions[`type${evt.key}`].fn,calcFunctions[`type${evt.key}`].minStack,calcFunctions[`type${evt.key}`].inputCheck);
       evt.preventDefault();
       return;
-    }
-    if(evt.key === "+"){
+    }else if(evt.key === "+"){
       operate(calcFunctions[`add`].fn,calcFunctions[`add`].minStack,calcFunctions[`add`].inputCheck);
       evt.preventDefault();
       return;
-    }
-    if(evt.key === "-"){
+    }else if(evt.key === "-"){
       operate(calcFunctions[`sub`].fn,calcFunctions[`sub`].minStack,calcFunctions[`sub`].inputCheck);
       evt.preventDefault();
       return;
-    }
-    if(evt.key === "*"){
+    }else if(evt.key === "*"){
       operate(calcFunctions[`mul`].fn,calcFunctions[`mul`].minStack,calcFunctions[`mul`].inputCheck);
       evt.preventDefault();
       return;
-    }
-    if(evt.key === "/"){
+    }else if(evt.key === "/"){
       operate(calcFunctions[`div`].fn,calcFunctions[`div`].minStack,calcFunctions[`div`].inputCheck);
       evt.preventDefault();
       return;
-    }
-    if(evt.key === "Enter"){
-      operate(calcFunctions[`enterZero`].fn,calcFunctions[`enterZero`].minStack,calcFunctions[`enterZero`].inputCheck);
+    }else if(evt.key === "Enter"){
+      operate(calcFunctions[`enter`].fn,calcFunctions[`enter`].minStack,calcFunctions[`enter`].inputCheck);
       evt.preventDefault();
       return;
-    }
-    if(evt.key === "."){
+    }else if(evt.key === "."){
       operate(calcFunctions[`dot`].fn,calcFunctions[`dot`].minStack,calcFunctions[`dot`].inputCheck);
+      evt.preventDefault();
+      return;
+    }else if(evt.key === "c"){
+      operate(calcFunctions[`enterCopy`].fn,calcFunctions[`enterCopy`].minStack,calcFunctions[`enterCopy`].inputCheck);
       evt.preventDefault();
       return;
     }
