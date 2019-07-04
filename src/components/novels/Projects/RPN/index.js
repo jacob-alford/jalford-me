@@ -2,7 +2,9 @@ import React , { useState , useEffect } from 'react';
 import { Grid , Container , Typography,
          Table , TableBody, TableCell,
          TableHead, TableRow, Drawer,
-         Hidden } from '@material-ui/core/';
+         Hidden, Dialog, DialogActions,
+         DialogContent, DialogContentText,
+         DialogTitle, Button } from '@material-ui/core/';
 import { Reorder } from '@material-ui/icons/';
 import { StyledRPN } from './style.js';
 
@@ -120,11 +122,14 @@ function RPN(props){
   const [display,setDisplay] = useState({tape:[],stack:[0]});
   const [isDeg,setIsDeg] = useState(true);
   const [tapeDrawerIsOpen,setTapeDrawerIsOpen] = useState(false);
+  const [hasAlert, setHasAlert] = useState({status:false,message:""});
   const { headerIsOpen } = props;
   const toggleDegRad = () => {
     setIsDeg(!isDeg);
   }
   const toggleTapeDrawer = () => setTapeDrawerIsOpen(!tapeDrawerIsOpen);
+  const throwAlert = message => setHasAlert({status:true,message:message});
+  const dismissAlert = () => setHasAlert({status:false,message:""});
   const operate = (fn,minCheck,inputCheck) => {
     if(display.stack.length < minCheck){
       alert("Not enough items in stack for that operation!");
@@ -133,14 +138,14 @@ function RPN(props){
     if(inputCheck !== undefined){
       const { valid , error } = inputCheck(display.stack);
       if(!valid){
-        alert(error);
+        throwAlert(error);
         return;
       }
     }
     const output = fn(display.stack,display.tape);
     const [newStack,newTape] = output;
     if(typeof output === "string") {
-      alert(output);
+      throwAlert(output);
       return;
     }
     setDisplay({tape:newTape,stack:newStack});
@@ -172,13 +177,31 @@ function RPN(props){
       return;
     }
     if(evt.key === "Enter"){
-      operate(calcFunctions[`enter`].fn,calcFunctions[`enter`].minStack,calcFunctions[`enter`].inputCheck);
+      operate(calcFunctions[`enterZero`].fn,calcFunctions[`enterZero`].minStack,calcFunctions[`enterZero`].inputCheck);
+      evt.preventDefault();
+      return;
+    }
+    if(evt.key === "."){
+      operate(calcFunctions[`dot`].fn,calcFunctions[`dot`].minStack,calcFunctions[`dot`].inputCheck);
       evt.preventDefault();
       return;
     }
   }
   return (
     <StyledRPN headerIsOpen={headerIsOpen} drawerIsOpen={tapeDrawerIsOpen}  tabIndex="0" onKeyPress={handleKeyPress}>
+      <Dialog open={hasAlert.status} onClose={dismissAlert}>
+        <DialogTitle style={{color:'red'}}>Error</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {hasAlert.message}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={dismissAlert} color="primary">
+            Dismiss
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Hidden lgUp>
         <div style={{color:"#20BDFF"}} className="drawerIcon" onClick={toggleTapeDrawer}>
           <Reorder />

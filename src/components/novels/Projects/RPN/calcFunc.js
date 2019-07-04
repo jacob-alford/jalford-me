@@ -26,9 +26,9 @@ function createDoubleOperator(op,opString){
     if(output.result){
       let tapeMessage;
       if(typeof opString === "string"){
-        tapeMessage = [`${stack[0]}${opString}${stack[1]}`,`&#8195;= ${displayNum(op(stack[0],stack[1]))}`];
+        tapeMessage = [`${displayNum(stack[0])} ${opString} ${displayNum(stack[1])}`,`&#8195;= ${displayNum(op(stack[0],stack[1]))}`];
       }else{
-        tapeMessage = [opString(stack[0],stack[1]),`&#8195;= ${displayNum(op(stack[0],stack[1]))}`];
+        tapeMessage = [opString(displayNum(stack[0]),displayNum(stack[1])),`&#8195;= ${displayNum(op(stack[0],stack[1]))}`];
       }
       return [[op(stack[0],stack[1]),...stack.slice(2)],[...tapeMessage,...tape]];
     }
@@ -48,7 +48,12 @@ function createReducer(op,reduceMsg){
 
 function createConstant(num){
   return (stack,tape) => {
-    return [[num,...stack],[`ENTER ${num}`,...tape]];
+    if(stack[0] === 0) {
+      const newStack = [...stack];
+      newStack.shift();
+      return [[num,...newStack],[`ENTER ${num}`,...tape]];
+    }
+    else return [[num,...stack],[`ENTER ${num}`,...tape]];
   }
 }
 
@@ -73,7 +78,7 @@ function createNumType(num){
 }
 
 function displayNum(num){
-  return num.toFixed(2);
+  return Number(num).toFixed(4);
 }
 
 function displayStackInline(stack){
@@ -324,10 +329,25 @@ calcFunctions["div"] = {
 
 calcFunctions["enter"] = {
   fn:(stack,tape) => {
-    const output = validateExport(stack[0]);
+    const output = validateExport(Number(stack[0]));
     if(output.result){
-      const newStack = [0,...stack];
-      const newTape = [`ENTER ${stack[0]}`,...tape];
+      const newStack = [Number(stack[0]),Number(stack[0]),...stack.slice(1)];
+      const newTape = [`ENTER ${Number(stack[0])}`,...tape];
+      return [newStack,newTape];
+    }else{
+      return `Error! Message: ${output.error}`;
+    }
+  },
+  colorClass:"action",
+  text:"enter",
+  minStack:0
+}
+calcFunctions["enterZero"] = {
+  fn:(stack,tape) => {
+    const output = validateExport(Number(stack[0]));
+    if(output.result){
+      const newStack = [0,Number(stack[0]),...stack.slice(1)];
+      const newTape = [`ENTER ${Number(stack[0])}`,...tape];
       return [newStack,newTape];
     }else{
       return `Error! Message: ${output.error}`;
