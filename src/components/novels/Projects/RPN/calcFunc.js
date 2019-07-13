@@ -1,48 +1,65 @@
-function validateExport(num){
-  if(Number.isNaN(num)) return {result:false,error:"Operation results in NaN!"};
-  if(typeof num !== "number") return {result:false,error:"Operation doesn't result in a number!"};
-  if(!Number.isFinite(num)) return {result:false,error:"Operation results in infinity!"};
-  return {result:true,error:null};
+function validateOperation(num){
+  if(Number.isNaN(Number(num))){
+    throw "Operation doesn't result in a number!";
+  }
+  if(!Number.isFinite(num)){
+    throw "Operation results in infinity!";
+  }
+  return Number(num);
+}
+
+function isValidTempNumString(numStr){
+  if(numStr === ".") return true;
+  if(!Number.isNaN(Number(numStr))) return true;
+  return false;
 }
 
 function createSingleOperator(op,opString){
   return (stack,tape) => {
-    const output = validateExport(op(stack[0]));
-    if(output.result){
+    try{
+      const output = validateOperation(op(Number(stack[0])));
       let tapeMessage;
       if(typeof opString === "string"){
-        tapeMessage = [`${opString}(${displayNum(op(stack[0]))})`,`&#8195;= ${displayNum(op(stack[0]))}`];
+        tapeMessage = [`${opString}(${displayNum(output)})`,`&#8195;= ${displayNum(output)}`];
       }else{
-        tapeMessage = [opString(op(displayNum(stack[0]))),`&#8195;= ${displayNum(op(stack[0]))}`];
+        tapeMessage = [opString(op(displayNum(output))),`&#8195;= ${displayNum(op(output))}`];
       }
-      return [[op(stack[0]),...stack.slice(1)],[...tapeMessage,...tape]];
+      return [[output,...stack.slice(1)],[...tapeMessage,...tape]];
+    }catch(error){
+      console.error(`Invalid operation not caught before execution!  Error: ${error}`);
+      return error;
     }
   }
 }
 
 function createDoubleOperator(op,opString){
   return (stack,tape) => {
-    const output = validateExport(op(stack[0],stack[1]));
-    if(output.result){
+    try{
+      const output = validateOperation(op(Number(stack[0]),Number(stack[1])));
       let tapeMessage;
       if(typeof opString === "string"){
         tapeMessage = [`${displayNum(stack[0])} ${opString} ${displayNum(stack[1])}`,`&#8195;= ${displayNum(op(stack[0],stack[1]))}`];
       }else{
         tapeMessage = [opString(displayNum(stack[0]),displayNum(stack[1])),`&#8195;= ${displayNum(op(stack[0],stack[1]))}`];
       }
-      return [[op(stack[0],stack[1]),...stack.slice(2)],[...tapeMessage,...tape]];
+      return [[output,...stack.slice(2)],[...tapeMessage,...tape]];
+    }catch(error){
+      console.error(`Invalid operation not caught before execution!  Error: ${error}`);
+      return error;
     }
-    else return output.error;
   }
 }
 
 function createReducer(op,reduceMsg){
   return (stack,tape) => {
-    const output = validateExport(stack.reduce(op,0));
-    if(output.result){
-      const tapeMessage = [`${reduceMsg}(${displayStackInline(stack)})`,`&#8195;= ${displayNum(stack.reduce(op,0))}`];
-      return [[stack.reduce(op,0)],[...tapeMessage,...tape]];
-    }else return output.error;
+    try{
+      const output = validateOperation(stack.reduce(op,0));
+      const tapeMessage = [`${reduceMsg}(${displayStackInline(stack)})`,`&#8195;= ${displayNum(output)}`];
+      return [[output],[...tapeMessage,...tape]];
+    }catch(error){
+      console.error(`Invalid operation not caught before execution!  Error: ${error}`);
+      return error;
+    }
   }
 }
 
@@ -59,21 +76,25 @@ function createConstant(num){
 
 function createNumType(num){
   return (stack,tape) => {
+    const newStack = [...stack];
     if(stack[0].toString().includes("e")){
-      const newStack = [0,...stack];
-      newStack[0] = Number(newStack[0].toString() + num);
-      return [newStack,tape];
-    }
-    if((Number.isFinite(stack[0]) && !Number.isNaN(stack[0])) || stack[0].toString().includes(".")){
-      const newStack = [...stack];
-      newStack[0] = Number(newStack[0].toString() + num);
-      return [newStack,tape];
+      if(tape[0] && tape[0].toString().includes("ENTER"))
+        newStack[0] = num;
+      else{
+        let temp = newStack[0].toString().split("");
+        if(stack[0].toString().includes("."))
+          temp.splice(newStack[0].toString().indexOf("e"),0, num);
+        else
+          temp.splice(newStack[0].toString().indexOf("e"),0, `.${num}`);
+        newStack[0] = Number(temp.join(""));
+      }
     }else{
-      const newStack = [...stack];
-      newStack[0] = 0;
-      newStack[0] = Number(newStack[0].toString() + num);
-      return [newStack,tape];
+      if(tape[0] && tape[0].toString().includes("ENTER"))
+        newStack[0] = num;
+      else
+        newStack[0] = Number(newStack[0].toString() + num);
     }
+    return [newStack,[`IGNORE`,...tape]];
   }
 }
 
@@ -104,8 +125,27 @@ for(let i=1;i<10;i++){
 calcFunctions['type0'] = {
   fn:(stack,tape) => {
     const newStack = [...stack];
-    newStack[0] = newStack[0].toString() + "0";
-    return [newStack,tape];
+    if(stack[0].toString().includes("e")){
+      if(tape[0] && tape[0].toString().includes("ENTER"))
+        newStack[0] = 0;
+      else{
+        let temp = newStack[0].toString().split("");
+        if(stack[0].toString().includes("."))
+          temp.splice(newStack[0].toString().indexOf("e"),0, `0`);
+        else
+          temp.splice(newStack[0].toString().indexOf("e"),0, `.0`);
+        newStack[0] = temp.join("");
+      }
+    }else{
+      if(tape[0] && tape[0].toString().includes("ENTER"))
+        newStack[0] = 0;
+      else{
+        if(newStack[0] !== 0){
+          newStack[0] = newStack[0].toString() + '0';
+        }
+      }
+    }
+    return [newStack,[`IGNORE`,...tape]];
   },
   colorClass:"number",
   text:`0`,
@@ -126,8 +166,13 @@ calcFunctions["plusMinus"] = {
 calcFunctions["dot"] = {
   fn:(stack,tape) => {
     if(stack[0].toString().includes(".")) return "Unable to add a second decimal point!";
-    const newStack = [...stack];
-    newStack[0] = newStack[0].toString() + ".";
+      const newStack = [...stack];
+    if(stack[0].toString().includes("e")){
+      let temp = stack[0].toString().split("");
+      temp.splice(temp.indexOf("e"),0,".")
+      newStack[0] = temp.join("");
+    }else
+      newStack[0] = newStack[0].toString() + ".";
     return [newStack,tape];
   },
   colorClass:"number",
@@ -357,37 +402,23 @@ calcFunctions["div"] = {
   colorClass:"action",
   text:"&divide;",
   minStack:2,
-  inputCheck: stack => {
-    return {
-      valid: stack[0] !== 0,
-      error: "Unable to divide by zero!"
-    };
-  }
+  // inputCheck: stack => {
+  //   return {
+  //     valid: stack[0] !== 0,
+  //     error: "Unable to divide by zero!"
+  //   };
+  // }
 }
 calcFunctions["enter"] = {
   fn:(stack,tape) => {
-    const output = validateExport(Number(stack[0]));
-    if(output.result){
-      const newStack = [0,Number(stack[0]),...stack.slice(1)];
-      const newTape = [`ENTER ${displayNum(Number(stack[0]))}`,...tape];
+    try{
+      const output = validateOperation(Number(stack[0]));
+      const newStack = [output,output,...stack.slice(1)];
+      const newTape = [`ENTER ${displayNum(output)}`,...tape];
       return [newStack,newTape];
-    }else{
-      return `Error! Message: ${output.error}`;
-    }
-  },
-  colorClass:"action",
-  text:"enter",
-  minStack:0
-}
-calcFunctions["enterCopy"] = {
-  fn:(stack,tape) => {
-    const output = validateExport(Number(stack[0]));
-    if(output.result){
-      const newStack = [Number(stack[0]),Number(stack[0]),...stack.slice(1)];
-      const newTape = [`ENTER ${displayNum(Number(stack[0]))}`,...tape];
-      return [newStack,newTape];
-    }else{
-      return `Error! Message: ${output.error}`;
+    }catch(error){
+      console.error(`Invalid operation not caught before execution!  Error: ${error}`);
+      return error;
     }
   },
   colorClass:"action",
@@ -426,12 +457,24 @@ calcFunctions["clear"] = {
 calcFunctions["backspace"] = {
   fn:(stack,tape) => {
     const newStack = [...stack];
-    if(newStack[0].toString().length > 1){
-      newStack[0] = newStack[0].toString().slice(0,-1);
-      return [newStack,tape];
+    if(newStack[0].toString().includes("e")){
+      if(newStack[0].toString().split("e")[0].length > 1){
+        let temp = newStack[0].toString().split("");
+        temp.splice(temp.indexOf("e")-1,1);
+        newStack[0] = Number(temp.join(""));
+        return [newStack,tape];
+      }else{
+        newStack[0] = 0;
+        return [newStack,tape];
+      }
     }else{
-      newStack[0] = 0;
-      return [newStack,tape];
+      if(newStack[0].toString().length > 1){
+        newStack[0] = newStack[0].toString().slice(0,-1);
+        return [newStack,tape];
+      }else{
+        newStack[0] = 0;
+        return [newStack,tape];
+      }
     }
   },
   colorClass:"delete",
@@ -446,13 +489,14 @@ calcFunctions["mod"] = {
 }
 calcFunctions["roll"] = {
   fn:(stack,tape) => {
-    const output = validateExport(stack[0]);
-    if(output.result){
+    try{
+      const output = validateOperation(stack[0]);
       const copyStack = [...stack];
-      const firstElement = copyStack.shift();
-      return [[...copyStack,firstElement],["ROLL",...tape]];
-    }else{
-      return "Error!";
+      copyStack.shift();
+      return [[...copyStack,output],["ROLL",...tape]];
+    }catch(error){
+      console.error(`Invalid operation not caught before execution!  Error: ${error}`);
+      return error;
     }
   },
   colorClass:"action",
@@ -461,14 +505,14 @@ calcFunctions["roll"] = {
 }
 calcFunctions["swap"] = {
   fn:(stack,tape) => {
-    const output = validateExport(stack[0]);
-    if(output.result){
+    try{
       const copyStack = [...stack];
-      const firstElement = copyStack.shift();
-      const secondElement = copyStack.shift();
+      const firstElement = validateOperation(copyStack.shift());
+      const secondElement = validateOperation(copyStack.shift());
       return [[secondElement,firstElement,...copyStack],[`SWAP(${displayNum(firstElement)},${displayNum(secondElement)})`,...tape]];
-    }else{
-      return "Error!";
+    }catch(error){
+      console.error(`Invalid operation not caught before execution!  Error: ${error}`);
+      return error;
     }
   },
   colorClass:"action",

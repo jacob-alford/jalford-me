@@ -107,6 +107,8 @@ function TapeLine(props){
 function Tape(props){
   const { tape , drawer } = props;
   const tapeCopy = [...tape];
+  for(let i=0;i<tapeCopy.length;i++)
+    if(tapeCopy[i].toString().includes("IGNORE")) tapeCopy.splice(i,1);
   for(let i=tapeCopy.length;i<10;i++){
     tapeCopy.push(" ");
   }
@@ -177,10 +179,6 @@ function RPN(props){
       return;
     }else if(evt.key === "."){
       operate(calcFunctions[`dot`].fn,calcFunctions[`dot`].minStack,calcFunctions[`dot`].inputCheck);
-      evt.preventDefault();
-      return;
-    }else if(evt.key === "c"){
-      operate(calcFunctions[`enterCopy`].fn,calcFunctions[`enterCopy`].minStack,calcFunctions[`enterCopy`].inputCheck);
       evt.preventDefault();
       return;
     }
