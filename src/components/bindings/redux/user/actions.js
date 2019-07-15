@@ -3,8 +3,13 @@ const setLoggedIn = user => {
   return {
     type:LOG_IN,
     payload:{
-      username:user.username,
-      permissions:user.permissions
+      uid:user.uid,
+      color:user.color,
+      icon:user.icon,
+      image:user.image,
+      likes:user.likes,
+      permissions:user.permissions,
+      username:user.username
     }
   }
 }

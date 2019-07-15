@@ -10,8 +10,13 @@ export default function user(state=initialState.user,action){
         activeUser:{
           loggedIn:true,
           activeUser:{
-            username:action.payload.username,
-            permissions:action.payload.permissions
+            uid:action.payload.uid,
+            color:action.payload.color,
+            icon:action.payload.icon,
+            image:action.payload.image,
+            likes:action.payload.likes,
+            permissions:action.payload.permissions,
+            username:action.payload.username
           }
         }
       }
@@ -21,8 +26,13 @@ export default function user(state=initialState.user,action){
         activeUser:{
           loggedIn:false,
           activeUser:{
-            username:null,
-            permissions:0
+            uid:null,
+            color:'#11ecfc',
+            icon:'person',
+            image:null,
+            likes:null,
+            permissions:0,
+            username:null
           }
         }
       }

@@ -14,7 +14,7 @@ import BlogInline from '../../words/BlogListing/BlogInline';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';
 
-import useRDetails from '../../bindings/hooks/useRDetails';
+import withUser from '../../bindings/wrappers/withUser';
 
 import { blogCategories , blogSearchBy } from '../../../config';
 
@@ -45,7 +45,7 @@ function Blog(props) {
   const [selectedCategory,setSelectedCategory] = useState("philosophy");
   const [selectedSearchBy,setSelectedSearchBy] = useState("tags");
   const [searchToken,setSearchToken] = useState("");
-  const currentUser = useRDetails();
+  const { user } = props;
   useEffect(() => {
     setBlogPosts(tempBlogData);
     setTimeout(() => {
@@ -65,8 +65,8 @@ function Blog(props) {
   return (
     <StyledBlog>
       <Container className="userDetails">
-        <Typography variant="p">
-          {currentUser ? `Welcome, ${currentUser.username}` : "Sign in"}
+        <Typography variant="body1">
+          {user.loggedIn ? `Welcome, ${user.activeUser.username}` : "Sign in"}
         </Typography>
       </Container>
       <Typography className="blogTitle" variant="h2">
@@ -132,4 +132,4 @@ function Blog(props) {
   );
 }
 
-export default withPageFade(Blog);
+export default withUser(withPageFade(Blog));

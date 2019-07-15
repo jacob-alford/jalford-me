@@ -8,8 +8,6 @@ import { StyledHome } from './style.js';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';
 
-import withLogin from '../../bindings/wrappers/withLogin';
-
 import { projectList } from '../../../config';
 
 function Home(props){
