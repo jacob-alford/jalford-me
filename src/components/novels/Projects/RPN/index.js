@@ -1,7 +1,7 @@
-import React , { useState , useEffect } from 'react';
-import { Grid , Container , Typography,
+import React , { useState } from 'react';
+import { Grid , Typography,
          Table , TableBody, TableCell,
-         TableHead, TableRow, Drawer,
+         TableRow, Drawer,
          Hidden, Dialog, DialogActions,
          DialogContent, DialogContentText,
          DialogTitle, Button } from '@material-ui/core/';
@@ -11,17 +11,23 @@ import { StyledRPN } from './style.js';
 import rpnImage from '../../../../assets/projects/rpn-header.jpg';
 import { calcFunctions } from './calcFunc.js';
 
-import buttons from './calcFunc.js';
-
 import withPageFade from '../../../bindings/wrappers/withPageFade';
 
-const rows = [
-  [ "deg/rad" , "pi" , "speedOfLight" , "xinv" , "drop" , "clear" , "cancelAll" , "backspace" ],
-  [ "mean" , "sum" , "product" , "xfact" , "roll" , "swap" , "mod" , "div" ],
-  [ "sin" , "cos" , "tan" , "sqrt" , "type7" , "type8" , "type9" , "mul" ],
-  [ "asin" , "acos" , "atan" , "xRtY" , "type4" , "type5" , "type6" , "add" ],
-  [ "log10" , "log2" , "ln" , "yx" , "type1" , "type2" , "type3" , "sub" ],
-  [ "tenX" , "twoX" , "ex" , "x2" , "type0" , "dot" , "plusMinus" , "enter" ]
+const inputRows = [
+  [ "drop" , "clear" , "cancelAll" , "backspace" ],
+  [ "roll" , "swap" , "mod" , "div" ],
+  [ "type7" , "type8" , "type9" , "mul" ],
+  [ "type4" , "type5" , "type6" , "add" ],
+  [ "type1" , "type2" , "type3" , "sub" ],
+  [ "type0" , "dot" , "plusMinus" , "enter" ]
+]
+const functionRows = [
+  [ "deg/rad" , "pi" , "speedOfLight" , "xinv" ],
+  [ "mean" , "sum" , "product" , "xfact" ],
+  [ "sin" , "cos" , "tan" , "sqrt" ],
+  [ "asin" , "acos" , "atan" , "xRtY" ],
+  [ "log10" , "log2" , "ln" , "yx" ],
+  [ "tenX" , "twoX" , "ex" , "x2" ]
 ];
 
 function Row(props){
@@ -106,13 +112,11 @@ function TapeLine(props){
 
 function Tape(props){
   const { tape , drawer } = props;
-  const tapeCopy = [...tape];
-  for(let i=0;i<tapeCopy.length;i++)
-    if(tapeCopy[i].toString().includes("IGNORE")) tapeCopy.splice(i,1);
+  const tapeCopy = tape.filter(tapeItem => tapeItem != "IGNORE");
   for(let i=tapeCopy.length;i<10;i++){
     tapeCopy.push(" ");
   }
-  return tapeCopy.splice(0,10).map((item,index) => (
+  return tapeCopy.map((item,index) => (
     <TableRow key={`tape${index}`} className="tapeRow" style={{height:(drawer) ? "10vh" : null}}>
       <TapeLine text={item} />
     </TableRow>
@@ -232,15 +236,30 @@ function RPN(props){
               </Table>
             </Grid>
             <Grid item>
-              <Table className="calcTable">
-                <TableBody>
-                  {rows.map((row,index) => (
-                    <TableRow className="calcRow" key={`row${index}`}>
-                      <Row rowData={row} operate={operate} degRad={isDeg} toggleDegRad={toggleDegRad}/>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              <Grid container direction="row-reverse">
+                <Grid item className="calcTable">
+                  <Table>
+                    <TableBody>
+                      {inputRows.map((row,index) => (
+                        <TableRow className="calcRow" key={`row${index}`}>
+                          <Row rowData={row} operate={operate} degRad={isDeg} toggleDegRad={toggleDegRad}/>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </Grid>
+                <Grid item className="calcTable">
+                  <Table>
+                    <TableBody>
+                      {functionRows.map((row,index) => (
+                        <TableRow className="calcRow" key={`row${index}`}>
+                          <Row rowData={row} operate={operate} degRad={isDeg} toggleDegRad={toggleDegRad}/>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>

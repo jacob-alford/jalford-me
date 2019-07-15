@@ -14,9 +14,13 @@ import BlogInline from '../../words/BlogListing/BlogInline';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';
 
+import useRDetails from '../../bindings/hooks/useRDetails';
+
 import { blogCategories , blogSearchBy } from '../../../config';
 
 import { StyledBlog } from './style.js';
+
+import firebase from 'firebase';
 
 const tempBlogData = [
   { header:"Foundation of Epistemology",
@@ -36,13 +40,17 @@ const tempBlogData = [
   }
 ]
 
-function Blog() {
+function Blog(props) {
   const [blogPosts,setBlogPosts] = useState([]);
   const [selectedCategory,setSelectedCategory] = useState("philosophy");
   const [selectedSearchBy,setSelectedSearchBy] = useState("tags");
   const [searchToken,setSearchToken] = useState("");
+  const currentUser = useRDetails();
   useEffect(() => {
     setBlogPosts(tempBlogData);
+    setTimeout(() => {
+
+    },5000);
   },[blogPosts]);
   const handleCategoryUpdate = evt => {
     setSelectedCategory(evt.target.value);
@@ -56,6 +64,11 @@ function Blog() {
   }
   return (
     <StyledBlog>
+      <Container className="userDetails">
+        <Typography variant="p">
+          {currentUser ? `Welcome, ${currentUser.username}` : "Sign in"}
+        </Typography>
+      </Container>
       <Typography className="blogTitle" variant="h2">
         Blog
       </Typography>

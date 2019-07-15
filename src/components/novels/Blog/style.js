@@ -5,6 +5,10 @@ export const StyledBlog = styled.div`
   .textCenter{
     text-align:center;
   }
+  .userDetails{
+    text-align:right;
+    margin-top:15px;
+  }
   .searchButton{
     margin-top:15px;
   }

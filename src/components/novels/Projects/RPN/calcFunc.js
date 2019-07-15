@@ -8,12 +8,6 @@ function validateOperation(num){
   return Number(num);
 }
 
-function isValidTempNumString(numStr){
-  if(numStr === ".") return true;
-  if(!Number.isNaN(Number(numStr))) return true;
-  return false;
-}
-
 function createSingleOperator(op,opString){
   return (stack,tape) => {
     try{
@@ -100,7 +94,20 @@ function createNumType(num){
 
 function displayNum(num){
   if(Number.isInteger(num)){
-    return num;
+    if(num.toString().length > 13){
+      return num.toExponential(4);
+    }else
+      return num;
+  }else{
+    if(num.toString().includes(".")){
+      return num;
+    }else{
+      if(num.toString().length > 13){
+        return num.toExponential(4);
+      }else{
+        return num;
+      }
+    }
   }
   return Number(num).toFixed(4);
 }
@@ -165,15 +172,23 @@ calcFunctions["plusMinus"] = {
 
 calcFunctions["dot"] = {
   fn:(stack,tape) => {
-    if(stack[0].toString().includes(".")) return "Unable to add a second decimal point!";
+    if(stack[0].toString().includes(".") && !tape[0].toString().includes("ENTER")) return "Unable to add a second decimal point!";
       const newStack = [...stack];
     if(stack[0].toString().includes("e")){
-      let temp = stack[0].toString().split("");
-      temp.splice(temp.indexOf("e"),0,".")
-      newStack[0] = temp.join("");
-    }else
-      newStack[0] = newStack[0].toString() + ".";
-    return [newStack,tape];
+      if(tape[0] && tape[0].toString().includes("ENTER"))
+        newStack[0] = '0.';
+      else{
+        let temp = stack[0].toString().split("");
+        temp.splice(temp.indexOf("e"),0,".")
+        newStack[0] = temp.join("");
+      }
+    }else{
+      if(tape[0] && tape[0].toString().includes("ENTER"))
+        newStack[0] = '0.';
+      else
+        newStack[0] = newStack[0].toString() + ".";
+    }
+    return [newStack,[`IGNORE`,...tape]];
   },
   colorClass:"number",
   text:".",

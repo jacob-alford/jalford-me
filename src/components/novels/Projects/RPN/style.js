@@ -1,14 +1,28 @@
 import styled from 'styled-components';
 
 export const StyledRPN = styled.div`
+  @media only screen and (max-width:765px){
+    .stackAndButtons{
+      width:100%;
+    }
+    .calcTable{
+      width:100%;
+    }
+  }
+  @media only screen and (min-width:766px){
+    .stackAndButtons{
+      width:100%;
+    }
+    .calcTable{
+      width:50%;
+    }
+  }
   @media only screen and (min-width:1280px){
     .stackAndButtons{
       width:75%;
     }
-  }
-  @media only screen and (max-width:1279px){
-    .stackAndButtons{
-      width:100%;
+    .calcTable{
+      width:50%;
     }
   }
   .stackAndButtons{
@@ -19,6 +33,8 @@ export const StyledRPN = styled.div`
   }
   .tapeHolder{
     width:25%;
+    height:${props => (props.headerIsOpen) ? "75vh" : "100vh"};
+    overflow-y:scroll;
   }
   .tapeRow{
     height:${props => (props.headerIsOpen) ? "7.5vh" : "10vh"};
@@ -53,6 +69,7 @@ export const StyledRPN = styled.div`
   }
   .tapeDisplay{
     table-layout:fixed;
+    height:100%;
   }
   .tapeDrawer{
 
@@ -82,11 +99,12 @@ export const StyledRPN = styled.div`
         -ms-user-select: none;
             user-select: none;
   }
-  .calcTable{
-    transition: height .75s;
-  }
   .calcRow{
     height:${props => (props.headerIsOpen) ? "6.25vh" : "8.333333333vh"};
+  }
+  .calcTable{
+    transition: height .75s;
+    height:100%;
   }
   .action{
     background-color: #2F80ED;
