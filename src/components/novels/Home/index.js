@@ -3,7 +3,7 @@ import { withRouter } from "react-router";
 import { Grid , Container , Typography , Button } from '@material-ui/core/';
 import { FeaturedPhoto } from '../../paragraphs/Home';
 import { ProjectCard } from '../../words/ProjectListing';
-import LoginForm from '../../words/LoginForm';
+import LoginDialogue from '../../sentences/LoginDialogue';
 
 import { StyledHome } from './style.js';
 
@@ -15,7 +15,7 @@ function Home(props){
   return (
     <StyledHome>
       <Container maxWidth="xl" className="heading">
-        <LoginForm />
+        <LoginDialogue />
         <Typography variant="h2">
           Featured Photo
         </Typography>

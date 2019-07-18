@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { TextField , Grid , Button , Typography } from '@material-ui/core/';
-
-import withUser from '../../bindings/wrappers/withUser';
+import { Grid , Button , Typography , TextField } from '@material-ui/core/';
 
 import firebase from 'firebase/app';
 import 'firebase/auth';
@@ -13,10 +11,9 @@ const styles = {
   }
 }
 
-function LoginForm(props){
+export default function LoginForm(){
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
-  const { user } = props;
   function handleChangeConstructor(setter){
     return evt => setter(evt.target.value);
   }
@@ -27,11 +24,6 @@ function LoginForm(props){
   }
   return (
     <Grid container direction="column">
-      <Grid item>
-        <Typography variant="body1">
-          {user.loggedIn ? `Welcome, ${user.activeUser.username}` : "Sign in"}
-        </Typography>
-      </Grid>
       <Grid item>
         <TextField style={styles.textBox} variant="outlined"  label="email" onChange={handleChangeConstructor(setEmail)}/>
       </Grid>
@@ -46,5 +38,3 @@ function LoginForm(props){
     </Grid>
   );
 }
-
-export default withUser(LoginForm);
