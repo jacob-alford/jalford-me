@@ -64,12 +64,6 @@ firebase.auth().onAuthStateChanged(user => {
   }
 });
 
-setTimeout(function(){
-  firebase.auth().signInWithEmailAndPassword("jacob.alford@me.com", "E@*^}bJ6*ct.ECY-MEdmsttxrmc4HX!-KB:x>C.on4.vi^wKh_d+FJGCfyb4M9:.").catch(function(error) {
-    console.log(error);
-  });
-},5000);
-
 // --- Root Render ---
 ReactDOM.render(
   <Provider store={store}>
