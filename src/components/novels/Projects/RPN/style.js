@@ -37,6 +37,7 @@ export const StyledRPN = styled.div`
     overflow-y:scroll;
   }
   .tapeRow{
+    width:100%;
     height:${props => (props.headerIsOpen) ? "7.5vh" : "10vh"};
     padding-top:0px;
     padding-bottom:0px;
@@ -54,14 +55,14 @@ export const StyledRPN = styled.div`
     position:absolute;
   }
   .drawerIcon{
-    width:50px;
-    height:50px;
+    width:25px;
+    height:25px;
     position:absolute;
     cursor:pointer;
-    top:10px;
+    top:${props => (props.headerIsOpen) ? 'calc(25vh + 15px)' : '15px'};
     left:10px;
     z-index:1;
-    transition: transform .25s;
+    transition: transform .25s, top .75s;
     color:red;
   }
   .drawerIcon:hover{
@@ -75,7 +76,7 @@ export const StyledRPN = styled.div`
 
   }
   .stackHolder{
-
+    min-width:380.67px;
   }
   .stackDisplay{
     height:100%;

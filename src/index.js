@@ -40,14 +40,15 @@ firebase.auth().onAuthStateChanged(user => {
       // The case when user is in the database
       // And is authenticated
       if(databaseUser.exists){
+        const userData = databaseUser.data()
         store.dispatch(setLoggedIn({
           uid:user.uid,
-          color:databaseUser.color,
-          icon:databaseUser.icon,
-          image:databaseUser.image,
-          likes:databaseUser.likes,
-          permissions:databaseUser.permissions,
-          username:databaseUser.username
+          color:userData.color,
+          icon:userData.icon,
+          image:userData.image,
+          likes:userData.likes,
+          permissions:userData.permissions,
+          username:userData.username
         }));
       // The case when a user is not in the database
       // but is authenticated
@@ -55,11 +56,19 @@ firebase.auth().onAuthStateChanged(user => {
         // Should have already been done?
         // Temporary user?
       }
+    }).catch(error => {
+      console.error(error);
     });
   }else{
     store.dispatch(setLoggedOut());
   }
 });
+
+setTimeout(function(){
+  firebase.auth().signInWithEmailAndPassword("jacob.alford@me.com", "E@*^}bJ6*ct.ECY-MEdmsttxrmc4HX!-KB:x>C.on4.vi^wKh_d+FJGCfyb4M9:.").catch(function(error) {
+    console.log(error);
+  });
+},5000);
 
 // --- Root Render ---
 ReactDOM.render(

@@ -12,9 +12,7 @@ export default function Heading(props){
   const { location , headerIsOpen , setHeaderState } = props;
   return (
     <StyledHeading>
-      <div className="hideButton" onClick={setHeaderState}>
-        {(headerIsOpen) ? <KeyboardArrowUp style={{color:"#20BDFF"}}/> : <KeyboardArrowDown style={{color:"#20BDFF"}} />}
-      </div>
+      {(headerIsOpen) ? <KeyboardArrowUp onClick={setHeaderState} className="hideButton" style={{color:"#20BDFF"}}/> : <KeyboardArrowDown onClick={setHeaderState} className="hideButton" style={{color:"#20BDFF"}} />}
       <Grid container justify="center" alignContent="center" className={`container ${(headerIsOpen) ? null : "hidden"}`}>
         <Grid item>
           <Header style={(headerIsOpen) ? null : {visibility:"hidden"}} />

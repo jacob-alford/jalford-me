@@ -203,11 +203,9 @@ function RPN(props){
         </DialogActions>
       </Dialog>
       <Hidden lgUp>
-        <div style={{color:"#20BDFF"}} className="drawerIcon" onClick={toggleTapeDrawer}>
-          <Reorder />
-        </div>
+        <Reorder  style={{color:"#20BDFF"}} className="drawerIcon" onClick={toggleTapeDrawer} />
         <Drawer open={tapeDrawerIsOpen} onClose={toggleTapeDrawer} anchor="left">
-          <div style={{width:"25vw"}}>
+          <div style={{width:"25vw",minWidth:"225px"}}>
             <Table className="tapeDisplay">
               <TableBody>
                 <Tape tape={display.tape} drawer/>

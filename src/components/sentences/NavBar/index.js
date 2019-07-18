@@ -17,7 +17,7 @@ function NavBar(props){
   }
   return (
     <StyledNavBar>
-      <Grid container direction="row" justify="center" spacing={4}>
+      <Grid className="navBar" container direction="row" justify="center" spacing={4}>
         {navList.map((navItem,index) => (
           <Grid item key={`navItem#${index}`}>
             <NavItem

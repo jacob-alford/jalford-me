@@ -6,34 +6,28 @@ export default function user(state=initialState.user,action){
   switch (action.type){
     case LOG_IN:
       return {
-        ...state,
+        loggedIn:true,
         activeUser:{
-          loggedIn:true,
-          activeUser:{
-            uid:action.payload.uid,
-            color:action.payload.color,
-            icon:action.payload.icon,
-            image:action.payload.image,
-            likes:action.payload.likes,
-            permissions:action.payload.permissions,
-            username:action.payload.username
-          }
+          uid:action.payload.uid,
+          color:action.payload.color,
+          icon:action.payload.icon,
+          image:action.payload.image,
+          likes:action.payload.likes,
+          permissions:action.payload.permissions,
+          username:action.payload.username
         }
       }
     case LOG_OUT:
       return {
-        ...state,
+        loggedIn:false,
         activeUser:{
-          loggedIn:false,
-          activeUser:{
-            uid:null,
-            color:'#11ecfc',
-            icon:'person',
-            image:null,
-            likes:null,
-            permissions:0,
-            username:null
-          }
+          uid:null,
+          color:'#11ecfc',
+          icon:'person',
+          image:null,
+          likes:null,
+          permissions:0,
+          username:null
         }
       }
     default:

@@ -6,8 +6,8 @@ export const StyledHeading = styled.div`
     height:50px;
     position:absolute;
     cursor:pointer;
-    top:10px;
-    left:calc(100% - 50px);
+    margin-top:10px;
+    left:calc(100% - 60px);
     z-index:1;
     transition: transform .25s;
   }
