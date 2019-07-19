@@ -1,24 +1,26 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Modal , Typography , Button , Paper , Grid } from '@material-ui/core/';
+import { Slide , Modal , Typography , Button , Paper , Grid } from '@material-ui/core/';
 
 import LoginForm from '../../words/LoginForm';
+import SignupForm from '../../words/SignupForm';
 
 import withUser from '../../bindings/wrappers/withUser';
 
 const styles = {
   modal:{
-    width:"230px",
+    top:"100%",
+    marginTop:"-230px",
+    width:"100vw",
+    minHeight:"230px",
     padding:"30px",
-    position:"absolute",
-    left:"50%",
-    top:"25%",
-    marginLeft:"-115px"
+    position:"absolute"
   }
 }
 
 function LoginDialogue(props){
   const [isOpen,setIsOpen] = useState(false);
+  const [signInOrUp,setSignInOrUp] = useState("signIn");
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
   const { user } = props;
@@ -34,14 +36,18 @@ function LoginDialogue(props){
             Sign in
           </Button>
         )}
+        <SignupForm />
       <Modal open={isOpen} onClose={closeModal}>
-        <Paper style={styles.modal}>
-          <Grid container justify="center">
-            <Grid item>
-              <LoginForm />
+        <Slide direction="up" in={isOpen} mountOnEnter unmountOnExit>
+          <Paper style={styles.modal}>
+            <Grid container justify="center">
+              <Grid item>
+                <LoginForm />
+
+              </Grid>
             </Grid>
-          </Grid>
-        </Paper>
+          </Paper>
+        </Slide>
       </Modal>
     </React.Fragment>
   );

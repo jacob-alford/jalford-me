@@ -9,6 +9,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-addons-css-transition-group": "^15.6.2",
+    "react-color": "^2.17.3",
     "react-dom": "^16.8.6",
     "react-motion": "^0.5.2",
     "react-redux": "^7.1.0",
@@ -28,8 +29,8 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "rules":{
-      "eqeqeq":"off"
+    "rules": {
+      "eqeqeq": "off"
     }
   },
   "browserslist": {
