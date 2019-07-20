@@ -133,7 +133,11 @@ function UserSettings(props){
   }
   // --- Effects ---
   useEffect(() => {
-    // if(!user.loggedIn) history.push("/");
+    if(!goAheadAndDelete && !user.loggedIn){
+      history.push("/");
+    }else if(goAheadAndDelete && !user.loggedIn){
+      setGoAheadAndDelete(false);
+    }
   },[user]);
   useEffect(() => {
     if(willDelete && !mightDelete) setWillDelete(false);
@@ -150,6 +154,20 @@ function UserSettings(props){
   useEffect(() => {
     if(firebase) db = firebase.firestore();
   },[firebase]);
+  useEffect(() => {
+    if(firebase && db && user.loggedIn && goAheadAndDelete){
+      const authUser = firebase.auth().currentUser;
+      if(authUser){
+        authUser.delete().then(() => {
+          console.log("Successfully deleted auth user.");
+          const dbUser = db.collection("users").doc(authUser.uid);
+          dbUser.delete().then(() => {
+            console.log("Successfully deleted database user.");
+          }).catch(error => console.error(error));
+        }).catch(error => console.error(error));
+      }
+    }
+  },[goAheadAndDelete]);
   return (
     <React.Fragment>
       <Grid style={styles.loader} container justify="center">

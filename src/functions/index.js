@@ -147,7 +147,6 @@ export const getLightness = hex => {
 
 export const getTextColorBasedOnBg = bgHex => {
   const lightness = getLightness(bgHex);
-  console.log(lightness);
   if(lightness <= .46) return "#ffe";
   else return "#332";
 }

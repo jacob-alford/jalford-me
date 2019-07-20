@@ -69,7 +69,6 @@ export default function SignupForm(){
   const [username,setUsername] = useState("");
   const [color,setColor] = useState(randomColor());
   const [error,setError] = useState();
-  const [success,setSuccess] = useState();
   function validForm(){
     return validateEmail(email)
         && passwordScore >= 2
@@ -91,7 +90,6 @@ export default function SignupForm(){
           icon:"person",
           image:null
         }).then(function(docRef) {
-          setSuccess(true);
           console.log("Successfully added user:",docRef);
         }).catch(function(error) {
           setError(error.toString());
@@ -111,17 +109,10 @@ export default function SignupForm(){
   },[password]);
   return (
     <Grid container direction="column" justify="center">
-      {(error && !success) ? (
+      {(error) ? (
         <Grid item>
           <Typography variant="body2" style={{color:"#E84040",marginTop:"24px",marginBottom:"24px"}}>
             {error}
-          </Typography>
-        </Grid>
-      ) : null }
-      {(success) ? (
-        <Grid item>
-          <Typography variant="body2" style={{color:"#58E855",marginTop:"24px",marginBottom:"24px"}}>
-            User successfuly added!
           </Typography>
         </Grid>
       ) : null }

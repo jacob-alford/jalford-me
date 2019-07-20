@@ -53,8 +53,7 @@ firebase.auth().onAuthStateChanged(user => {
       // The case when a user is not in the database
       // but is authenticated
       }else{
-        // Should have already been done?
-        // Temporary user?
+        store.dispatch(setLoggedOut());
       }
     });
   }else{

@@ -96,7 +96,7 @@ function BlogBar(props){
                   {(breadcrumbs) ? (
                     <Menu anchorEl={breadcrumbAnchor} open={Boolean(breadcrumbAnchor)} onClose={menuCloseConstruct(setBreadcrumbAnchor)}>
                       {[...breadcrumbs].reverse().map((crumb,index) => (
-                        <MenuItem onClick={() => handleLinkRedirect(crumb.url)}>
+                        <MenuItem key={`MenuItem${index}`} onClick={() => handleLinkRedirect(crumb.url)}>
                           <Typography variant="h6">
                             {crumb.label}
                           </Typography>
