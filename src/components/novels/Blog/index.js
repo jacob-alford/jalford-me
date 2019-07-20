@@ -8,13 +8,13 @@ import {
   Button
  } from '@material-ui/core/';
 
+ import BlogBar from '../../paragraphs/BlogBar';
+
 import SearchIcon from '@material-ui/icons/Search';
 
 import BlogInline from '../../words/BlogListing/BlogInline';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';
-
-import withUser from '../../bindings/wrappers/withUser';
 
 import { blogCategories , blogSearchBy } from '../../../config';
 
@@ -45,7 +45,7 @@ function Blog(props) {
   const [selectedCategory,setSelectedCategory] = useState("philosophy");
   const [selectedSearchBy,setSelectedSearchBy] = useState("tags");
   const [searchToken,setSearchToken] = useState("");
-  const { user } = props;
+  const { user , headerIsOpen } = props;
   useEffect(() => {
     setBlogPosts(tempBlogData);
     setTimeout(() => {
@@ -63,73 +63,71 @@ function Blog(props) {
     setSearchToken(evt.target.value);
   }
   return (
-    <StyledBlog>
-      <Container className="userDetails">
-        <Typography variant="body1">
-          {user.loggedIn ? `Welcome, ${user.activeUser.username}` : "Sign in"}
+    <React.Fragment>
+      <StyledBlog>
+        <Typography className="blogTitle" variant="h2">
+          Blog
         </Typography>
-      </Container>
-      <Typography className="blogTitle" variant="h2">
-        Blog
-      </Typography>
-        <Grid spacing={2} container justify="center" alignItems="center">
-          <Grid item>
-            <Paper className="filterCard">
-              <FormControl component="fieldset">
-                <FormLabel component="legend">
-                  Category
-                </FormLabel>
-                <RadioGroup aria-label="Category" name="category" value={selectedCategory} onChange={handleCategoryUpdate}>
-                  {blogCategories.map((category,index) => (
-                    <FormControlLabel key={`CategoryFilter${index}`} value={category.toLowerCase()} control={<Radio color="secondary" />} label={category} />
-                  ))}
-                </RadioGroup>
-              </FormControl>
-            </Paper>
-          </Grid>
-          <Grid item>
-            <Paper className="filterCard">
-              <Grid container direction="column">
-                <Grid item>
-                  <FormControl component="fieldset">
-                    <FormLabel component="legend">
-                      Search by
-                    </FormLabel>
-                    <RadioGroup row aria-label="SearchBy" name="searchby" value={selectedSearchBy} onChange={handleSearchByUpdate}>
-                      {blogSearchBy.map((filter,index) => (
-                        <FormControlLabel key={`SearchBy${index}`} value={filter.toLowerCase()} control={<Radio color="primary"/>} label={filter} />
-                      ))}
-                    </RadioGroup>
-                  </FormControl>
-                </Grid>
-                <Grid item>
-                  <Paper>
-                    <Grid container alignItems="center" direction="row">
-                      <Grid item>
-                        <SearchIcon className="searchIcon"/>
+          <Grid style={{width:"100%"}}spacing={1} container justify="center" alignItems="center">
+            <Grid item>
+              <Paper className="filterCard">
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">
+                    Category
+                  </FormLabel>
+                  <RadioGroup aria-label="Category" name="category" value={selectedCategory} onChange={handleCategoryUpdate}>
+                    {blogCategories.map((category,index) => (
+                      <FormControlLabel key={`CategoryFilter${index}`} value={category.toLowerCase()} control={<Radio color="secondary" />} label={category} />
+                    ))}
+                  </RadioGroup>
+                </FormControl>
+              </Paper>
+            </Grid>
+            <Grid item>
+              <Paper className="filterCard">
+                <Grid container direction="column">
+                  <Grid item>
+                    <FormControl component="fieldset">
+                      <FormLabel component="legend">
+                        Search by
+                      </FormLabel>
+                      <RadioGroup row aria-label="SearchBy" name="searchby" value={selectedSearchBy} onChange={handleSearchByUpdate}>
+                        {blogSearchBy.map((filter,index) => (
+                          <FormControlLabel key={`SearchBy${index}`} value={filter.toLowerCase()} control={<Radio color="primary"/>} label={filter} />
+                        ))}
+                      </RadioGroup>
+                    </FormControl>
+                  </Grid>
+                  <Grid item>
+                    <Paper>
+                      <Grid container alignItems="center" direction="row">
+                        <Grid item>
+                          <SearchIcon className="searchIcon"/>
+                        </Grid>
+                        <Grid item>
+                          <InputBase onChange={handleSearchInput} placeholder="Search"/>
+                        </Grid>
                       </Grid>
-                      <Grid item>
-                        <InputBase onChange={handleSearchInput} fullWidth placeholder="Search"/>
-                      </Grid>
-                    </Grid>
-                  </Paper>
+                    </Paper>
+                  </Grid>
+                  <Grid item className="textCenter">
+                    <Button variant="contained" color="primary" className="searchButton">
+                      Submit
+                    </Button>
+                  </Grid>
                 </Grid>
-                <Grid item className="textCenter">
-                  <Button variant="contained" color="primary" className="searchButton">
-                    Submit
-                  </Button>
-                </Grid>
-              </Grid>
-            </Paper>
+              </Paper>
+            </Grid>
           </Grid>
-        </Grid>
-      <Container fixed>
-        {blogPosts.map((blogPost,index) => (
-          <BlogInline blogPost={blogPost} key={`blogPost${index}`}/>
-        ))}
-      </Container>
-    </StyledBlog>
+        <Container>
+          {blogPosts.map((blogPost,index) => (
+            <BlogInline blogPost={blogPost} key={`blogPost${index}`}/>
+          ))}
+        </Container>
+      </StyledBlog>
+      <BlogBar headerIsOpen={headerIsOpen}/>
+    </React.Fragment>
   );
 }
 
-export default withUser(withPageFade(Blog));
+export default withPageFade(Blog);

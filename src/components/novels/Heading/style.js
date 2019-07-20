@@ -21,6 +21,7 @@ export const StyledHeading = styled.div`
   }
   .container{
     transition: height .75s, opacity .75s;
+    width:100%;
     height:25vh;
     min-height:106px;
     background: #1488CC;

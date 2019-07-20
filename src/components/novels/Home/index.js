@@ -3,7 +3,6 @@ import { withRouter } from "react-router";
 import { Grid , Container , Typography , Button } from '@material-ui/core/';
 import { FeaturedPhoto } from '../../paragraphs/Home';
 import { ProjectCard } from '../../words/ProjectListing';
-import LoginDialogue from '../../sentences/LoginDialogue';
 
 import { StyledHome } from './style.js';
 
@@ -15,7 +14,6 @@ function Home(props){
   return (
     <StyledHome>
       <Container maxWidth="xl" className="heading">
-        <LoginDialogue />
         <Typography variant="h2">
           Featured Photo
         </Typography>
@@ -26,13 +24,6 @@ function Home(props){
           Featured Projects
         </Typography>
       </Container>
-      <Grid className="projectDisplay" container justify="center" spacing={3}>
-        {projectList.filter(project => project.featured).map((project,index) => (
-          <Grid item key={`project${index}`}>
-            <ProjectCard projectDetails={project} />
-          </Grid>
-        ))}
-      </Grid>
     </StyledHome>
   );
 }

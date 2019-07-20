@@ -38,5 +38,5 @@ export const blogCategories = [
   "Philosophy","Movies","Stories"
 ];
 export const blogSearchBy = [
-  "Tags" , "Name" , "Date" , "Body"
+  "Tags" , "Name" , "Date"
 ];

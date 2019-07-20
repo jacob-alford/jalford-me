@@ -122,3 +122,11 @@ export const validatePassword = password => {
 export const validateUsername = password => {
   return true;
 }
+
+export const randomColor = () => {
+  return `#${[
+    Math.floor(Math.random()*255).toString(16),
+    Math.floor(Math.random()*255).toString(16),
+    Math.floor(Math.random()*255).toString(16)
+  ].join("")}`;
+}

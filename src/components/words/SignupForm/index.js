@@ -1,5 +1,4 @@
 import React, { useState , useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Input,
          Grid,
          Button,
@@ -11,7 +10,8 @@ import { SliderPicker } from 'react-color';
 import zxcvbn from 'zxcvbn';
 
 import { validateEmail,
-         validateUsername
+         validateUsername,
+         randomColor
        } from '../../../functions';
 
 import { firebase } from '../../../index.js';
@@ -55,21 +55,12 @@ const styles = {
 }
 
 const passwordStrengthText = [
-  "Password Too weak (score: 0)",
-  "Password Not strong enough (score: 1)",
-  "Password Good enough (score 2)",
+  "password too weak (score: 0)",
+  "password not strong enough (score: 1)",
+  "Password good enough (score 2)",
   "Pretty good password :-) (score 3)",
   "Very nice password!!! (score 4)"
 ];
-
-
-function randomColor(){
-  return `#${[
-    Math.floor(Math.random()*255).toString(16),
-    Math.floor(Math.random()*255).toString(16),
-    Math.floor(Math.random()*255).toString(16)
-  ].join("")}`;
-}
 
 export default function SignupForm(){
   const [email,setEmail] = useState("");
@@ -119,17 +110,17 @@ export default function SignupForm(){
     setPasswordScore(zxcvbn(password).score);
   },[password]);
   return (
-    <Grid container direction="column">
+    <Grid container direction="column" justify="center">
       {(error && !success) ? (
         <Grid item>
-          <Typography variant="body2" style={{color:"#E84040"}}>
+          <Typography variant="body2" style={{color:"#E84040",marginTop:"24px",marginBottom:"24px"}}>
             {error}
           </Typography>
         </Grid>
       ) : null }
       {(success) ? (
         <Grid item>
-          <Typography variant="body2" style={{color:"#58E855"}}>
+          <Typography variant="body2" style={{color:"#58E855",marginTop:"24px",marginBottom:"24px"}}>
             User successfuly added!
           </Typography>
         </Grid>

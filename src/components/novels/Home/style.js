@@ -6,7 +6,7 @@ export const StyledHome = styled.div`
     margin-top:35px;
   }
   .heading{
-    margin-top:50px;
+    margin-top:43px;
     text-align:center;
   }
 `;

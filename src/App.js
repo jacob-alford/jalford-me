@@ -38,7 +38,7 @@ function App() {
             );
           })}
           <Route path="/about" component={About} />
-          <Route path="/blog" component={Blog} />
+          <Route path="/blog" render={props => (<Blog headerIsOpen={headerIsOpen} {...props} />)}/>
           <Route path="/" component={Home} />
         </Switch>
         <Footing />
