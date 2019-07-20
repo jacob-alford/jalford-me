@@ -36,7 +36,7 @@ const db = firebase.firestore();
 const usersDb = db.collection("users");
 firebase.auth().onAuthStateChanged(user => {
   if(user){
-    usersDb.doc(user.uid).get().then(databaseUser => {
+    usersDb.doc(user.uid).onSnapshot(databaseUser => {
       // The case when user is in the database
       // And is authenticated
       if(databaseUser.exists){
@@ -56,8 +56,6 @@ firebase.auth().onAuthStateChanged(user => {
         // Should have already been done?
         // Temporary user?
       }
-    }).catch(error => {
-      console.error(error);
     });
   }else{
     store.dispatch(setLoggedOut());

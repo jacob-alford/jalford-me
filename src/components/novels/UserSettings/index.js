@@ -1,11 +1,13 @@
 import React , { useState , useEffect } from 'react';
+import { SketchPicker } from 'react-color';
 import { Container, Grid,
          Typography, Paper,
          List, ListItem,
          ListItemText, ListItemIcon,
          ListItemAvatar, Avatar, Fade,
          CircularProgress, Button,
-         Grow, IconButton
+         Grow, IconButton, Popper,
+         TextField
       } from '@material-ui/core/';
 
 import { AccountCircle, Image,
@@ -18,15 +20,19 @@ import BlogBar from '../../paragraphs/BlogBar';
 import withUser from '../../bindings/wrappers/withUser';
 import { withRouter } from "react-router";
 
+import { firebase } from '../../../index.js';
+
 import useWaitOnUser from '../../bindings/hooks/useWaitOnUser';
 
 import { getTextColorBasedOnBg } from '../../../functions';
 
+let db;
+
 const getUser = user => user.activeUser;
 const getPermissions = user => {
-  if(user.activeUser.permissions.value < 8) return "None";
-  else if([8,9].includes(user.activeUser.permissions.value)) return "Writer";
-  else return "Admin";
+  if([8,9].includes(user.activeUser.permissions.value)) return "Writer";
+  else if(user.activeUser.permissions.value === 10) return "Admin";
+  else return "None";
 }
 
 const styles = {
@@ -75,24 +81,75 @@ const styles = {
     lineHeight:'1.6',
     letterSpacing:'0.0075em',
     color:'rgba(0, 0, 0, 0.54)'
+  },
+  editUserData:{
+    padding:"15px"
   }
 }
 
 function UserSettings(props){
   const { user , history } = props;
-  const [isEditing,setIsEditing] = useState(false);
+  // --- State Hooks ---
   const [mightDelete,setMightDelete] = useState(false);
   const [willDelete,setWillDelete] = useState(false);
   const [goAheadAndDelete,setGoAheadAndDelete] = useState(false);
+  const [usernameField,setUsernameField] = useState("");
+  const [colorField,setColorField] = useState("");
+  const [imageField,setImageField] = useState("");
+  // --- Handlers ---
+  const fieldHandlerConstructor = setter => {
+    return evt => {
+      setter(evt.target.value);
+    }
+  }
+  const handleUserImageUpdate = () => {
+    if(db && user.loggedIn){
+      const dbUser = db.collection("users").doc(getUser(user).uid);
+      dbUser.update({
+        username:usernameField,
+        image:imageField
+      }).then(console.log("Updated successfully!"))
+        .catch(error => console.error(error));
+    }
+  }
+  const handleColorUpdate = () => {
+    if(db && user.loggedIn){
+      const dbUser = db.collection("users").doc(getUser(user).uid);
+      dbUser.update({
+        color:colorField
+      }).then(console.log("Updated successfully!"))
+        .catch(error => console.error(error));
+    }
+  }
+  // --- Custom Hooks ---
   const isLoading = useWaitOnUser(user);
-  const startEditing = () => setIsEditing(true);
-  const finishEditing = () => setIsEditing(false);
+  // --- Anchors ---
+  const [nameEditAnchor,setNameEditAnchor] = useState(null);
+  const [colorEditAnchor,setColorEditAnchor] = useState(null);
+  const handleAnchorUpdateConstructor = (anchor,setter) => {
+    return evt => {
+      setter((anchor) ? null : evt.currentTarget);
+    }
+  }
+  // --- Effects ---
   useEffect(() => {
     // if(!user.loggedIn) history.push("/");
   },[user]);
   useEffect(() => {
     if(willDelete && !mightDelete) setWillDelete(false);
   },[mightDelete]);
+  useEffect(() => {
+    setUsernameField(getUser(user).username);
+  },[getUser(user).username]);
+  useEffect(() => {
+    setImageField(getUser(user).image);
+  },[getUser(user).image]);
+  useEffect(() => {
+    setColorField(getUser(user).color);
+  },[getUser(user).color]);
+  useEffect(() => {
+    if(firebase) db = firebase.firestore();
+  },[firebase]);
   return (
     <React.Fragment>
       <Grid style={styles.loader} container justify="center">
@@ -124,7 +181,7 @@ function UserSettings(props){
                               backgroundColor:getUser(user).color,
                               color:getTextColorBasedOnBg(getUser(user).color)
                             }}>
-                            {getUser(user).username}
+                            {(getUser(user).username && getUser(user).username[0]) || "J"}
                           </Avatar>
                         </ListItemAvatar>
                       )}
@@ -134,10 +191,10 @@ function UserSettings(props){
                         secondary={
                           <React.Fragment>
                             <Typography component="span" variant="h6">
-                              {getUser(user).username}
+                              {getUser(user).username || "Not Signed In"}
                             </Typography>
                           </React.Fragment> }/>
-                      <IconButton>
+                      <IconButton onClick={handleAnchorUpdateConstructor(nameEditAnchor,setNameEditAnchor)}>
                         <Edit />
                       </IconButton>
                     </ListItem>
@@ -154,7 +211,7 @@ function UserSettings(props){
                               {getUser(user).color}
                             </Typography>
                           </React.Fragment> }/>
-                      <IconButton>
+                      <IconButton onClick={handleAnchorUpdateConstructor(colorEditAnchor,setColorEditAnchor)}>
                         <Edit />
                       </IconButton>
                     </ListItem>
@@ -206,6 +263,45 @@ function UserSettings(props){
         </Grid>
       </Grid>
       <BlogBar title="User" context="inUser"/>
+      <Popper placement="right" open={Boolean(nameEditAnchor)} anchorEl={nameEditAnchor} transition>
+        {props => {
+          const {TransitionProps} = props;
+          return (
+            <Fade {...TransitionProps} timeout={350}>
+              <Paper style={styles.editUserData}>
+                <Grid container direction="column">
+                  <Grid item>
+                    <TextField variant="outlined" label="Username" value={usernameField} onChange={fieldHandlerConstructor(setUsernameField)} />
+                  </Grid>
+                  <Grid item>
+                    <TextField variant="outlined" style={{marginTop:"12px"}} label="Image URL" value={imageField} onChange={fieldHandlerConstructor(setImageField)} />
+                  </Grid>
+                  <Grid item>
+                    <Button style={{marginTop:"12px"}} color="primary" variant="contained" onClick={handleUserImageUpdate}>
+                      Update
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Fade>
+          );
+        }}
+      </Popper>
+      <Popper placement="right" open={Boolean(colorEditAnchor)} anchorEl={colorEditAnchor} transition>
+        {props => {
+          const {TransitionProps} = props;
+          return (
+            <Fade {...TransitionProps} timeout={350}>
+              <Paper style={styles.editUserData}>
+                <SketchPicker color={colorField} onChangeComplete={color => setColorField(color.hex)} />
+                <Button style={{marginTop:"12px"}} color="primary" variant="contained" onClick={handleColorUpdate}>
+                  Update
+                </Button>
+              </Paper>
+            </Fade>
+          );
+        }}
+      </Popper>
     </React.Fragment>
   );
 }
