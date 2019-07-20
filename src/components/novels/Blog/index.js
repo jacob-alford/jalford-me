@@ -7,11 +7,9 @@ import {
   RadioGroup, InputBase,
   Button
  } from '@material-ui/core/';
-
- import BlogBar from '../../paragraphs/BlogBar';
-
 import SearchIcon from '@material-ui/icons/Search';
 
+ import BlogBar from '../../paragraphs/BlogBar';
 import BlogInline from '../../words/BlogListing/BlogInline';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';

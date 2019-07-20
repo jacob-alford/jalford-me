@@ -3,7 +3,7 @@ const initialState = {
     loggedIn:false,
     activeUser:{
       uid:null,
-      color:'#11ecfc',
+      color:"#303f9f",
       icon:'person',
       image:null,
       likes:null,

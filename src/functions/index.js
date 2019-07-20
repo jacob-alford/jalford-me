@@ -130,3 +130,24 @@ export const randomColor = () => {
     Math.floor(Math.random()*255).toString(16)
   ].join("")}`;
 }
+
+export const getLightness = hex => {
+  let wrkHex;
+  if(hex.includes("#")) wrkHex = hex.substring(1);
+  else wrkHex = hex;
+  const wrkArr = [
+    Number.parseInt(`${wrkHex[0]}${wrkHex[1]}`,16)/255,
+    Number.parseInt(`${wrkHex[2]}${wrkHex[3]}`,16)/255,
+    Number.parseInt(`${wrkHex[4]}${wrkHex[5]}`,16)/255
+  ];
+  const minVal = wrkArr.reduce((currentMax,newValue) => Math.min(currentMax,newValue));
+  const maxVal = wrkArr.reduce((currentMax,newValue) => Math.max(currentMax,newValue));
+  return (minVal + maxVal)/2;
+}
+
+export const getTextColorBasedOnBg = bgHex => {
+  const lightness = getLightness(bgHex);
+  console.log(lightness);
+  if(lightness <= .46) return "#ffe";
+  else return "#332";
+}

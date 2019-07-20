@@ -4,16 +4,18 @@ import { withRouter } from "react-router";
 import { AppBar, Toolbar, Typography,
          Button, Paper, Grid, Breadcrumbs,
          Link, IconButton, Menu, MenuItem,
-         ListItemText, ListItemIcon, Fade
+         ListItemText, ListItemIcon, Fade,
+         Hidden, Slide
        } from '@material-ui/core/';
 
-import { NavigateNext,
-         AccountCircle,
+import { AccountCircle,
          Group,
          Lock,
          ListAlt,
          Eject
        } from '@material-ui/icons/';
+
+import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
 import LoginDialogue from '../../sentences/LoginDialogue';
 import SignupDialogue from '../../sentences/SignupDialogue';
@@ -23,25 +25,26 @@ import { firebase } from '../../../index.js';
 
 import withUser from '../../bindings/wrappers/withUser';
 
+import { getTextColorBasedOnBg } from '../../../functions'
+
 const styles = {
   bar:{
     position:'fixed',
-    top:'calc(100% - 64px)'
-  },
-  breadcrumbs:{
-    color:'white'
+    top:'calc(100% - 64px)',
+    transition:'background-color .25s'
   }
 }
 
 const defaultBreadcrumbs = [
   {label:"Posts",url:"/posts"},
-  // {label:"Philosophy",url:"/view/philosophy"},
-  // {label:"0",url:"/view/philosophy/0"}
+  {label:"Philosophy",url:"/view/philosophy"},
+  {label:"0",url:"/view/philosophy/0"}
 ];
 
 const getUserPermissions = user => user.activeUser.permissions.value;
 
 function BlogBar(props){
+  const scrollTrigger = useScrollTrigger();
   const [signInIsOpen,setSignInIsOpen] = useState(false);
   const [signUpIsOpen,setSignUpIsOpen] = useState(false);
   const openSignIn = () => setSignInIsOpen(true);
@@ -49,13 +52,19 @@ function BlogBar(props){
   const closeSignIn = () => setSignInIsOpen(false);
   const closeSignUp = () => setSignUpIsOpen(false);
   const [userMenuAnchor,setUserMenuAnchor] = useState(null);
-  const { user , headerIsOpen , history , links=defaultBreadcrumbs } = props;
+  const [breadcrumbAnchor,setBreadcrumbAnchor] = useState(null);
+  const { user , headerIsOpen , history , title="Posts", links=defaultBreadcrumbs } = props;
   const handleLinkRedirect = url => {
     if(url.includes("http")) window.location.href = url;
     else history.push(url);
   }
-  const handleMenuAnchor = evt => {
-    setUserMenuAnchor(evt.currentTarget);
+  const anchorHandlerCreator = setter => {
+    return evt => {
+      setter(evt.currentTarget);
+    }
+  }
+  const menuCloseConstruct = setter => {
+    return () => setter(null);
   }
   const handleSignout = () => {
     firebase.auth().signOut().then(function() {
@@ -65,7 +74,8 @@ function BlogBar(props){
       console.error("Failed to sign out!  Reason:",error.toString());
     });
   }
-  const closeUserMenu = () => setUserMenuAnchor(null);
+  let bgColor = user.activeUser.color;
+  let textColor = getTextColorBasedOnBg(bgColor);
   useEffect(() => {
     if(user.loggedIn && signInIsOpen)
       closeSignIn();
@@ -74,54 +84,61 @@ function BlogBar(props){
   },[user]);
   return (
       <React.Fragment>
-        <AppBar style={styles.bar}>
-          <Toolbar>
-            <Grid container alignItems="center" justify="space-between">
-              <Grid item>
-                <Breadcrumbs style={{flexGrow:"1"}} separator={<NavigateNext style={styles.breadcrumbs} fontSize="small" />}>
-                  {links.map((link,index) => (
-                    <Link style={styles.breadcrumbs} color="inherit" href={link.url} onClick={() => handleLinkRedirect(link.url)}>
-                      <Typography variant="h6">
-                        {link.label}
-                      </Typography>
-                    </Link>
-                  ))}
-                </Breadcrumbs>
+        <Slide direction="up" in={!scrollTrigger}>
+          <AppBar style={{backgroundColor:bgColor,...styles.bar}}>
+            <Toolbar>
+              <Grid container alignItems="center" justify="space-between">
+                <Grid item>
+                  <Button onClick={anchorHandlerCreator(setBreadcrumbAnchor)}>
+                    <Typography variant="h6" style={{color:textColor,flexGrow:"1"}}>
+                      {links[0].label || title}
+                    </Typography>
+                  </Button>
+                  <Menu anchorEl={breadcrumbAnchor} open={Boolean(breadcrumbAnchor)} onClose={menuCloseConstruct(setBreadcrumbAnchor)}>
+                    {[...links].reverse().map((link,index) => (
+                      <MenuItem onClick={() => handleLinkRedirect(link.url)}>
+                        <Typography variant="h6">
+                          {link.label}
+                        </Typography>
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </Grid>
+                {(user.loggedIn) ? (
+                  <React.Fragment>
+                      <Grid item>
+                        <BlogBarActions color={textColor} user={user} context="inBlog"/>
+                      </Grid>
+                      <Grid item>
+                        <Fade in={user.loggedIn === true} timeout={1500}>
+                          <Grid container direction="row" alignItems="center">
+                            <Grid item>
+                              <Typography variant="body2" style={{color:textColor}}>
+                                Welcome, {user.activeUser.username}
+                              </Typography>
+                            </Grid>
+                            <Grid item>
+                              <IconButton onClick={anchorHandlerCreator(setUserMenuAnchor)}>
+                                <AccountCircle style={{color:textColor}}/>
+                              </IconButton>
+                            </Grid>
+                          </Grid>
+                        </Fade>
+                      </Grid>
+                    </React.Fragment>
+                ) : (
+                  <Fade in={user.loggedIn === false}>
+                    <Grid item>
+                      <Button style={{color:textColor}} onClick={openSignIn}>Login</Button>
+                      <Button style={{color:textColor}} onClick={openSignUp}>Signup</Button>
+                    </Grid>
+                  </Fade>
+                )}
               </Grid>
-              {(user.loggedIn) ? (
-                <React.Fragment>
-                    <Grid item>
-                      <BlogBarActions user={user} context="inBlog"/>
-                    </Grid>
-                    <Grid item>
-                      <Fade in={user.loggedIn === true} timeout={1500}>
-                        <Grid container direction="row" alignItems="center">
-                          <Grid item>
-                            <Typography variant="body2">
-                              Welcome, {user.activeUser.username}
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <IconButton onClick={handleMenuAnchor} color="inherit">
-                              <AccountCircle/>
-                            </IconButton>
-                          </Grid>
-                        </Grid>
-                      </Fade>
-                    </Grid>
-                  </React.Fragment>
-              ) : (
-                <Fade in={user.loggedIn === false}>
-                  <Grid item>
-                    <Button color="inherit" onClick={openSignIn}>Login</Button>
-                    <Button color="inherit" onClick={openSignUp}>Signup</Button>
-                  </Grid>
-                </Fade>
-              )}
-            </Grid>
-          </Toolbar>
-        </AppBar>
-        <Menu anchorEl={userMenuAnchor} open={Boolean(userMenuAnchor)} onClose={closeUserMenu}>
+            </Toolbar>
+          </AppBar>
+        </Slide>
+        <Menu anchorEl={userMenuAnchor} open={Boolean(userMenuAnchor)} onClose={menuCloseConstruct(setUserMenuAnchor)}>
           <MenuItem>
             <ListItemIcon>
               <Lock />
