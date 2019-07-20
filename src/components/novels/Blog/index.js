@@ -38,6 +38,12 @@ const tempBlogData = [
   }
 ]
 
+const defaultBreadcrumbs = [
+  {label:"Posts",url:"/posts"},
+  {label:"Philosophy",url:"/view/philosophy"},
+  {label:"0",url:"/view/philosophy/0"}
+];
+
 function Blog(props) {
   const [blogPosts,setBlogPosts] = useState([]);
   const [selectedCategory,setSelectedCategory] = useState("philosophy");
@@ -123,7 +129,7 @@ function Blog(props) {
           ))}
         </Container>
       </StyledBlog>
-      <BlogBar headerIsOpen={headerIsOpen}/>
+      <BlogBar breadcrumbs={defaultBreadcrumbs}/>
     </React.Fragment>
   );
 }

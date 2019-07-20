@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router , Switch , Route } from "react-router-dom";
 import { Button } from '@material-ui/core/';
 
-
+import UserSettings from './components/novels/UserSettings';
 import AdminLogin from './components/paragraphs/AdminLogin';
 import Heading from './components/novels/Heading';
 import Footing from './components/novels/Footer';
@@ -37,6 +37,7 @@ function App() {
               <Route key={`projectRoute${index}`} path={project.url} render={props => (<Component headerIsOpen={headerIsOpen} {...props} />)} />
             );
           })}
+          <Route path="/user" component={UserSettings} />
           <Route path="/about" component={About} />
           <Route path="/blog" render={props => (<Blog headerIsOpen={headerIsOpen} {...props} />)}/>
           <Route path="/" component={Home} />

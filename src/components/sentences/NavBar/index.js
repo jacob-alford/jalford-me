@@ -48,6 +48,7 @@ function NavBar(props){
             <Menu anchorEl={mobileNavAnchor} open={Boolean(mobileNavAnchor)} onClose={handleMobileNavClose}>
               {navList.map((navItem,index) => (
                 <MenuItem
+                   key={`mobileNavItem#${index}`}
                   onClick={() => handleClick(index,navItem.url)}
                   selected={getActiveNavItem(location.pathname) === index}
                   disabled={navItem.disabled}>

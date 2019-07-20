@@ -35,12 +35,6 @@ const styles = {
   }
 }
 
-const defaultBreadcrumbs = [
-  {label:"Posts",url:"/posts"},
-  {label:"Philosophy",url:"/view/philosophy"},
-  {label:"0",url:"/view/philosophy/0"}
-];
-
 const getUserPermissions = user => user.activeUser.permissions.value;
 
 function BlogBar(props){
@@ -53,7 +47,12 @@ function BlogBar(props){
   const closeSignUp = () => setSignUpIsOpen(false);
   const [userMenuAnchor,setUserMenuAnchor] = useState(null);
   const [breadcrumbAnchor,setBreadcrumbAnchor] = useState(null);
-  const { user , headerIsOpen , history , title="Posts", links=defaultBreadcrumbs } = props;
+  const { user,
+          history,
+          title="Posts",
+          context="inBlog",
+          breadcrumbs
+        } = props;
   const handleLinkRedirect = url => {
     if(url.includes("http")) window.location.href = url;
     else history.push(url);
@@ -91,23 +90,25 @@ function BlogBar(props){
                 <Grid item>
                   <Button onClick={anchorHandlerCreator(setBreadcrumbAnchor)}>
                     <Typography variant="h6" style={{color:textColor,flexGrow:"1"}}>
-                      {links[0].label || title}
+                      {(breadcrumbs && breadcrumbs[0].label) || title}
                     </Typography>
                   </Button>
-                  <Menu anchorEl={breadcrumbAnchor} open={Boolean(breadcrumbAnchor)} onClose={menuCloseConstruct(setBreadcrumbAnchor)}>
-                    {[...links].reverse().map((link,index) => (
-                      <MenuItem onClick={() => handleLinkRedirect(link.url)}>
-                        <Typography variant="h6">
-                          {link.label}
-                        </Typography>
-                      </MenuItem>
-                    ))}
-                  </Menu>
+                  {(breadcrumbs) ? (
+                    <Menu anchorEl={breadcrumbAnchor} open={Boolean(breadcrumbAnchor)} onClose={menuCloseConstruct(setBreadcrumbAnchor)}>
+                      {[...breadcrumbs].reverse().map((crumb,index) => (
+                        <MenuItem onClick={() => handleLinkRedirect(crumb.url)}>
+                          <Typography variant="h6">
+                            {crumb.label}
+                          </Typography>
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  ) : null}
                 </Grid>
                 {(user.loggedIn) ? (
                   <React.Fragment>
                       <Grid item>
-                        <BlogBarActions color={textColor} user={user} context="inBlog"/>
+                        <BlogBarActions color={textColor} user={user} context={context}/>
                       </Grid>
                       <Grid item>
                         <Fade in={user.loggedIn === true} timeout={1500}>
@@ -139,7 +140,7 @@ function BlogBar(props){
           </AppBar>
         </Slide>
         <Menu anchorEl={userMenuAnchor} open={Boolean(userMenuAnchor)} onClose={menuCloseConstruct(setUserMenuAnchor)}>
-          <MenuItem>
+          <MenuItem onClick={() => handleLinkRedirect("/user")}>
             <ListItemIcon>
               <Lock />
             </ListItemIcon>
