@@ -1,9 +1,9 @@
 function validateOperation(num){
   if(Number.isNaN(Number(num))){
-    throw "Operation doesn't result in a number!";
+    throw new Error("Operation doesn't result in a number!");
   }
   if(!Number.isFinite(num)){
-    throw "Operation results in infinity!";
+    throw new Error("Operation results in infinity!");
   }
   return Number(num);
 }
@@ -109,7 +109,6 @@ function displayNum(num){
       }
     }
   }
-  return Number(num).toFixed(4);
 }
 
 function displayStackInline(stack){

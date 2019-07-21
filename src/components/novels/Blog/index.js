@@ -18,7 +18,7 @@ import { blogCategories , blogSearchBy } from '../../../config';
 
 import { StyledBlog } from './style.js';
 
-import firebase from 'firebase';
+// import firebase from 'firebase';
 
 const tempBlogData = [
   { header:"Foundation of Epistemology",
@@ -49,7 +49,7 @@ function Blog(props) {
   const [selectedCategory,setSelectedCategory] = useState("philosophy");
   const [selectedSearchBy,setSelectedSearchBy] = useState("tags");
   const [searchToken,setSearchToken] = useState("");
-  const { user , headerIsOpen } = props;
+  // const { user } = props;
   useEffect(() => {
     setBlogPosts(tempBlogData);
     setTimeout(() => {
@@ -63,7 +63,6 @@ function Blog(props) {
     setSelectedSearchBy(evt.target.value);
   }
   const handleSearchInput = evt => {
-    console.log(evt.target.value);
     setSearchToken(evt.target.value);
   }
   return (
@@ -109,7 +108,7 @@ function Blog(props) {
                           <SearchIcon className="searchIcon"/>
                         </Grid>
                         <Grid item>
-                          <InputBase onChange={handleSearchInput} placeholder="Search"/>
+                          <InputBase value={searchToken} onChange={handleSearchInput} placeholder="Search"/>
                         </Grid>
                       </Grid>
                     </Paper>

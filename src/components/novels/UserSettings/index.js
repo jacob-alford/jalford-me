@@ -1,6 +1,6 @@
 import React , { useState , useEffect } from 'react';
 import { SketchPicker } from 'react-color';
-import { Container, Grid,
+import { Grid,
          Typography, Paper,
          List, ListItem,
          ListItemText, ListItemIcon,
@@ -10,8 +10,7 @@ import { Container, Grid,
          TextField
       } from '@material-ui/core/';
 
-import { AccountCircle, Image,
-         ColorLens, AssignmentInd,
+import { ColorLens, AssignmentInd,
          Edit
        } from '@material-ui/icons/';
 
@@ -148,22 +147,22 @@ function UserSettings(props){
   useEffect(() => {
     if(!user.loggedIn)
       history.push("/");
-  },[user]);
+  },[user,history]);
   useEffect(() => {
     if(willDelete && !mightDelete) setWillDelete(false);
-  },[mightDelete]);
+  },[mightDelete,willDelete]);
   useEffect(() => {
     setUsernameField(getUser(user).username);
-  },[getUser(user).username]);
+  },[user]);
   useEffect(() => {
     setImageField(getUser(user).image);
-  },[getUser(user).image]);
+  },[user]);
   useEffect(() => {
     setColorField(getUser(user).color);
-  },[getUser(user).color]);
+  },[user]);
   useEffect(() => {
     if(firebase) db = firebase.firestore();
-  },[firebase]);
+  });
   return (
     <React.Fragment>
       <Grid style={styles.loader} container justify="center">

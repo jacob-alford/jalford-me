@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal , Typography , Paper , Container } from '@material-ui/core/';
+import { Modal , Typography , Paper } from '@material-ui/core/';
 
 import { StyledAdminLogin } from './style.js';
 

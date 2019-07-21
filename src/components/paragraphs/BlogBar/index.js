@@ -1,11 +1,8 @@
 import React, { useState , useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { withRouter } from "react-router";
 import { AppBar, Toolbar, Typography,
-         Button, Paper, Grid, Breadcrumbs,
-         Link, IconButton, Menu, MenuItem,
-         ListItemText, ListItemIcon, Fade,
-         Hidden, Slide
+         Button, Grid, IconButton, Menu, MenuItem,
+         ListItemText, ListItemIcon, Fade, Slide
        } from '@material-ui/core/';
 
 import { AccountCircle,
@@ -80,7 +77,7 @@ function BlogBar(props){
       closeSignIn();
     if(user.loggedIn && signUpIsOpen)
       closeSignUp();
-  },[user]);
+  },[user,signInIsOpen,signUpIsOpen]);
   return (
       <React.Fragment>
         <Slide direction="up" in={!scrollTrigger}>

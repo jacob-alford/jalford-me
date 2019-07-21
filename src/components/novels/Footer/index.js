@@ -9,7 +9,7 @@ export default function Footer(props){
   return (
     <StyledFooter>
       <Container>
-        <Typography variant="body1" className="footer">
+        <Typography style={{color:"white"}} variant="body1" className="footer">
           {footerText}
         </Typography>
       </Container>

@@ -44,7 +44,7 @@ export const validateEmail = email => {
   if(localPart[0] === ".") return false;
   if(localPart[localPart.length-1] === ".") return false;
   if(/[.]{2,}/.test(localPart)) return false;
-  if(/[^( A-z |0-9 | !#$%&'*\+\-\/=?^_`\{\|\}~. )]/g.test(localPart))
+  if(/[^( A-z |0-9 | !#$%&'*+\-/=?^_`{|}~. )]/g.test(localPart))
     return false;
   return true;
 }
@@ -93,8 +93,8 @@ export const calculatePasswordEntropy = password => {
     return Math.log2(categories.words) * numberOfWords;
   }else{
     let total = 0;
-    for(let [category,value] of Object.entries(categories)){
-      total += value;
+    for(let arr of Object.entries(categories)){
+      total += arr[1];
     }
     return Math.log2(total) * password.length;
   }

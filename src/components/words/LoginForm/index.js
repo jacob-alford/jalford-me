@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Grid , Button , Typography , TextField } from '@material-ui/core/';
+import { Grid , Button , TextField } from '@material-ui/core/';
 
 import firebase from 'firebase/app';
 import 'firebase/auth';

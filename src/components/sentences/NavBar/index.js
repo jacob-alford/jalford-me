@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
-import { Grid , Hidden , Menu , MenuItem , Link } from '@material-ui/core/';
+import { Grid , Hidden , Menu , MenuItem } from '@material-ui/core/';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import NavItem from '../../words/NavItem';
@@ -45,7 +45,7 @@ function NavBar(props){
             <MenuIcon onClick={handleMobileNavOpen}/>
           </Grid>
           <Grid item>
-            <Menu anchorEl={mobileNavAnchor} open={Boolean(mobileNavAnchor)} onClose={handleMobileNavClose}>
+            <Menu style={{marginTop:'48px',marginLeft:'-69.515px'}} anchorOrigin={{horizontal:'center',vertical:'top'}} anchorEl={mobileNavAnchor} open={Boolean(mobileNavAnchor)} onClose={handleMobileNavClose}>
               {navList.map((navItem,index) => (
                 <MenuItem
                    key={`mobileNavItem#${index}`}

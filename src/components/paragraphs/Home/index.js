@@ -1,3 +1,4 @@
-import FeaturedPhoto from './FeaturedPhoto';
+import IceCaveFeatured from './IceCaveFeatured';
+import RPNFeatured from './RPNFeatured';
 
-export { FeaturedPhoto };
+export { IceCaveFeatured , RPNFeatured };

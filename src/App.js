@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router , Switch , Route } from "react-router-dom";
-import { Button } from '@material-ui/core/';
 
 import UserSettings from './components/novels/UserSettings';
-import AdminLogin from './components/paragraphs/AdminLogin';
 import Heading from './components/novels/Heading';
 import Footing from './components/novels/Footer';
 import About from './components/novels/About';
@@ -20,12 +18,9 @@ require('typeface-roboto');
 
 function App() {
   const path = window.location.pathname;
-  const [adminLoginIsOpen,setAdminLoginIsOpen] = useState(false);
   const [headerIsOpen,setHeaderIsOpen] = useState(true);
   const [activeNavItem, setActiveNavItem] = useState(getActiveNavItem(path));
   const toggleHeader = () => setHeaderIsOpen(!headerIsOpen);
-  const openAdminLogin = () => setAdminLoginIsOpen(true);
-  const closeAdminLogin = () => setAdminLoginIsOpen(false);
   return (
     <StyledApp>
       <Router>

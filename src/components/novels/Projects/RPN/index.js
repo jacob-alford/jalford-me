@@ -112,7 +112,7 @@ function TapeLine(props){
 
 function Tape(props){
   const { tape , drawer } = props;
-  const tapeCopy = tape.filter(tapeItem => tapeItem != "IGNORE");
+  const tapeCopy = tape.filter(tapeItem => tapeItem !== "IGNORE");
   for(let i=tapeCopy.length;i<10;i++){
     tapeCopy.push(" ");
   }

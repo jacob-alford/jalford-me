@@ -1,6 +1,5 @@
 import React, { useState , useEffect } from 'react';
-import { Input,
-         Grid,
+import { Grid,
          Button,
          Typography,
          TextField
@@ -103,7 +102,7 @@ export default function SignupForm(){
   }
   useEffect(() => {
     db = firebase.firestore();
-  },[firebase]);
+  });
   useEffect(() => {
     setPasswordScore(zxcvbn(password).score);
   },[password]);

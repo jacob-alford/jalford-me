@@ -1,8 +1,6 @@
-import React, { useState , useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from "react-router";
+import React from 'react';
 
-import { IconButton, Fade , Typography } from '@material-ui/core/';
+import { IconButton, Fade } from '@material-ui/core/';
 import { NoteAdd , Edit } from '@material-ui/icons/';
 
 export default function BlogBarActions(props){

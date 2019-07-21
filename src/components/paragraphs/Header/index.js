@@ -8,7 +8,7 @@ import { StyledHeader } from './style.js';
 import { navItems } from '../../../config';
 
 export default function Header(props){
-  const { path , history , style , activeNavItem , setActiveNavItem } = props;
+  const { style } = props;
   return (
     <StyledHeader style={style}>
       <Typography className="title" variant="h1">

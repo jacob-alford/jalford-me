@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import { Slide , Modal , Paper , Grid } from '@material-ui/core/';
 
 import LoginForm from '../../words/LoginForm';
@@ -16,7 +15,6 @@ const styles = {
 
 export default function LoginDialogue(props){
   const { signInIsOpen , setSignInIsOpen } = props;
-  const openModal = () => setSignInIsOpen(true);
   const closeModal = () => setSignInIsOpen(false);
   return (
     <Modal open={signInIsOpen} onClose={closeModal}>

@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Slide , Modal , Typography , Button , Paper , Grid } from '@material-ui/core/';
+import React from 'react';
+import { Slide , Modal , Paper , Grid } from '@material-ui/core/';
 
 import SignupForm from '../../words/SignupForm';
 
@@ -16,7 +15,6 @@ const styles = {
 
 export default function SignupDialogue(props){
   const { signUpIsOpen , setSignUpIsOpen } = props;
-  const openModal = () => setSignUpIsOpen(true);
   const closeModal = () => setSignUpIsOpen(false);
   return (
     <Modal open={signUpIsOpen} onClose={closeModal}>

@@ -9,17 +9,19 @@ import { Provider } from 'react-redux'
 import reduxStore from './components/bindings/redux';
 import { setLoggedIn , setLoggedOut } from './components/bindings/redux';
 
+import { ParallaxProvider } from 'react-scroll-parallax';
+
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 
 // --- Redux ---
 const store = createStore(reduxStore);
-console.log(store.getState().user);
-function handleChange() {
-  console.log(store.getState().user);
-}
-store.subscribe(handleChange);
+// console.log(store.getState().user);
+// function handleChange() {
+//   console.log(store.getState().user);
+// }
+// store.subscribe(handleChange);
 
 // --- Firebase ---
 const firebaseConfig = {
@@ -64,7 +66,9 @@ firebase.auth().onAuthStateChanged(user => {
 // --- Root Render ---
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <ParallaxProvider>
+      <App />
+    </ParallaxProvider>
   </Provider>,
   document.getElementById('root')
 );
