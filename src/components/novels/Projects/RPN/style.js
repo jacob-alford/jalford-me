@@ -45,6 +45,7 @@ export const StyledRPN = styled.div`
     color:white;
   }
   .tapeLine{
+    background-color:white;
     height:${props => (props.headerIsOpen) ? "7.5vh" : "10vh"};
     padding-top:0px;
     padding-bottom:0px;
@@ -106,6 +107,7 @@ export const StyledRPN = styled.div`
   .calcTable{
     transition: height .75s;
     height:100%;
+    background-color:white;
   }
   .action{
     background-color: #2F80ED;
