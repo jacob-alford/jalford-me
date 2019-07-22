@@ -7,6 +7,7 @@ import Footing from './components/novels/Footer';
 import About from './components/novels/About';
 import Home from './components/novels/Home';
 import Blog from './components/novels/Blog';
+import BlogBar from './components/paragraphs/BlogBar';
 
 import { StyledApp } from './theme';
 
@@ -15,6 +16,12 @@ import { projectList } from './config';
 import { getActiveNavItem } from './functions';
 
 require('typeface-roboto');
+
+const defaultBreadcrumbs = [
+  {label:"Posts",url:"/posts"},
+  {label:"Philosophy",url:"/view/philosophy"},
+  {label:"0",url:"/view/philosophy/0"}
+];
 
 function App() {
   const path = window.location.pathname;
@@ -32,9 +39,15 @@ function App() {
               <Route key={`projectRoute${index}`} path={project.url} render={props => (<Component headerIsOpen={headerIsOpen} {...props} />)} />
             );
           })}
-          <Route path="/user" component={UserSettings} />
+          <Route path="/user">
+            <UserSettings />
+            <BlogBar title="User" context="inUser"/>
+          </Route>
           <Route path="/about" component={About} />
-          <Route path="/blog" render={props => (<Blog headerIsOpen={headerIsOpen} {...props} />)}/>
+          <Route path="/blog">
+            <Blog headerIsOpen={headerIsOpen} />
+            <BlogBar breadcrumbs={defaultBreadcrumbs}/>
+          </Route>
           <Route path="/" component={Home} />
         </Switch>
         <Footing />

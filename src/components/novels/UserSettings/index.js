@@ -14,9 +14,8 @@ import { ColorLens, AssignmentInd,
          Edit
        } from '@material-ui/icons/';
 
-import BlogBar from '../../paragraphs/BlogBar';
-
 import withUser from '../../bindings/wrappers/withUser';
+import withPageFade from '../../bindings/wrappers/withPageFade';
 import { withRouter } from "react-router";
 
 import { firebase } from '../../../index.js';
@@ -275,7 +274,6 @@ function UserSettings(props){
           </Fade>
         </Grid>
       </Grid>
-      <BlogBar title="User" context="inUser"/>
       <Popper placement="right" open={Boolean(nameEditAnchor)} anchorEl={nameEditAnchor} transition>
         {props => {
           const {TransitionProps} = props;
@@ -319,4 +317,4 @@ function UserSettings(props){
   );
 }
 
-export default withRouter(withUser(UserSettings));
+export default withRouter(withUser(withPageFade(UserSettings)));

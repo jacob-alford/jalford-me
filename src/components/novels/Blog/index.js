@@ -9,7 +9,6 @@ import {
  } from '@material-ui/core/';
 import SearchIcon from '@material-ui/icons/Search';
 
- import BlogBar from '../../paragraphs/BlogBar';
 import BlogInline from '../../words/BlogListing/BlogInline';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';
@@ -38,12 +37,6 @@ const tempBlogData = [
   }
 ]
 
-const defaultBreadcrumbs = [
-  {label:"Posts",url:"/posts"},
-  {label:"Philosophy",url:"/view/philosophy"},
-  {label:"0",url:"/view/philosophy/0"}
-];
-
 function Blog(props) {
   const [blogPosts,setBlogPosts] = useState([]);
   const [selectedCategory,setSelectedCategory] = useState("philosophy");
@@ -66,7 +59,6 @@ function Blog(props) {
     setSearchToken(evt.target.value);
   }
   return (
-    <React.Fragment>
       <StyledBlog>
         <Typography className="blogTitle" variant="h2">
           Blog
@@ -128,8 +120,6 @@ function Blog(props) {
           ))}
         </Container>
       </StyledBlog>
-      <BlogBar breadcrumbs={defaultBreadcrumbs}/>
-    </React.Fragment>
   );
 }
 

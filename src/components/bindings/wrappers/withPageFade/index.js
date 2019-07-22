@@ -1,19 +1,34 @@
-import React from 'react';
-import { CSSTransition } from 'react-transition-group';
-
-import { StyledPage } from './style.js';
-
-import useMountCheck from '../../hooks/useMountCheck';
+import React , { useState } from 'react';
+import { Motion , spring , presets } from 'react-motion';
 
 export default function withPageFade(Component){
   return props => {
-    const isMounted = useMountCheck();
+    const defaultStyle = {
+      filter:1.25,
+      transform:.9,
+      opacity:0
+    }
+    const inStyle = {
+      filter:spring(0, {stiffness:60,damping:15}),
+      transform:spring(1, {stiffness:60,damping:15}),
+      opacity:spring(1, {stiffness:60,damping:15})
+    }
     return (
-      <StyledPage>
-        <CSSTransition in={isMounted} classNames="page" timeout={500}>
-          <Component {...props} />
-        </CSSTransition>
-      </StyledPage>
+      <Motion defaultStyle={defaultStyle} style={inStyle}>
+        {interpolatedStyle => {
+          const { filter:blur , transform:scale , opacity } = interpolatedStyle;
+          const newStyle = {
+            filter:`blur(${blur}em)`,
+            transform:`scale(${scale})`,
+            opacity:opacity
+          }
+          return (
+            <div style={newStyle}>
+              <Component {...props} />
+            </div>
+          );
+        }}
+      </Motion>
     );
   }
 }

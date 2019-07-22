@@ -59,7 +59,7 @@ export const StyledRPN = styled.div`
     height:25px;
     position:absolute;
     cursor:pointer;
-    top:${props => (props.headerIsOpen) ? 'calc(25vh + 15px)' : '15px'};
+    top:15px;
     left:10px;
     z-index:1;
     transition: transform .25s, top .75s;
