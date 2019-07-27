@@ -8,6 +8,8 @@ import About from './components/novels/About';
 import Home from './components/novels/Home';
 import Blog from './components/novels/Blog';
 import BlogBar from './components/paragraphs/BlogBar';
+import BlogView from './components/novels/BlogView';
+import BlogEdit from './components/novels/BlogEdit';
 
 import { StyledApp } from './theme';
 
@@ -44,6 +46,24 @@ function App() {
             <BlogBar title="User" context="inUser"/>
           </Route>
           <Route path="/about" component={About} />
+          <Route path="/blog/view/:postId" children={props => {
+            const { match } = props;
+            return (
+              <React.Fragment>
+                <BlogView match={match} {...props}/>
+                <BlogBar breadcrumbs={defaultBreadcrumbs}/>
+              </React.Fragment>
+            );
+          }} />
+          <Route path="/blog/edit/:postId" children={props => {
+            const { match } = props;
+            return (
+              <React.Fragment>
+                <BlogEdit match={match} {...props}/>
+                <BlogBar breadcrumbs={defaultBreadcrumbs}/>
+              </React.Fragment>
+            );
+          }} />
           <Route path="/blog">
             <Blog headerIsOpen={headerIsOpen} />
             <BlogBar breadcrumbs={defaultBreadcrumbs}/>

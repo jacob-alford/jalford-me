@@ -1,5 +1,5 @@
-import React , { useState } from 'react';
-import { Motion , spring , presets } from 'react-motion';
+import React from 'react';
+import { Motion , spring } from 'react-motion';
 
 export default function withPageFade(Component){
   return props => {
