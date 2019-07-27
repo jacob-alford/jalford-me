@@ -5,7 +5,7 @@ import {
   Container , Typography , Paper,
   CircularProgress, Grid, InputBase,
   Button, IconButton, Divider,
-  TextField
+  TextField, Switch, FormControlLabel
  } from '@material-ui/core/';
 import Slider from '@material-ui/core/Slider';
 import { Visibility , Edit } from '@material-ui/icons';
@@ -16,11 +16,7 @@ import withPageFade from '../../bindings/wrappers/withPageFade';
 import withUser from '../../bindings/wrappers/withUser';
 import usePostConnect from '../../bindings/hooks/usePostConnect';
 
-import { getPostId,
-         getLatestSnapshot,
-         getLatestSnapshotDate ,
-         getSliderSnapshots
-       } from './selectors.js';
+import { getPostId , getSliderSnapshots } from './selectors.js';
 
 const styles = {
   header:{
@@ -39,6 +35,7 @@ const styles = {
     paddingTop:'12px',
     paddingRight:'24px',
     paddingLeft:'24px',
+    paddingBottom:'12px',
     backgroundColor:'#DFEEFF'
   },
   sliderContainer:{
@@ -114,6 +111,12 @@ const NotFoundPlaceholder = () => (
   </Typography>
 );
 
+const NoSnapshots = () => (
+  <Typography style={styles.notFound} variant="h6">
+    There are no snapshots yet!
+  </Typography>
+);
+
 const PermissionDenied = () => (
   <Typography style={styles.denied} variant="h6">
     You do not have permission to edit this post!
@@ -121,7 +124,7 @@ const PermissionDenied = () => (
 );
 
 const EditPost = props => {
-  const { postData , user , isEditing , blogText , setBlogText } = props;
+  const { isEditing , blogText , setBlogText } = props;
   const handleUpdate = evt => setBlogText(evt.target.value);
   if(isEditing) return (
     <InputBase
@@ -138,7 +141,7 @@ const EditPost = props => {
 const LatestSnapshot = props => {
   const { data , blogText , selectedSnapshot } = props;
   // --- Blog Creation Greater than latest snapshot ---
-  if(data.snapshots.length > 0) {
+  if(data.snapshots.length > 0 && data.lastPublish) {
     if(data.lastPublish.seconds >= data.snapshots[0].date.seconds){
       if(blogText === data.body){
         return (
@@ -174,6 +177,12 @@ const LatestSnapshot = props => {
         );
       }
     }
+  }else if(!data.lastPublish){
+    return (
+      <Typography style={styles.latestSnapshotEdited} variant="caption">
+        Never Published
+      </Typography>
+    );
   }else return (
     <Typography style={styles.latestSnapshotSaved} variant="caption">
       Published Version is Most Recent
@@ -186,45 +195,72 @@ function BlogEdit(props){
   const { user } = props;
   const postId = getPostId(props);
   const data = usePostConnect(postId);
-  const hasPermissions = () =>
-       user.activeUser.permissions === 10
-    || user.activeUser.uid === data.postData.owner;
+
   // --- Snapshots ---
   const [selectedSnapshot,setSelectedSnapshot] = useState(null);
   const handleSnapshotSelect = (evt,value) => setSelectedSnapshot(value);
+  /* Sets the snapshot on load */
   useEffect(() => {
     if(data.postData && data.postData.snapshots.length > 0 && selectedSnapshot === null){
-      setSelectedSnapshot(1);
+      if(data.postData.isPublished){
+        setSelectedSnapshot(1);
+      }else{
+        setSelectedSnapshot(0);
+      }
     }
   },[data,selectedSnapshot]);
+
   // --- Title ---
   const [blogTitle,setBlogTitle] = useState(null);
   const handleTitleChange = evt => setBlogTitle(evt.target.value);
+  /* Sets the title on load */
   useEffect(() => {
     if(data.postData && !blogTitle){
       setBlogTitle(data.postData.title);
     }
   },[data,blogTitle]);
+
+  // --- Date ---
+  const [blogDate,setBlogDate] = useState(null);
+  const handleDateChange = evt => setBlogDate(evt.target.value);
+  /* Sets the date on load */
+  useEffect(() => {
+    if(data.postData && blogDate === null){
+      setBlogDate(new Date(data.postData.date.toDate()).toISOString().slice(0,-1));
+    }
+  },[data,blogDate]);
+
+  // --- isPublic ---
+  const [isPublic,setIsPublic] = useState(null);
+  const handleIsPublicToggle = () => setIsPublic(!isPublic);
+  /* Sets the switch on load */
+  useEffect(() => {
+    if(data.postData && isPublic === null){
+      setIsPublic(data.postData.isPublic);
+    }
+  },[data,isPublic]);
+
   // --- Body View/Edit ---
   const [isEditing,setIsEditing] = useState(false);
   const edit = () => setIsEditing(true);
   const preview = () => setIsEditing(false);
+
   // --- Body ---
   const [blogText,setBlogText] = useState(null);
+  /* Handles the body update when slider changes */
   useEffect(() => {
-    if(selectedSnapshot !== null && !isEditing){
+    if(data.postData && selectedSnapshot !== null && !isEditing){
       const index = getMappedSliderIndex(selectedSnapshot);
       if(index === "parent"){
         setBlogText(data.postData.body);
       }else{
         setBlogText(data.postData.snapshots[index].body);
       }
+    }else if(data.postData && selectedSnapshot === null && !isEditing){
+      setBlogText(data.postData.body);
     }
   },[selectedSnapshot,data,isEditing]);
-  const getMappedSliderIndex = snap => {
-    if(snap === 1) return "parent";
-    else return -1 * snap;
-  }
+
   // --- Outgoing ---
   const handleSnap = () => {
     if(hasPermissions() && isEditing){
@@ -246,6 +282,8 @@ function BlogEdit(props){
       post.update({
         body:blogText,
         title:blogTitle,
+        date:new Date(blogDate),
+        isPublic:isPublic,
         lastPublish:new Date(),
         snapshots:[
           {body:blogText,date:new Date()},
@@ -257,9 +295,14 @@ function BlogEdit(props){
       }).catch(error => console.error(error));
     }
   }
+
+  // --- Helpers ---
   const bodyHasChanged = () => {
     const index = getMappedSliderIndex(selectedSnapshot);
-    if(index === "parent"){
+    if(index === null){
+      if(blogText !== "") return true;
+      else return false;
+    }else if(index === "parent"){
       if(blogText !== data.postData.body)
         return true;
       else
@@ -271,6 +314,15 @@ function BlogEdit(props){
         return false;
     }
   }
+  const getMappedSliderIndex = snap => {
+    if(snap === null) return null;
+    else if(snap === 1) return "parent";
+    else return -1 * snap;
+  }
+  const hasPermissions = () =>
+       user.activeUser.permissions === 10
+    || user.activeUser.uid === data.postData.owner;
+
   if(data.error) console.error(data.error);
   return (
     <Grid direction="column" container justify="center">
@@ -315,19 +367,23 @@ function BlogEdit(props){
             {newStyles => (
               <Container style={{opacity:newStyles.opacity,...styles.sliderContainer}}>
                 <Paper style={styles.sliderSheet}>
-                  <Typography variant="h6">
-                    Snapshots
-                  </Typography>
-                  <Slider
-                    valueLabelDisplay="auto"
-                    disabled={isEditing}
-                    min={-5}
-                    max={1}
-                    step={null}
-                    defaultValue={1}
-                    value={selectedSnapshot}
-                    onChange={handleSnapshotSelect}
-                    marks={getSliderSnapshots(data.postData)}/>
+                {(data.postData.snapshots.length > 0) ? (
+                  <React.Fragment>
+                    <Typography variant="h6">
+                      Snapshots
+                    </Typography>
+                    <Slider
+                      valueLabelDisplay="auto"
+                      disabled={isEditing}
+                      min={-5}
+                      max={1}
+                      step={null}
+                      defaultValue={(data.postData.isPublished) ? 1 : 0}
+                      value={selectedSnapshot}
+                      onChange={handleSnapshotSelect}
+                      marks={getSliderSnapshots(data.postData)}/>
+                  </React.Fragment>
+                ) : <NoSnapshots />}
                 </Paper>
               </Container>
             )}
@@ -343,11 +399,21 @@ function BlogEdit(props){
             {(data.postData && hasPermissions()) ? (
               <Motion defaultStyle={{opacity:0}} style={{opacity:1}}>
                 {newStyles => (
-                  <div style={{opacity:newStyles.opacity}}>
-                    <TextField label="Title" fullWidth onChange={handleTitleChange} value={blogTitle || ""}/>
+                  <Grid spacing={2} container direction="column" style={{opacity:newStyles.opacity}}>
+                    <Grid item>
+                      <TextField label="Title" onChange={handleTitleChange} value={blogTitle || ""}/>
+                    </Grid>
+                    <Grid item>
+                      <TextField type="datetime-local" label="Date" value={blogDate || new Date().toISOString()} onChange={handleDateChange} />
+                    </Grid>
+                    <Grid item>
+                      <FormControlLabel
+                        control={<Switch checked={isPublic} onChange={handleIsPublicToggle} />}
+                        label="Is Public" />
+                    </Grid>
                     <Divider style={{marginTop:'24px',marginBottom:'24px'}}/>
-                    <EditPost blogText={blogText} setBlogText={setBlogText} isEditing={isEditing} postData={data.postData} user={user.activeUser} />
-                  </div>
+                    <EditPost blogText={blogText} setBlogText={setBlogText} isEditing={isEditing} />
+                  </Grid>
                 )}
               </Motion>
             ) : null}
