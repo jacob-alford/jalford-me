@@ -47,11 +47,12 @@ function App() {
           </Route>
           <Route path="/about" component={About} />
           <Route path="/blog/view/:postId" children={props => {
-            const { match } = props;
+            const { match , history } = props;
+            console.log(props);
             return (
               <React.Fragment>
                 <BlogView match={match} {...props}/>
-                <BlogBar breadcrumbs={defaultBreadcrumbs}/>
+                <BlogBar match={match} history={history} context="inPostView" breadcrumbs={defaultBreadcrumbs}/>
               </React.Fragment>
             );
           }} />

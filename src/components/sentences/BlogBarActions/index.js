@@ -4,19 +4,21 @@ import { IconButton, Fade } from '@material-ui/core/';
 import { NoteAdd , Edit } from '@material-ui/icons/';
 
 export default function BlogBarActions(props){
-  const { user , context , color } = props;
+  const { user , context , color , setCreatePostIsOpen , history , match } = props;
+  const openCreatePost = () => setCreatePostIsOpen(true);
+  const editPost = () => history.push(`/blog/edit/${match.params.postId}`);
   return (
     <React.Fragment>
-      {(user.activeUser.permissions.value >= 8 && context==="inBlog") ? (
+      {(user.activeUser.permissions.value >= 8 && ["inPostView","inBlog"].includes(context)) ? (
         <Fade in={user.loggedIn} timeout={1500}>
-          <IconButton>
+          <IconButton onClick={openCreatePost}>
             <NoteAdd style={{color:color}}/>
           </IconButton>
         </Fade>
         ) : null}
-      {(user.activeUser.permissions.value >= 8 && context==="inPost") ? (
+      {(user.activeUser.permissions.value >= 8 && context==="inPostView") ? (
         <Fade in={user.loggedIn} timeout={1500}>
-          <IconButton color="inherit">
+          <IconButton onClick={editPost} color="inherit">
             <Edit style={{color:color}}/>
           </IconButton>
         </Fade>

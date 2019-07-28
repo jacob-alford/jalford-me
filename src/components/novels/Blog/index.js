@@ -13,7 +13,7 @@ import BlogInline from '../../words/BlogListing/BlogInline';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';
 
-import { blogCategories , blogSearchBy } from '../../../config';
+import { blogCategories } from '../../../config';
 
 import { StyledBlog } from './style.js';
 
@@ -45,9 +45,6 @@ function Blog(props) {
   // const { user } = props;
   useEffect(() => {
     setBlogPosts(tempBlogData);
-    setTimeout(() => {
-
-    },5000);
   },[blogPosts]);
   const handleCategoryUpdate = evt => {
     setSelectedCategory(evt.target.value);
@@ -68,7 +65,7 @@ function Blog(props) {
               <Paper className="filterCard">
                 <FormControl component="fieldset">
                   <FormLabel component="legend">
-                    Category
+                    Category Filter
                   </FormLabel>
                   <RadioGroup aria-label="Category" name="category" value={selectedCategory} onChange={handleCategoryUpdate}>
                     {blogCategories.map((category,index) => (
@@ -81,18 +78,6 @@ function Blog(props) {
             <Grid item>
               <Paper className="filterCard">
                 <Grid container direction="column">
-                  <Grid item>
-                    <FormControl component="fieldset">
-                      <FormLabel component="legend">
-                        Search by
-                      </FormLabel>
-                      <RadioGroup row aria-label="SearchBy" name="searchby" value={selectedSearchBy} onChange={handleSearchByUpdate}>
-                        {blogSearchBy.map((filter,index) => (
-                          <FormControlLabel key={`SearchBy${index}`} value={filter.toLowerCase()} control={<Radio color="primary"/>} label={filter} />
-                        ))}
-                      </RadioGroup>
-                    </FormControl>
-                  </Grid>
                   <Grid item>
                     <Paper>
                       <Grid container alignItems="center" direction="row">
@@ -107,7 +92,7 @@ function Blog(props) {
                   </Grid>
                   <Grid item className="textCenter">
                     <Button variant="contained" color="primary" className="searchButton">
-                      Submit
+                      Search
                     </Button>
                   </Grid>
                 </Grid>

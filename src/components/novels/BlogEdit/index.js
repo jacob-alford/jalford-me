@@ -1,11 +1,12 @@
 import React, { useState , useEffect } from 'react';
 import Markdown from 'react-markdown';
-import { Motion , spring } from 'react-motion';
+import { TransitionMotion , Motion , spring } from 'react-motion';
 import {
   Container , Typography , Paper,
   CircularProgress, Grid, InputBase,
   Button, IconButton, Divider,
-  TextField, Switch, FormControlLabel
+  TextField, Switch, FormControlLabel,
+  Chip
  } from '@material-ui/core/';
 import Slider from '@material-ui/core/Slider';
 import { Visibility , Edit } from '@material-ui/icons';
@@ -86,6 +87,9 @@ const styles = {
   },
   latestSnapshotContainer:{
     marginBottom:"14px"
+  },
+  chip:{
+    margin:"4px"
   }
 }
 
@@ -230,6 +234,37 @@ function BlogEdit(props){
     }
   },[data,blogDate]);
 
+  // --- Series (Category) ---
+  const [blogSeries,setBlogSeries] = useState(null);
+  const handleSeriesChange = evt => setBlogDate(evt.target.value);
+  /* Sets the series on load */
+  useEffect(() => {
+    if(data.postData && blogSeries === null){
+      setBlogSeries(data.postData.series || "");
+    }
+  },[data,blogSeries]);
+
+  // --- Tags ---
+  const [blogTags,setBlogTags] = useState(null);
+  const [addTagBox,setAddTagBox] = useState("");
+  const handleTagRemove = index => {
+    const copyTags = [...blogTags];
+    copyTags.splice(index,1);
+    setBlogTags(copyTags);
+  }
+  const handleAddTagBoxChange = evt => setAddTagBox(evt.target.value);
+  const handleAddTag = () => {
+    if(addTagBox !== ""){
+      setBlogTags([addTagBox,...blogTags]);
+    }
+  }
+  /* Sets the tags on load */
+  useEffect(() => {
+    if(data.postData && blogTags === null){
+      setBlogTags(data.postData.tags);
+    }
+  },[data,blogTags]);
+
   // --- isPublic ---
   const [isPublic,setIsPublic] = useState(null);
   const handleIsPublicToggle = () => setIsPublic(!isPublic);
@@ -284,14 +319,16 @@ function BlogEdit(props){
         title:blogTitle,
         date:new Date(blogDate),
         isPublic:isPublic,
+        tags:blogTags,
         lastPublish:new Date(),
+        series:blogSeries,
         snapshots:[
           {body:blogText,date:new Date()},
           ...data.postData.snapshots.slice(0,5)
         ]
       }).then(() => {
         console.log("Published!");
-        setSelectedSnapshot(1);
+        setSelectedSnapshot(0);
       }).catch(error => console.error(error));
     }
   }
@@ -399,17 +436,72 @@ function BlogEdit(props){
             {(data.postData && hasPermissions()) ? (
               <Motion defaultStyle={{opacity:0}} style={{opacity:1}}>
                 {newStyles => (
-                  <Grid spacing={2} container direction="column" style={{opacity:newStyles.opacity}}>
+                  <Grid container direction="column" style={{opacity:newStyles.opacity}}>
                     <Grid item>
-                      <TextField label="Title" onChange={handleTitleChange} value={blogTitle || ""}/>
-                    </Grid>
-                    <Grid item>
-                      <TextField type="datetime-local" label="Date" value={blogDate || new Date().toISOString()} onChange={handleDateChange} />
-                    </Grid>
-                    <Grid item>
-                      <FormControlLabel
-                        control={<Switch checked={isPublic} onChange={handleIsPublicToggle} />}
-                        label="Is Public" />
+                      <Grid container direction="row" alignItems="center" justify="space-around" spacing={1}>
+                        <Grid item>
+                          <Grid spacing={2} container direction="column">
+                            <Grid item>
+                              <TextField label="Title" onChange={handleTitleChange} value={blogTitle || ""}/>
+                            </Grid>
+                            <Grid item>
+                              <TextField type="datetime-local" label="Date" value={blogDate || new Date().toISOString()} onChange={handleDateChange} />
+                            </Grid>
+                            <Grid item>
+                              <FormControlLabel
+                                control={<Switch checked={isPublic} onChange={handleIsPublicToggle} />}
+                                label="Is Public" />
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item>
+                          <Grid container direction="column" spacing={2}>
+                            <Grid item>
+                              <Grid container>
+                                <TransitionMotion
+                                  styles={blogTags.map((tag,index) => {
+                                    return {
+                                      key:`tag${index}`,
+                                      style:{ scale:spring(1) },
+                                      data:tag
+                                    }
+                                  })}
+
+                                  willLeave={styleLeft => {
+                                    return { scale:spring(0) }
+                                  }}>
+                                  {newTags => (
+                                    <div>
+                                      {newTags.map((tag,index) => {
+                                        return (
+                                          <Grid style={{...styles.chip,transform:`scale(${tag.style.scale})`}} item key={tag.key}>
+                                            <Chip label={tag.data} color="primary" onDelete={() => handleTagRemove(index)}/>
+                                          </Grid>
+                                        );
+                                      })}
+                                    </div>
+                                  )}
+                                </TransitionMotion>
+                              </Grid>
+                            </Grid>
+                            <Grid item>
+                              <Grid container direction="row" spacing={1}>
+                                <Grid item>
+                                  <TextField label="Add Tag" value={addTagBox} onChange={handleAddTagBoxChange}/>
+                                </Grid>
+                                <Grid item>
+                                  <Button color="primary" variant="contained" onClick={handleAddTag}>
+                                    Add
+                                  </Button>
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                            <Grid item>
+                              <TextField label="Series" value={blogSeries} onChange={handleSeriesChange}/>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                      </Grid>
                     </Grid>
                     <Divider style={{marginTop:'24px',marginBottom:'24px'}}/>
                     <EditPost blogText={blogText} setBlogText={setBlogText} isEditing={isEditing} />

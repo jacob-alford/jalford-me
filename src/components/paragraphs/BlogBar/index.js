@@ -17,6 +17,7 @@ import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import LoginDialogue from '../../sentences/LoginDialogue';
 import SignupDialogue from '../../sentences/SignupDialogue';
 import BlogBarActions from '../../sentences/BlogBarActions';
+import CreatePostDialogue from '../../sentences/CreatePostDialogue';
 
 import { firebase } from '../../../index.js';
 
@@ -38,6 +39,7 @@ function BlogBar(props){
   const scrollTrigger = useScrollTrigger();
   const [signInIsOpen,setSignInIsOpen] = useState(false);
   const [signUpIsOpen,setSignUpIsOpen] = useState(false);
+  const [createPostIsOpen,setCreatePostIsOpen] = useState(false);
   const openSignIn = () => setSignInIsOpen(true);
   const openSignUp = () => setSignUpIsOpen(true);
   const closeSignIn = () => setSignInIsOpen(false);
@@ -46,6 +48,7 @@ function BlogBar(props){
   const [breadcrumbAnchor,setBreadcrumbAnchor] = useState(null);
   const { user,
           history,
+          match,
           title="Posts",
           context="inBlog",
           breadcrumbs
@@ -105,7 +108,7 @@ function BlogBar(props){
                 {(user.loggedIn) ? (
                   <React.Fragment>
                       <Grid item>
-                        <BlogBarActions color={textColor} user={user} context={context}/>
+                        <BlogBarActions setCreatePostIsOpen={setCreatePostIsOpen} color={textColor} user={user} match={match} history={history} context={context}/>
                       </Grid>
                       <Grid item>
                         <Fade in={user.loggedIn === true} timeout={1500}>
@@ -167,6 +170,7 @@ function BlogBar(props){
             <ListItemText primary="Sign Out" />
           </MenuItem>
         </Menu>
+        <CreatePostDialogue user={user} history={history} createPostIsOpen={createPostIsOpen} setCreatePostIsOpen={setCreatePostIsOpen} />
         <LoginDialogue signInIsOpen={signInIsOpen} setSignInIsOpen={setSignInIsOpen}/>
         <SignupDialogue signUpIsOpen={signUpIsOpen} setSignUpIsOpen={setSignUpIsOpen} />
       </React.Fragment>
