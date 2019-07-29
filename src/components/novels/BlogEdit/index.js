@@ -90,6 +90,9 @@ const styles = {
   },
   chip:{
     margin:"4px"
+  },
+  chipHolder:{
+    maxWidth:"270px"
   }
 }
 
@@ -250,12 +253,13 @@ function BlogEdit(props){
   const handleTagRemove = index => {
     const copyTags = [...blogTags];
     copyTags.splice(index,1);
+    console.log(blogTags);
     setBlogTags(copyTags);
   }
   const handleAddTagBoxChange = evt => setAddTagBox(evt.target.value);
   const handleAddTag = () => {
-    if(addTagBox !== ""){
-      setBlogTags([addTagBox,...blogTags]);
+    if(addTagBox.trim() !== "" && !blogTags.includes(addTagBox.trim())){
+      setBlogTags([addTagBox.trim(),...blogTags]);
     }
   }
   /* Sets the tags on load */
@@ -433,7 +437,7 @@ function BlogEdit(props){
             {(data.notFound || data.error) ? <NotFoundPlaceholder /> : null}
             {(data.isLoading) ? <LoadingPlaceholder /> : null}
             {(!data.isLoading && data.postData && !hasPermissions()) ? <PermissionDenied /> : null}
-            {(data.postData && hasPermissions()) ? (
+            {(blogTags && data.postData && hasPermissions()) ? (
               <Motion defaultStyle={{opacity:0}} style={{opacity:1}}>
                 {newStyles => (
                   <Grid container direction="column" style={{opacity:newStyles.opacity}}>
@@ -448,6 +452,9 @@ function BlogEdit(props){
                               <TextField type="datetime-local" label="Date" value={blogDate || new Date().toISOString()} onChange={handleDateChange} />
                             </Grid>
                             <Grid item>
+                              <TextField label="Series" value={blogSeries} onChange={handleSeriesChange}/>
+                            </Grid>
+                            <Grid item>
                               <FormControlLabel
                                 control={<Switch checked={isPublic} onChange={handleIsPublicToggle} />}
                                 label="Is Public" />
@@ -457,32 +464,35 @@ function BlogEdit(props){
                         <Grid item>
                           <Grid container direction="column" spacing={2}>
                             <Grid item>
-                              <Grid container>
-                                <TransitionMotion
-                                  styles={blogTags.map((tag,index) => {
-                                    return {
-                                      key:`tag${index}`,
-                                      style:{ scale:spring(1) },
-                                      data:tag
-                                    }
-                                  })}
-
-                                  willLeave={styleLeft => {
-                                    return { scale:spring(0) }
-                                  }}>
-                                  {newTags => (
-                                    <div>
-                                      {newTags.map((tag,index) => {
-                                        return (
-                                          <Grid style={{...styles.chip,transform:`scale(${tag.style.scale})`}} item key={tag.key}>
-                                            <Chip label={tag.data} color="primary" onDelete={() => handleTagRemove(index)}/>
-                                          </Grid>
-                                        );
-                                      })}
-                                    </div>
-                                  )}
-                                </TransitionMotion>
-                              </Grid>
+                              <TransitionMotion
+                                styles={blogTags.map((tag,index) => {
+                                  return {
+                                    key:`tag${tag}`,
+                                    style:{ scale:spring(1) },
+                                    data:tag
+                                  }
+                                })}
+                                defaultStyle={blogTags.map(() => {
+                                  return { scale:0 };
+                                })}
+                                willEnter={styleEnter => {
+                                  return { scale:0 }
+                                }}
+                                willLeave={styleLeft => {
+                                  return { scale:spring(0) }
+                                }}>
+                                {newTags => (
+                                  <Grid style={styles.chipHolder} container direction="row-reverse" justify="center">
+                                    {newTags.map((tag,index) => {
+                                      return (
+                                        <Grid style={{...styles.chip,transform:`scaleY(${tag.style.scale})`}} item key={tag.key}>
+                                          <Chip label={tag.data} color="primary" clickable={false} onDelete={() => handleTagRemove(index)}/>
+                                        </Grid>
+                                      );
+                                    })}
+                                  </Grid>
+                                )}
+                              </TransitionMotion>
                             </Grid>
                             <Grid item>
                               <Grid container direction="row" spacing={1}>
@@ -495,9 +505,6 @@ function BlogEdit(props){
                                   </Button>
                                 </Grid>
                               </Grid>
-                            </Grid>
-                            <Grid item>
-                              <TextField label="Series" value={blogSeries} onChange={handleSeriesChange}/>
                             </Grid>
                           </Grid>
                         </Grid>
