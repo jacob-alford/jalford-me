@@ -7,6 +7,7 @@ import {
  } from '@material-ui/core/';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';
+import withUser from '../../bindings/wrappers/withUser';
 import usePostConnect from '../../bindings/hooks/usePostConnect';
 
 import getPostId from './selectors.js';
@@ -61,8 +62,9 @@ const NotFoundPlaceholder = () => (
 );
 
 function BlogView(props){
+  const { user } = props;
   const postId = getPostId(props);
-  const data = usePostConnect(postId);
+  const data = usePostConnect(postId,user);
   if(data.error) console.error(data.error);
   return (
     <Grid container justify="center">
@@ -87,4 +89,4 @@ function BlogView(props){
   );
 }
 
-export default withPageFade(BlogView);
+export default withUser(withPageFade(BlogView));

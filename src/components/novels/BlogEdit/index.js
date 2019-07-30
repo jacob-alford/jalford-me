@@ -201,7 +201,7 @@ function BlogEdit(props){
   // --- Incoming ---
   const { user } = props;
   const postId = getPostId(props);
-  const data = usePostConnect(postId);
+  const data = usePostConnect(postId,user);
 
   // --- Snapshots ---
   const [selectedSnapshot,setSelectedSnapshot] = useState(null);
@@ -364,7 +364,7 @@ function BlogEdit(props){
        user.activeUser.permissions === 10
     || user.activeUser.uid === data.postData.owner;
 
-  if(data.error) console.error(data.error);
+  // if(data.error) console.error(data.error);
   return (
     <Grid direction="column" container justify="center">
       {(data.postData && hasPermissions()) ? (
