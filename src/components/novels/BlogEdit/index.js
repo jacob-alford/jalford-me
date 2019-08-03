@@ -85,6 +85,10 @@ const styles = {
     color:"#DFEEFF",
     transition:'color .25s'
   },
+  latestSnapshotWarning:{
+    color:"#E84040",
+    transition:'color .25s'
+  },
   latestSnapshotContainer:{
     marginBottom:"14px"
   },
@@ -124,12 +128,6 @@ const NoSnapshots = () => (
   </Typography>
 );
 
-const PermissionDenied = () => (
-  <Typography style={styles.denied} variant="h6">
-    You do not have permission to edit this post!
-  </Typography>
-);
-
 const EditPost = props => {
   const { isEditing , blogText , setBlogText } = props;
   const handleUpdate = evt => setBlogText(evt.target.value);
@@ -159,27 +157,35 @@ const LatestSnapshot = props => {
       }else{
         return (
           <Typography style={styles.latestSnapshotEdited} variant="caption">
-            Edited - Don't forget to snap!
+            Changed since last publish - Don't forget to snap!
           </Typography>
         );
       }
     }else{
-      if(blogText ===  data.snapshots[0].body && selectedSnapshot !== 1){
+      if(blogText ===  data.snapshots[0].body){
         return (
           <Typography style={styles.latestSnapshotSaved} variant="caption">
             Most Recent Snapshot
           </Typography>
         );
       }else if(blogText !==  data.snapshots[0].body && selectedSnapshot === 1){
-        return (
-          <Typography style={styles.latestSnapshotSaved} variant="caption">
-            Newer Snapshot Available
-          </Typography>
-        );
+        if(blogText !== data.body){
+          return (
+            <Typography style={styles.latestSnapshotWarning} variant="caption">
+              Editing from older published version, newer snapshot available!
+            </Typography>
+          );
+        }else{
+          return (
+            <Typography style={styles.latestSnapshotSaved} variant="caption">
+              Newer Snapshot Available
+            </Typography>
+          );
+        }
       }else{
         return (
           <Typography style={styles.latestSnapshotEdited} variant="caption">
-            Edited - Don't forget to snap!
+            Changed since latest snapshot - Don't forget to snap!
           </Typography>
         );
       }
@@ -201,21 +207,31 @@ function BlogEdit(props){
   // --- Incoming ---
   const { user } = props;
   const postId = getPostId(props);
-  const data = usePostConnect(postId,user);
+  const data = usePostConnect(postId);
 
   // --- Snapshots ---
   const [selectedSnapshot,setSelectedSnapshot] = useState(null);
   const handleSnapshotSelect = (evt,value) => setSelectedSnapshot(value);
   /* Sets the snapshot on load */
   useEffect(() => {
-    if(data.postData && data.postData.snapshots.length > 0 && selectedSnapshot === null){
-      if(data.postData.isPublished){
-        setSelectedSnapshot(1);
+    if(data.postData){
+      if(data.postData.snapshots && data.postData.snapshots.length > 0){
+        if(data.postData.lastPublish){
+          if(data.postData.snapshots[0].date.seconds > data.postData.lastPublish.seconds){
+            setSelectedSnapshot(0);
+          }else{
+            setSelectedSnapshot(1);
+          }
+        }else{
+          setSelectedSnapshot(0);
+        }
       }else{
-        setSelectedSnapshot(0);
+        if(data.postData.lastPublish){
+          setSelectedSnapshot(1);
+        }
       }
     }
-  },[data,selectedSnapshot]);
+  },[data.postData]);
 
   // --- Title ---
   const [blogTitle,setBlogTitle] = useState(null);
@@ -225,7 +241,7 @@ function BlogEdit(props){
     if(data.postData && !blogTitle){
       setBlogTitle(data.postData.title);
     }
-  },[data,blogTitle]);
+  },[data.postData,blogTitle]);
 
   // --- Date ---
   const [blogDate,setBlogDate] = useState(null);
@@ -235,7 +251,7 @@ function BlogEdit(props){
     if(data.postData && blogDate === null){
       setBlogDate(new Date(data.postData.date.toDate()).toISOString().slice(0,-1));
     }
-  },[data,blogDate]);
+  },[data.postData,blogDate]);
 
   // --- Series (Category) ---
   const [blogSeries,setBlogSeries] = useState(null);
@@ -245,7 +261,7 @@ function BlogEdit(props){
     if(data.postData && blogSeries === null){
       setBlogSeries(data.postData.series || "");
     }
-  },[data,blogSeries]);
+  },[data.postData,blogSeries]);
 
   // --- Tags ---
   const [blogTags,setBlogTags] = useState(null);
@@ -253,7 +269,6 @@ function BlogEdit(props){
   const handleTagRemove = index => {
     const copyTags = [...blogTags];
     copyTags.splice(index,1);
-    console.log(blogTags);
     setBlogTags(copyTags);
   }
   const handleAddTagBoxChange = evt => setAddTagBox(evt.target.value);
@@ -267,7 +282,7 @@ function BlogEdit(props){
     if(data.postData && blogTags === null){
       setBlogTags(data.postData.tags);
     }
-  },[data,blogTags]);
+  },[data.postData,blogTags]);
 
   // --- isPublic ---
   const [isPublic,setIsPublic] = useState(null);
@@ -277,7 +292,7 @@ function BlogEdit(props){
     if(data.postData && isPublic === null){
       setIsPublic(data.postData.isPublic);
     }
-  },[data,isPublic]);
+  },[data.postData,isPublic]);
 
   // --- Body View/Edit ---
   const [isEditing,setIsEditing] = useState(false);
@@ -298,11 +313,11 @@ function BlogEdit(props){
     }else if(data.postData && selectedSnapshot === null && !isEditing){
       setBlogText(data.postData.body);
     }
-  },[selectedSnapshot,data,isEditing]);
+  },[selectedSnapshot,data.postData,isEditing]);
 
   // --- Outgoing ---
   const handleSnap = () => {
-    if(hasPermissions() && isEditing){
+    if(hasPermissions() && isEditing && bodyHasChanged()){
       const db = firebase.firestore();
       const post = db.collection("posts").doc(data.postData.uid);
       post.update({
@@ -315,7 +330,7 @@ function BlogEdit(props){
     }
   }
   const handlePublish = () => {
-    if(hasPermissions() && (isEditing || selectedSnapshot !== 1)){
+    if(hasPermissions() && somethingHasChanged()){
       const db = firebase.firestore();
       const post = db.collection("posts").doc(data.postData.uid);
       post.update({
@@ -332,53 +347,61 @@ function BlogEdit(props){
         ]
       }).then(() => {
         console.log("Published!");
-        setSelectedSnapshot(0);
+        setSelectedSnapshot(1);
       }).catch(error => console.error(error));
     }
   }
 
   // --- Helpers ---
-  const bodyHasChanged = () => {
-    const index = getMappedSliderIndex(selectedSnapshot);
-    if(index === null){
-      if(blogText !== "") return true;
-      else return false;
-    }else if(index === "parent"){
-      if(blogText !== data.postData.body)
-        return true;
-      else
-        return false;
+  const somethingHasChanged = () => {
+      const testDate1 = new Date(blogDate).toISOString();
+      const testDate2 = new Date(data.postData.date.toDate()).toISOString();
+      return bodyHasChanged()
+        || (blogTitle !== data.postData.title)
+        || (testDate1 !== testDate2)
+        || (isPublic !== data.postData.isPublic)
+        || (blogTags !== data.postData.tags)
+        || (blogSeries !== data.postData.series);
+  }
+  const bodyHasChanged = (checkSnapshots = false) => {
+    if(!data.postData) return false;
+    if(checkSnapshots){
+      if(!data.postData.snapshots || data.postData.snapshots.length === 0)
+        return bodyHasChanged(false);
+      const index = getMappedSliderIndex(selectedSnapshot);
+      if(index === null || index === "parent") return bodyHasChanged(false);
+      else if(blogText === data.postData.snapshots[index].body) return false;
+      else return true;
     }else{
-      if(blogText !== data.postData.snapshots[index].body)
-        return true;
-      else
-        return false;
+      if(blogText === data.postData.body) return false;
+      else return true;
     }
   }
   const getMappedSliderIndex = snap => {
     if(snap === null) return null;
     else if(snap === 1) return "parent";
-    else return -1 * snap;
+    else return Math.abs(snap);
   }
-  const hasPermissions = () =>
-       user.activeUser.permissions === 10
+  const hasPermissions = () => {
+    if(!data.postData) return false;
+    else return user.activeUser.permissions === 10
     || user.activeUser.uid === data.postData.owner;
+  }
 
-  // if(data.error) console.error(data.error);
   return (
     <Grid direction="column" container justify="center">
-      {(data.postData && hasPermissions()) ? (
+      {(hasPermissions()) ? (
         <Grid item>
           <Grid style={styles.iconGrid}  container direction="row" alignItems="center" justify="space-between">
             <Grid item>
-              <Button disabled={!isEditing} onClick={handleSnap} style={(isEditing) ? styles.updateSnapshot : styles.disabledUpdateSnapshot} variant="outlined">
+              <Button disabled={!bodyHasChanged(true)} onClick={handleSnap} style={(bodyHasChanged(true)) ? styles.updateSnapshot : styles.disabledUpdateSnapshot} variant="outlined">
                 Snap
               </Button>
             </Grid>
             <Grid item>
               {(isEditing) ? (
-                  <IconButton onClick={preview} disabled={bodyHasChanged()}>
-                    <Visibility style={(bodyHasChanged()) ? {...styles.icon,color:"gray"} : styles.icon} />
+                  <IconButton onClick={preview} disabled={bodyHasChanged(true)}>
+                    <Visibility style={(bodyHasChanged(true)) ? {...styles.icon,color:"gray"} : styles.icon} />
                   </IconButton>
                 )
               : (
@@ -386,14 +409,14 @@ function BlogEdit(props){
                     <Edit style={styles.icon} />
                   </IconButton>
                 )}
-                <Button onClick={handlePublish} disabled={selectedSnapshot === 1 && !isEditing} style={(selectedSnapshot !== 1 || isEditing) ? styles.save : styles.saveDisabled} variant="outlined">
+                <Button onClick={handlePublish} disabled={!somethingHasChanged()} style={(somethingHasChanged()) ? styles.save : styles.saveDisabled} variant="outlined">
                   Publish
                 </Button>
             </Grid>
           </Grid>
         </Grid>
       ) : null}
-      {(data.postData && hasPermissions()) ? (
+      {(hasPermissions()) ? (
         <Grid item>
           <Grid container justify="center" style={styles.latestSnapshotContainer}>
             <Grid item>
@@ -402,7 +425,7 @@ function BlogEdit(props){
           </Grid>
         </Grid>
       ) : null}
-      {(data.postData && hasPermissions()) ?
+      {(hasPermissions() && selectedSnapshot !== null) ?
         <Grid item>
           <Motion defaultStyle={{opacity:0}} style={{opacity:spring(1)}}>
             {newStyles => (
@@ -419,7 +442,6 @@ function BlogEdit(props){
                       min={-5}
                       max={1}
                       step={null}
-                      defaultValue={(data.postData.isPublished) ? 1 : 0}
                       value={selectedSnapshot}
                       onChange={handleSnapshotSelect}
                       marks={getSliderSnapshots(data.postData)}/>
@@ -434,10 +456,9 @@ function BlogEdit(props){
       <Grid item>
         <Container style={styles.container}>
           <Paper style={styles.sheet}>
-            {(data.notFound || data.error) ? <NotFoundPlaceholder /> : null}
+            {(!data.isLoading && (data.error || !user.loggedIn)) ? <NotFoundPlaceholder /> : null}
             {(data.isLoading) ? <LoadingPlaceholder /> : null}
-            {(!data.isLoading && data.postData && !hasPermissions()) ? <PermissionDenied /> : null}
-            {(blogTags && data.postData && hasPermissions()) ? (
+            {(blogTags && hasPermissions()) ? (
               <Motion defaultStyle={{opacity:0}} style={{opacity:1}}>
                 {newStyles => (
                   <Grid container direction="column" style={{opacity:newStyles.opacity}}>

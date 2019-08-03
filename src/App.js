@@ -48,7 +48,6 @@ function App() {
           <Route path="/about" component={About} />
           <Route path="/blog/view/:postId" children={props => {
             const { match , history } = props;
-            console.log(props);
             return (
               <React.Fragment>
                 <BlogView match={match} {...props}/>

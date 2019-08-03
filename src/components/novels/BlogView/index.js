@@ -65,14 +65,13 @@ function BlogView(props){
   const { user } = props;
   const postId = getPostId(props);
   const data = usePostConnect(postId,user);
-  if(data.error) console.error(data.error);
   return (
     <Grid container justify="center">
       <Container style={styles.container}>
         <Paper style={styles.sheet}>
-          {(data.notFound || data.error) ? <NotFoundPlaceholder /> : null}
+          {(!data.isLoading && (data.error || !data.postData)) ? <NotFoundPlaceholder /> : null}
           {(data.isLoading) ? <LoadingPlaceholder /> : null}
-          {(data.postData) ? (
+          {(!data.isLoading && data.postData) ? (
             <Motion defaultStyle={styles.bodyIn} style={styles.bodyFinal}>
               {newStyle => {
                 const { translateY } = newStyle;

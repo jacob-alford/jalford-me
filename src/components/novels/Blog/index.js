@@ -17,8 +17,6 @@ import { blogCategories } from '../../../config';
 
 import { StyledBlog } from './style.js';
 
-// import firebase from 'firebase';
-
 const tempBlogData = [
   { header:"Foundation of Epistemology",
     body:"This post introduces the foundation of epistemology necessary for future posts. It will address information, concepts, and knowledge; the 'location' of knowledge; and the formation of priori, and of posteriori.",
@@ -40,7 +38,6 @@ const tempBlogData = [
 function Blog(props) {
   const [blogPosts,setBlogPosts] = useState([]);
   const [selectedCategory,setSelectedCategory] = useState("philosophy");
-  const [selectedSearchBy,setSelectedSearchBy] = useState("tags");
   const [searchToken,setSearchToken] = useState("");
   // const { user } = props;
   useEffect(() => {
@@ -48,9 +45,6 @@ function Blog(props) {
   },[blogPosts]);
   const handleCategoryUpdate = evt => {
     setSelectedCategory(evt.target.value);
-  }
-  const handleSearchByUpdate = evt => {
-    setSelectedSearchBy(evt.target.value);
   }
   const handleSearchInput = evt => {
     setSearchToken(evt.target.value);
