@@ -60,7 +60,7 @@ function App() {
             return (
               <React.Fragment>
                 <BlogEdit match={match} {...props}/>
-                <BlogBar breadcrumbs={defaultBreadcrumbs}/>
+                <BlogBar context="inPostEdit" breadcrumbs={defaultBreadcrumbs}/>
               </React.Fragment>
             );
           }} />
