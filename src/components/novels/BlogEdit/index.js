@@ -206,6 +206,7 @@ const LatestSnapshot = props => {
 function BlogEdit(props){
   // --- Helpers ---
   const somethingHasChanged = (checkSnapshots = false) => {
+      console.log(blogDate);
       const testDate1 = new Date(blogDate).toISOString();
       const testDate2 = new Date(data.postData.date.toDate()).toISOString();
       return bodyHasChanged(checkSnapshots)
@@ -297,7 +298,7 @@ function BlogEdit(props){
 
   // --- Series (Category) ---
   const [blogSeries,setBlogSeries] = useState(null);
-  const handleSeriesChange = evt => setBlogDate(evt.target.value);
+  const handleSeriesChange = evt => setBlogSeries(evt.target.value);
   /* Sets the series on load */
   useEffect(() => {
     if((data.postData && blogSeries === null) || shouldUpdate){
