@@ -12,7 +12,7 @@ export default function usePostConnect(id){
       const unsubscribe = post.onSnapshot(doc => {
         setPostData(doc.data());
       }, error => setError(error));
-      return () => unsubscribe();
+      return () => unsubscribe;
     }
   },[error,id,postData]);
   useEffect(() => {

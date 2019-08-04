@@ -204,10 +204,52 @@ const LatestSnapshot = props => {
 }
 
 function BlogEdit(props){
+  // --- Helpers ---
+  const somethingHasChanged = (checkSnapshots = false) => {
+      const testDate1 = new Date(blogDate).toISOString();
+      const testDate2 = new Date(data.postData.date.toDate()).toISOString();
+      return bodyHasChanged(checkSnapshots)
+        || (blogTitle !== data.postData.title)
+        || (testDate1 !== testDate2)
+        || (isPublic !== data.postData.isPublic)
+        || (blogTags !== data.postData.tags)
+        || (blogSeries !== data.postData.series);
+  }
+  const bodyHasChanged = (checkSnapshots = false) => {
+    if(!data.postData) return false;
+    if(checkSnapshots){
+      if(!data.postData.snapshots || data.postData.snapshots.length === 0)
+        return bodyHasChanged(false);
+      const index = getMappedSliderIndex(selectedSnapshot);
+      if(index === null || index === "parent") return bodyHasChanged(false);
+      else if(blogText === data.postData.snapshots[index].body) return false;
+      else return true;
+    }else{
+      if(blogText === data.postData.body) return false;
+      else return true;
+    }
+  }
+  const getMappedSliderIndex = snap => {
+    if(snap === null) return null;
+    else if(snap === 1) return "parent";
+    else return Math.abs(snap);
+  }
+  const hasPermissions = () => {
+    if(!data.postData) return false;
+    else return user.activeUser.permissions === 10
+    || user.activeUser.uid === data.postData.owner;
+  }
+
   // --- Incoming ---
   const { user } = props;
   const postId = getPostId(props);
   const data = usePostConnect(postId);
+
+  // --- Database Resync ---
+  const [shouldUpdate,setShouldUpdate] = useState(false);
+  useEffect(() => {
+    if(shouldUpdate) setShouldUpdate(false);
+  },[shouldUpdate]);
 
   // --- Snapshots ---
   const [selectedSnapshot,setSelectedSnapshot] = useState(null);
@@ -238,30 +280,30 @@ function BlogEdit(props){
   const handleTitleChange = evt => setBlogTitle(evt.target.value);
   /* Sets the title on load */
   useEffect(() => {
-    if(data.postData && !blogTitle){
+    if((data.postData && !blogTitle) || shouldUpdate){
       setBlogTitle(data.postData.title);
     }
-  },[data.postData,blogTitle]);
+  },[data.postData,blogTitle,shouldUpdate]);
 
   // --- Date ---
   const [blogDate,setBlogDate] = useState(null);
   const handleDateChange = evt => setBlogDate(evt.target.value);
   /* Sets the date on load */
   useEffect(() => {
-    if(data.postData && blogDate === null){
+    if((data.postData && blogDate === null) || shouldUpdate){
       setBlogDate(new Date(data.postData.date.toDate()).toISOString().slice(0,-1));
     }
-  },[data.postData,blogDate]);
+  },[data.postData,blogDate,shouldUpdate]);
 
   // --- Series (Category) ---
   const [blogSeries,setBlogSeries] = useState(null);
   const handleSeriesChange = evt => setBlogDate(evt.target.value);
   /* Sets the series on load */
   useEffect(() => {
-    if(data.postData && blogSeries === null){
+    if((data.postData && blogSeries === null) || shouldUpdate){
       setBlogSeries(data.postData.series || "");
     }
-  },[data.postData,blogSeries]);
+  },[data.postData,blogSeries,shouldUpdate]);
 
   // --- Tags ---
   const [blogTags,setBlogTags] = useState(null);
@@ -279,20 +321,20 @@ function BlogEdit(props){
   }
   /* Sets the tags on load */
   useEffect(() => {
-    if(data.postData && blogTags === null){
+    if((data.postData && blogTags === null) || shouldUpdate){
       setBlogTags(data.postData.tags);
     }
-  },[data.postData,blogTags]);
+  },[data.postData,blogTags,shouldUpdate]);
 
   // --- isPublic ---
   const [isPublic,setIsPublic] = useState(null);
   const handleIsPublicToggle = () => setIsPublic(!isPublic);
   /* Sets the switch on load */
   useEffect(() => {
-    if(data.postData && isPublic === null){
+    if((data.postData && isPublic === null) || shouldUpdate){
       setIsPublic(data.postData.isPublic);
     }
-  },[data.postData,isPublic]);
+  },[data.postData,isPublic,shouldUpdate]);
 
   // --- Body View/Edit ---
   const [isEditing,setIsEditing] = useState(false);
@@ -325,8 +367,11 @@ function BlogEdit(props){
           {body:blogText,date:new Date()},
           ...data.postData.snapshots.slice(0,5)
         ]
-      }).then(() => console.log("Snapped!"))
-        .catch(error => console.error(error));
+      }).then(() => {
+        console.log("Snapped!");
+        setShouldUpdate(true);
+      }).catch(error => console.error(error))
+        .finally(() => setIsEditing(false));
     }
   }
   const handlePublish = () => {
@@ -347,45 +392,10 @@ function BlogEdit(props){
         ]
       }).then(() => {
         console.log("Published!");
-        setSelectedSnapshot(1);
-      }).catch(error => console.error(error));
+        setShouldUpdate(true);
+      }).catch(error => console.error(error))
+        .finally(() => setIsEditing(false));
     }
-  }
-
-  // --- Helpers ---
-  const somethingHasChanged = () => {
-      const testDate1 = new Date(blogDate).toISOString();
-      const testDate2 = new Date(data.postData.date.toDate()).toISOString();
-      return bodyHasChanged()
-        || (blogTitle !== data.postData.title)
-        || (testDate1 !== testDate2)
-        || (isPublic !== data.postData.isPublic)
-        || (blogTags !== data.postData.tags)
-        || (blogSeries !== data.postData.series);
-  }
-  const bodyHasChanged = (checkSnapshots = false) => {
-    if(!data.postData) return false;
-    if(checkSnapshots){
-      if(!data.postData.snapshots || data.postData.snapshots.length === 0)
-        return bodyHasChanged(false);
-      const index = getMappedSliderIndex(selectedSnapshot);
-      if(index === null || index === "parent") return bodyHasChanged(false);
-      else if(blogText === data.postData.snapshots[index].body) return false;
-      else return true;
-    }else{
-      if(blogText === data.postData.body) return false;
-      else return true;
-    }
-  }
-  const getMappedSliderIndex = snap => {
-    if(snap === null) return null;
-    else if(snap === 1) return "parent";
-    else return Math.abs(snap);
-  }
-  const hasPermissions = () => {
-    if(!data.postData) return false;
-    else return user.activeUser.permissions === 10
-    || user.activeUser.uid === data.postData.owner;
   }
 
   return (
