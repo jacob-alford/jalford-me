@@ -38,7 +38,10 @@ const styles = {
     color:"white"
   },
   header:{
-    textAlign:'center'
+    textAlign:'center',
+    background:'linear-gradient(#00d2ff,#3a7bd5)',
+    WebkitBackgroundClip:'text',
+    WebkitTextFillColor:'transparent'
   }
 }
 
@@ -96,10 +99,12 @@ export default function DuncanStrauss(props){
       const testValue = Math.random();
       if(testValue < .0005){
         lightning = 1;
+        lightningCounter = 0;
       }
       if(lightning > 0){
         const interpVal =
           lightning - .15 * Math.random() * Math.exp(lightning);
+        console.log(lightning);
         if(interpVal > 0)
           lightning = interpVal;
         else lightning = 0;
