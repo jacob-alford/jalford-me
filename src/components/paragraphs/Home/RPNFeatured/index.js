@@ -9,7 +9,7 @@ const styles = {
   banner:{
     marginTop:"8px",
     height:"100vh",
-    maxHeight:"500px",
+    maxHeight:"500px"
   },
   container:{
     position:'absolute',
