@@ -119,24 +119,24 @@ export default function Philosophy(props){
       }
     }
 
-    const randomGray = () => Math.floor(Math.random() * 255 + 175);
+    const randomGray = () => Math.floor(Math.random() * 108 + 147);
     const randomColor = () => [randomGray(),randomGray(),randomGray()];
     const colorString = (arr,alpha) => `rgba(${arr[0]},${arr[1]},${arr[2]},${alpha})`;
 
     class randomBokehBall{
       constructor(width,height,index){
         this.index = index;
-        this.maxRadius = Math.random() * (width / 5) + (width / 48);
-        this.currentRadius = Math.random() * (width / 8) + (width / 55);
+        this.maxRadius = Math.random() * (10 * width / 100) + (width / 42);
+        this.currentRadius = Math.random() * (10 * width / 100) + (width / 42);
         this.x = Math.random() * width;
         this.y = Math.random() * height;
         this.growRate = Math.random() * .05 + .0125;
         this.decayRate = Math.random() * .004 + .0122;
         this.fadeRate = .005;
         this.color = randomColor();
-        this.lingerDuration = Math.floor(Math.random() * 1000);
+        this.lingerDuration = Math.floor(Math.random() * 300);
         this.currentLinger = 0;
-        this.maxOpacity = Math.random() * .3 + .05;
+        this.maxOpacity = Math.random() * .4 + .15;
         this.currentFade = 0;
       }
     }
@@ -172,9 +172,8 @@ export default function Philosophy(props){
 
     const bokeh = [];
     let counter = 0;
-    let breakpointStagger = 300;
+    let breakpointStagger = 250;
     const maxBokeh = 89;
-    bokeh.push(new randomBokehBall(width,height,0));
 
     let request;
     const draw = () => {
@@ -182,7 +181,7 @@ export default function Philosophy(props){
       updateWidthHeight();
       if(counter > breakpointStagger && bokeh.length <= maxBokeh){
         bokeh.push(new randomBokehBall(width,height,bokeh.length - 1));
-        breakpointStagger = Math.random() * 100 + 36;
+        breakpointStagger = Math.random() * 150 + 36;
         counter = 0;
       }
       context.clearRect(0,0,width,height);

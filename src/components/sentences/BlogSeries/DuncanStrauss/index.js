@@ -21,8 +21,7 @@ export default function DuncanStrauss(props){
       top:"0px",
       width:'100%',
       height:'100%',
-      background: 'linear-gradient(to bottom, #0f0c29, #302b63, #24243e)',
-      filter: 'blur(.15em)'
+      background: 'linear-gradient(to bottom, #0f0c29, #302b63, #24243e)'
     },
     parallaxContainer:{
       width:widthStr,
@@ -70,11 +69,13 @@ export default function DuncanStrauss(props){
 
   useEffect(() => {
     const context = bgCanvas.current.getContext("2d");
+    bgCanvas.current.width *= 2;
+    bgCanvas.current.height *= 2;
     const width = bgCanvas.current.width;
     const height = bgCanvas.current.height;
 
     context.strokeStyle = 'rgba(174,194,224,.5)';
-    context.lineWidth = .25;
+    context.lineWidth = .75;
     context.lineCap = 'round';
 
     const particles = [];
@@ -83,8 +84,8 @@ export default function DuncanStrauss(props){
         x: Math.random() * width,
         y: Math.random() * height,
         dx: Math.random() * .25,
-        dy: Math.random() * 2 + .5,
-        length: Math.random()
+        dy: Math.random() * 3.5 + 2,
+        length: Math.random() * 3.5
       });
     const fall = particle => {
       particle.x += particle.dx;
