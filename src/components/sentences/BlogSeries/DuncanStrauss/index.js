@@ -120,6 +120,8 @@ export default function DuncanStrauss(){
       if(testValue < .00069)
         lightning = 1;
       if(lightning > 0){
+        const testValue2 = Math.random();
+        if(testValue2 < .005) lightning = 1;
         const interpVal =
           lightning - .04 * (Math.random() * .05 + .25) * Math.exp(lightning);
         if(interpVal > 0)
