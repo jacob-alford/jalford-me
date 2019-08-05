@@ -44,9 +44,42 @@ const styles = {
 
 // 94892796
 
-export default function Philosophy(){
+export default function Philosophy(props){
   const data = useSeriesConnect("Duncan");
   const [selectedPhi,setSelectedPhi] = useState(0);
+  const { minHeight = 1000 , widthStr = '100vw' } = props;
+  const styles = {
+    canvas:{
+      position:"absolute",
+      left:"0px",
+      top:"0px",
+      width:'100%',
+      height:'100%',
+      background: 'linear-gradient(to bottom, #000C40,#F0F2F0)'
+    },
+    parallaxContainer:{
+      width:widthStr,
+      minHeight:`${minHeight}px`
+    },
+    container:{
+      position:'absolute',
+      top:'0',
+      left:'0',
+      right:'0',
+      bottom:'0',
+      boxShadow:'inset 0px 0px 70px 0px rgba(0,0,0,.8)'
+    },
+    navButton:{
+      color:"white"
+    },
+    header:{
+      textAlign:'center',
+      background:'linear-gradient(#C33764, #1D2671)',
+      WebkitBackgroundClip:'text',
+      WebkitTextFillColor:'transparent'
+    }
+  }
+
   const navRight = () => {
     if(data.postData && data.postData.length > 0)
       setSelectedPhi((selectedPhi + 1) % data.postData.length);
@@ -70,17 +103,19 @@ export default function Philosophy(){
   useEffect(() => {
     const context = bgCanvas.current.getContext("2d");
     bgCanvas.current.width = window.innerWidth;
-    bgCanvas.current.height = window.innerHeight * .75;
+    bgCanvas.current.height = Math.max(minHeight,window.innerHeight * .75);
     let width = bgCanvas.current.width;
     let height = bgCanvas.current.height;
-    let h2w = width/height;
+    let w2h = (height > width) ? height/width : (height === width) ? 1 : width/height;
+    let h2w = (width > height) ? width/height : (height === width) ? 1 : height/width;
     const updateWidthHeight = () => {
       if(bgCanvas.current.width !== window.innerWidth || bgCanvas.current.height !== window.innerHeight * .75){
         bgCanvas.current.width = window.innerWidth;
-        bgCanvas.current.height = window.innerHeight * .75;
+        bgCanvas.current.height = Math.max(minHeight,window.innerHeight * .75);
         width = bgCanvas.current.width;
         height = bgCanvas.current.height;
-        h2w = width/height;
+        w2h = (height > width) ? height/width : (height === width) ? 1 : width/height;
+        h2w = (width > height) ? width/height : (height === width) ? 1 : height/width;
       }
     }
 
@@ -156,7 +191,7 @@ export default function Philosophy(){
         context.beginPath();
         context.ellipse(
           ball.x,ball.y,
-          ball.currentRadius, ball.currentRadius,
+          ball.currentRadius * h2w, ball.currentRadius * w2h,
           0, 0, 2 * Math.PI
         );
         context.fill();

@@ -10,42 +10,43 @@ import useSeriesConnect from '../../../bindings/hooks/useSeriesConnect';
 
 import BlogCard from '../../../words/BlogListing/BlogCard';
 
-const styles = {
-  canvas:{
-    position:"absolute",
-    left:"0px",
-    top:"0px",
-    width:'100%',
-    height:'100%',
-    background: 'linear-gradient(to bottom, #0f0c29, #302b63, #24243e)',
-    filter: 'blur(.15em)'
-  },
-  parallaxContainer:{
-    width:"100vw",
-    minHeight:"1000px"
-  },
-  container:{
-    position:'absolute',
-    top:'0',
-    left:'0',
-    right:'0',
-    bottom:'0',
-    boxShadow:'inset 0px 0px 70px 0px rgba(0,0,0,.8)'
-  },
-  navButton:{
-    color:"white"
-  },
-  header:{
-    textAlign:'center',
-    background:'linear-gradient(#FF416C,#FF4B2B)',
-    WebkitBackgroundClip:'text',
-    WebkitTextFillColor:'transparent'
-  }
-}
-
 // 94892796
 
-export default function DuncanStrauss(){
+export default function DuncanStrauss(props){
+  const { minHeight = 1000 , widthStr = '100vw' } = props;
+  const styles = {
+    canvas:{
+      position:"absolute",
+      left:"0px",
+      top:"0px",
+      width:'100%',
+      height:'100%',
+      background: 'linear-gradient(to bottom, #0f0c29, #302b63, #24243e)',
+      filter: 'blur(.15em)'
+    },
+    parallaxContainer:{
+      width:widthStr,
+      minHeight:`${minHeight}px`
+    },
+    container:{
+      position:'absolute',
+      top:'0',
+      left:'0',
+      right:'0',
+      bottom:'0',
+      boxShadow:'inset 0px 0px 70px 0px rgba(0,0,0,.8)'
+    },
+    navButton:{
+      color:"white"
+    },
+    header:{
+      textAlign:'center',
+      background:'linear-gradient(#FF416C,#FF4B2B)',
+      WebkitBackgroundClip:'text',
+      WebkitTextFillColor:'transparent'
+    }
+  }
+
   const data = useSeriesConnect("Duncan");
   const [selectedDuncan,setSelectedDuncan] = useState(0);
   const navRight = () => {

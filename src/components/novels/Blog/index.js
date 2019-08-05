@@ -8,8 +8,8 @@ import withPageFade from '../../bindings/wrappers/withPageFade';
 function Blog(props) {
   return (
     <React.Fragment>
-      <DuncanStrauss />
-      <Philosophy />
+      <DuncanStrauss minHeight={1000} widthStr="100vw"/>
+      <Philosophy minHeight={1000} widthStr="100vw"/>
     </React.Fragment>
 
   );
