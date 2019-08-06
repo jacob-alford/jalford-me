@@ -10,44 +10,13 @@ import useSeriesConnect from '../../../bindings/hooks/useSeriesConnect';
 
 import BlogCard from '../../../words/BlogListing/BlogCard';
 
-const styles = {
-  canvas:{
-    position:"absolute",
-    left:"0px",
-    top:"0px",
-    width:'100%',
-    height:'100%',
-    background: 'linear-gradient(to bottom, #000C40,#F0F2F0)'
-  },
-  parallaxContainer:{
-    width:"100vw",
-    minHeight:"1000px"
-  },
-  container:{
-    position:'absolute',
-    top:'0',
-    left:'0',
-    right:'0',
-    bottom:'0',
-    boxShadow:'inset 0px 0px 70px 0px rgba(0,0,0,.8)'
-  },
-  navButton:{
-    color:"white"
-  },
-  header:{
-    textAlign:'center',
-    background:'linear-gradient(#C33764, #1D2671)',
-    WebkitBackgroundClip:'text',
-    WebkitTextFillColor:'transparent'
-  }
-}
 
 // 94892796
 
 export default function Philosophy(props){
-  const data = useSeriesConnect("Duncan");
+  const data = useSeriesConnect("Philosophy");
   const [selectedPhi,setSelectedPhi] = useState(0);
-  const { minHeight = 1000 , widthStr = '100vw' } = props;
+  const { minHeight = 1000 , widthStr = '100vw' , heightStr = '75vh' } = props;
   const styles = {
     canvas:{
       position:"absolute",
@@ -59,7 +28,8 @@ export default function Philosophy(props){
     },
     parallaxContainer:{
       width:widthStr,
-      minHeight:`${minHeight}px`
+      minHeight:`${minHeight}px`,
+      height:heightStr
     },
     container:{
       position:'absolute',
@@ -74,7 +44,7 @@ export default function Philosophy(props){
     },
     header:{
       textAlign:'center',
-      background:'linear-gradient(#C33764, #1D2671)',
+      background:'linear-gradient(to right, #12c2e9, #c471ed, #f64f59)',
       WebkitBackgroundClip:'text',
       WebkitTextFillColor:'transparent'
     }
@@ -95,7 +65,6 @@ export default function Philosophy(props){
   });
 
   const bgCanvas = React.useRef();
-  const canvasParent = React.useRef();
   const imageLayer = [
     { children: <canvas ref={bgCanvas} style={styles.canvas}/> , amount:.1 }
   ];
@@ -103,7 +72,7 @@ export default function Philosophy(props){
   useEffect(() => {
     const context = bgCanvas.current.getContext("2d");
     bgCanvas.current.width = window.innerWidth;
-    bgCanvas.current.height = Math.max(minHeight,window.innerHeight * .75);
+    bgCanvas.current.height = Math.max(minHeight,window.innerHeight * (parseInt(heightStr,10)/100));
     let width = bgCanvas.current.width;
     let height = bgCanvas.current.height;
     let w2h = (height > width) ? height/width : (height === width) ? 1 : width/height;
@@ -119,53 +88,62 @@ export default function Philosophy(props){
       }
     }
 
-    const randomGray = () => Math.floor(Math.random() * 108 + 147);
-    const randomColor = () => [randomGray(),randomGray(),randomGray()];
+    const toRGB = (...hexes) => hexes.map(hex => [
+      parseInt(`${hex[1]}${hex[2]}`,16),
+      parseInt(`${hex[3]}${hex[4]}`,16),
+      parseInt(`${hex[5]}${hex[6]}`,16)
+    ]);
+    const colorList = [
+      '#5DE8E5','#F44D9B','#E9275B','#392270',
+      '#01FFC3','#00A9FE','#28CF75','#FFE3F1',
+      '#80FF00','#F89899','#5AFFFF','#FC6B68'
+    ];
+    const neonColors = [...toRGB(...colorList)];
+    const randomColor = () => neonColors[Math.floor(Math.random() * neonColors.length)];
     const colorString = (arr,alpha) => `rgba(${arr[0]},${arr[1]},${arr[2]},${alpha})`;
 
     class randomBokehBall{
       constructor(width,height,index){
         this.index = index;
-        this.maxRadius = Math.random() * (10 * width / 100) + (width / 42);
-        this.currentRadius = Math.random() * (10 * width / 100) + (width / 42);
+        this.radius = Math.random() * (width / 3) + (width / 20);
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.growRate = Math.random() * .05 + .0125;
-        this.decayRate = Math.random() * .004 + .0122;
-        this.fadeRate = .005;
+        this.fadeRate = .01;
         this.color = randomColor();
-        this.lingerDuration = Math.floor(Math.random() * 300);
+        this.lingerDuration = Math.floor(Math.random() * 1380) + 90;
         this.currentLinger = 0;
         this.maxOpacity = Math.random() * .4 + .15;
         this.currentFade = 0;
+        this.moveDirectionX = (Math.random() < .5) ? -1 : 1;
+        this.moveDirectionY = (Math.random() < .5) ? -1 : 1;
+        this.moveRateX = Math.random() * .6;
+        this.moveRateY = Math.random() * .6;
       }
     }
 
     const progressBall = (ball,bokeh) => {
-      /* Progress Fade */
-      // -- started to grow
-      if(ball.currentLinger === 0){
-        if(ball.currentFade + ball.fadeRate < ball.maxOpacity)
-          ball.currentFade += ball.fadeRate;
-        else ball.currentFade = ball.maxOpacity;
-      // -- started to shrink
-      }else if(ball.currentRadius !== ball.maxRadius && ball.currentLinger >= ball.lingerDuration){
-        if(ball.currentFade - ball.fadeRate > 0)
-          ball.currentFade -= ball.fadeRate;
-        else ball.currentFade = 0;
-      }
-      /* Progress Size */
-      if(ball.currentRadius < ball.maxRadius && ball.currentLinger === 0){
-        if(ball.currentRadius + ball.growRate < ball.maxRadius)
-          ball.currentRadius += ball.growRate;
-        else ball.currentRadius = ball.maxRadius;
+      /* Life cycle has ended, begin anew */
+      if(ball.currentFade === 0 && ball.currentLinger >= ball.lingerDuration){
+        bokeh.splice(ball.index,1,new randomBokehBall(width,height,ball.index));
+        ball = null;
       }else{
-        if(ball.currentLinger < ball.lingerDuration)
-          ball.currentLinger++;
-        else{
-          if(ball.currentRadius - ball.decayRate > 0)
-            ball.currentRadius -= ball.decayRate;
-          else bokeh.splice(ball.index,1,new randomBokehBall(width,height,ball.index));
+        ball.x += ball.moveDirectionX * ball.moveRateX;
+        ball.y += ball.moveDirectionY * ball.moveRateY;
+        /* Fade / Grow In */
+        if(ball.currentFade < ball.maxOpacity && ball.currentLinger < ball.lingerDuration){
+          if(ball.currentFade + ball.fadeRate < ball.maxOpacity)
+            ball.currentFade += ball.fadeRate;
+          else ball.currentFade = ball.maxOpacity;
+        }else{
+          /* Persist for fixed time */
+          if(ball.currentLinger < ball.lingerDuration){
+            ball.currentLinger++;
+          /* Fade Out */
+          }else{
+            if(ball.currentFade - ball.fadeRate > 0)
+              ball.currentFade -= ball.fadeRate;
+            else ball.currentFade = 0;
+          }
         }
       }
     }
@@ -173,15 +151,15 @@ export default function Philosophy(props){
     const bokeh = [];
     let counter = 0;
     let breakpointStagger = 250;
-    const maxBokeh = 89;
+    const maxBokeh = 32;
 
     let request;
     const draw = () => {
       request = requestAnimationFrame(draw);
       updateWidthHeight();
       if(counter > breakpointStagger && bokeh.length <= maxBokeh){
-        bokeh.push(new randomBokehBall(width,height,bokeh.length - 1));
-        breakpointStagger = Math.random() * 150 + 36;
+        bokeh.push(new randomBokehBall(width,height,bokeh.length));
+        breakpointStagger = Math.random() * 475 + 36;
         counter = 0;
       }
       context.clearRect(0,0,width,height);
@@ -190,7 +168,7 @@ export default function Philosophy(props){
         context.beginPath();
         context.ellipse(
           ball.x,ball.y,
-          ball.currentRadius * h2w, ball.currentRadius * w2h,
+          ball.radius * h2w, ball.radius * w2h,
           0, 0, 2 * Math.PI
         );
         context.fill();
@@ -201,7 +179,7 @@ export default function Philosophy(props){
     }
     requestAnimationFrame(draw);
     return () => cancelAnimationFrame(request);
-  },[]);
+  },[heightStr,minHeight]);
   return (
     <ParallaxBanner layers={imageLayer} style={styles.parallaxContainer}>
       <div {...swipeHandlers}>
