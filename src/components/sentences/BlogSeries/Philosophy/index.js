@@ -78,7 +78,7 @@ export default function Philosophy(props){
     let w2h = (height > width) ? height/width : (height === width) ? 1 : width/height;
     let h2w = (width > height) ? width/height : (height === width) ? 1 : height/width;
     const updateWidthHeight = () => {
-      if(bgCanvas.current.width !== window.innerWidth || bgCanvas.current.height !== window.innerHeight * .75){
+      if(bgCanvas.current.width !== window.innerWidth || bgCanvas.current.height !== window.innerHeight * (parseInt(heightStr,10)/100)){
         bgCanvas.current.width = window.innerWidth;
         bgCanvas.current.height = Math.max(minHeight,window.innerHeight * .75);
         width = bgCanvas.current.width;
