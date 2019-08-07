@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  Typography, Paper, Table,
-  TableHead, TableBody, TableRow,
-  TableCell, List, ListItem,
-  ListItemText, Link, ListItemIcon
- } from '@material-ui/core/';
+import { Typography } from '@material-ui/core/';
 
 import useTitleSize from '../../bindings/hooks/useTitleSize';
 

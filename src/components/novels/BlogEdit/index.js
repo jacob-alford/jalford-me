@@ -22,16 +22,6 @@ import { getPostId , getSliderSnapshots } from './selectors.js';
 
 import markdownConfig from '../../../helpers/blogParse.js';
 
-const getTitleSize = () => {
-  return '3.5rem'
-  if(window.innerWidth > 740)
-    return '6rem';
-  else if(window.innerWidth > 540)
-    return '5rem';
-  else
-    return '4rem';
-}
-
 const styles = {
   header:{
     textAlign:'center',
