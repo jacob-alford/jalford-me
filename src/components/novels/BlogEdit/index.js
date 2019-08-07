@@ -114,6 +114,9 @@ const styles = {
     fontWeight:'300',
     color: 'rgba(0,0,0,.85)',
     textAlign:'center'
+  },
+  title:{
+    fontSize:'4.7rem'
   }
 }
 
@@ -547,7 +550,7 @@ function BlogEdit(props){
                           <Grid container direction="column" spacing={2}>
                             <Grid item>
                               <TransitionMotion
-                                styles={blogTags.map((tag,index) => {
+                                styles={(blogTags || []).map((tag,index) => {
                                   return {
                                     key:`tag${tag}`,
                                     style:{ scale:spring(1) },
@@ -607,11 +610,11 @@ function BlogEdit(props){
         <Paper style={styles.sheet}>
           {(!data.isLoading && (data.error || !user.loggedIn)) ? <NotFoundPlaceholder /> : null}
           {(data.isLoading) ? <LoadingPlaceholder /> : null}
-          {(blogTags && hasPermissions()) ? (
+          {(hasPermissions()) ? (
             <React.Fragment>
               {(displayHeading) ? (
                 <React.Fragment>
-                  <Typography paragraph style={{textAlign:"center"}} variant="h1">
+                  <Typography paragraph style={{textAlign:"center",...styles.title}} variant="h1">
                     {blogTitle}
                   </Typography>
                   <Typography paragraph variant="h4" style={{textAlign:"center"}}>

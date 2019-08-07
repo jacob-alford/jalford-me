@@ -50,6 +50,7 @@ export default function CreatePostDialogue(props){
           setConflict(true);
         }else{
           newPost.set({
+            author:user.activeUser.username,
             body:"",
             date:new Date(),
             isPublic:false,

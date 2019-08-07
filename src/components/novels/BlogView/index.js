@@ -45,6 +45,9 @@ const styles = {
     fontWeight:'300',
     color: 'rgba(0,0,0,.85)',
     textAlign:'center'
+  },
+  title:{
+    fontSize:'4.7rem'
   }
 }
 
@@ -81,7 +84,7 @@ function BlogView(props){
                   <div style={{transform:`translate(0px,${translateY}px)`,...newStyle}}>
                     {(data.postData.displayHeading) ? (
                       <React.Fragment>
-                        <Typography paragraph style={{textAlign:"center"}} variant="h1">
+                        <Typography paragraph style={{textAlign:"center",...styles.title}} variant="h1">
                           {data.postData.title}
                         </Typography>
                         <Typography paragraph variant="h4" style={{textAlign:"center"}}>
