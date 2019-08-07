@@ -1,9 +1,10 @@
 import React from 'react';
 import Markdown from 'react-markdown';
- import { Motion , spring } from 'react-motion';
+import { Motion , spring } from 'react-motion';
 import {
-  Container , Typography , Paper,
-  CircularProgress, Grid
+  Container, Typography, Paper,
+  CircularProgress, Grid,
+  Divider
  } from '@material-ui/core/';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';
@@ -11,6 +12,8 @@ import withUser from '../../bindings/wrappers/withUser';
 import usePostConnect from '../../bindings/hooks/usePostConnect';
 
 import getPostId from './selectors.js';
+
+import markdownConfig from '../../../helpers/blogParse.js';
 
 const styles = {
   header:{
@@ -36,16 +39,15 @@ const styles = {
   bodyFinal:{
     opacity:spring(1),
     translateY:spring(0)
+  },
+  lead:{
+    fontSize:'1.69rem',
+    fontWeight:'300',
+    color: 'rgba(0,0,0,.85)',
+    textAlign:'center'
   }
 }
 
-const markdownConfig = {
-  "heading":props => (
-    <Typography style={styles.header} variant={`h${props.level}`} {...props}>
-      {props.children}
-    </Typography>
-  )
-}
 
 const LoadingPlaceholder = () => (
   <Grid container direction="column" alignItems="center" justify="center">
@@ -77,6 +79,26 @@ function BlogView(props){
                 const { translateY } = newStyle;
                 return(
                   <div style={{transform:`translate(0px,${translateY}px)`,...newStyle}}>
+                    {(data.postData.displayHeading) ? (
+                      <React.Fragment>
+                        <Typography paragraph style={{textAlign:"center"}} variant="h1">
+                          {data.postData.title}
+                        </Typography>
+                        <Typography paragraph variant="h4" style={{textAlign:"center"}}>
+                          <small>{`by ${data.postData.author} `}</small>
+                          |
+                          <strong>
+                            {` ${new Date(data.postData.date.toDate()).toLocaleDateString("default",{year: 'numeric', month: 'long', day: 'numeric'})}`}
+                          </strong>
+                        </Typography>
+                        <Divider style={{marginTop:"15px",marginBottom:"15px"}}/>
+                        {(data.postData.snippit) ? (
+                          <Typography paragraph style={styles.lead}>
+                            {data.postData.snippit}
+                          </Typography>
+                        ) : null}
+                      </React.Fragment>
+                    ) : null}
                     <Markdown renderers={markdownConfig} source={data.postData.body} />
                   </div>
               )}}

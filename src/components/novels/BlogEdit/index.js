@@ -2,11 +2,11 @@ import React, { useState , useEffect } from 'react';
 import Markdown from 'react-markdown';
 import { TransitionMotion , Motion , spring } from 'react-motion';
 import {
-  Container , Typography , Paper,
+  Container, Typography , Paper,
   CircularProgress, Grid, InputBase,
   Button, IconButton, Divider,
   TextField, Switch, FormControlLabel,
-  Chip
+  Chip, Hidden
  } from '@material-ui/core/';
 import Slider from '@material-ui/core/Slider';
 import { Visibility , Edit } from '@material-ui/icons';
@@ -18,6 +18,8 @@ import withUser from '../../bindings/wrappers/withUser';
 import usePostConnect from '../../bindings/hooks/usePostConnect';
 
 import { getPostId , getSliderSnapshots } from './selectors.js';
+
+import markdownConfig from '../../../helpers/blogParse.js';
 
 const styles = {
   header:{
@@ -98,14 +100,6 @@ const styles = {
   chipHolder:{
     maxWidth:"270px"
   }
-}
-
-const markdownConfig = {
-  "heading":props => (
-    <Typography style={styles.header} variant={`h${props.level}`} {...props}>
-      {props.children}
-    </Typography>
-  )
 }
 
 const LoadingPlaceholder = () => (
@@ -206,15 +200,16 @@ const LatestSnapshot = props => {
 function BlogEdit(props){
   // --- Helpers ---
   const somethingHasChanged = (checkSnapshots = false) => {
-      console.log(blogDate);
       const testDate1 = new Date(blogDate).toISOString();
       const testDate2 = new Date(data.postData.date.toDate()).toISOString();
       return bodyHasChanged(checkSnapshots)
         || (blogTitle !== data.postData.title)
         || (testDate1 !== testDate2)
         || (isPublic !== data.postData.isPublic)
+        || (displayHeading !== data.postData.displayHeading)
         || (blogTags !== data.postData.tags)
-        || (blogSeries !== data.postData.series);
+        || (blogSeries !== data.postData.series)
+        || (blogSnippit !== data.postData.snippit);
   }
   const bodyHasChanged = (checkSnapshots = false) => {
     if(!data.postData) return false;
@@ -286,6 +281,16 @@ function BlogEdit(props){
     }
   },[data.postData,blogTitle,shouldUpdate]);
 
+  // --- Snippit ---
+  const [blogSnippit,setBlogSnippit] = useState(null);
+  const handleSnippitChange = evt => setBlogSnippit(evt.target.value);
+  /* Sets the snippit on load */
+  useEffect(() => {
+    if((data.postData && !blogSnippit) || shouldUpdate){
+      setBlogSnippit(data.postData.snippit);
+    }
+  },[data.postData,blogSnippit,shouldUpdate]);
+
   // --- Date ---
   const [blogDate,setBlogDate] = useState(null);
   const handleDateChange = evt => setBlogDate(evt.target.value);
@@ -337,6 +342,16 @@ function BlogEdit(props){
     }
   },[data.postData,isPublic,shouldUpdate]);
 
+  // --- DisplayHeading ---
+  const [displayHeading,setDisplayHeading] = useState(null);
+  const handleDisplayHeadingToggle = () => setDisplayHeading(!displayHeading);
+  /* Sets the switch on load */
+  useEffect(() => {
+    if((data.postData && displayHeading === null) || shouldUpdate){
+      setDisplayHeading(data.postData.displayHeading);
+    }
+  },[data.postData,displayHeading,shouldUpdate]);
+
   // --- Body View/Edit ---
   const [isEditing,setIsEditing] = useState(false);
   const edit = () => setIsEditing(true);
@@ -381,6 +396,7 @@ function BlogEdit(props){
       const post = db.collection("posts").doc(data.postData.uid);
       post.update({
         body:blogText,
+        displayHeading:displayHeading,
         title:blogTitle,
         date:new Date(blogDate),
         isPublic:isPublic,
@@ -390,7 +406,8 @@ function BlogEdit(props){
         snapshots:[
           {body:blogText,date:new Date()},
           ...data.postData.snapshots.slice(0,5)
-        ]
+        ],
+        snippit:blogSnippit
       }).then(() => {
         console.log("Published!");
         setShouldUpdate(true);
@@ -474,7 +491,7 @@ function BlogEdit(props){
                 {newStyles => (
                   <Grid container direction="column" style={{opacity:newStyles.opacity}}>
                     <Grid item>
-                      <Grid container direction="row" alignItems="center" justify="space-around" spacing={1}>
+                      <Grid container direction="row" alignItems="center" justify="space-around">
                         <Grid item>
                           <Grid spacing={2} container direction="column">
                             <Grid item>
@@ -484,12 +501,17 @@ function BlogEdit(props){
                               <TextField type="datetime-local" label="Date" value={blogDate || new Date().toISOString()} onChange={handleDateChange} />
                             </Grid>
                             <Grid item>
-                              <TextField label="Series" value={blogSeries} onChange={handleSeriesChange}/>
+                              <TextField label="Series" value={blogSeries || ""} onChange={handleSeriesChange}/>
                             </Grid>
                             <Grid item>
                               <FormControlLabel
                                 control={<Switch checked={isPublic} onChange={handleIsPublicToggle} />}
-                                label="Is Public" />
+                                label="Post is Public" />
+                            </Grid>
+                            <Grid item>
+                              <FormControlLabel
+                                control={<Switch checked={displayHeading} onChange={handleDisplayHeadingToggle} />}
+                                label="Heading is Visible" />
                             </Grid>
                           </Grid>
                         </Grid>
@@ -537,6 +559,9 @@ function BlogEdit(props){
                                   </Button>
                                 </Grid>
                               </Grid>
+                            </Grid>
+                            <Grid item>
+                              <TextField value={blogSnippit || ""} label="Intro Snippit" multiline rows={6} variant="outlined" onChange={handleSnippitChange} />
                             </Grid>
                           </Grid>
                         </Grid>
