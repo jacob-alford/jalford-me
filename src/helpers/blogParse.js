@@ -8,8 +8,7 @@ import {
   Typography, Paper, Table,
   TableHead, TableBody, TableRow,
   TableCell, List, ListItem,
-  ListItemText, Link, Checkbox,
-  ListItemIcon
+  ListItemText, Link, ListItemIcon
  } from '@material-ui/core/';
  import { CheckCircleOutline , RadioButtonUnchecked } from '@material-ui/icons';
 

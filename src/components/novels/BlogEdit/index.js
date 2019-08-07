@@ -4,9 +4,9 @@ import { TransitionMotion , Motion , spring } from 'react-motion';
 import {
   Container, Typography , Paper,
   CircularProgress, Grid, InputBase,
-  Button, IconButton, Divider,
+  Button, IconButton, Chip,
   TextField, Switch, FormControlLabel,
-  Chip, Hidden
+  Divider
  } from '@material-ui/core/';
 import Slider from '@material-ui/core/Slider';
 import { Visibility , Edit } from '@material-ui/icons';
@@ -108,6 +108,12 @@ const styles = {
     marginTop:'12px',
     marginLeft:'auto',
     marginRight:'auto'
+  },
+  lead:{
+    fontSize:'1.69rem',
+    fontWeight:'300',
+    color: 'rgba(0,0,0,.85)',
+    textAlign:'center'
   }
 }
 
@@ -206,6 +212,20 @@ const LatestSnapshot = props => {
   );
 }
 
+const sameArr = (arr1,arr2) => {
+  let wrkArr = [...arr1].sort();
+  let wrkArr2 = [...arr2].sort();
+  const greatestLength =
+    (wrkArr.length > wrkArr2.length) ?
+    wrkArr.length
+  : wrkArr2.length;
+  for(let i=0;i<greatestLength;i++){
+    if(wrkArr[i] !== wrkArr2[i])
+      return false;
+  }
+  return true;
+}
+
 function BlogEdit(props){
   // --- Helpers ---
   const somethingHasChanged = (checkSnapshots = false) => {
@@ -216,7 +236,7 @@ function BlogEdit(props){
         || (testDate1 !== testDate2)
         || (isPublic !== data.postData.isPublic)
         || (displayHeading !== data.postData.displayHeading)
-        || (blogTags !== data.postData.tags)
+        || (!sameArr(blogTags,data.postData.tags))
         || (blogSeries !== data.postData.series)
         || (blogSnippit !== data.postData.snippit);
   }
@@ -588,11 +608,29 @@ function BlogEdit(props){
           {(!data.isLoading && (data.error || !user.loggedIn)) ? <NotFoundPlaceholder /> : null}
           {(data.isLoading) ? <LoadingPlaceholder /> : null}
           {(blogTags && hasPermissions()) ? (
-            <Motion defaultStyle={{opacity:0}} style={{opacity:1}}>
-              {newStyles => (
-                <EditPost blogText={blogText} setBlogText={setBlogText} isEditing={isEditing} />
-              )}
-            </Motion>
+            <React.Fragment>
+              {(displayHeading) ? (
+                <React.Fragment>
+                  <Typography paragraph style={{textAlign:"center"}} variant="h1">
+                    {blogTitle}
+                  </Typography>
+                  <Typography paragraph variant="h4" style={{textAlign:"center"}}>
+                    <small>{`by ${data.postData.author} `}</small>
+                    |
+                    <strong>
+                      {` ${new Date(blogDate).toLocaleDateString("default",{year: 'numeric', month: 'long', day: 'numeric'})}`}
+                    </strong>
+                  </Typography>
+                  <Divider style={{marginTop:"15px",marginBottom:"15px"}}/>
+                  {(blogSnippit && blogSnippit !== "") ? (
+                    <Typography paragraph style={styles.lead}>
+                      {blogSnippit}
+                    </Typography>
+                  ) : null}
+                </React.Fragment>
+              ) : null}
+              <EditPost blogText={blogText} setBlogText={setBlogText} isEditing={isEditing} />
+            </React.Fragment>
           ) : null}
         </Paper>
       </Container>

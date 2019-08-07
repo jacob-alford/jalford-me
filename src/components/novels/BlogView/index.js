@@ -73,7 +73,7 @@ function BlogView(props){
         <Paper style={styles.sheet}>
           {(!data.isLoading && (data.error || !data.postData)) ? <NotFoundPlaceholder /> : null}
           {(data.isLoading) ? <LoadingPlaceholder /> : null}
-          {(!data.isLoading && data.postData) ? (
+          {(!data.isLoading && data.postData && !data.error) ? (
             <Motion defaultStyle={styles.bodyIn} style={styles.bodyFinal}>
               {newStyle => {
                 const { translateY } = newStyle;
