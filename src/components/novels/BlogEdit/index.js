@@ -99,6 +99,15 @@ const styles = {
   },
   chipHolder:{
     maxWidth:"270px"
+  },
+  blogEditorViewerHolder:{
+    display:'flex',
+    flexWrap:'wrap',
+    boxSizing:'border-box',
+    width:'100%',
+    marginTop:'12px',
+    marginLeft:'auto',
+    marginRight:'auto'
   }
 }
 
@@ -133,7 +142,7 @@ const EditPost = props => {
       value={blogText} />
   );
   else return (
-    <Markdown renderers={markdownConfig} source={blogText} />
+    <Markdown style={{width:'100%'}} renderers={markdownConfig} source={blogText} />
   );
 }
 
@@ -417,76 +426,75 @@ function BlogEdit(props){
   }
 
   return (
-    <Grid direction="column" container justify="center">
-      {(hasPermissions()) ? (
-        <Grid item>
-          <Grid style={styles.iconGrid}  container direction="row" alignItems="center" justify="space-between">
-            <Grid item>
-              <Button disabled={!bodyHasChanged(true)} onClick={handleSnap} style={(bodyHasChanged(true)) ? styles.updateSnapshot : styles.disabledUpdateSnapshot} variant="outlined">
-                Snap
-              </Button>
-            </Grid>
-            <Grid item>
-              {(isEditing) ? (
-                  <IconButton onClick={preview} disabled={bodyHasChanged(true)}>
-                    <Visibility style={(bodyHasChanged(true)) ? {...styles.icon,color:"gray"} : styles.icon} />
-                  </IconButton>
-                )
-              : (
-                  <IconButton onClick={edit}>
-                    <Edit style={styles.icon} />
-                  </IconButton>
-                )}
-                <Button onClick={handlePublish} disabled={!somethingHasChanged()} style={(somethingHasChanged()) ? styles.save : styles.saveDisabled} variant="outlined">
-                  Publish
+    <React.Fragment>
+      <Grid direction="column" container justify="center">
+        {(hasPermissions()) ? (
+          <Grid item>
+            <Grid style={styles.iconGrid}  container direction="row" alignItems="center" justify="space-between">
+              <Grid item>
+                <Button disabled={!bodyHasChanged(true)} onClick={handleSnap} style={(bodyHasChanged(true)) ? styles.updateSnapshot : styles.disabledUpdateSnapshot} variant="outlined">
+                  Snap
                 </Button>
+              </Grid>
+              <Grid item>
+                {(isEditing) ? (
+                    <IconButton onClick={preview} disabled={bodyHasChanged(true)}>
+                      <Visibility style={(bodyHasChanged(true)) ? {...styles.icon,color:"gray"} : styles.icon} />
+                    </IconButton>
+                  )
+                : (
+                    <IconButton onClick={edit}>
+                      <Edit style={styles.icon} />
+                    </IconButton>
+                  )}
+                  <Button onClick={handlePublish} disabled={!somethingHasChanged()} style={(somethingHasChanged()) ? styles.save : styles.saveDisabled} variant="outlined">
+                    Publish
+                  </Button>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      ) : null}
-      {(hasPermissions()) ? (
-        <Grid item>
-          <Grid container justify="center" style={styles.latestSnapshotContainer}>
-            <Grid item>
-              <LatestSnapshot selectedSnapshot={selectedSnapshot} blogText={blogText} data={data.postData} />
+        ) : null}
+        {(hasPermissions()) ? (
+          <Grid item>
+            <Grid container justify="center" style={styles.latestSnapshotContainer}>
+              <Grid item>
+                <LatestSnapshot selectedSnapshot={selectedSnapshot} blogText={blogText} data={data.postData} />
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      ) : null}
-      {(hasPermissions() && selectedSnapshot !== null) ?
-        <Grid item>
-          <Motion defaultStyle={{opacity:0}} style={{opacity:spring(1)}}>
-            {newStyles => (
-              <Container style={{opacity:newStyles.opacity,...styles.sliderContainer}}>
-                <Paper style={styles.sliderSheet}>
-                {(data.postData.snapshots.length > 0) ? (
-                  <React.Fragment>
-                    <Typography variant="h6">
-                      Snapshots
-                    </Typography>
-                    <Slider
-                      valueLabelDisplay="auto"
-                      disabled={isEditing}
-                      min={-5}
-                      max={1}
-                      step={null}
-                      value={selectedSnapshot}
-                      onChange={handleSnapshotSelect}
-                      marks={getSliderSnapshots(data.postData)}/>
-                  </React.Fragment>
-                ) : <NoSnapshots />}
-                </Paper>
-              </Container>
-            )}
-          </Motion>
-        </Grid>
-      : null}
-      <Grid item>
-        <Container style={styles.container}>
-          <Paper style={styles.sheet}>
-            {(!data.isLoading && (data.error || !user.loggedIn)) ? <NotFoundPlaceholder /> : null}
-            {(data.isLoading) ? <LoadingPlaceholder /> : null}
-            {(blogTags && hasPermissions()) ? (
+        ) : null}
+        {(hasPermissions() && selectedSnapshot !== null) ?
+          <Grid item>
+            <Motion defaultStyle={{opacity:0}} style={{opacity:spring(1)}}>
+              {newStyles => (
+                <Container style={{opacity:newStyles.opacity,...styles.sliderContainer}}>
+                  <Paper style={styles.sliderSheet}>
+                  {(data.postData.snapshots.length > 0) ? (
+                    <React.Fragment>
+                      <Typography variant="h6">
+                        Snapshots
+                      </Typography>
+                      <Slider
+                        valueLabelDisplay="auto"
+                        disabled={isEditing}
+                        min={-5}
+                        max={1}
+                        step={null}
+                        value={selectedSnapshot}
+                        onChange={handleSnapshotSelect}
+                        marks={getSliderSnapshots(data.postData)}/>
+                    </React.Fragment>
+                  ) : <NoSnapshots />}
+                  </Paper>
+                </Container>
+              )}
+            </Motion>
+          </Grid>
+        : null}
+        {(hasPermissions() && blogTags !== null) ? (
+          <Grid item>
+            <Container style={styles.container}>
+              <Paper style={styles.sheet}>
               <Motion defaultStyle={{opacity:0}} style={{opacity:1}}>
                 {newStyles => (
                   <Grid container direction="column" style={{opacity:newStyles.opacity}}>
@@ -567,16 +575,28 @@ function BlogEdit(props){
                         </Grid>
                       </Grid>
                     </Grid>
-                    <Divider style={{marginTop:'24px',marginBottom:'24px'}}/>
-                    <EditPost blogText={blogText} setBlogText={setBlogText} isEditing={isEditing} />
                   </Grid>
                 )}
               </Motion>
-            ) : null}
-          </Paper>
-        </Container>
+              </Paper>
+            </Container>
+          </Grid>
+        ) : null}
       </Grid>
-    </Grid>
+      <Container style={styles.container}>
+        <Paper style={styles.sheet}>
+          {(!data.isLoading && (data.error || !user.loggedIn)) ? <NotFoundPlaceholder /> : null}
+          {(data.isLoading) ? <LoadingPlaceholder /> : null}
+          {(blogTags && hasPermissions()) ? (
+            <Motion defaultStyle={{opacity:0}} style={{opacity:1}}>
+              {newStyles => (
+                <EditPost blogText={blogText} setBlogText={setBlogText} isEditing={isEditing} />
+              )}
+            </Motion>
+          ) : null}
+        </Paper>
+      </Container>
+    </React.Fragment>
   );
 }
 

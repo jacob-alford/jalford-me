@@ -76,6 +76,9 @@ import {
      marginTop:'8px',
      marginBottom:'8px'
    },
+   "h1":{
+     fontSize:'4.7rem'
+   }
  }
 
  const InBlogLink = props => {
@@ -132,7 +135,7 @@ import {
     );
   },
   "heading":props => (
-    <Typography paragraph style={styles.header} variant={`h${props.level}`} {...props}>
+    <Typography paragraph style={{...styles.header,...styles[`h${props.level}`]}} variant={`h${props.level}`} {...props}>
       {props.children}
     </Typography>
   ),
