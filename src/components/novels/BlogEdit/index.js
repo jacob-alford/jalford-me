@@ -16,10 +16,21 @@ import { firebase } from '../../../index.js';
 import withPageFade from '../../bindings/wrappers/withPageFade';
 import withUser from '../../bindings/wrappers/withUser';
 import usePostConnect from '../../bindings/hooks/usePostConnect';
+import useTitleSize from '../../bindings/hooks/useTitleSize';
 
 import { getPostId , getSliderSnapshots } from './selectors.js';
 
 import markdownConfig from '../../../helpers/blogParse.js';
+
+const getTitleSize = () => {
+  return '3.5rem'
+  if(window.innerWidth > 740)
+    return '6rem';
+  else if(window.innerWidth > 540)
+    return '5rem';
+  else
+    return '4rem';
+}
 
 const styles = {
   header:{
@@ -114,9 +125,6 @@ const styles = {
     fontWeight:'300',
     color: 'rgba(0,0,0,.85)',
     textAlign:'center'
-  },
-  title:{
-    fontSize:'4.7rem'
   }
 }
 
@@ -268,6 +276,8 @@ function BlogEdit(props){
     || user.activeUser.uid === data.postData.owner;
   }
 
+  const { h1:titleSize } = useTitleSize();
+
   // --- Incoming ---
   const { user } = props;
   const postId = getPostId(props);
@@ -308,7 +318,7 @@ function BlogEdit(props){
   const handleTitleChange = evt => setBlogTitle(evt.target.value);
   /* Sets the title on load */
   useEffect(() => {
-    if((data.postData && !blogTitle) || shouldUpdate){
+    if((data.postData && blogTitle === null) || shouldUpdate){
       setBlogTitle(data.postData.title);
     }
   },[data.postData,blogTitle,shouldUpdate]);
@@ -318,7 +328,7 @@ function BlogEdit(props){
   const handleSnippitChange = evt => setBlogSnippit(evt.target.value);
   /* Sets the snippit on load */
   useEffect(() => {
-    if((data.postData && !blogSnippit) || shouldUpdate){
+    if((data.postData && blogSnippit === null) || shouldUpdate){
       setBlogSnippit(data.postData.snippit);
     }
   },[data.postData,blogSnippit,shouldUpdate]);
@@ -614,7 +624,7 @@ function BlogEdit(props){
             <React.Fragment>
               {(displayHeading) ? (
                 <React.Fragment>
-                  <Typography paragraph style={{textAlign:"center",...styles.title}} variant="h1">
+                  <Typography paragraph style={{textAlign:"center",fontSize:titleSize}} variant="h1">
                     {blogTitle}
                   </Typography>
                   <Typography paragraph variant="h4" style={{textAlign:"center"}}>

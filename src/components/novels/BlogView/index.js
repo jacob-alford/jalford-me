@@ -10,6 +10,7 @@ import {
 import withPageFade from '../../bindings/wrappers/withPageFade';
 import withUser from '../../bindings/wrappers/withUser';
 import usePostConnect from '../../bindings/hooks/usePostConnect';
+import useTitleSize from '../../bindings/hooks/useTitleSize';
 
 import getPostId from './selectors.js';
 
@@ -70,6 +71,7 @@ function BlogView(props){
   const { user } = props;
   const postId = getPostId(props);
   const data = usePostConnect(postId,user);
+  const { h1:titleSize } = useTitleSize();
   return (
     <Grid container justify="center">
       <Container style={styles.container}>
@@ -84,7 +86,7 @@ function BlogView(props){
                   <div style={{transform:`translate(0px,${translateY}px)`,...newStyle}}>
                     {(data.postData.displayHeading) ? (
                       <React.Fragment>
-                        <Typography paragraph style={{textAlign:"center",...styles.title}} variant="h1">
+                        <Typography paragraph style={{textAlign:"center",...styles.title,fontSize:titleSize}} variant="h1">
                           {data.postData.title}
                         </Typography>
                         <Typography paragraph variant="h4" style={{textAlign:"center"}}>

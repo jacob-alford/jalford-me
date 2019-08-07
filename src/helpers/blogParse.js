@@ -10,7 +10,9 @@ import {
   TableCell, List, ListItem,
   ListItemText, Link, ListItemIcon
  } from '@material-ui/core/';
- import { CheckCircleOutline , RadioButtonUnchecked } from '@material-ui/icons';
+import { CheckCircleOutline , RadioButtonUnchecked } from '@material-ui/icons';
+
+import AdaptiveHeading from '../components/words/AdaptiveHeading';
 
  const getInnermostProps = props => {
    if(typeof props.children === "string" || typeof props.value === "string")
@@ -112,6 +114,8 @@ import {
    )
  }
 
+
+
  const markdownConfig = {
   "blockquote":props => {
     return (
@@ -134,9 +138,9 @@ import {
     );
   },
   "heading":props => (
-    <Typography paragraph style={{...styles.header,...styles[`h${props.level}`]}} variant={`h${props.level}`} {...props}>
+    <AdaptiveHeading level={props.level}>
       {props.children}
-    </Typography>
+    </AdaptiveHeading>
   ),
   "image":props => (
     <span>
