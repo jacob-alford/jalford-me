@@ -34,11 +34,14 @@ const defaultTitleSizes = interpTitleSizes(1);
 const totallyDefinedArray = (...items) => {
   return items.reduce(
     (acc,current) =>
-      acc &&
-     (current !== undefined ||
-      current !== null)
-    , true
+      acc && (current !== undefined || current !== null), true
   );
+}
+
+const pipe = (...funcArr) => {
+  return funcArr.reduce((aggregate,next) => {
+    return (...funcs) => aggregate(next(...funcs));
+  },val => val)
 }
 
 export default function useTitleSize(){
@@ -49,10 +52,8 @@ export default function useTitleSize(){
   useEffect(() => {
     if(totallyDefinedArray(bkpt0,bkpt1,bkpt2))
       setTitleStyles(
-        interpTitleSizes(
-          getBreakpoint(
-            [bkpt0,bkpt1,bkpt2]
-      ) ) );
+        pipe(interpTitleSizes,getBreakpoint)([bkpt0,bkpt1,bkpt2])
+      );
   },[bkpt0,bkpt1,bkpt2]);
 
   return titleStyles;

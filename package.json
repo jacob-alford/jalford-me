@@ -24,6 +24,7 @@
     "react-transition-group": "^4.2.0",
     "redux": "^4.0.1",
     "styled-components": "^4.3.2",
+    "typed.js": "^2.0.10",
     "typeface-roboto": "0.0.54",
     "zxcvbn": "^4.4.2"
   },

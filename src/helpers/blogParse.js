@@ -78,7 +78,7 @@ import AdaptiveHeading from '../components/words/AdaptiveHeading';
      marginBottom:'8px'
    },
    "h1":{
-     fontSize:'4.7rem'
+
    }
  }
 
@@ -113,8 +113,6 @@ import AdaptiveHeading from '../components/words/AdaptiveHeading';
      </React.Fragment>
    )
  }
-
-
 
  const markdownConfig = {
   "blockquote":props => {

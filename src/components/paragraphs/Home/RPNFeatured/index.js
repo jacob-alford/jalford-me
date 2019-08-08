@@ -68,7 +68,7 @@ const styles = {
   },
   buttonHover:{
     backgroundColor:'rgba(0,0,0,.2)'
-  },
+  }
 }
 
 function RPNFeatured(props){
@@ -77,7 +77,7 @@ function RPNFeatured(props){
   const { history } = props;
   let canvasElement = React.createRef();
   const imageLayer = [
-    { children:<canvas ref={canvasElement} style={styles.gradientScroller}/>, amount:.5 }
+    { children:<canvas ref={canvasElement} style={styles.gradientScroller}/>, amount:.2 }
   ];
   const handleOnClick = () => {
     history.push("/projects/rpn");
