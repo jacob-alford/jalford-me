@@ -8,7 +8,8 @@ import {
  } from '@material-ui/core/';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';
-import withUser from '../../bindings/wrappers/withUser';
+
+import useRHook from '../../bindings/hooks/useRHook';
 import usePostConnect from '../../bindings/hooks/usePostConnect';
 import useTitleSize from '../../bindings/hooks/useTitleSize';
 
@@ -68,8 +69,8 @@ const NotFoundPlaceholder = () => (
 );
 
 function BlogView(props){
-  const { user } = props;
   const postId = getPostId(props);
+  const { user } = useRHook();
   const data = usePostConnect(postId,user);
   const { h1:titleSize } = useTitleSize();
   return (
@@ -115,4 +116,4 @@ function BlogView(props){
   );
 }
 
-export default withUser(withPageFade(BlogView));
+export default withPageFade(BlogView);

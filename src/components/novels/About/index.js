@@ -1,4 +1,5 @@
 import React from 'react';
+import Markdown from 'react-markdown';
 import { Container , Grid , Typography , Paper , Avatar } from '@material-ui/core/';
 import { Email } from '@material-ui/icons/';
 
@@ -10,35 +11,90 @@ import { aboutContactImage , socialMedia } from '../../../config';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';
 
+import markdownConfig from '../../../helpers/blogParse.js';
+
+import useTitleSize from '../../bindings/hooks/useTitleSize';
+
+const styles = {
+  title:{
+    color:'rgba(0,0,0,.85)',
+    textAlign:'center'
+  }
+}
+
 function About(props){
+  const { h3:titleSize } = useTitleSize();
+  const aboutText =
+  `I love javascript; perhaps four degrees too much.  I made this site in React, and I love that too.
+
+  I'm a mathematician attending New Mexico State University, anxiously anticipating graduation
+  by the Spring of 2020.
+
+  I'm a pro photographer in vehicle photography and quite competent in portraiture.
+
+  I've sold cars, so watch out!
+
+  My favourite thing to do besides adopt UK idiosyncrasies is to write.
+  I'm a philosophy writer, and have started a new series 'The Duncan Strauss Mysteries.'  [Check 'em out!](/posts) 🙂
+  `;
+  const javascriptTranslation =
+  `\`\`\`javascript
+  const Jacob = usePerson('me');
+  Jacob.loves('javascript').degree >= 4;
+
+  [Math,NMSU].reduce((has,new) => has && new.includes(Jacob),true) === true;
+
+  class Person{
+    constructor(){
+      this.likesPhotos = true;
+    }
+  }
+  const you = new Person();
+  Jacob.takePhoto(you).quality === Infinity;
+
+  you |> Jacob.sellCarTo(#)
+      |> #.isSuccess()
+      |> (#) ? [Jacob,you].forEach(person => person.celebrate()) : false;
+
+  Jacob.words.oftenContains("superfluous u's") === true;
+  return (
+    <React.Fragment>
+      {Jacob.blogPosts.map(post => (
+        <CoolBlogPost captivating url='/posts/view/\${post.url}' />
+      ))}
+    </React.Fragment>
+  );
+  \`\`\`
+  `;
+  const output = `
+  \`\`\`bash
+  Line  2: true
+  Line  4: true
+  Line 12: true
+  Line 15: Warning: contains tautology  no-logical-fallicies
+  Line 18: true
+  Line 22: Warning: Each child in an array or iterator should have a unique "key" prop.
+  \`\`\`
+  `;
   return (
     <StyledAbout>
       <Container fixed>
-        <Grid container justify="center" alignContent="center">
-          <Grid item>
-            <img alt="me" src={aboutContactImage} className="image"/>
-          </Grid>
-        </Grid>
+        <div className="imageHolder">
+          <img alt="me" src={aboutContactImage} className="image"/>
+        </div>
         <Paper className="aboutText" elevation={0}>
-          <Typography variant="h4" gutterBottom>
+          <Typography paragraph variant="h2" style={{...styles.title,fontSize:titleSize}}>
             About
           </Typography>
-          <Typography variant="body1" paragraph>
-              I'm currently attending New Mexico Institute of Mining and Technology, or colloquially, New Mexico Tech.
-              I'm majoring in mathematics and minoring in physics.
-              My primary focus is computer science, and in particular: machine learning.
-              I will graduate in the Spring of 2020 with a bachelor's degree in mathematics.
+          <Markdown renderers={markdownConfig} source={aboutText} />
+          <Typography paragraph variant="h2" style={{...styles.title,fontSize:titleSize}}>
+            Javascript Translation
           </Typography>
-          <Typography variant="body1" paragraph>
-              I'm a professional photographer and can take professional-grade portraits; but I can also make videos, websites, and graphics.
+          <Markdown renderers={markdownConfig} source={javascriptTranslation} />
+          <Typography paragraph variant="h2" style={{...styles.title,fontSize:titleSize}}>
+            Output
           </Typography>
-          <Typography variant="body1" paragraph>
-              I've worked at a car dealership, Tates Auto Center for many years while at community college, both in direct sales and internet sales.
-              Additionally, I supported our web team by keeping the inventory updated with stunning and documentative photos for prospective buyers.
-          </Typography>
-          <Typography variant="body1" paragraph>
-              I currently write in my blog of the many nuances of empiricst philosophy.
-          </Typography>
+          <Markdown renderers={markdownConfig} source={output} />
         </Paper>
         <Grid container justify="center" alignItems="center">
           <Grid item>

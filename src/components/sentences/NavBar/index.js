@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
-import { Grid , Hidden , Menu , MenuItem } from '@material-ui/core/';
+import { Grid , Hidden , Menu , MenuItem , IconButton } from '@material-ui/core/';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import NavItem from '../../words/NavItem';
@@ -42,7 +42,9 @@ function NavBar(props){
       <Hidden only={["md","lg","xl"]}>
         <Grid container direction="column" alignItems="center">
           <Grid item>
-            <MenuIcon onClick={handleMobileNavOpen}/>
+            <IconButton onClick={handleMobileNavOpen}>
+              <MenuIcon />
+            </IconButton>
           </Grid>
           <Grid item>
             <Menu style={{marginTop:'48px',marginLeft:'-69.515px'}} anchorOrigin={{horizontal:'center',vertical:'top'}} anchorEl={mobileNavAnchor} open={Boolean(mobileNavAnchor)} onClose={handleMobileNavClose}>

@@ -17,8 +17,7 @@ export { projectList };
 export const navItems = [
   {text:"Home",url:"/"},
   {text:"About/Contact",url:"/about"},
-  {text:"Projects",url:"/projects"},
-  {text:"Blog",url:"/blog"},
+  {text:"Posts",url:"/posts"},
   {text:"GitHub",url:"https://github.com/jacob-alford"},
   {text:"Resume",url:"https://www.visualcv.com/jacob-alford"}
 ];

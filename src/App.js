@@ -46,7 +46,7 @@ function App() {
             <BlogBar title="User" context="inUser"/>
           </Route>
           <Route path="/about" component={About} />
-          <Route path="/blog/view/:postId" children={props => {
+          <Route path="/posts/view/:postId" children={props => {
             const { match , history } = props;
             return (
               <React.Fragment>
@@ -55,7 +55,7 @@ function App() {
               </React.Fragment>
             );
           }} />
-          <Route path="/blog/edit/:postId" children={props => {
+          <Route path="/posts/edit/:postId" children={props => {
             const { match } = props;
             return (
               <React.Fragment>
@@ -64,7 +64,7 @@ function App() {
               </React.Fragment>
             );
           }} />
-          <Route path="/blog">
+          <Route path="/posts">
             <Blog headerIsOpen={headerIsOpen} />
             <BlogBar breadcrumbs={defaultBreadcrumbs}/>
           </Route>

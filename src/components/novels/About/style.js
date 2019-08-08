@@ -2,15 +2,20 @@ import styled from 'styled-components';
 
 export const StyledAbout = styled.div`
   .image{
-    min-width:50vw;
-    width:50vw;
+    width:100%;
+  }
+  .imageHolder{
+    width:50%;
+    minHeight:50%;
+    margin-left:auto;
+    margin-right:auto;
+    background-color:rgba(0,0,0,0);
     margin-top:35px;
     margin-bottom:2rem;
-    -webkit-box-shadow: 0px 10px 31px -9px rgba(0,0,0,0.19);
-    -moz-box-shadow: 0px 10px 31px -9px rgba(0,0,0,0.19);
-    box-shadow: 0px 10px 31px -9px rgba(0,0,0,0.19);
+    box-shadow:0px 0px 77px -32px rgba(0,0,0,0.75);
   }
   .aboutText{
-    padding:12px;
+    padding:18px;
+    margin-bottom:2rem;
   }
 `;

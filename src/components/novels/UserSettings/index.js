@@ -14,13 +14,12 @@ import { ColorLens, AssignmentInd,
          Edit
        } from '@material-ui/icons/';
 
-import withUser from '../../bindings/wrappers/withUser';
 import withPageFade from '../../bindings/wrappers/withPageFade';
 import { withRouter } from "react-router";
 
 import { firebase } from '../../../index.js';
 
-import useWaitOnUser from '../../bindings/hooks/useWaitOnUser';
+import useRHook from '../../bindings/hooks/useRHook';
 
 import { getTextColorBasedOnBg } from '../../../functions';
 
@@ -86,7 +85,7 @@ const styles = {
 }
 
 function UserSettings(props){
-  const { user , history } = props;
+  const { history } = props;
   // --- State Hooks ---
   const [mightDelete,setMightDelete] = useState(false);
   const [willDelete,setWillDelete] = useState(false);
@@ -133,7 +132,8 @@ function UserSettings(props){
     }
   }
   // --- Custom Hooks ---
-  const isLoading = useWaitOnUser(user);
+  const { userLoading:isLoading , user } = useRHook();
+  console.log(isLoading,user);
   // --- Anchors ---
   const [nameEditAnchor,setNameEditAnchor] = useState(null);
   const [colorEditAnchor,setColorEditAnchor] = useState(null);
@@ -317,4 +317,4 @@ function UserSettings(props){
   );
 }
 
-export default withRouter(withUser(withPageFade(UserSettings)));
+export default withRouter(withPageFade(UserSettings));

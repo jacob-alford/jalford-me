@@ -21,7 +21,7 @@ import CreatePostDialogue from '../../sentences/CreatePostDialogue';
 
 import { firebase } from '../../../index.js';
 
-import withUser from '../../bindings/wrappers/withUser';
+import useRHook from '../../bindings/hooks/useRHook';
 
 import { getTextColorBasedOnBg } from '../../../functions'
 
@@ -36,6 +36,7 @@ const styles = {
 const getUserPermissions = user => user.activeUser.permissions.value;
 
 function BlogBar(props){
+  const { user } = useRHook();
   const scrollTrigger = useScrollTrigger();
   const [signInIsOpen,setSignInIsOpen] = useState(false);
   const [signUpIsOpen,setSignUpIsOpen] = useState(false);
@@ -46,8 +47,7 @@ function BlogBar(props){
   const closeSignUp = () => setSignUpIsOpen(false);
   const [userMenuAnchor,setUserMenuAnchor] = useState(null);
   const [breadcrumbAnchor,setBreadcrumbAnchor] = useState(null);
-  const { user,
-          history,
+  const { history,
           match,
           title="Posts",
           context="inBlog",
@@ -177,4 +177,4 @@ function BlogBar(props){
   );
 }
 
-export default withRouter(withUser(BlogBar));
+export default withRouter(BlogBar);

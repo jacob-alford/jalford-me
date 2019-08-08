@@ -14,7 +14,8 @@ import { Visibility , Edit } from '@material-ui/icons';
 import { firebase } from '../../../index.js';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';
-import withUser from '../../bindings/wrappers/withUser';
+
+import useRHook from '../../bindings/hooks/useRHook';
 import usePostConnect from '../../bindings/hooks/usePostConnect';
 import useTitleSize from '../../bindings/hooks/useTitleSize';
 
@@ -269,8 +270,8 @@ function BlogEdit(props){
   const { h1:titleSize } = useTitleSize();
 
   // --- Incoming ---
-  const { user } = props;
   const postId = getPostId(props);
+  const { user } = useRHook();
   const data = usePostConnect(postId);
 
   // --- Database Resync ---
@@ -641,4 +642,4 @@ function BlogEdit(props){
   );
 }
 
-export default withUser(withPageFade(BlogEdit));
+export default withPageFade(BlogEdit);
