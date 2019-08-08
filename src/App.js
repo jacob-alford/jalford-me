@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router , Switch , Route } from "react-router-dom";
 
 import UserSettings from './components/novels/UserSettings';
+import UserPosts from './components/novels/UserPosts';
 import Heading from './components/novels/Heading';
 import Footing from './components/novels/Footer';
 import About from './components/novels/About';
@@ -41,6 +42,10 @@ function App() {
               <Route key={`projectRoute${index}`} path={project.url} render={props => (<Component headerIsOpen={headerIsOpen} {...props} />)} />
             );
           })}
+          <Route path="/user/posts">
+            <UserPosts />
+            <BlogBar title="User" context="inPostView"/>
+          </Route>
           <Route path="/user">
             <UserSettings />
             <BlogBar title="User" context="inUser"/>

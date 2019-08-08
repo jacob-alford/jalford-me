@@ -1,4 +1,4 @@
-import React , { useEffect } from 'react';
+import React , { useEffect , useRef } from 'react';
 import PropTypes from 'prop-types';
 import TypedJS from 'typed.js';
 
@@ -43,11 +43,11 @@ export default function Typed(props){
     onStart, onDestroy
   }
   const typedElement = React.createRef();
-  let typed;
+  const typed = useRef(null);
   useEffect(() => {
-    if(typedElement) typed = new TypedJS(typedElement.current,typedOptions);
-    return () => typed.destroy();
-  },[typed]);
+    if(typedElement) typed.current = new TypedJS(typedElement.current,typedOptions);
+    return () => typed.current.destroy();
+  },[typed,typedElement,typedOptions]);
   return <span style={styles.type} ref={typedElement}/>;
 }
 

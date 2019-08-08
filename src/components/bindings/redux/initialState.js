@@ -1,5 +1,6 @@
 const initialState = {
   user:{
+    hydrated:false,
     loggedIn:false,
     activeUser:{
       uid:null,

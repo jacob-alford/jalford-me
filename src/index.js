@@ -7,7 +7,7 @@ import * as serviceWorker from './serviceWorker';
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import reduxStore from './components/bindings/redux';
-import { setLoggedIn , setLoggedOut } from './components/bindings/redux';
+import { setLoggedIn , setLoggedOut , setLoggedOutWithWater } from './components/bindings/redux';
 
 import { ParallaxProvider } from 'react-scroll-parallax';
 
@@ -38,11 +38,12 @@ const db = firebase.firestore();
 const usersDb = db.collection("users");
 firebase.auth().onAuthStateChanged(user => {
   if(user){
+    // user is signed in
     usersDb.doc(user.uid).onSnapshot(databaseUser => {
       // The case when user is in the database
       // And is authenticated
       if(databaseUser.exists){
-        const userData = databaseUser.data()
+        const userData = databaseUser.data();
         store.dispatch(setLoggedIn({
           uid:user.uid,
           color:userData.color,
@@ -59,7 +60,8 @@ firebase.auth().onAuthStateChanged(user => {
       }
     });
   }else{
-    store.dispatch(setLoggedOut());
+    // user is signed out
+    store.dispatch(setLoggedOutWithWater());
   }
 });
 

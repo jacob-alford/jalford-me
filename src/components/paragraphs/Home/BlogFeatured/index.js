@@ -1,4 +1,4 @@
-import React , { useState , useEffect } from 'react';
+import React , { useState } from 'react';
 import { withRouter } from 'react-router';
 import { ParallaxBanner } from 'react-scroll-parallax';
 import { Typography , Button , Grid , Divider } from '@material-ui/core/';

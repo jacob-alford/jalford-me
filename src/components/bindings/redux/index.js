@@ -6,4 +6,4 @@ export default function reduxStore(state = {}, action){
   }
 }
 
-export { setLoggedIn , setLoggedOut } from './user/actions.js';
+export { setLoggedIn , setLoggedOut , setLoggedOutWithWater } from './user/actions.js';

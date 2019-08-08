@@ -21,8 +21,15 @@ const setLoggedOut = () => {
   }
 }
 
+const LOG_OUT_WITH_WATER = "LOG_OUT_WITH_WATER";
+const setLoggedOutWithWater = () => {
+  return {
+    type:LOG_OUT_WITH_WATER
+  }
+}
+
 // --- Exported elsewhere as action constructors ---
-export { setLoggedIn , setLoggedOut };
+export { setLoggedIn , setLoggedOut , setLoggedOutWithWater };
 
 // --- Exported to index.js ---
-export { LOG_IN , LOG_OUT };
+export { LOG_IN , LOG_OUT , LOG_OUT_WITH_WATER };
