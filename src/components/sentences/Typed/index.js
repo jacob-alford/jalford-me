@@ -32,7 +32,7 @@ export default function Typed(props){
     onStart = () => {},
     onDestroy = () => {}
   } = props;
-  const typedOptions = {
+  const typedOptions = useRef({
     strings, typeSpeed, startDelay,
     backSpeed, smartBackspace, shuffle,
     backDelay, loop, loopCount,
@@ -41,13 +41,13 @@ export default function Typed(props){
     onLastStringBackspaced, onTypingPaused,
     onTypingResumed, onReset, onStop,
     onStart, onDestroy
-  }
-  const typedElement = React.createRef();
-  const typed = useRef(null);
+  });
+  const typedElement = useRef(null);
+  const typed = useRef();
   useEffect(() => {
-    if(typedElement) typed.current = new TypedJS(typedElement.current,typedOptions);
+    typed.current = new TypedJS(typedElement.current,typedOptions.current);
     return () => typed.current.destroy();
-  },[typed,typedElement,typedOptions]);
+  },[typedOptions]);
   return <span style={styles.type} ref={typedElement}/>;
 }
 

@@ -17,7 +17,8 @@ export default function useRPostConnect(){
       }else if(!error && !postData && user.loggedIn && user.activeUser.permissions.value >= 8){
         const db = firebase.firestore();
         const posts = db.collection("posts")
-                        .where("author","==",user.activeUser.username);
+                        .where("author","==",user.activeUser.username)
+                        .where("erased","==",false);
         const unsubscribe =
           posts.onSnapshot(snapshot => {
            const userPosts = [];

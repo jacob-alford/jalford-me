@@ -44,7 +44,7 @@ function App() {
           })}
           <Route path="/user/posts">
             <UserPosts />
-            <BlogBar title="User" context="inPostView"/>
+            <BlogBar title="User" context="inBlog"/>
           </Route>
           <Route path="/user">
             <UserSettings />
