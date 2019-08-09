@@ -14,6 +14,18 @@ export default function useRPostConnect(){
         setError("Not logged in!");
       }else if(!error && !postData && user.loggedIn && user.activeUser.permissions.value < 8){
         setError("Insufficient permissions, contact Jacob for a writing role!");
+      }else if(!error && !postData && user.loggedIn && user.activeUser.permissions.value === 10){
+        const db = firebase.firestore();
+        const posts = db.collection("posts");
+        const unsubscribe =
+          posts.onSnapshot(snapshot => {
+           const userPosts = [];
+           snapshot.forEach(doc => {
+             userPosts.push(doc.data());
+           });
+           setPostData(userPosts);
+         }, error => setError(error));
+        return () => unsubscribe;
       }else if(!error && !postData && user.loggedIn && user.activeUser.permissions.value >= 8){
         const db = firebase.firestore();
         const posts = db.collection("posts")

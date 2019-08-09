@@ -2,12 +2,12 @@ import React , { useState } from 'react';
 import { withRouter } from 'react-router';
 import {
   Container, Typography,
-  Paper, Table, TableRow,
-  TableCell, TableHead,
-  CircularProgress, TableBody,
+  Paper, CircularProgress,
   IconButton, Grid
 } from '@material-ui/core/';
 import { DeleteForever , Edit , Pageview , Public } from '@material-ui/icons/';
+
+import DataTable from '../../sentences/DataTable';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';
 
@@ -20,7 +20,8 @@ const styles = {
     marginTop:"24px"
   },
   paper:{
-    padding:'18px'
+    padding:'18px',
+    overflow:'auto'
   },
   loader:{
     margin:'auto'
@@ -82,7 +83,7 @@ function UserPosts(props){
     }
   }
   const headerConfig = [
-    {label:"Actions",refs:["uid","isPublic"],transform:(ref,ref2) => (
+    {label:"Actions",ref:["uid","isPublic"],display:true,sortable:false,transform:(ref,ref2) => (
       <Grid container justify="center" alignItems="center" style={styles.actionBar}>
         <Grid item>
           <IconButton onClick={() => handleView(ref)}>
@@ -106,9 +107,9 @@ function UserPosts(props){
         </Grid>
       </Grid>
     )},
-    {label:"Title",ref:"title"},
-    {label:"Date",refs:["date"],transform:date => dateify(date)},
-    {label:"Public",refs:["isPublic"],transform:bool => bool.toString()}
+    {label:"Title",ref:["title"],display:true,sortable:true},
+    {label:"Date",ref:["date"],display:true,sortable:true,transform:date => dateify(date)},
+    {label:"Public",ref:["isPublic"],display:true,sortable:true,transform:bool => bool.toString()}
   ];
   return (
     <Container style={styles.container}>
@@ -131,41 +132,7 @@ function UserPosts(props){
           </Typography>
         ) : null}
         {(!error && postData && postData.length > 0) ? (
-          <React.Fragment>
-            <Typography variant="h2" style={styles.title}>
-              My Posts
-            </Typography>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  {headerConfig.map((header,headerIndex) => (
-                    <TableCell style={{textAlign:'center'}} key={`header${headerIndex}`}>
-                      {header.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {postData.map((post,postIndex) => (
-                  <TableRow key={`postRow${postIndex}`}>
-                    {headerConfig.map((header,dataIndex) => {
-                      if(header.transform)
-                        return (
-                          <TableCell key={`dataEntry${dataIndex}`}>
-                            {header.transform(...header.refs.map(ref => post[ref]))}
-                          </TableCell>
-                        );
-                      else return (
-                        <TableCell key={`dataEntry${dataIndex}`}>
-                          {post[header.ref]}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </React.Fragment>
+          <DataTable defaultSort='title' headerConfig={headerConfig} data={postData} />
         ) : null}
       </Paper>
     </Container>
