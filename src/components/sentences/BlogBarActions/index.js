@@ -6,8 +6,8 @@ import { NoteAdd , Edit , Pageview } from '@material-ui/icons/';
 export default function BlogBarActions(props){
   const { user , context , color , setCreatePostIsOpen , history , match } = props;
   const openCreatePost = () => setCreatePostIsOpen(true);
-  const editPost = () => history.push(`/blog/edit/${match.params.postId}`);
-  const viewPost = () => history.push(`/blog/view/${match.params.postId}`);
+  const editPost = () => history.push(`/posts/edit/${match.params.postId}`);
+  const viewPost = () => history.push(`/posts/view/${match.params.postId}`);
   return (
     <React.Fragment>
       {(user.activeUser.permissions.value >= 8 && ["inPostView","inBlog"].includes(context)) ? (

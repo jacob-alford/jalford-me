@@ -14,7 +14,7 @@ const styles = {
 }
 
 export default function DataTable(props){
-  const { headerConfig , defaultSort , data } = props;
+  const { headerConfig , defaultSort , data , selectedFields } = props;
   const [currentSort,setCurrentSort] = useState({ref:defaultSort,dir:'a'});
   /* TODO: Figure out why the heck the initial sort doesn't persist */
   useEffect(() => {
@@ -61,7 +61,7 @@ export default function DataTable(props){
     <Table>
       <TableHead>
         <TableRow>
-          {headerConfig.filter(header => header.display)
+          {headerConfig.filter(header => selectedFields.includes(header.label))
                        .map((header,headerIndex) => (
             <TableCell style={{textAlign:'center'}} key={`header${headerIndex}`}>
               <Grid container direction="row" justify="center" alignItems="center">
@@ -85,6 +85,13 @@ export default function DataTable(props){
                     </IconButton>
                   </Grid>
                 ) : null}
+                {(currentSort && header.sortable && currentSort.ref !== header.ref[0]) ? (
+                  <Grid item>
+                    <IconButton disabled onClick={createSortBy(header.ref[0])}>
+                      {(currentSort.dir === 'a') ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+                    </IconButton>
+                  </Grid>
+                ) : null}
               </Grid>
             </TableCell>
           ))}
@@ -93,16 +100,16 @@ export default function DataTable(props){
       <TableBody>
         {data.map((post,postIndex) => (
           <TableRow key={`postRow${postIndex}`}>
-            {headerConfig.filter(header => header.display)
+            {headerConfig.filter(header => selectedFields.includes(header.label))
                          .map((header,dataIndex) => {
               if(header.transform)
                 return (
-                  <TableCell key={`dataEntry${dataIndex}`}>
+                  <TableCell style={{textAlign:'center'}} key={`dataEntry${dataIndex}`}>
                     {header.transform(...header.ref.map(ref => post[ref]))}
                   </TableCell>
                 );
               else return (
-                <TableCell key={`dataEntry${dataIndex}`}>
+                <TableCell style={{textAlign:'center'}} key={`dataEntry${dataIndex}`}>
                   {post[header.ref[0]]}
                 </TableCell>
               );

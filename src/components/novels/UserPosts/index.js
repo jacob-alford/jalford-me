@@ -3,9 +3,16 @@ import { withRouter } from 'react-router';
 import {
   Container, Typography,
   Paper, CircularProgress,
-  IconButton, Grid
+  IconButton, Grid, Chip
 } from '@material-ui/core/';
-import { DeleteForever , Edit , Pageview , Public } from '@material-ui/icons/';
+import {
+  DeleteForever, Edit,
+  Pageview, Public,
+  Title, Event,
+  Category, LocationCity,
+  Person, Label, Publish,
+  Build
+} from '@material-ui/icons/';
 
 import DataTable from '../../sentences/DataTable';
 
@@ -22,6 +29,9 @@ const styles = {
   paper:{
     padding:'18px',
     overflow:'auto'
+  },
+  fieldPaper:{
+    margin:'18px'
   },
   loader:{
     margin:'auto'
@@ -40,16 +50,45 @@ const styles = {
   actionBar:{
     boxShadow: '0px 0px 10px -1px rgba(0,0,0,0.75)',
     backgroundColor:'#69beef'
+  },
+  selectedField:{
+    backgroundColor:'rgba(0,0,0,.55)'
+  },
+  chipSelected:{
+    margin:'4px',
+    backgroundColor:'#58E855',
+    color:'black'
+  },
+  chipDeselected:{
+    margin:'4px',
+    backgroundColor:'#697989',
+    color:'white'
+  },
+  chipIcon:{
+
   }
 }
+
+const fields = [
+  {field:'Actions',icon:(color) => <Build style={{...styles.chipIcon,color:color}} />,label:'Actions'},
+  {field:'title',icon:(color) => <Title style={{...styles.chipIcon,color:color}} />,label:'Title'},
+  {field:'date',icon:(color) => <Event style={{...styles.chipIcon,color:color}} />,label:'Date'},
+  {field:'isPublic',icon:(color) => <Public style={{...styles.chipIcon,color:color}} />,label:'Public'},
+  {field:'uid',icon:(color) => <LocationCity style={{...styles.chipIcon,color:color}} />,label:'Slug'},
+  {field:'author',icon:(color) => <Person style={{...styles.chipIcon,color:color}} />,label:'Author'},
+  {field:'tags',icon:(color) => <Label style={{...styles.chipIcon,color:color}} />,label:'Tags'},
+  {field:'lastPublish',icon:(color) => <Publish style={{...styles.chipIcon,color:color}} />,label:'Last Published'},
+  {field:'series',icon:(color) => <Category style={{...styles.chipIcon,color:color}} />,label:'Series' }
+];
 
 const dateify = date => new Date(date.toDate()).toLocaleDateString("default",{year: 'numeric', month: 'long', day: 'numeric'});
 
 function UserPosts(props){
   const { history } = props;
-  const { isLoading , postData , error } = userRPostConnect();
+  const { isLoading , postData , error } = userRPostConnect('title');
   const [currentDelete,setCurrentDelete] = useState(null);
   const [currentPublic,setCurrentPublic] = useState(null);
+  const [selectedFields,setSelectedFields] = useState(["Title","Date","Public"]);
   const handleDelete = uid => {
     if(currentDelete === uid){
       if(!error){
@@ -61,6 +100,15 @@ function UserPosts(props){
       }
     }else{
       setCurrentDelete(uid);
+    }
+  }
+  const createFieldToggler = field => {
+    return () => {
+      if(selectedFields.includes(field)){
+        const copyArr = [...selectedFields];
+        copyArr.splice(selectedFields.indexOf(field),1);
+        setSelectedFields(copyArr);
+      }else setSelectedFields([field,...selectedFields]);
     }
   }
   const handleEdit = uid => {
@@ -83,7 +131,7 @@ function UserPosts(props){
     }
   }
   const headerConfig = [
-    {label:"Actions",ref:["uid","isPublic"],display:true,sortable:false,transform:(ref,ref2) => (
+    {label:"Actions",ref:["uid","isPublic"],sortable:false,transform:(ref,ref2) => (
       <Grid container justify="center" alignItems="center" style={styles.actionBar}>
         <Grid item>
           <IconButton onClick={() => handleView(ref)}>
@@ -107,35 +155,55 @@ function UserPosts(props){
         </Grid>
       </Grid>
     )},
-    {label:"Title",ref:["title"],display:true,sortable:true},
-    {label:"Date",ref:["date"],display:true,sortable:true,transform:date => dateify(date)},
-    {label:"Public",ref:["isPublic"],display:true,sortable:true,transform:bool => bool.toString()}
+    {label:"Title",ref:["title"],sortable:true},
+    {label:"Slug",ref:["uid"],sortable:true},
+    {label:"Author",ref:["author"],sortable:true},
+    {label:"Tags",ref:["tags"],sortable:false,transform:arr => arr.join(",")},
+    {label:"Last Published",ref:["lastPublish"],sortable:true,transform:date => dateify(date)},
+    {label:"Date",ref:["date"],sortable:true,transform:date => dateify(date)},
+    {label:"Public",ref:["isPublic"],sortable:true,transform:bool => bool.toString()},
+    {label:"Series",ref:["series"],sortable:true}
   ];
   return (
-    <Container style={styles.container}>
-      <Paper style={styles.paper}>
-        {(isLoading) ? (
-          <Grid container justify="center" alignItems="center">
-            <Grid item>
-              <CircularProgress color="secondary" style={styles.loader} />
+    <React.Fragment>
+      <Container fixed style={styles.container}>
+        <Grid container justify="center" alignItems="center">
+          {fields.map((field,index) => (
+            <Grid item key={`chip${index}`}>
+              <Chip
+                style={(selectedFields.includes(field.label)) ? styles.chipSelected : styles.chipDeselected}
+                icon={field.icon((selectedFields.includes(field.label)) ? 'black' : 'white')}
+                label={field.label}
+                onClick={createFieldToggler(field.label)} />
             </Grid>
-          </Grid>
-        ) : null}
-        {(error) ? (
-          <Typography variant="h5" style={styles.error}>
-            {error.toString()}
-          </Typography>
-        ) : null}
-        {(!error && postData && postData.length === 0) ? (
-          <Typography variant="h5" style={styles.notFound}>
-            You don't have any posts!
-          </Typography>
-        ) : null}
-        {(!error && postData && postData.length > 0) ? (
-          <DataTable defaultSort='title' headerConfig={headerConfig} data={postData} />
-        ) : null}
-      </Paper>
-    </Container>
+          ))}
+        </Grid>
+      </Container>
+      <Container style={styles.container}>
+        <Paper style={styles.paper}>
+          {(isLoading) ? (
+            <Grid container justify="center" alignItems="center">
+              <Grid item>
+                <CircularProgress color="secondary" style={styles.loader} />
+              </Grid>
+            </Grid>
+          ) : null}
+          {(error) ? (
+            <Typography variant="h5" style={styles.error}>
+              {error.toString()}
+            </Typography>
+          ) : null}
+          {(!error && postData && postData.length === 0) ? (
+            <Typography variant="h5" style={styles.notFound}>
+              You don't have any posts!
+            </Typography>
+          ) : null}
+          {(!error && postData && postData.length > 0) ? (
+            <DataTable defaultSort='title' selectedFields={selectedFields} headerConfig={headerConfig} data={postData} />
+          ) : null}
+        </Paper>
+      </Container>
+    </React.Fragment>
   );
 }
 

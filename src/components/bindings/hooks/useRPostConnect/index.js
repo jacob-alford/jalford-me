@@ -3,7 +3,7 @@ import { firebase } from '../../../../index.js';
 
 import useRHook from '../useRHook';
 
-export default function useRPostConnect(){
+export default function useRPostConnect(orderBy){
   const [isLoading,setIsLoading] = useState(true);
   const [postData,setPostData] = useState(null);
   const [error, setError] = useState(null);
@@ -30,7 +30,8 @@ export default function useRPostConnect(){
         const db = firebase.firestore();
         const posts = db.collection("posts")
                         .where("author","==",user.activeUser.username)
-                        .where("erased","==",false);
+                        .where("erased","==",false)
+                        .orderBy(orderBy);
         const unsubscribe =
           posts.onSnapshot(snapshot => {
            const userPosts = [];
@@ -42,7 +43,7 @@ export default function useRPostConnect(){
         return () => unsubscribe;
       }
     }
-  },[error,postData,user,userLoading]);
+  },[error,postData,user,userLoading,orderBy]);
   useEffect(() => {
     if(isLoading && !userLoading && (postData || error)) setIsLoading(false);
   },[postData,isLoading,error,userLoading]);

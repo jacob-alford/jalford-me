@@ -21,12 +21,18 @@ const styles = {
     alignItems:"center"
   },
   title:{
-    marginBottom:"14px"
+    marginBottom:"14px",
+    textAlign:'center'
   },
   create:{
     color:"black",
     backgroundColor:"#58E855",
-    marginTop:"14px"
+    marginTop:"14px",
+    transition:'background-color .25s'
+  },
+  createDisabled:{
+    marginTop:"14px",
+    transition:'background-color .25s'
   },
   slug:{
     marginTop:"14px"
@@ -41,6 +47,7 @@ export default function CreatePostDialogue(props){
   const handleClose = () => setCreatePostIsOpen(false);
   const handleTitleChange = evt => setTitle(evt.target.value);
   const handleSlugChange = evt => setSlug(evt.target.value);
+  const isFilled = () => title !== "" && slug !== "";
   const handleCreate = () => {
     if(user.activeUser && user.activeUser.permissions.value >= 8){
       const db = firebase.firestore();
@@ -53,6 +60,7 @@ export default function CreatePostDialogue(props){
             author:user.activeUser.username,
             body:"",
             date:new Date(),
+            erased:false,
             isPublic:false,
             likes:[],
             comments:[],
@@ -65,12 +73,12 @@ export default function CreatePostDialogue(props){
           }).then(() => {
             console.log("Successfully created post!");
             handleClose();
-            history.push(`/blog/edit/${slug}`);
+            history.push(`/posts/edit/${slug}`);
           }).catch(error => {
             console.error(error);
           });
         }
-      })
+      });
     }
   }
   return (
@@ -82,7 +90,7 @@ export default function CreatePostDialogue(props){
           </Typography>
           <TextField label="Title" variant="outlined" value={title} onChange={handleTitleChange}/>
           <TextField error={conflict} style={styles.slug} label="Slug" variant="outlined" value={slug} onChange={handleSlugChange}/>
-          <Button onClick={handleCreate} variant="contained" style={styles.create}>
+          <Button disabled={!isFilled()} onClick={handleCreate} variant="contained" style={(isFilled()) ? styles.create : styles.createDisabled}>
             Create
           </Button>
         </div>

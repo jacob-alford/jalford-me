@@ -83,7 +83,7 @@ function BlogBar(props){
   },[user,signInIsOpen,signUpIsOpen]);
   return (
       <React.Fragment>
-        <Slide direction="up" in={!scrollTrigger}>
+        <Slide direction="up" in={!scrollTrigger && user.hydrated}>
           <AppBar style={{backgroundColor:bgColor,...styles.bar}}>
             <Toolbar>
               <Grid container alignItems="center" justify="space-between">
@@ -147,7 +147,7 @@ function BlogBar(props){
             <ListItemText primary="Account" />
           </MenuItem>
           {(getUserPermissions(user) >= 8) ? (
-            <MenuItem>
+            <MenuItem onClick={() => handleLinkRedirect('/user/posts')}>
               <ListItemIcon>
                 <ListAlt />
               </ListItemIcon>
