@@ -156,7 +156,7 @@ function BlogBar(props){
             </MenuItem>
           ) : null}
           {(getUserPermissions(user) === 10) ? (
-            <MenuItem>
+            <MenuItem onClick={() => handleLinkRedirect('/admin/users')}>
               <ListItemIcon>
                 <Group />
               </ListItemIcon>

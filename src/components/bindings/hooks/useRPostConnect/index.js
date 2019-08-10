@@ -11,9 +11,9 @@ export default function useRPostConnect(orderBy){
   useEffect(() => {
     if(!userLoading){
       if(!user.loggedIn){
-        setError("Not logged in!");
+        setError("Insufficient permissions: User not logged in!");
       }else if(!error && !postData && user.loggedIn && user.activeUser.permissions.value < 8){
-        setError("Insufficient permissions, contact Jacob for a writing role!");
+        setError("Insufficient permissions: Contact Jacob for a writing role!");
       }else if(!error && !postData && user.loggedIn && user.activeUser.permissions.value === 10){
         const db = firebase.firestore();
         const posts = db.collection("posts");
@@ -29,9 +29,8 @@ export default function useRPostConnect(orderBy){
       }else if(!error && !postData && user.loggedIn && user.activeUser.permissions.value >= 8){
         const db = firebase.firestore();
         const posts = db.collection("posts")
-                        .where("author","==",user.activeUser.username)
-                        .where("erased","==",false)
-                        .orderBy(orderBy);
+                        .where("owner","==",user.activeUser.uid)
+                        .where("erased","==",false);
         const unsubscribe =
           posts.onSnapshot(snapshot => {
            const userPosts = [];

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router , Switch , Route } from "react-router-dom";
 
 import UserSettings from './components/novels/UserSettings';
+import UsersTable from './components/novels/UsersTable';
 import UserPosts from './components/novels/UserPosts';
 import Heading from './components/novels/Heading';
 import Footing from './components/novels/Footer';
@@ -42,6 +43,10 @@ function App() {
               <Route key={`projectRoute${index}`} path={project.url} render={props => (<Component headerIsOpen={headerIsOpen} {...props} />)} />
             );
           })}
+          <Route path="/admin/users">
+            <UsersTable />
+            <BlogBar title="Admin" />
+          </Route>
           <Route path="/user/posts">
             <UserPosts />
             <BlogBar title="User" context="inBlog"/>

@@ -15,45 +15,82 @@ const styles = {
 
 export default function DataTable(props){
   const { headerConfig , defaultSort , data , selectedFields } = props;
-  const [currentSort,setCurrentSort] = useState({ref:defaultSort,dir:'a'});
+  const [currentSort,setCurrentSort] = useState({ref:defaultSort,dir:'a',deepAccessor:null});
   /* TODO: Figure out why the heck the initial sort doesn't persist */
   useEffect(() => {
     if(currentSort && data && data[0]){
       const ascending = currentSort.dir === 'a';
-      if(typeof data[0][currentSort.ref] === 'string'){
-        data.sort((datum1,datum2) => {
-          const comp1 = datum1[currentSort.ref].toUpperCase();
-          const comp2 = datum2[currentSort.ref].toUpperCase();
-          if(comp1 < comp2)
-            return (ascending) ? -1 : 1;
-          else if(comp1 > comp2)
-            return (ascending) ? 1 : -1;
-          else return 0;
-        });
-      }else if(typeof data[0][currentSort.ref] === 'number'){
-        data.sort((datum1,datum2) => ((ascending) ? 1 : -1) * (datum1[currentSort.ref] - datum2[currentSort.ref]));
-      }else if(typeof data[0][currentSort.ref] === 'boolean'){
-        data.sort((datum1,datum2) => {
-          if(datum1[currentSort.ref] < datum2[currentSort.ref])
-            return (ascending) ? -1 : 1;
-          else if(datum1[currentSort.ref] > datum2[currentSort.ref])
-            return (ascending) ? 1 : -1;
-          else return 0;
-        });
-      }else if(currentSort.ref.toLowerCase().includes('date')){
-        data.sort((datum1,datum2) => {
-          return ((ascending) ? 1 : -1) * (datum1[currentSort.ref].seconds - datum2[currentSort.ref].seconds);
-        });
+      if(currentSort.deepAccessor){
+        const access = currentSort.deepAccessor;
+        if(typeof access(data[0][currentSort.ref]) === 'string'){
+          data.sort((datum1,datum2) => {
+            const comp1 = access(datum1[currentSort.ref]).toUpperCase();
+            const comp2 = access(datum2[currentSort.ref]).toUpperCase();
+            if(comp1 < comp2)
+              return (ascending) ? -1 : 1;
+            else if(comp1 > comp2)
+              return (ascending) ? 1 : -1;
+            else return 0;
+          });
+        }else if(typeof access(data[0][currentSort.ref]) === 'number'){
+          data.sort((datum1,datum2) => ((ascending) ? 1 : -1) * (access(datum1[currentSort.ref]) - access(datum2[currentSort.ref])));
+        }else if(typeof access(data[0][currentSort.ref]) === 'boolean'){
+          data.sort((datum1,datum2) => {
+            if(access(datum1[currentSort.ref]) < access(datum2[currentSort.ref]))
+              return (ascending) ? -1 : 1;
+            else if(access(datum1[currentSort.ref]) > access(datum2[currentSort.ref]))
+              return (ascending) ? 1 : -1;
+            else return 0;
+          });
+        }else if(currentSort.ref.toLowerCase().includes('date')){
+          data.sort((datum1,datum2) => {
+            return ((ascending) ? 1 : -1) * (access(datum1[currentSort.ref]).seconds - access(datum2[currentSort.ref]).seconds);
+          });
+        }
+      }else{
+        if(typeof data[0][currentSort.ref] === 'string'){
+          data.sort((datum1,datum2) => {
+            const comp1 = datum1[currentSort.ref].toUpperCase();
+            const comp2 = datum2[currentSort.ref].toUpperCase();
+            if(comp1 < comp2)
+              return (ascending) ? -1 : 1;
+            else if(comp1 > comp2)
+              return (ascending) ? 1 : -1;
+            else return 0;
+          });
+        }else if(typeof data[0][currentSort.ref] === 'number'){
+          data.sort((datum1,datum2) => ((ascending) ? 1 : -1) * (datum1[currentSort.ref] - datum2[currentSort.ref]));
+        }else if(typeof data[0][currentSort.ref] === 'boolean'){
+          data.sort((datum1,datum2) => {
+            if(datum1[currentSort.ref] < datum2[currentSort.ref])
+              return (ascending) ? -1 : 1;
+            else if(datum1[currentSort.ref] > datum2[currentSort.ref])
+              return (ascending) ? 1 : -1;
+            else return 0;
+          });
+        }else if(currentSort.ref.toLowerCase().includes('date')){
+          data.sort((datum1,datum2) => {
+            return ((ascending) ? 1 : -1) * (datum1[currentSort.ref].seconds - datum2[currentSort.ref].seconds);
+          });
+        }
       }
     }
   },[currentSort,data]);
-  const createSortBy = ref => {
+  const createSortBy = (ref,deepAccessor) => {
     return () => {
       if(currentSort.ref === ref){
         const dir = (currentSort.dir === 'a') ? 'd' : 'a';
-        setCurrentSort({...currentSort,dir:dir});
+        if(deepAccessor){
+          setCurrentSort({...currentSort,dir:dir,deepAccessor:deepAccessor});
+        }else{
+          setCurrentSort({...currentSort,dir:dir,deepAccessor:null});
+        }
       }else{
-        setCurrentSort({...currentSort,ref:ref});
+        if(deepAccessor){
+          setCurrentSort({...currentSort,ref:ref,deepAccessor:deepAccessor});
+        }else{
+          setCurrentSort({...currentSort,ref:ref,deepAccessor:null});
+        }
       }
     }
   }
@@ -67,7 +104,7 @@ export default function DataTable(props){
               <Grid container direction="row" justify="center" alignItems="center">
                 {(currentSort && header.sortable) ? (
                   <Grid item>
-                    <Typography variant="h6" component="span" style={styles.header} onClick={createSortBy(header.ref[0])}>
+                    <Typography variant="h6" component="span" style={styles.header} onClick={createSortBy(header.ref[0],header.deepAccessor)}>
                       {header.label}
                     </Typography>
                   </Grid>
@@ -80,15 +117,15 @@ export default function DataTable(props){
                 )}
                 {(currentSort && header.sortable && currentSort.ref === header.ref[0]) ? (
                   <Grid item>
-                    <IconButton onClick={createSortBy(header.ref[0])}>
+                    <IconButton onClick={createSortBy(header.ref[0],header.deepAccessor)}>
                       {(currentSort.dir === 'a') ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
                     </IconButton>
                   </Grid>
                 ) : null}
                 {(currentSort && header.sortable && currentSort.ref !== header.ref[0]) ? (
                   <Grid item>
-                    <IconButton disabled onClick={createSortBy(header.ref[0])}>
-                      {(currentSort.dir === 'a') ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+                    <IconButton onClick={createSortBy(header.ref[0],header.deepAccessor)}>
+                      {(currentSort.dir === 'a') ? <KeyboardArrowUp style={{color:'rgba(0,0,0,.25)'}}/> : <KeyboardArrowDown style={{color:'rgba(0,0,0,.25)'}} />}
                     </IconButton>
                   </Grid>
                 ) : null}

@@ -36,12 +36,11 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const usersDb = db.collection("users");
+let unsubscribe;
 firebase.auth().onAuthStateChanged(user => {
   if(user){
-    // user is signed in
-    usersDb.doc(user.uid).onSnapshot(databaseUser => {
-      // The case when user is in the database
-      // And is authenticated
+    if(unsubscribe) unsubscribe();
+    unsubscribe = usersDb.doc(user.uid).onSnapshot(databaseUser => {
       if(databaseUser.exists){
         const userData = databaseUser.data();
         store.dispatch(setLoggedIn({
@@ -53,14 +52,12 @@ firebase.auth().onAuthStateChanged(user => {
           permissions:userData.permissions,
           username:userData.username
         }));
-      // The case when a user is not in the database
-      // but is authenticated
       }else{
         store.dispatch(setLoggedOut());
       }
     });
   }else{
-    // user is signed out
+    if(unsubscribe) unsubscribe();
     store.dispatch(setLoggedOutWithWater());
   }
 });

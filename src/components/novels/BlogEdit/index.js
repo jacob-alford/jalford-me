@@ -609,33 +609,32 @@ function BlogEdit(props){
       </Grid>
       <Container style={styles.container}>
         <Paper style={styles.sheet}>
-          {(!data.isLoading && (data.error || !user.loggedIn)) ? <NotFoundPlaceholder /> : null}
           {(data.isLoading) ? <LoadingPlaceholder /> : null}
-          {(hasPermissions()) ? (
-            <React.Fragment>
-              {(displayHeading) ? (
-                <React.Fragment>
-                  <Typography paragraph style={{textAlign:"center",fontSize:titleSize}} variant="h1">
-                    {blogTitle}
-                  </Typography>
-                  <Typography paragraph variant="h4" style={{textAlign:"center"}}>
-                    <small>{`by ${data.postData.author} `}</small>
-                    |
-                    <strong>
-                      {` ${new Date(blogDate).toLocaleDateString("default",{year: 'numeric', month: 'long', day: 'numeric'})}`}
-                    </strong>
-                  </Typography>
-                  <Divider style={{marginTop:"15px",marginBottom:"15px"}}/>
-                  {(blogSnippit && blogSnippit !== "") ? (
-                    <Typography paragraph style={styles.lead}>
-                      {blogSnippit}
+          {(hasPermissions() && !data.error) ? (
+              <React.Fragment>
+                {(displayHeading) ? (
+                  <React.Fragment>
+                    <Typography paragraph style={{textAlign:"center",fontSize:titleSize}} variant="h1">
+                      {blogTitle}
                     </Typography>
-                  ) : null}
-                </React.Fragment>
-              ) : null}
-              <EditPost blogText={blogText} setBlogText={setBlogText} isEditing={isEditing} />
-            </React.Fragment>
-          ) : null}
+                    <Typography paragraph variant="h4" style={{textAlign:"center"}}>
+                      <small>{`by ${data.postData.author} `}</small>
+                      |
+                      <strong>
+                        {` ${new Date(blogDate).toLocaleDateString("default",{year: 'numeric', month: 'long', day: 'numeric'})}`}
+                      </strong>
+                    </Typography>
+                    <Divider style={{marginTop:"15px",marginBottom:"15px"}}/>
+                    {(blogSnippit && blogSnippit !== "") ? (
+                      <Typography paragraph style={styles.lead}>
+                        {blogSnippit}
+                      </Typography>
+                    ) : null}
+                  </React.Fragment>
+                ) : null}
+                <EditPost blogText={blogText} setBlogText={setBlogText} isEditing={isEditing} />
+              </React.Fragment>
+            ) : (data.isLoading) ? null : <NotFoundPlaceholder />}
         </Paper>
       </Container>
     </React.Fragment>

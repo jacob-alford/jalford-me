@@ -133,7 +133,6 @@ function UserSettings(props){
   }
   // --- Custom Hooks ---
   const { userLoading:isLoading , user } = useRHook();
-  console.log(isLoading,user);
   // --- Anchors ---
   const [nameEditAnchor,setNameEditAnchor] = useState(null);
   const [colorEditAnchor,setColorEditAnchor] = useState(null);

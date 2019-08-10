@@ -18,7 +18,8 @@ import DataTable from '../../sentences/DataTable';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';
 
-import userRPostConnect from '../../bindings/hooks/useRPostConnect';
+import useRPostConnect from '../../bindings/hooks/useRPostConnect';
+import useTitleSize from '../../bindings/hooks/useTitleSize';
 
 import { firebase } from '../../../index.js';
 
@@ -41,7 +42,9 @@ const styles = {
     textAlign:'center'
   },
   title:{
-    color:"rgba(0,0,0,.85)",
+    color:"white",
+    marginTop:"12px",
+    marginBottom:"12px",
     textAlign:"center"
   },
   notFound:{
@@ -57,7 +60,7 @@ const styles = {
   chipSelected:{
     margin:'4px',
     backgroundColor:'#58E855',
-    color:'black'
+    color:'rgba(0,0,0,.85)'
   },
   chipDeselected:{
     margin:'4px',
@@ -83,12 +86,15 @@ const fields = [
 
 const dateify = date => new Date(date.toDate()).toLocaleDateString("default",{year: 'numeric', month: 'long', day: 'numeric'});
 
+const getPermissions = user => user.activeUser.permissions.value;
+
 function UserPosts(props){
   const { history } = props;
-  const { isLoading , postData , error } = userRPostConnect('title');
+  const { isLoading , postData , error , user } = useRPostConnect('title');
   const [currentDelete,setCurrentDelete] = useState(null);
   const [currentPublic,setCurrentPublic] = useState(null);
   const [selectedFields,setSelectedFields] = useState(["Title","Date","Public"]);
+  const { h1:title } = useTitleSize();
   const handleDelete = uid => {
     if(currentDelete === uid){
       if(!error){
@@ -166,19 +172,30 @@ function UserPosts(props){
   ];
   return (
     <React.Fragment>
-      <Container fixed style={styles.container}>
-        <Grid container justify="center" alignItems="center">
-          {fields.map((field,index) => (
-            <Grid item key={`chip${index}`}>
-              <Chip
-                style={(selectedFields.includes(field.label)) ? styles.chipSelected : styles.chipDeselected}
-                icon={field.icon((selectedFields.includes(field.label)) ? 'black' : 'white')}
-                label={field.label}
-                onClick={createFieldToggler(field.label)} />
-            </Grid>
-          ))}
-        </Grid>
+      <Container>
+        <Typography variant="h1" style={{...styles.title,fontSize:title}}>
+          {(getPermissions(user) === 8) ?
+            "My Posts"
+          : (getPermissions(user) === 10) ?
+            "All Posts"
+          : "Posts"}
+        </Typography>
       </Container>
+      {(!error && postData) ? (
+        <Container fixed style={styles.container}>
+          <Grid container justify="center" alignItems="center">
+            {fields.map((field,index) => (
+              <Grid item key={`chip${index}`}>
+                <Chip
+                  style={(selectedFields.includes(field.label)) ? styles.chipSelected : styles.chipDeselected}
+                  icon={field.icon((selectedFields.includes(field.label)) ? 'black' : 'white')}
+                  label={field.label}
+                  onClick={createFieldToggler(field.label)} />
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      ) : null}
       <Container style={styles.container}>
         <Paper style={styles.paper}>
           {(isLoading) ? (
