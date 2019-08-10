@@ -62,11 +62,13 @@ export default function CreatePostDialogue(props){
             date:new Date(),
             erased:false,
             isPublic:false,
+            displayHeading:false,
             likes:[],
             comments:[],
             owner:user.activeUser.uid,
             series:"default",
             snapshots:[],
+            snippit:"",
             tags:[],
             title:title,
             uid:slug

@@ -1,9 +1,8 @@
 import React, { useState , useEffect } from 'react';
-import { Grid,
-         Button,
-         Typography,
-         TextField
-       } from '@material-ui/core/';
+import {
+  Grid, Button, Typography,
+  TextField, CircularProgress
+} from '@material-ui/core/';
 import { SliderPicker } from 'react-color';
 
 import zxcvbn from 'zxcvbn';
@@ -50,6 +49,9 @@ const styles = {
   "pwStrength4":{
     transition:"text-shadow .25s",
     textShadow: '0px 10px 14px #58E855'
+  },
+  loader:{
+    marginLeft:'10px'
   }
 }
 
@@ -61,13 +63,14 @@ const passwordStrengthText = [
   "Very nice password!!! (score 4)"
 ];
 
-export default function SignupForm(){
+export default function SignupForm(props){
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
   const [passwordScore, setPasswordScore] = useState(0);
   const [username,setUsername] = useState("");
   const [color,setColor] = useState(randomColor());
   const [error,setError] = useState();
+  const { loading , setLoading } = props;
   function validForm(){
     return validateEmail(email)
         && passwordScore >= 2
@@ -97,7 +100,10 @@ export default function SignupForm(){
       }).catch(error => {
         setError(error.toString());
         console.error(error);
+      }).finally(() => {
+        setLoading(false);
       });
+      setLoading(true);
     }
   }
   useEffect(() => {
@@ -110,7 +116,7 @@ export default function SignupForm(){
     <Grid container direction="column" justify="center">
       {(error) ? (
         <Grid item>
-          <Typography variant="body2" style={{color:"#E84040",marginTop:"24px",marginBottom:"24px"}}>
+          <Typography variant="body2" style={{color:"#E84040",marginBottom:"24px"}}>
             {error}
           </Typography>
         </Grid>
@@ -142,9 +148,18 @@ export default function SignupForm(){
         </Grid>
       </Grid>
       <Grid item>
-        <Button disabled={!validForm()} style={(validForm()) ? {color:color,...styles.submitButton} : styles.submitButton} onClick={handleSubmit} variant="outlined" color="primary">
-          Sign Up
-        </Button>
+        <Grid container alignItems="center" direction="row">
+          <Grid item>
+            <Button disabled={!validForm()} style={(validForm()) ? {color:color,...styles.submitButton} : styles.submitButton} onClick={handleSubmit} variant="outlined" color="primary">
+              Sign Up
+            </Button>
+          </Grid>
+          <Grid item>
+            {(loading) ? (
+              <CircularProgress style={styles.loader} size={15} />
+            ) : null}
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );

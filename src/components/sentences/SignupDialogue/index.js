@@ -1,4 +1,4 @@
-import React from 'react';
+import React , { useState } from 'react';
 import { Slide , Modal , Paper , Grid } from '@material-ui/core/';
 
 import SignupForm from '../../words/SignupForm';
@@ -6,8 +6,9 @@ import SignupForm from '../../words/SignupForm';
 const styles = {
   modal:{
     position:"absolute",
-    top:'calc(100% - 442px)',
+    top:'0px',
     left:'calc(100% - 290px)',
+    height:'100vh',
     width:"230px",
     padding:"30px"
   }
@@ -15,14 +16,15 @@ const styles = {
 
 export default function SignupDialogue(props){
   const { signUpIsOpen , setSignUpIsOpen } = props;
+  const [loading,setLoading] = useState(false);
   const closeModal = () => setSignUpIsOpen(false);
   return (
-    <Modal open={signUpIsOpen} onClose={closeModal}>
+    <Modal open={signUpIsOpen || loading} onClose={closeModal}>
       <Slide direction="left" in={signUpIsOpen} mountOnEnter unmountOnExit>
         <Paper style={styles.modal}>
           <Grid container justify="center">
             <Grid item>
-              <SignupForm />
+              <SignupForm loading={loading} setLoading={setLoading} />
             </Grid>
           </Grid>
         </Paper>
