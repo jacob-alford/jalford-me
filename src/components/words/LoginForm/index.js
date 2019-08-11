@@ -49,12 +49,25 @@ export default function LoginForm(props){
           </Typography>
         ) : null}
       </Grid>
-      <Grid item>
-        <TextField style={styles.textBox} variant="outlined"  label="email" onChange={handleChangeConstructor(setEmail)}/>
-      </Grid>
-      <Grid item>
-        <TextField style={styles.textBox} variant="outlined"  type="password" label="password" onChange={handleChangeConstructor(setPassword)}/>
-      </Grid>
+      <form>
+        <Grid item>
+          <TextField
+            style={styles.textBox}
+            variant="outlined"
+            label="email"
+            onChange={handleChangeConstructor(setEmail)}
+            autoComplete="email"/>
+        </Grid>
+        <Grid item>
+          <TextField
+            style={styles.textBox}
+            variant="outlined"
+            type="password"
+            label="password"
+            onChange={handleChangeConstructor(setPassword)}
+            autoComplete="current-password"/>
+        </Grid>
+      </form>
       <Grid item>
         <Grid container alignItems="center" direction="row">
           <Grid item>

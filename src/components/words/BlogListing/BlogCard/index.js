@@ -75,7 +75,7 @@ export default function BlogCard(props){
             </Typography>
           ) : null}
           <Typography variant="body1">
-            <Link href={`/blog/view/${getPost().uid}`} style={styles.link}>
+            <Link href={`/posts/view/${getPost().uid}`} style={styles.link}>
               Read More
             </Link>
           </Typography>

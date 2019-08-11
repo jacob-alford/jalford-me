@@ -10,7 +10,11 @@ export default function usePostConnect(id){
       const db = firebase.firestore();
       const post = db.collection("posts").doc(id);
       const unsubscribe = post.onSnapshot(doc => {
-        setPostData(doc.data());
+        if(doc.exists){
+          setPostData(doc.data());
+        }else{
+          setError("Post not found!");
+        }
       }, error => setError(error));
       return () => unsubscribe;
     }

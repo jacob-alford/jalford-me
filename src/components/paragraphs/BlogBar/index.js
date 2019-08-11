@@ -46,13 +46,12 @@ function BlogBar(props){
   const closeSignIn = () => setSignInIsOpen(false);
   const closeSignUp = () => setSignUpIsOpen(false);
   const [userMenuAnchor,setUserMenuAnchor] = useState(null);
-  const [breadcrumbAnchor,setBreadcrumbAnchor] = useState(null);
-  const { history,
-          match,
-          title="Posts",
-          context="inBlog",
-          breadcrumbs
-        } = props;
+  const {
+    history,
+    match,
+    context="inBlog",
+    breadcrumb = {link:'/posts',label:'Posts'}
+} = props;
   const handleLinkRedirect = url => {
     if(url.includes("http")) window.location.href = url;
     else history.push(url);
@@ -88,22 +87,11 @@ function BlogBar(props){
             <Toolbar>
               <Grid container alignItems="center" justify="space-between">
                 <Grid item>
-                  <Button onClick={anchorHandlerCreator(setBreadcrumbAnchor)}>
+                  <Button onClick={() => handleLinkRedirect(breadcrumb.link)}>
                     <Typography variant="h6" style={{color:textColor,flexGrow:"1"}}>
-                      {(breadcrumbs && breadcrumbs[0].label) || title}
+                      {breadcrumb.label}
                     </Typography>
                   </Button>
-                  {(breadcrumbs) ? (
-                    <Menu anchorEl={breadcrumbAnchor} open={Boolean(breadcrumbAnchor)} onClose={menuCloseConstruct(setBreadcrumbAnchor)}>
-                      {[...breadcrumbs].reverse().map((crumb,index) => (
-                        <MenuItem key={`MenuItem${index}`} onClick={() => handleLinkRedirect(crumb.url)}>
-                          <Typography variant="h6">
-                            {crumb.label}
-                          </Typography>
-                        </MenuItem>
-                      ))}
-                    </Menu>
-                  ) : null}
                 </Grid>
                 {(user.loggedIn) ? (
                   <React.Fragment>

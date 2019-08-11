@@ -121,15 +121,32 @@ export default function SignupForm(props){
           </Typography>
         </Grid>
       ) : null }
-      <Grid item>
-        <TextField error={!(email === "" || validateEmail(email))} style={styles.textBox} variant="outlined"  label="email" onChange={handleChangeConstructor(setEmail)}/>
-      </Grid>
-      <Grid item>
-        <TextField error={!(username === "" || validateUsername(email))} style={styles.textBox} variant="outlined" label="username" onChange={handleChangeConstructor(setUsername)}/>
-      </Grid>
-      <Grid item>
-        <TextField error={!(password === "" || passwordScore >= 2)} style={styles.textBox} variant="outlined"  type="password" label="password" onChange={handleChangeConstructor(setPassword)}/>
-      </Grid>
+      <form>
+        <Grid item>
+          <TextField
+            error={!(email === "" || validateEmail(email))}
+            style={styles.textBox} variant="outlined"
+            label="email" onChange={handleChangeConstructor(setEmail)}
+            autoComplete="email"/>
+        </Grid>
+        <Grid item>
+          <TextField
+            error={!(username === "" || validateUsername(email))}
+            style={styles.textBox} variant="outlined" label="username"
+            onChange={handleChangeConstructor(setUsername)}
+            autoComplete="username"/>
+        </Grid>
+        <Grid item>
+          <TextField
+            error={!(password === "" || passwordScore >= 2)}
+            style={styles.textBox}
+            variant="outlined"
+            type="password"
+            label="password"
+            onChange={handleChangeConstructor(setPassword)}
+            autoComplete="new-password"/>
+        </Grid>
+      </form>
       <Grid item>
         <Typography style={styles[`pwStrength${passwordScore}`]}>
           {passwordStrengthText[passwordScore]}

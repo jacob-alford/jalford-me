@@ -21,12 +21,6 @@ import { getActiveNavItem } from './functions';
 
 require('typeface-roboto');
 
-const defaultBreadcrumbs = [
-  {label:"Posts",url:"/posts"},
-  {label:"Philosophy",url:"/view/philosophy"},
-  {label:"0",url:"/view/philosophy/0"}
-];
-
 function App() {
   const path = window.location.pathname;
   const [headerIsOpen,setHeaderIsOpen] = useState(true);
@@ -45,15 +39,15 @@ function App() {
           })}
           <Route path="/admin/users">
             <UsersTable />
-            <BlogBar title="Admin" />
+            <BlogBar breadcrumb={{link:'/admin/users',label:'Users'}}/>
           </Route>
           <Route path="/user/posts">
             <UserPosts />
-            <BlogBar title="User" context="inBlog"/>
+            <BlogBar context="inBlog" breadcrumb={{link:'/user/posts',label:'Posts'}}/>
           </Route>
           <Route path="/user">
             <UserSettings />
-            <BlogBar title="User" context="inUser"/>
+            <BlogBar context="inUser" breadcrumb={{link:'/user',label:'User'}}/>
           </Route>
           <Route path="/about" component={About} />
           <Route path="/posts/view/:postId" children={props => {
@@ -61,7 +55,7 @@ function App() {
             return (
               <React.Fragment>
                 <BlogView match={match} {...props}/>
-                <BlogBar match={match} history={history} context="inPostView" breadcrumbs={defaultBreadcrumbs}/>
+                <BlogBar match={match} history={history} context="inPostView" breadcrumb={{link:'/posts',label:'Posts'}}/>
               </React.Fragment>
             );
           }} />
@@ -70,13 +64,13 @@ function App() {
             return (
               <React.Fragment>
                 <BlogEdit match={match} {...props}/>
-                <BlogBar context="inPostEdit" breadcrumbs={defaultBreadcrumbs}/>
+                <BlogBar context="inPostEdit" breadcrumb={{link:'/posts',label:'Posts'}}/>
               </React.Fragment>
             );
           }} />
           <Route path="/posts">
             <Blog headerIsOpen={headerIsOpen} />
-            <BlogBar breadcrumbs={defaultBreadcrumbs}/>
+            <BlogBar breadcrumb={{link:'/posts',label:'Posts'}}/>
           </Route>
           <Route path="/" component={Home} />
         </Switch>

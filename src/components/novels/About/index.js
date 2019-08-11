@@ -1,6 +1,10 @@
-import React from 'react';
+import React , { useState } from 'react';
+import { Motion , spring } from 'react-motion';
 import Markdown from 'react-markdown';
-import { Container , Grid , Typography , Paper , Avatar } from '@material-ui/core/';
+import {
+  Container, Grid,
+  Typography, Paper, Avatar
+} from '@material-ui/core/';
 import { Email } from '@material-ui/icons/';
 
 import SocialIcon from '../../words/SocialIcon';
@@ -24,6 +28,8 @@ const styles = {
 
 function About(props){
   const { h3:titleSize } = useTitleSize();
+  const [imageLoading,setImageLoading] = useState(true);
+  const handleDoneLoading = () => setImageLoading(false);
   const aboutText =
   `I love javascript; perhaps four degrees too much.  I made this site in React, and I love that too.
 
@@ -80,7 +86,21 @@ function About(props){
     <StyledAbout>
       <Container fixed>
         <div className="imageHolder">
-          <img alt="me" src={aboutContactImage} className="image"/>
+          <Motion
+            defaultStyle={{opacity:0}}
+            style={(imageLoading) ?
+                {opacity:0}
+              : {opacity:spring(1)}
+          }>
+            {newStyle => (
+              <img
+                alt="me"
+                className="image"
+                onLoad={handleDoneLoading}
+                src={aboutContactImage}
+                style={newStyle} />
+            )}
+          </Motion>
         </div>
         <Paper className="aboutText" elevation={0}>
           <Typography paragraph variant="h2" style={{...styles.title,fontSize:titleSize}}>

@@ -34,11 +34,10 @@ import AdaptiveHeading from '../components/words/AdaptiveHeading';
  }
 
  const getDeepQuote = child => {
-   if(Array.isArray(child) && child.length > 1)
+  if(typeof child.value === 'string') return child.value;
+  else if(Array.isArray(child))
     return child.map(subChild => getDeepQuote(subChild));
-  else if(Array.isArray(child) && child.length === 1 && child[0].value)
-    return child[0].value;
-  else return getDeepQuote(child[0]);
+  else return null;
  }
 
  const styles = {
@@ -47,7 +46,8 @@ import AdaptiveHeading from '../components/words/AdaptiveHeading';
    },
    blockquote:{
      marginLeft:'4px',
-     fontSize:'16px',
+     fontSize:'20px',
+     fontWeight:'300',
      borderLeft:'4px solid #DDD',
      borderColor: '#69BEEF',
      color: 'rgba(0,0,0,.8)',
@@ -77,7 +77,7 @@ import AdaptiveHeading from '../components/words/AdaptiveHeading';
      marginTop:'8px',
      marginBottom:'8px'
    },
-   "h1":{
+   h1:{
 
    }
  }
