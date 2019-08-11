@@ -58,8 +58,8 @@ export default function DuncanStrauss(props){
   }
 
   const swipeHandlers = useSwipeable({
-    onSwipedLeft:navLeft,
-    onSwipedRight:navRight
+    onSwipedLeft:navRight,
+    onSwipedRight:navLeft
   });
 
   const bgCanvas = React.useRef();

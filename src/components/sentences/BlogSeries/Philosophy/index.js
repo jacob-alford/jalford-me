@@ -60,8 +60,8 @@ export default function Philosophy(props){
   }
 
   const swipeHandlers = useSwipeable({
-    onSwipedLeft:navLeft,
-    onSwipedRight:navRight
+    onSwipedLeft:navRight,
+    onSwipedRight:navLeft
   });
 
   const bgCanvas = React.useRef();
