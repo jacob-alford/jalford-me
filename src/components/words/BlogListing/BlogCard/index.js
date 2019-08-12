@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 
 import {
   Card, CardContent,
@@ -33,9 +34,12 @@ const mapData = (data,id) => {
   else return false;
 };
 
-export default function BlogCard(props){
-  const { data , selectedPost } = props;
+function BlogCard(props){
+  const { data , selectedPost , history } = props;
   const getPost = () => mapData(data,selectedPost);
+  const handleLinkRedirect = url => {
+    history.push(url);
+  }
   return (
     <Card style={styles.postCard}>
       {(data.isLoading) ? (
@@ -75,7 +79,7 @@ export default function BlogCard(props){
             </Typography>
           ) : null}
           <Typography variant="body1">
-            <Link href={`/posts/view/${getPost().uid}`} style={styles.link}>
+            <Link onClick={() => handleLinkRedirect(`/posts/view/${getPost().uid}`)} style={styles.link}>
               Read More
             </Link>
           </Typography>
@@ -95,3 +99,5 @@ export default function BlogCard(props){
     </Card>
   );
 }
+
+export default withRouter(BlogCard);
