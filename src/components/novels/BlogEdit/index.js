@@ -487,126 +487,114 @@ function BlogEdit(props){
             </Grid>
           </Grid>
         ) : null}
-        {(hasPermissions() && selectedSnapshot !== null) ?
-          <Grid item>
-            <Motion defaultStyle={{opacity:0}} style={{opacity:spring(1)}}>
-              {newStyles => (
-                <Container style={{opacity:newStyles.opacity,...styles.sliderContainer}}>
-                  <Paper style={styles.sliderSheet}>
-                  {(data.postData.snapshots.length > 0) ? (
-                    <React.Fragment>
-                      <Typography variant="h6">
-                        Snapshots
-                      </Typography>
-                      <Slider
-                        valueLabelDisplay="auto"
-                        disabled={isEditing}
-                        min={-5}
-                        max={1}
-                        step={null}
-                        value={selectedSnapshot}
-                        onChange={handleSnapshotSelect}
-                        marks={getSliderSnapshots(data.postData)}/>
-                    </React.Fragment>
-                  ) : <NoSnapshots />}
-                  </Paper>
-                </Container>
-              )}
-            </Motion>
-          </Grid>
-        : null}
-        {(hasPermissions() && blogTags !== null) ? (
-          <Grid item>
-            <Container style={styles.container}>
-              <Paper style={styles.sheet}>
-              <Motion defaultStyle={{opacity:0}} style={{opacity:1}}>
-                {newStyles => (
-                  <Grid container direction="column" style={{opacity:newStyles.opacity}}>
-                    <Grid item>
-                      <Grid container direction="row" alignItems="center" justify="space-around">
-                        <Grid item>
-                          <Grid spacing={2} container direction="column">
-                            <Grid item>
-                              <TextField label="Title" onChange={handleTitleChange} value={blogTitle || ""}/>
-                            </Grid>
-                            <Grid item>
-                              <TextField type="datetime-local" label="Date" value={blogDate || new Date().toISOString()} onChange={handleDateChange} />
-                            </Grid>
-                            <Grid item>
-                              <TextField label="Series" value={blogSeries || ""} onChange={handleSeriesChange}/>
-                            </Grid>
-                            <Grid item>
-                              <FormControlLabel
-                                control={<Switch checked={isPublic} onChange={handleIsPublicToggle} />}
-                                label="Post is Public" />
-                            </Grid>
-                            <Grid item>
-                              <FormControlLabel
-                                control={<Switch checked={displayHeading} onChange={handleDisplayHeadingToggle} />}
-                                label="Heading is Visible" />
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item>
-                          <Grid container direction="column" spacing={2}>
-                            <Grid item>
-                              <TransitionMotion
-                                styles={(blogTags || []).map((tag,index) => {
-                                  return {
-                                    key:`tag${tag}`,
-                                    style:{ scale:spring(1) },
-                                    data:tag
-                                  }
-                                })}
-                                defaultStyle={blogTags.map(() => {
-                                  return { scale:0 };
-                                })}
-                                willEnter={styleEnter => {
-                                  return { scale:0 }
-                                }}
-                                willLeave={styleLeft => {
-                                  return { scale:spring(0) }
-                                }}>
-                                {newTags => (
-                                  <Grid style={styles.chipHolder} container direction="row-reverse" justify="center">
-                                    {newTags.map((tag,index) => {
-                                      return (
-                                        <Grid style={{...styles.chip,transform:`scaleY(${tag.style.scale})`}} item key={tag.key}>
-                                          <Chip label={tag.data} color="primary" clickable={false} onDelete={() => handleTagRemove(index)}/>
-                                        </Grid>
-                                      );
-                                    })}
-                                  </Grid>
-                                )}
-                              </TransitionMotion>
-                            </Grid>
-                            <Grid item>
-                              <Grid container direction="row" spacing={1}>
-                                <Grid item>
-                                  <TextField label="Add Tag" value={addTagBox} onChange={handleAddTagBoxChange}/>
-                                </Grid>
-                                <Grid item>
-                                  <Button color="primary" variant="contained" onClick={handleAddTag}>
-                                    Add
-                                  </Button>
-                                </Grid>
-                              </Grid>
-                            </Grid>
-                            <Grid item>
-                              <TextField value={blogSnippit || ""} label="Intro Snippit" multiline rows={6} variant="outlined" onChange={handleSnippitChange} />
-                            </Grid>
-                          </Grid>
-                        </Grid>
+      </Grid>
+      {(hasPermissions() && selectedSnapshot !== null) ?
+              <Container style={styles.sliderContainer}>
+                <Paper style={styles.sliderSheet}>
+                {(data.postData.snapshots.length > 0) ? (
+                  <React.Fragment>
+                    <Typography variant="h6">
+                      Snapshots
+                    </Typography>
+                    <Slider
+                      valueLabelDisplay="auto"
+                      disabled={isEditing}
+                      min={-5}
+                      max={1}
+                      step={null}
+                      value={selectedSnapshot}
+                      onChange={handleSnapshotSelect}
+                      marks={getSliderSnapshots(data.postData)}/>
+                  </React.Fragment>
+                ) : <NoSnapshots />}
+                </Paper>
+              </Container>
+      : null}
+      {(hasPermissions() && blogTags !== null) ? (
+        <Container style={styles.container}>
+          <Paper style={styles.sheet}>
+            <Grid container direction="column">
+              <Grid item>
+                <Grid container direction="row" alignItems="center" justify="space-around">
+                  <Grid item>
+                    <Grid spacing={2} container direction="column">
+                      <Grid item>
+                        <TextField label="Title" onChange={handleTitleChange} value={blogTitle || ""}/>
+                      </Grid>
+                      <Grid item>
+                        <TextField type="datetime-local" label="Date" value={blogDate || new Date().toISOString()} onChange={handleDateChange} />
+                      </Grid>
+                      <Grid item>
+                        <TextField label="Series" value={blogSeries || ""} onChange={handleSeriesChange}/>
+                      </Grid>
+                      <Grid item>
+                        <FormControlLabel
+                          control={<Switch checked={isPublic} onChange={handleIsPublicToggle} />}
+                          label="Post is Public" />
+                      </Grid>
+                      <Grid item>
+                        <FormControlLabel
+                          control={<Switch checked={displayHeading} onChange={handleDisplayHeadingToggle} />}
+                          label="Heading is Visible" />
                       </Grid>
                     </Grid>
                   </Grid>
-                )}
-              </Motion>
-              </Paper>
-            </Container>
-          </Grid>
-        ) : null}
-      </Grid>
+                  <Grid item>
+                    <Grid container direction="column" spacing={2}>
+                      <Grid item>
+                        <TransitionMotion
+                          styles={(blogTags || []).map((tag,index) => {
+                            return {
+                              key:`tag${tag}`,
+                              style:{ scale:spring(1) },
+                              data:tag
+                            }
+                          })}
+                          defaultStyle={blogTags.map(() => {
+                            return { scale:0 };
+                          })}
+                          willEnter={styleEnter => {
+                            return { scale:0 }
+                          }}
+                          willLeave={styleLeft => {
+                            return { scale:spring(0) }
+                          }}>
+                          {newTags => (
+                            <Grid style={styles.chipHolder} container direction="row-reverse" justify="center">
+                              {newTags.map((tag,index) => {
+                                return (
+                                  <Grid style={{...styles.chip,transform:`scaleY(${tag.style.scale})`}} item key={tag.key}>
+                                    <Chip label={tag.data} color="primary" clickable={false} onDelete={() => handleTagRemove(index)}/>
+                                  </Grid>
+                                );
+                              })}
+                            </Grid>
+                          )}
+                        </TransitionMotion>
+                      </Grid>
+                      <Grid item>
+                        <Grid container direction="row" spacing={1}>
+                          <Grid item>
+                            <TextField label="Add Tag" value={addTagBox} onChange={handleAddTagBoxChange}/>
+                          </Grid>
+                          <Grid item>
+                            <Button color="primary" variant="contained" onClick={handleAddTag}>
+                              Add
+                            </Button>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      <Grid item>
+                        <TextField value={blogSnippit || ""} label="Intro Snippit" multiline rows={6} variant="outlined" onChange={handleSnippitChange} />
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Paper>
+        </Container>
+      ) : null}
       <Container style={styles.container}>
         <Paper style={styles.sheet}>
           {(data.isLoading) ? <LoadingPlaceholder /> : null}
