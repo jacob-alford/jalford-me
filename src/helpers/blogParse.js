@@ -13,6 +13,7 @@ import {
 import { CheckCircleOutline , RadioButtonUnchecked } from '@material-ui/icons';
 
 import AdaptiveHeading from '../components/words/AdaptiveHeading';
+import Image from '../components/words/Image';
 
  const getInnermostProps = props => {
    if(typeof props.children === "string" || typeof props.value === "string")
@@ -142,14 +143,14 @@ import AdaptiveHeading from '../components/words/AdaptiveHeading';
   ),
   "image":props => (
     <span>
-      <img style={styles.blogImage} alt={props.alt} src={props.src}/>
+      <Image naked imageStyle={styles.blogImage} alt={props.alt} src={props.src}/>
     </span>
   ),
   "inlineCode":props => (
       <code style={styles.inlineCode}>
         {props.value}
       </code>
-    ),
+  ),
   "link":withRouter(InBlogLink),
   "paragraph":props => (
     <Typography paragraph variant="body1">

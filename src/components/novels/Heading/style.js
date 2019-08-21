@@ -23,7 +23,7 @@ export const StyledHeading = styled.div`
     transition: height .75s, opacity .75s;
     width:100%;
     height:25vh;
-    min-height:106px;
+    min-height:135px;
     background: #1488CC;
     background: -webkit-linear-gradient(to right, #56CCF2, #2F80ED);
     background: linear-gradient(to right, #56CCF2, #2F80ED);

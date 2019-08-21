@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router , Switch , Route } from "react-router-dom";
+import { Motion , spring } from 'react-motion';
+
+import { IconButton } from '@material-ui/core/';
+import { KeyboardArrowUp } from '@material-ui/icons';
 
 import UserSettings from './components/novels/UserSettings';
 import UsersTable from './components/novels/UsersTable';
@@ -21,6 +25,17 @@ import { getActiveNavItem } from './functions';
 
 require('typeface-roboto');
 
+const styles = {
+  button:{
+    color:"rgba(255,255,255,1)",
+    position:'absolute',
+    left:'calc(50% - 24px)',
+    top:'6px',
+    zIndex:1,
+    transition:"color .75s"
+  }
+}
+
 function App() {
   const path = window.location.pathname;
   const [headerIsOpen,setHeaderIsOpen] = useState(true);
@@ -29,7 +44,25 @@ function App() {
   return (
     <StyledApp>
       <Router>
-        <Heading activeNavItem={activeNavItem} setActiveNavItem={setActiveNavItem} headerIsOpen={headerIsOpen} setHeaderState={toggleHeader}/>
+        <Heading headerIsOpen={headerIsOpen}/>
+        <Motion
+          defaultStyle={{rotate:0,top:25}}
+          style={(headerIsOpen) ?
+              {rotate:spring(0)}
+            : {rotate:spring(180)}}>
+          {newStyles => {
+            const { rotate } = newStyles;
+            return (
+              <IconButton
+                onClick={toggleHeader}
+                style={{
+                  ...styles.button,
+                  transform:`rotateZ(${rotate}deg)`
+              }}>
+                <KeyboardArrowUp />
+              </IconButton>
+          )}}
+        </Motion>
         <Switch>
           {projectList.filter(project => !project.disabled).map((project,index) => {
             const { component:Component } = project;

@@ -10,6 +10,12 @@ import { StyledNavBar } from './style.js';
 
 import { getActiveNavItem } from '../../../functions';
 
+const styles = {
+  navBar:{
+    width:'100vw'
+  }
+}
+
 function NavBar(props){
   const { navList , location , history } = props;
   const [mobileNavAnchor,setMobileNavAnchor] = useState(null);
@@ -25,9 +31,9 @@ function NavBar(props){
     handleMobileNavClose();
   }
   return (
-    <StyledNavBar>
+    <React.Fragment>
       <Hidden only={["xs","sm"]}>
-        <Grid className="navBar" container direction="row" justify="center" spacing={4}>
+        <Grid style={styles.navBar} container direction="row" justify="center" spacing={4}>
           {navList.map((navItem,index) => (
             <Grid item key={`navItem#${index}`}>
               <NavItem
@@ -47,7 +53,12 @@ function NavBar(props){
             </IconButton>
           </Grid>
           <Grid item>
-            <Menu style={{marginTop:'48px',marginLeft:'-69.515px'}} anchorOrigin={{horizontal:'center',vertical:'top'}} anchorEl={mobileNavAnchor} open={Boolean(mobileNavAnchor)} onClose={handleMobileNavClose}>
+            <Menu
+              style={{marginTop:'48px',marginLeft:'-69.515px'}}
+              anchorOrigin={{horizontal:'center',vertical:'top'}}
+              anchorEl={mobileNavAnchor}
+              open={Boolean(mobileNavAnchor)}
+              onClose={handleMobileNavClose}>
               {navList.map((navItem,index) => (
                 <MenuItem
                    key={`mobileNavItem#${index}`}
@@ -60,9 +71,8 @@ function NavBar(props){
             </Menu>
           </Grid>
         </Grid>
-
       </Hidden>
-    </StyledNavBar>
+    </React.Fragment>
   );
 }
 

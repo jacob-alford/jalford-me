@@ -139,14 +139,18 @@ export const getLightness = hex => {
     Number.parseInt(`${wrkHex[0]}${wrkHex[1]}`,16)/255,
     Number.parseInt(`${wrkHex[2]}${wrkHex[3]}`,16)/255,
     Number.parseInt(`${wrkHex[4]}${wrkHex[5]}`,16)/255
-  ];
-  const minVal = wrkArr.reduce((currentMax,newValue) => Math.min(currentMax,newValue));
-  const maxVal = wrkArr.reduce((currentMax,newValue) => Math.max(currentMax,newValue));
-  return (minVal + maxVal)/2;
+  ].map(color => {
+    if(color <= .03928)
+      return color / 12.92;
+    else
+      return Math.pow((color + .055)/1.055,2.4);
+  });
+  const constants = [.2126,.7152,.0722];
+  return wrkArr.reduce((acc,current,index) => acc += constants[index] * current,0);
 }
 
 export const getTextColorBasedOnBg = bgHex => {
   const lightness = getLightness(bgHex);
-  if(lightness <= .46) return "#ffe";
+  if(lightness <= .179) return "#ffe";
   else return "#332";
 }

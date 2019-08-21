@@ -3,18 +3,24 @@ import React from 'react';
 import {
   IceCaveFeatured,
   RPNFeatured,
-  BlogFeatured
+  BlogFeatured,
+  PuzzleFeatured
 } from '../../paragraphs/Home';
 
 import { StyledHome } from './style.js';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';
+import useRHook from '../../bindings/hooks/useRHook';
 
 function Home(props){
+  const { userLoading , user } = useRHook();
   return (
     <StyledHome>
       <BlogFeatured />
       <IceCaveFeatured />
+      {(!user.loading && user.loggedIn) ?
+         <PuzzleFeatured />
+       : null}
       <RPNFeatured />
     </StyledHome>
   );

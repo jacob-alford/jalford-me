@@ -79,7 +79,7 @@ function BlogFeatured(props){
     'Check it out! ^500🔎^500🤔^500📽️^1000'
   ];
   const imageLayer = [
-    { image:flowerImage, amount:.2 }
+    { image:flowerImage, amount:.1 }
   ];
 
   return (

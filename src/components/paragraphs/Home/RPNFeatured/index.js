@@ -3,12 +3,15 @@ import { withRouter } from 'react-router';
 import { ParallaxBanner } from 'react-scroll-parallax';
 import { Typography , Button } from '@material-ui/core/';
 
+import Image from '../../../words/Image';
+
 import rpnImage from '../../../../assets/projects/RPN_New.png';
 
 const styles = {
   banner:{
     marginTop:"8px",
     height:"100vh",
+    minHeight:"338px",
     maxHeight:"500px"
   },
   container:{
@@ -77,7 +80,7 @@ function RPNFeatured(props){
   const { history } = props;
   let canvasElement = React.createRef();
   const imageLayer = [
-    { children:<canvas ref={canvasElement} style={styles.gradientScroller}/>, amount:.2 }
+    { children:<canvas ref={canvasElement} style={styles.gradientScroller}/>, amount:.1 }
   ];
   const handleOnClick = () => {
     history.push("/projects/rpn");
@@ -100,7 +103,7 @@ function RPNFeatured(props){
   return (
     <ParallaxBanner style={styles.banner} layers={imageLayer}>
       <div style={(containerHover) ? {...styles.container,...styles.containerHover} : styles.container} onMouseOver={constructOnOver(setContainerHover)} onMouseOut={constructOnOut(setContainerHover)}>
-        <img alt="RPNCalc" style={styles.image} src={rpnImage} />
+        <Image src={rpnImage} alt="RPNCalc" imageStyles={styles.image} naked />
         <div style={styles.divider} />
         <div style={styles.paragraph}>
           <div style={styles.subContainer}>

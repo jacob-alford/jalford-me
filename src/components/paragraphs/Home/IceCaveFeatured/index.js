@@ -59,7 +59,7 @@ export default function IceCaveFeatured(props){
   const [isHovering,setIsHovering] = useState(false);
   const [buttonHover,setButtonHover] = useState(false);
   const imageLayer = [
-    { image:homePageImage.img, amount:.2 }
+    { image:homePageImage.img, amount:.1 }
   ];
   const handleOnClick = () => {
     window.location.href = "https://www.icecaves.com/";
