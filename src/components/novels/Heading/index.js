@@ -2,10 +2,6 @@ import React from 'react';
 
 import { Motion , spring } from 'react-motion';
 
-import { Grid , IconButton } from '@material-ui/core/';
-
-import { KeyboardArrowUp , KeyboardArrowDown } from '@material-ui/icons';
-
 import Header from '../../paragraphs/Header';
 
 const styles = {
@@ -15,8 +11,6 @@ const styles = {
     justifyContent:'center',
     alignItems:'center',
     paddingTop:'25px',
-    background:'#1488CC',
-    background:'-webkit-linear-gradient(to right, #56CCF2, #2F80ED)',
     background:'linear-gradient(to right, #56CCF2, #2F80ED)',
     MozBoxShadow:'inset 0 -10px 16px -10px rgba(11,11,11,.6)',
     WebkitBoxShadow:'inset 0 -10px 16px -10px rgba(11,11,11,.6)',

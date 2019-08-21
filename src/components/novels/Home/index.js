@@ -18,7 +18,7 @@ function Home(props){
     <StyledHome>
       <BlogFeatured />
       <IceCaveFeatured />
-      {(!user.loading && user.loggedIn) ?
+      {(!userLoading && user.loggedIn) ?
          <PuzzleFeatured />
        : null}
       <RPNFeatured />

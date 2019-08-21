@@ -6,8 +6,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 import NavItem from '../../words/NavItem';
 
-import { StyledNavBar } from './style.js';
-
 import { getActiveNavItem } from '../../../functions';
 
 const styles = {

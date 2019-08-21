@@ -21,8 +21,6 @@ import { StyledApp } from './theme';
 
 import { projectList } from './config';
 
-import { getActiveNavItem } from './functions';
-
 require('typeface-roboto');
 
 const styles = {
@@ -37,9 +35,7 @@ const styles = {
 }
 
 function App() {
-  const path = window.location.pathname;
   const [headerIsOpen,setHeaderIsOpen] = useState(true);
-  const [activeNavItem, setActiveNavItem] = useState(getActiveNavItem(path));
   const toggleHeader = () => setHeaderIsOpen(!headerIsOpen);
   return (
     <StyledApp>

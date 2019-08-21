@@ -5,7 +5,6 @@ import { ParallaxBanner } from 'react-scroll-parallax';
 
 import { Typography , Button } from '@material-ui/core/';
 import { OpenWith } from '@material-ui/icons/';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import useColorAdapt from '../../../bindings/hooks/useColorAdapt';
 
