@@ -214,7 +214,7 @@ function RPN(props){
           </div>
         </Drawer>
       </Hidden>
-      <Grid container direction="row" className="classGrid">
+      <Grid container direction="row" className="calcGrid">
         <Hidden mdDown>
           <Grid item className="tapeHolder">
             <Table className="tapeDisplay">

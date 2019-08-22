@@ -29,16 +29,16 @@ export const StyledRPN = styled.div`
 
   }
   .calcGrid{
-    width:100vw;
+
   }
   .tapeHolder{
     width:25%;
-    height:${props => (props.headerIsOpen) ? "75vh" : "100vh"};
+    height:${props => (props.headerIsOpen) ? "calc(75vh - 48px)" : "100vh"};
     overflow-y:scroll;
   }
   .tapeRow{
     width:100%;
-    height:${props => (props.headerIsOpen) ? "7.5vh" : "10vh"};
+    height:${props => (props.headerIsOpen) ? "calc(calc(75vh - 48px) / 10)" : "10vh"};
     padding-top:0px;
     padding-bottom:0px;
     text-align:right;
@@ -46,7 +46,7 @@ export const StyledRPN = styled.div`
   }
   .tapeLine{
     background-color:white;
-    height:${props => (props.headerIsOpen) ? "7.5vh" : "10vh"};
+    height:${props => (props.headerIsOpen) ? "calc(calc(75vh - 48px) / 10)" : "10vh"};
     padding-top:0px;
     padding-bottom:0px;
     text-align:right;
@@ -85,7 +85,8 @@ export const StyledRPN = styled.div`
     background-image:linear-gradient(#03001e,#7303c0,#ec38bc);
   }
   .stackLine{
-    height:${props => (props.headerIsOpen) ? "7.5vh" : "10vh"};
+    height:${props => (props.headerIsOpen) ? "calc(calc(75vh - 48px) / 10)" : "10vh"};
+    min-height:64px;
     padding-top:0px;
     padding-bottom:0px;
     text-align:right;
@@ -102,11 +103,10 @@ export const StyledRPN = styled.div`
             user-select: none;
   }
   .calcRow{
-    height:${props => (props.headerIsOpen) ? "6.25vh" : "8.333333333vh"};
+    height:${props => (props.headerIsOpen) ? "calc(calc(75vh - 48px) / 12)" : "8.3333333333334vh"};
   }
   .calcTable{
     transition: height .75s;
-    height:100%;
     background-color:white;
   }
   .action{

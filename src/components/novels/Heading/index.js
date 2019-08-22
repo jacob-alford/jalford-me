@@ -10,7 +10,6 @@ const styles = {
     display:'flex',
     justifyContent:'center',
     alignItems:'center',
-    paddingTop:'25px',
     background:'linear-gradient(to right, #56CCF2, #2F80ED)',
     MozBoxShadow:'inset 0 -10px 16px -10px rgba(11,11,11,.6)',
     WebkitBoxShadow:'inset 0 -10px 16px -10px rgba(11,11,11,.6)',
@@ -18,21 +17,25 @@ const styles = {
   }
 }
 
+const paddingTop = 48; // px
+const minHeight = 135; // px
+const height = 25; // vh
+
 export default function Heading(props){
   const { headerIsOpen } = props;
 
   return (
     <Motion
-      defaultStyle={{height:25,minHeight:135,paddingTop:25}}
+      defaultStyle={{height:height,minHeight:minHeight,paddingTop:paddingTop}}
       style={{
         height:(headerIsOpen) ?
-            spring(25)
+            spring(height)
           : spring(0),
         minHeight:(headerIsOpen) ?
-            spring(135)
+            spring(minHeight)
           : spring(0),
         paddingTop:(headerIsOpen) ?
-            spring(25)
+            spring(paddingTop)
           : spring(0)
         }}>
       {newStyles => {

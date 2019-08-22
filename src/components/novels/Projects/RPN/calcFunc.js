@@ -266,19 +266,19 @@ calcFunctions["speedOfLight"] = {
 }
 
 calcFunctions["sum"] = {
-  fn:createReducer((a,c) => a+c,"sum"),
+  fn:createReducer((a,c) => Number(a)+Number(c),"sum"),
   colorClass:"function",
   text:"&Sigma;",
   minStack:0
 }
 calcFunctions["product"] = {
-  fn:createReducer((a,c) => a*c,"product"),
+  fn:createReducer((a,c) => Number(a)*Number(c),"product"),
   colorClass:"function",
   text:"&Pi;",
   minStack:0
 }
 calcFunctions["mean"] = {
-  fn:createReducer((a,c,i,arr) => a+(c/arr.length),"mean"),
+  fn:createReducer((a,c,i,arr) => Number(a)+(Number(c)/arr.length),"mean"),
   colorClass:"function",
   text:"&mu;",
   minStack:1
@@ -415,13 +415,7 @@ calcFunctions["div"] = {
   fn:createDoubleOperator((num1,num2) => num2 / num1 , (num1,num2) => `${num2}/${num1}`),
   colorClass:"action",
   text:"&divide;",
-  minStack:2,
-  // inputCheck: stack => {
-  //   return {
-  //     valid: stack[0] !== 0,
-  //     error: "Unable to divide by zero!"
-  //   };
-  // }
+  minStack:2
 }
 calcFunctions["enter"] = {
   fn:(stack,tape) => {
@@ -504,7 +498,7 @@ calcFunctions["mod"] = {
 calcFunctions["roll"] = {
   fn:(stack,tape) => {
     try{
-      const output = validateOperation(stack[0]);
+      const output = validateOperation(Number(stack[0]));
       const copyStack = [...stack];
       copyStack.shift();
       return [[...copyStack,output],["ROLL",...tape]];
@@ -521,8 +515,8 @@ calcFunctions["swap"] = {
   fn:(stack,tape) => {
     try{
       const copyStack = [...stack];
-      const firstElement = validateOperation(copyStack.shift());
-      const secondElement = validateOperation(copyStack.shift());
+      const firstElement = validateOperation(Number(copyStack.shift()));
+      const secondElement = validateOperation(Number(copyStack.shift()));
       return [[secondElement,firstElement,...copyStack],[`SWAP(${displayNum(firstElement)},${displayNum(secondElement)})`,...tape]];
     }catch(error){
       console.error(`Invalid operation not caught before execution!  Error: ${error}`);
