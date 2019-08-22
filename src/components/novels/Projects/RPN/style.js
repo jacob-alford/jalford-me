@@ -56,18 +56,10 @@ export const StyledRPN = styled.div`
     position:absolute;
   }
   .drawerIcon{
-    width:25px;
-    height:25px;
     position:absolute;
-    cursor:pointer;
     top:15px;
     left:10px;
     z-index:1;
-    transition: transform .25s, top .75s;
-    color:red;
-  }
-  .drawerIcon:hover{
-    transform:translateY(-3px);
   }
   .tapeDisplay{
     table-layout:fixed;

@@ -415,7 +415,13 @@ calcFunctions["div"] = {
   fn:createDoubleOperator((num1,num2) => num2 / num1 , (num1,num2) => `${num2}/${num1}`),
   colorClass:"action",
   text:"&divide;",
-  minStack:2
+  minStack:2,
+  inputCheck: stack => {
+    return {
+      valid: stack[0] !== 0,
+      error: "Unable to divide by zero!"
+    };
+  }
 }
 calcFunctions["enter"] = {
   fn:(stack,tape) => {

@@ -4,7 +4,8 @@ import { Grid , Typography,
          TableRow, Drawer,
          Hidden, Dialog, DialogActions,
          DialogContent, DialogContentText,
-         DialogTitle, Button } from '@material-ui/core/';
+         DialogTitle, Button, IconButton
+} from '@material-ui/core/';
 import { Reorder } from '@material-ui/icons/';
 import { StyledRPN } from './style.js';
 
@@ -203,7 +204,9 @@ function RPN(props){
         </DialogActions>
       </Dialog>
       <Hidden lgUp>
-        <Reorder  style={{color:"#20BDFF"}} className="drawerIcon" onClick={toggleTapeDrawer} />
+        <IconButton onClick={toggleTapeDrawer} style={{color:"#20BDFF"}} className="drawerIcon">
+          <Reorder />
+        </IconButton>
         <Drawer open={tapeDrawerIsOpen} onClose={toggleTapeDrawer} anchor="left">
           <div style={{width:"25vw",minWidth:"225px"}}>
             <Table className="tapeDisplay">
