@@ -1,5 +1,5 @@
 import React from 'react';
-import { Motion , spring } from 'react-motion';
+import { useSpring , animated as a } from 'react-spring';
 import { Typography } from '@material-ui/core/';
 
 import NavBar from '../../sentences/NavBar';
@@ -15,24 +15,23 @@ const styles = {
   }
 }
 
+const getScaleString = headerIsOpen => {
+  const scale = (headerIsOpen) ? 1 : 0;
+  return `scale3d(${scale},${scale},${scale})`;
+}
+
 export default function Header(props){
   const { headerIsOpen } = props;
+  const interStyles = useSpring({
+    opacity:(headerIsOpen) ? 1 : 0,
+    transform:getScaleString(headerIsOpen)
+  });
   return (
-    <Motion
-      defaultStyle={{opacity:1}}
-      style={{
-        opacity:(headerIsOpen) ?
-            spring(1)
-          : spring(0)
-      }}>
-      {newStyles => (
-        <div style={newStyles}>
-          <Typography style={styles.title} variant="h1" paragraph>
-            Jacob Alford
-          </Typography>
-          <NavBar navList={navItems} />
-        </div>
-      )}
-    </Motion>
+    <a.div style={interStyles}>
+      <Typography style={styles.title} variant="h1" paragraph>
+        Jacob Alford
+      </Typography>
+      <NavBar navList={navItems} />
+    </a.div>
   );
 }

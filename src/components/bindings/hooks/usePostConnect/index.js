@@ -20,7 +20,11 @@ export default function usePostConnect(id){
     }
   },[error,id,postData]);
   useEffect(() => {
-    if(isLoading && (postData || error)) setIsLoading(false);
-  },[postData,isLoading,error]);
+    if(isLoading && ((postData && postData.uid === id) || error)) setIsLoading(false);
+  },[postData,isLoading,error,id]);
+  useEffect(() => {
+    if((postData || error) && postData && postData.uid !== id)
+      setIsLoading(true);
+  },[id,postData,error]);
   return { isLoading , postData , error };
 }

@@ -10,9 +10,6 @@ import useSeriesConnect from '../../../bindings/hooks/useSeriesConnect';
 
 import BlogCard from '../../../words/BlogListing/BlogCard';
 
-
-// 94892796
-
 export default function Philosophy(props){
   const data = useSeriesConnect("Philosophy");
   const [selectedPhi,setSelectedPhi] = useState(0);
@@ -163,6 +160,7 @@ export default function Philosophy(props){
         counter = 0;
       }
       context.clearRect(0,0,width,height);
+      // eslint-disable-next-line
       for(let ball of bokeh){
         context.fillStyle = colorString(ball.color,ball.currentFade);
         context.beginPath();

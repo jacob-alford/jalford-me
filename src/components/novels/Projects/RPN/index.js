@@ -12,6 +12,8 @@ import { StyledRPN } from './style.js';
 import rpnImage from '../../../../assets/projects/rpn-header.jpg';
 import { calcFunctions } from './calcFunc.js';
 
+import useScrollToTopOnload from '../../../bindings/hooks/useScrollToTopOnload';
+
 import withPageFade from '../../../bindings/wrappers/withPageFade';
 
 const inputRows = [
@@ -126,6 +128,7 @@ function Tape(props){
 
 
 function RPN(props){
+  useScrollToTopOnload();
   const [display,setDisplay] = useState({tape:[],stack:[0]});
   const [isDeg,setIsDeg] = useState(true);
   const [tapeDrawerIsOpen,setTapeDrawerIsOpen] = useState(false);

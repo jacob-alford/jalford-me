@@ -1,12 +1,10 @@
 import React from 'react';
-
-import { Motion , spring } from 'react-motion';
+import { useSpring , animated as a } from 'react-spring';
 
 import Header from '../../paragraphs/Header';
 
 const styles = {
   container:{
-    height:'50vh',
     display:'flex',
     justifyContent:'center',
     alignItems:'center',
@@ -17,42 +15,24 @@ const styles = {
   }
 }
 
-const paddingTop = 48; // px
-const minHeight = 135; // px
-const height = 25; // vh
-
 export default function Heading(props){
   const { headerIsOpen } = props;
-
+  const { height , minHeight , paddingTop } = useSpring({
+    height:`${(headerIsOpen) ? 25 : 0}vh`,
+    minHeight:`${(headerIsOpen) ? 135 : 0}px`,
+    paddingTop:`${(headerIsOpen) ? 48 : 0}px`
+  });
   return (
-    <Motion
-      defaultStyle={{height:height,minHeight:minHeight,paddingTop:paddingTop}}
+    <a.div
       style={{
-        height:(headerIsOpen) ?
-            spring(height)
-          : spring(0),
-        minHeight:(headerIsOpen) ?
-            spring(minHeight)
-          : spring(0),
-        paddingTop:(headerIsOpen) ?
-            spring(paddingTop)
-          : spring(0)
-        }}>
-      {newStyles => {
-        const { height , minHeight , paddingTop } = newStyles;
-        return (
-          <div
-            style={{
-              ...styles.container,
-              height:`${height}vh`,
-              minHeight:`${minHeight}px`,
-              paddingTop:`${paddingTop}px`
-          }}>
-            <div>
-              <Header headerIsOpen={headerIsOpen} />
-            </div>
-          </div>
-        )}}
-    </Motion>
+        ...styles.container,
+        height:height,
+        minHeight:minHeight,
+        paddingTop:paddingTop
+    }}>
+      <div>
+        <Header headerIsOpen={headerIsOpen} />
+      </div>
+    </a.div>
   );
 }

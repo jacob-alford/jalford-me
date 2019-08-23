@@ -93,6 +93,7 @@ export const calculatePasswordEntropy = password => {
     return Math.log2(categories.words) * numberOfWords;
   }else{
     let total = 0;
+    // eslint-disable-next-line
     for(let arr of Object.entries(categories)){
       total += arr[1];
     }

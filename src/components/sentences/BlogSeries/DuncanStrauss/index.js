@@ -114,6 +114,7 @@ export default function DuncanStrauss(props){
         context.fillStyle = `rgba(225,225,255,${lightning/1.5})`;
         context.fillRect(0,0,width,height);
       }
+      // eslint-disable-next-line
       for(let particle of particles){
         context.beginPath();
         context.moveTo(particle.x,particle.y);
