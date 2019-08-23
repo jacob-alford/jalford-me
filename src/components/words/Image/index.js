@@ -1,5 +1,5 @@
 import React , { useState } from 'react';
-import { Motion , spring } from 'react-motion';
+import { useSpring , animated as a , interpolate } from 'react-spring';
 
 const styles = {
   image:{
@@ -22,39 +22,28 @@ const styles = {
 export default function Image(props){
   const {
     src, alt, naked,
-    imageStyles, holderStyles,
-    unloadedStyle = {opacity:0},
-    loadedStyle = {opacity:spring(1)}
+    imageStyles, holderStyles
   } = props;
 
   const [hasLoaded,setHasLoaded] = useState(false);
   const handleLoaded = () => setHasLoaded(true);
+  const { opacity } = useSpring({
+    opacity:(hasLoaded) ? 1 : 0
+  });
   if(naked) return (
-    <Motion
-      defaultStyle={{opacity:0}}
-      style={(hasLoaded) ? loadedStyle : unloadedStyle}>
-      {newStyle => (
-        <img
-          alt={alt}
-          onLoad={handleLoaded}
-          src={src}
-          style={{...newStyle,...imageStyles}} />
-      )}
-    </Motion>
+    <a.img
+      alt={alt}
+      onLoad={handleLoaded}
+      src={src}
+      style={{...imageStyles,opacity:interpolate([opacity],opacity => opacity)}} />
   );
   else return (
-    <div style={{...styles.imageHolder,...holderStyles}}>
-      <Motion
-        defaultStyle={{opacity:0}}
-        style={(hasLoaded) ? loadedStyle : unloadedStyle}>
-        {newStyle => (
-          <img
-            alt={alt}
-            onLoad={handleLoaded}
-            src={src}
-            style={{...styles.image,...newStyle,...imageStyles}} />
-        )}
-      </Motion>
-    </div>
+    <a.div style={{...styles.imageHolder,...holderStyles,opacity:interpolate([opacity],opacity => opacity)}}>
+      <img
+        alt={alt}
+        onLoad={handleLoaded}
+        src={src}
+        style={{...styles.image,...imageStyles}} />
+    </a.div>
   );
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import Markdown from 'react-markdown';
-import { Motion , spring } from 'react-motion';
 import {
   Container, Typography, Paper,
   CircularProgress, Grid,
@@ -33,14 +32,6 @@ const styles = {
   notFound:{
     textAlign:'center',
     color:"rgba(0,0,0,.87)"
-  },
-  bodyIn:{
-    opacity:0,
-    translateY:18
-  },
-  bodyFinal:{
-    opacity:spring(1),
-    translateY:spring(0)
   },
   lead:{
     fontSize:'1.69rem',
@@ -80,35 +71,29 @@ function BlogView(props){
           {(!data.isLoading && (data.error || !data.postData)) ? <NotFoundPlaceholder /> : null}
           {(data.isLoading) ? <LoadingPlaceholder /> : null}
           {(!data.isLoading && data.postData && !data.error) ? (
-            <Motion defaultStyle={styles.bodyIn} style={styles.bodyFinal}>
-              {newStyle => {
-                const { translateY } = newStyle;
-                return(
-                  <div style={{transform:`translate(0px,${translateY}px)`,...newStyle}}>
-                    {(data.postData.displayHeading) ? (
-                      <React.Fragment>
-                        <Typography paragraph style={{textAlign:"center",...styles.title,fontSize:titleSize}} variant="h1">
-                          {data.postData.title}
-                        </Typography>
-                        <Typography paragraph variant="h4" style={{textAlign:"center"}}>
-                          <small>{`by ${data.postData.author} `}</small>
-                          |
-                          <strong>
-                            {` ${new Date(data.postData.date.toDate()).toLocaleDateString("default",{year: 'numeric', month: 'long', day: 'numeric'})}`}
-                          </strong>
-                        </Typography>
-                        <Divider style={{marginTop:"15px",marginBottom:"15px"}}/>
-                        {(data.postData.snippit) ? (
-                          <Typography paragraph style={styles.lead}>
-                            {data.postData.snippit}
-                          </Typography>
-                        ) : null}
-                      </React.Fragment>
-                    ) : null}
-                    <Markdown renderers={markdownConfig} source={data.postData.body} />
-                  </div>
-              )}}
-            </Motion>
+            <React.Fragment>
+              {(data.postData.displayHeading) ? (
+                <React.Fragment>
+                  <Typography paragraph style={{textAlign:"center",...styles.title,fontSize:titleSize}} variant="h1">
+                    {data.postData.title}
+                  </Typography>
+                  <Typography paragraph variant="h4" style={{textAlign:"center"}}>
+                    <small>{`by ${data.postData.author} `}</small>
+                    |
+                    <strong>
+                      {` ${new Date(data.postData.date.toDate()).toLocaleDateString("default",{year: 'numeric', month: 'long', day: 'numeric'})}`}
+                    </strong>
+                  </Typography>
+                  <Divider style={{marginTop:"15px",marginBottom:"15px"}}/>
+                  {(data.postData.snippit) ? (
+                    <Typography paragraph style={styles.lead}>
+                      {data.postData.snippit}
+                    </Typography>
+                  ) : null}
+                </React.Fragment>
+              ) : null}
+              <Markdown renderers={markdownConfig} source={data.postData.body} />
+            </React.Fragment>
           ) : null}
         </Paper>
       </Container>
