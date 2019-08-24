@@ -1,5 +1,5 @@
 import React , { useState , useEffect , useReducer , useRef } from 'react';
-import { Motion , spring } from 'react-motion';
+import { useSprings , animated as a } from 'react-spring';
 import { withRouter } from 'react-router';
 import { ParallaxBanner } from 'react-scroll-parallax';
 
@@ -200,16 +200,13 @@ const CircleHolder = props => {
     && typeof dropVisibleIndex === 'number'
     && !Number.isNaN(dropVisibleIndex)
     && visibleIndex !== dropVisibleIndex
-    && !isMoving.current
+    && isMoving.current === false
     ){
       isMoving.current = true;
       currentDrag.current = dropVisibleIndex;
       const string = [visibleIndex,dropVisibleIndex].sort((item1,item2) => item1 - item2 ).join("");
       colorDispatch({type:`swap${string}`});
     }
-  }
-  const handleAnimationFinish = () => {
-    isMoving.current = false;
   }
 
   useEffect(() => {
@@ -235,38 +232,42 @@ const CircleHolder = props => {
     }
   },[touchHandlers]);
 
-  return colorState.map((item,index) => (
-    <Motion
-      defaultStyle={{top:item.y}}
-      style={{top:spring(item.y,{stiffness:300,damping:14})}}
-      key={`circle${item.index}`}
-      onRest={handleAnimationFinish}>
-      {newStyles => {
-        const { top:newY } = newStyles;
-        return (
-          <div
-          style={(!item.ephemeral) ?
-                {...styles.circleGroup,
-                  top:`calc(${newY}% - 26px)`}
-              : {...styles.circleGroup,
-                 ...styles.circleEphemeral,
-                  top:`calc(${newY}% - 26px`}}
-          ref={touchHandlers.current[index]}
-          onDragEnter={evt => handleDragOver(evt,item.visibleIndex)}
-          onDragEnd={() => handleDragEnd(item.visibleIndex)}
-          onTouchEnd={evt => handleTouchEnd(evt,item.visibleIndex)}
-          onTouchMove={evt => handleTouchMove(evt,item.visibleIndex)}
-          onTouchCancel={evt => handleTouchEnd(evt,item.visibleIndex)}>
-            <ColorCircle
-              color={item.color}
-              bgColor={getColors(colorState)[2]}
-              onDragStart={evt => handleDragStart(evt,item.visibleIndex)}
-              onTouchStart={evt => handleTouchStart(evt,item.visibleIndex)}/>
-          </div>
-        );
-      }}
-    </Motion>
-  ));
+  const circleSprings = useSprings(colorState.length, colorState.map(item => {
+    return {
+      y:item.y,
+      config:{
+        tension:200,
+        friction:12
+      }
+    }
+  }));
+
+  return circleSprings.map((spring,index) => {
+    const { ephemeral , visibleIndex , color } = colorState[index];
+    const { y } = spring;
+    return (
+      <a.div
+        style={(!ephemeral) ?
+              {...styles.circleGroup,
+                top:y.interpolate(newY => `calc(${newY}% - 26px)`)}
+            : {...styles.circleGroup,
+               ...styles.circleEphemeral,
+                top:y.interpolate(newY => `calc(${newY}% - 26px`)}}
+        ref={touchHandlers.current[index]}
+        onDragEnter={evt => handleDragOver(evt,visibleIndex)}
+        onDragEnd={() => handleDragEnd(visibleIndex)}
+        onTouchEnd={evt => handleTouchEnd(evt,visibleIndex)}
+        onTouchMove={evt => handleTouchMove(evt,visibleIndex)}
+        onTouchCancel={evt => handleTouchEnd(evt,visibleIndex)}
+        key={`circle${index}`}>
+        <ColorCircle
+          color={color}
+          bgColor={getColors(colorState)[2]}
+          onDragStart={evt => handleDragStart(evt,visibleIndex)}
+          onTouchStart={evt => handleTouchStart(evt,visibleIndex)}/>
+      </a.div>
+    );
+  });
 }
 
 const colorKey = randomColorArr();
