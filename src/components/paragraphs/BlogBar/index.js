@@ -46,7 +46,8 @@ export default function BlogBar(props){
   const closeSignIn = () => setSignInIsOpen(false);
   const closeSignUp = () => setSignUpIsOpen(false);
   const [userMenuAnchor,setUserMenuAnchor] = useState(null);
-  const { history , match , context="inBlog" } = useReactRouter();
+  const { history , match } = useReactRouter();
+  const { context="inBlog" } = props;
   const { breadcrumb = {link:'/posts',label:'Posts'} } = props;
   const handleLinkRedirect = url => {
     if(url.includes("http")) window.location.href = url;
