@@ -103,7 +103,7 @@ export default function RPNFeatured(props){
   return (
     <ParallaxBanner style={styles.banner} layers={imageLayer}>
       <div style={(containerHover) ? {...styles.container,...styles.containerHover} : styles.container} onMouseOver={constructOnOver(setContainerHover)} onMouseOut={constructOnOut(setContainerHover)}>
-        <Image src={rpnImage} alt="RPNCalc" imageStyles={styles.image} naked />
+        <Image scrollFade src={rpnImage} alt="RPNCalc" imageStyles={styles.image} naked />
         <div style={styles.divider} />
         <div style={styles.paragraph}>
           <div style={styles.subContainer}>
