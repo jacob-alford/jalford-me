@@ -235,13 +235,6 @@ const sameArr = (arr1,arr2) => {
   return true;
 }
 
-const safeFilter = (arr,filter) => {
-  if(arr)
-    return arr.filter(filter);
-  else return null;
-}
-const textExists = item => item && item !== "";
-
 function BlogEdit(props){
   // --- Helpers ---
   const somethingHasChanged = (checkSnapshots = false) => {
