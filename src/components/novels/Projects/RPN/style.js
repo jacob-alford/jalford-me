@@ -28,6 +28,10 @@ export const StyledRPN = styled.div`
   .stackAndButtons{
 
   }
+  .touchRippler{
+    width:100%;
+    height:100%;
+  }
   .calcGrid{
 
   }
@@ -78,7 +82,7 @@ export const StyledRPN = styled.div`
   }
   .stackLine{
     height:${props => (props.headerIsOpen) ? "calc(calc(75vh - 48px) / 10)" : "10vh"};
-    min-height:64px;
+    min-height:40px;
     padding-top:0px;
     padding-bottom:0px;
     text-align:right;
@@ -86,13 +90,6 @@ export const StyledRPN = styled.div`
   }
   .tableCell{
     text-align:center;
-    cursor:pointer;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-     -khtml-user-select: none;
-       -moz-user-select: none;
-        -ms-user-select: none;
-            user-select: none;
   }
   .calcRow{
     height:${props => (props.headerIsOpen) ? "calc(calc(75vh - 48px) / 12)" : "8.3333333333334vh"};
@@ -106,31 +103,33 @@ export const StyledRPN = styled.div`
     color:#ffffff;
     transition:background-color .5s;
   }
-  .action:hover{
-    background-color:#56CCF2;
+  @media (any-hover: on-demand){
+    .action:hover{
+      background-color:#56CCF2;
+    }
+    .number:hover{
+      background-color:#7303c0;
+    }
+    .delete:hover{
+      background-color:#e0e0e0;
+    }
+    .function:hover{
+      background-color:#e0e0e0;
+    }
   }
   .number{
     background-color:#03001e;
     color:#ffffff;
     transition:background-color .5s;
   }
-  .number:hover{
-    background-color:#7303c0;
-  }
   .delete{
     background-color:#f8f9fa;
     color:#ff0000;
     transition:background-color .5s;
   }
-  .delete:hover{
-    background-color:#e0e0e0;
-  }
   .function{
     background-color:#f8f9fa;
     color:#000000;
     transition:background-color .5s;
-  }
-  .function:hover{
-    background-color:#e0e0e0;
   }
 `;

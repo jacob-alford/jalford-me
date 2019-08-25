@@ -4,7 +4,7 @@ import { Grid , Typography,
          TableRow, Drawer,
          Hidden, Dialog, DialogActions,
          DialogContent, DialogContentText,
-         DialogTitle, Button, IconButton
+         DialogTitle, Button, IconButton, ButtonBase
 } from '@material-ui/core/';
 import { Reorder } from '@material-ui/icons/';
 import { StyledRPN } from './style.js';
@@ -38,44 +38,48 @@ function Row(props){
   return rowData.map((button,index) => {
     if(button === "deg/rad"){
       return (
-        <TableCell
+        <ButtonBase
+          component={TableCell}
           className="number tableCell"
           key={`cell${index}`}
           onClick={toggleDegRad}>
           <Typography variant="h6">
             {(degRad) ? "Deg" : "Rad"}
           </Typography>
-        </TableCell>
+        </ButtonBase>
       );
     }
     if(calcFunctions[button].variations !== undefined){
       if(degRad){
         return (
-          <TableCell
+          <ButtonBase
+            component={TableCell}
             className={calcFunctions[button].colorClass + " tableCell"}
             key={`cell${index}`}
             onClick={() => operate(calcFunctions[button].variations.deg,calcFunctions[button].minStack,calcFunctions[button].inputCheck)}>
             <Typography variant="h6" dangerouslySetInnerHTML={{__html: calcFunctions[button].text}} />
-          </TableCell>
+          </ButtonBase>
         );
       }else{
         return (
-          <TableCell
+          <ButtonBase
+            component={TableCell}
             className={calcFunctions[button].colorClass + " tableCell"}
             key={`cell${index}`}
             onClick={() => operate(calcFunctions[button].variations.rad,calcFunctions[button].minStack,calcFunctions[button].inputCheck)}>
             <Typography variant="h6" dangerouslySetInnerHTML={{__html: calcFunctions[button].text}} />
-          </TableCell>
+          </ButtonBase>
         );
       }
     }
     return (
-      <TableCell
-        className={calcFunctions[button].colorClass + " tableCell"}
+      <ButtonBase
+        component={TableCell}
         key={`cell${index}`}
-        onClick={() => operate(calcFunctions[button].fn,calcFunctions[button].minStack,calcFunctions[button].inputCheck)}>
-        <Typography variant="h6" dangerouslySetInnerHTML={{__html: calcFunctions[button].text}} />
-      </TableCell>
+        onClick={() => operate(calcFunctions[button].fn,calcFunctions[button].minStack,calcFunctions[button].inputCheck)}
+        className={`${calcFunctions[button].colorClass} tableCell`}>
+          <Typography variant="h6" dangerouslySetInnerHTML={{__html: calcFunctions[button].text}} />
+      </ButtonBase>
     );
   });
 }
@@ -239,7 +243,7 @@ function RPN(props){
                 </TableBody>
               </Table>
             </Grid>
-            <Grid item>
+            <Grid item style={{width:'100%'}}>
               <Grid container direction="row-reverse">
                 <Grid item className="calcTable">
                   <Table>
