@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withRouter } from 'react-router';
+import useReactRouter from 'use-react-router';
 import PropTypes from 'prop-types';
 import { Grid , Hidden , Menu , MenuItem , IconButton } from '@material-ui/core/';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -14,8 +14,9 @@ const styles = {
   }
 }
 
-function NavBar(props){
-  const { navList , location , history } = props;
+export default function NavBar(props){
+  const { location , history } = useReactRouter();
+  const { navList } = props;
   const [mobileNavAnchor,setMobileNavAnchor] = useState(null);
   const handleMobileNavClose = evt => {
     setMobileNavAnchor(null);
@@ -73,8 +74,6 @@ function NavBar(props){
     </React.Fragment>
   );
 }
-
-export default withRouter(NavBar);
 
 NavBar.propTypes = {
   navList:PropTypes.arrayOf(PropTypes.shape({

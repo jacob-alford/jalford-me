@@ -1,5 +1,5 @@
 import React, { useState , useEffect } from 'react';
-import { withRouter } from "react-router";
+import useReactRouter from 'use-react-router';
 import { AppBar, Toolbar, Typography,
          Button, Grid, IconButton, Menu, MenuItem,
          ListItemText, ListItemIcon, Fade, Slide
@@ -35,7 +35,7 @@ const styles = {
 
 const getUserPermissions = user => user.activeUser.permissions.value;
 
-function BlogBar(props){
+export default function BlogBar(props){
   const { user } = useRHook();
   const scrollTrigger = useScrollTrigger();
   const [signInIsOpen,setSignInIsOpen] = useState(false);
@@ -46,12 +46,8 @@ function BlogBar(props){
   const closeSignIn = () => setSignInIsOpen(false);
   const closeSignUp = () => setSignUpIsOpen(false);
   const [userMenuAnchor,setUserMenuAnchor] = useState(null);
-  const {
-    history,
-    match,
-    context="inBlog",
-    breadcrumb = {link:'/posts',label:'Posts'}
-} = props;
+  const { history , match , context="inBlog" } = useReactRouter();
+  const { breadcrumb = {link:'/posts',label:'Posts'} } = props;
   const handleLinkRedirect = url => {
     if(url.includes("http")) window.location.href = url;
     else history.push(url);
@@ -164,5 +160,3 @@ function BlogBar(props){
       </React.Fragment>
   );
 }
-
-export default withRouter(BlogBar);

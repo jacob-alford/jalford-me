@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router';
+import useReactRouter from 'use-react-router';
 
 import {
   Card, CardContent,
@@ -34,8 +34,9 @@ const mapData = (data,id) => {
   else return false;
 };
 
-function BlogCard(props){
-  const { data , selectedPost , history } = props;
+export default function BlogCard(props){
+  const { history } = useReactRouter();
+  const { data , selectedPost } = props;
   const getPost = () => mapData(data,selectedPost);
   const handleLinkRedirect = url => {
     history.push(url);
@@ -99,5 +100,3 @@ function BlogCard(props){
     </Card>
   );
 }
-
-export default withRouter(BlogCard);

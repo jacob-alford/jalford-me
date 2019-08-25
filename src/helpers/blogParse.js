@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from "react-router";
+import useReactRouter from 'use-react-router';
 
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { coy as codeTheme } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -84,7 +84,8 @@ import Image from '../components/words/Image';
  }
 
  const InBlogLink = props => {
-   const { history , href } = props;
+   const { history } = useReactRouter();
+   const { href } = props;
    const handleClick = () => {
      if(href.includes("http"))
        window.location.href = href;
@@ -151,7 +152,7 @@ import Image from '../components/words/Image';
         {props.value}
       </code>
   ),
-  "link":withRouter(InBlogLink),
+  "link":InBlogLink,
   "paragraph":props => (
     <Typography paragraph variant="body1">
       {props.children}

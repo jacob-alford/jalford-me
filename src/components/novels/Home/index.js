@@ -10,17 +10,13 @@ import {
 import { StyledHome } from './style.js';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';
-import useRHook from '../../bindings/hooks/useRHook';
 
 function Home(props){
-  const { userLoading , user } = useRHook();
   return (
     <StyledHome>
       <BlogFeatured />
       <IceCaveFeatured />
-      {(!userLoading && user.loggedIn) ?
-         <PuzzleFeatured />
-       : null}
+      <PuzzleFeatured />
       <RPNFeatured />
     </StyledHome>
   );

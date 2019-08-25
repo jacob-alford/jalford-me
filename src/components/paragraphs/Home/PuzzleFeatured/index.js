@@ -1,6 +1,6 @@
 import React , { useState , useEffect , useReducer , useRef } from 'react';
 import { useSprings , animated as a } from 'react-spring';
-import { withRouter } from 'react-router';
+import useReactRouter from 'use-react-router';
 import { ParallaxBanner } from 'react-scroll-parallax';
 
 import { Typography , Button } from '@material-ui/core/';
@@ -336,8 +336,8 @@ const getColors = state => state.map(item => item.color);
 const getYs = state => state.map(item => item.y);
 const getColorByVI = (state,VI) => state.find(item => item.visibleIndex === VI);
 
-function PuzzleFeatured(props){
-  const { history } = props;
+export default function PuzzleFeatured(props){
+  const { history } = useReactRouter();
 
   let canvasElement = React.createRef();
   let canvasHolder = React.createRef();
@@ -409,5 +409,3 @@ function PuzzleFeatured(props){
     </ParallaxBanner>
   );
 }
-
-export default withRouter(PuzzleFeatured);

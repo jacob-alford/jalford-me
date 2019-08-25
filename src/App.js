@@ -16,6 +16,7 @@ import Blog from './components/novels/Blog';
 import BlogBar from './components/paragraphs/BlogBar';
 import BlogView from './components/novels/BlogView';
 import BlogEdit from './components/novels/BlogEdit';
+import Puzzles from './components/novels/Puzzles';
 
 import { projectList } from './config';
 
@@ -67,6 +68,7 @@ export default function App() {
           <UserSettings />
           <BlogBar context="inUser" breadcrumb={{link:'/user',label:'User'}}/>
         </Route>
+        <Route path="/puzzles" component={Puzzles} />
         <Route path="/about" component={About} />
         <Route path="/posts/view/:postId" children={props => {
           const { match , history } = props;

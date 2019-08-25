@@ -1,5 +1,5 @@
 import React , { useState } from 'react';
-import { withRouter } from 'react-router';
+import useReactRouter from 'use-react-router';
 import { ParallaxBanner } from 'react-scroll-parallax';
 import { Typography , Button , Grid , Divider } from '@material-ui/core/';
 
@@ -59,8 +59,8 @@ const styles = {
   }
 }
 
-function BlogFeatured(props){
-  const { history } = props;
+export default function BlogFeatured(props){
+  const { history } = useReactRouter();
   const { h2:titleSize } = useTitleSize();
   const [containerHover,setContainerHover] = useState(false);
   const [buttonHovered,setButtonHovered] = useState(false);
@@ -111,5 +111,3 @@ function BlogFeatured(props){
     </ParallaxBanner>
   );
 }
-
-export default withRouter(BlogFeatured);

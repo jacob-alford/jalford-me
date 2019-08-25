@@ -1,5 +1,5 @@
 import React , { useState } from 'react';
-import { withRouter } from 'react-router';
+import useReactRouter from 'use-react-router';
 import {
   Container, Typography,
   Paper, CircularProgress,
@@ -89,7 +89,7 @@ const dateify = date => new Date(date.toDate()).toLocaleDateString("default",{ye
 const getPermissions = user => user.activeUser.permissions.value;
 
 function UserPosts(props){
-  const { history } = props;
+  const { history } = useReactRouter();
   const { isLoading , postData , error , user } = useRPostConnect('title');
   const [currentDelete,setCurrentDelete] = useState(null);
   const [currentPublic,setCurrentPublic] = useState(null);
@@ -224,4 +224,4 @@ function UserPosts(props){
   );
 }
 
-export default withRouter(withPageFade(UserPosts));
+export default withPageFade(UserPosts);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router';
+import useReactRouter from 'use-react-router';
 import PropTypes from 'prop-types';
 import {
   Card,
@@ -13,8 +13,9 @@ import {
 
 import { StyledProjectCard } from './style.js';
 
-function ProjectCard(props){
-  const { projectDetails , history } = props;
+export default function ProjectCard(props){
+  const { history } = useReactRouter();
+  const { projectDetails } = props;
   const handleClick = url => {
     if(url.includes("http")) window.location.href = url;
     else history.push(url);
@@ -44,8 +45,6 @@ function ProjectCard(props){
     </StyledProjectCard>
   );
 }
-
-export default withRouter(ProjectCard);
 
 ProjectCard.propTypes = {
   projectDetails:PropTypes.shape({

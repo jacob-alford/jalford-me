@@ -15,7 +15,7 @@ import { ColorLens, AssignmentInd,
        } from '@material-ui/icons/';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';
-import { withRouter } from "react-router";
+import useReactRouter from 'use-react-router';
 
 import { firebase } from '../../../index.js';
 
@@ -85,7 +85,7 @@ const styles = {
 }
 
 function UserSettings(props){
-  const { history } = props;
+  const { history } = useReactRouter();
   // --- State Hooks ---
   const [mightDelete,setMightDelete] = useState(false);
   const [willDelete,setWillDelete] = useState(false);
@@ -316,4 +316,4 @@ function UserSettings(props){
   );
 }
 
-export default withRouter(withPageFade(UserSettings));
+export default withPageFade(UserSettings);

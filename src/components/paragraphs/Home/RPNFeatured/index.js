@@ -1,5 +1,5 @@
 import React , { useState , useEffect } from 'react';
-import { withRouter } from 'react-router';
+import useReactRouter from 'use-react-router';
 import { ParallaxBanner } from 'react-scroll-parallax';
 import { Typography , Button } from '@material-ui/core/';
 
@@ -74,10 +74,10 @@ const styles = {
   }
 }
 
-function RPNFeatured(props){
+export default function RPNFeatured(props){
   const [containerHover,setContainerHover] = useState(false);
   const [buttonHover,setButtonHover] = useState(false);
-  const { history } = props;
+  const { history } = useReactRouter();
   let canvasElement = React.createRef();
   const imageLayer = [
     { children:<canvas ref={canvasElement} style={styles.gradientScroller}/>, amount:.1 }
@@ -126,5 +126,3 @@ function RPNFeatured(props){
     </ParallaxBanner>
   );
 }
-
-export default withRouter(RPNFeatured);
