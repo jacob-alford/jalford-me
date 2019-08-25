@@ -144,7 +144,7 @@ import Image from '../components/words/Image';
   ),
   "image":props => (
     <span>
-      <Image naked imageStyle={styles.blogImage} alt={props.alt} src={props.src}/>
+      <Image naked imageStyles={styles.blogImage} alt={props.alt} src={props.src}/>
     </span>
   ),
   "inlineCode":props => (
