@@ -1,6 +1,6 @@
 import React, { useState , useEffect } from 'react';
 import Markdown from 'react-markdown';
-import { TransitionMotion ,  spring } from 'react-motion';
+import { useTransition , animated as a } from 'react-spring';
 import {
   Container, Typography , Paper,
   CircularProgress, Grid, InputBase,
@@ -102,6 +102,13 @@ const styles = {
   chipHolder:{
     maxWidth:"270px"
   },
+  chipsHolder:{
+    maxWidth:"270px",
+    display:"flex",
+    flexWrap:'wrap',
+    justifyContent:'center',
+    alignItems:'center'
+  },
   blogEditorViewerHolder:{
     display:'flex',
     flexWrap:'wrap',
@@ -112,7 +119,7 @@ const styles = {
     marginRight:'auto'
   },
   lead:{
-    fontSize:'1.69rem',
+    fontSize:'1.42rem',
     fontWeight:'300',
     color: 'rgba(0,0,0,.85)',
     textAlign:'center'
@@ -227,6 +234,13 @@ const sameArr = (arr1,arr2) => {
   }
   return true;
 }
+
+const safeFilter = (arr,filter) => {
+  if(arr)
+    return arr.filter(filter);
+  else return null;
+}
+const textExists = item => item && item !== "";
 
 function BlogEdit(props){
   // --- Helpers ---
@@ -358,6 +372,16 @@ function BlogEdit(props){
       setBlogTags([addTagBox.trim(),...blogTags]);
     }
   }
+  const tagTransitions = useTransition(blogTags || [],item => item,{
+    initial: { transform: 'scale3d(0,0,0)' },
+    from: { transform: 'scale3d(0,0,0)' },
+    enter: { transform: 'scale3d(1,1,1)' },
+    leave: { transform: 'scale3d(0,0,0)' },
+    config: {
+      tension: 403,
+      friction: 47
+    }
+  });
   /* Sets the tags on load */
   useEffect(() => {
     if((data.postData && blogTags === null) || shouldUpdate){
@@ -542,35 +566,20 @@ function BlogEdit(props){
                   <Grid item>
                     <Grid container direction="column" spacing={2}>
                       <Grid item>
-                        <TransitionMotion
-                          styles={(blogTags || []).map((tag,index) => {
-                            return {
-                              key:`tag${tag}`,
-                              style:{ scale:spring(1) },
-                              data:tag
-                            }
+                        <div style={styles.chipsHolder}>
+                          {tagTransitions.map((tagTransition,index) => {
+                            const { props:interStyles , item , key } = tagTransition;
+                            return (
+                              <a.div style={{...styles.chip,...interStyles}} key={key}>
+                                <Chip
+                                  label={item}
+                                  color="primary"
+                                  clickable={false}
+                                  onDelete={() => handleTagRemove(index)}/>
+                              </a.div>
+                            );
                           })}
-                          defaultStyle={blogTags.map(() => {
-                            return { scale:0 };
-                          })}
-                          willEnter={styleEnter => {
-                            return { scale:0 }
-                          }}
-                          willLeave={styleLeft => {
-                            return { scale:spring(0) }
-                          }}>
-                          {newTags => (
-                            <Grid style={styles.chipHolder} container direction="row-reverse" justify="center">
-                              {newTags.map((tag,index) => {
-                                return (
-                                  <Grid style={{...styles.chip,transform:`scaleY(${tag.style.scale})`}} item key={tag.key}>
-                                    <Chip label={tag.data} color="primary" clickable={false} onDelete={() => handleTagRemove(index)}/>
-                                  </Grid>
-                                );
-                              })}
-                            </Grid>
-                          )}
-                        </TransitionMotion>
+                        </div>
                       </Grid>
                       <Grid item>
                         <Grid container direction="row" spacing={1}>

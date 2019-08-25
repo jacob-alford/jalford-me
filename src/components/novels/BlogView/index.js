@@ -34,7 +34,7 @@ const styles = {
     color:"rgba(0,0,0,.87)"
   },
   lead:{
-    fontSize:'1.69rem',
+    fontSize:'1.42rem',
     fontWeight:'300',
     color: 'rgba(0,0,0,.85)',
     textAlign:'center'
