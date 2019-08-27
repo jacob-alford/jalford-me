@@ -5,6 +5,8 @@ import {
 } from '@material-ui/core/';
 import { SliderPicker } from 'react-color';
 
+import useNotify from '../../bindings/hooks/useNotify';
+
 import zxcvbn from 'zxcvbn';
 
 import { validateEmail,
@@ -69,8 +71,12 @@ export default function SignupForm(props){
   const [passwordScore, setPasswordScore] = useState(0);
   const [username,setUsername] = useState("");
   const [color,setColor] = useState(randomColor());
-  const [error,setError] = useState();
   const { loading , setLoading } = props;
+  const notifyError = useNotify({
+    alertType:"error",
+    timeout:4500,
+    timeoutColor:["#0F2027","#203A43","#2c5364"]
+  });
   function validForm(){
     return validateEmail(email)
         && passwordScore >= 2
@@ -93,12 +99,20 @@ export default function SignupForm(props){
           image:null
         }).then(function(docRef) {
           console.log("Successfully added user:",docRef);
+          notifyError({
+            body:"Account successfully created!",
+            alertType:"success"
+          });
         }).catch(function(error) {
-          setError(error.toString());
+          notifyError({
+            body:error.toString()
+          });
           console.error(error);
         });
       }).catch(error => {
-        setError(error.toString());
+        notifyError({
+          body:error.toString()
+        });
         console.error(error);
       }).finally(() => {
         setLoading(false);
@@ -114,13 +128,6 @@ export default function SignupForm(props){
   },[password]);
   return (
     <Grid container direction="column" justify="center">
-      {(error) ? (
-        <Grid item>
-          <Typography variant="body2" style={{color:"#E84040",marginBottom:"24px"}}>
-            {error}
-          </Typography>
-        </Grid>
-      ) : null }
       <form>
         <Grid item>
           <TextField

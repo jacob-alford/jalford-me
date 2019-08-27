@@ -92,7 +92,7 @@ import Image from '../components/words/Image';
      else history.push(href);
    }
    return (
-     <Link style={styles.link} onClick={handleClick} key={props.key}>
+     <Link style={styles.link} onClick={handleClick}>
        {props.children}
      </Link>
    );

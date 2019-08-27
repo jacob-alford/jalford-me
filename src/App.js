@@ -5,6 +5,7 @@ import { Spring } from 'react-spring/renderprops'
 import { IconButton } from '@material-ui/core/';
 import { KeyboardArrowUp } from '@material-ui/icons';
 
+import NotificationsHolder from './components/sentences/NotificationsHolder';
 import UserSettings from './components/novels/UserSettings';
 import UsersTable from './components/novels/UsersTable';
 import UserPosts from './components/novels/UserPosts';
@@ -17,6 +18,8 @@ import BlogBar from './components/paragraphs/BlogBar';
 import BlogView from './components/novels/BlogView';
 import BlogEdit from './components/novels/BlogEdit';
 import Puzzles from './components/novels/Puzzles';
+
+
 
 import { projectList } from './config';
 
@@ -38,6 +41,7 @@ export default function App() {
   const toggleHeader = () => setHeaderIsOpen(!headerIsOpen);
   return (
     <Router>
+      <NotificationsHolder />
       <Heading headerIsOpen={headerIsOpen}/>
       <Spring
         to={{transform:`rotateZ(${(headerIsOpen) ? 0 : 180}deg)`}}>

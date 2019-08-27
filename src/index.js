@@ -4,16 +4,21 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import { createStore } from 'redux'
-import { Provider } from 'react-redux'
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 import reduxStore from './components/bindings/redux';
 import { setLoggedIn , setLoggedOut , setLoggedOutWithWater } from './components/bindings/redux';
 
 import { ParallaxProvider } from 'react-scroll-parallax';
 
+import NotificationProvider from './notifications.js';
+
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+
+// --- Notifications ---
+const Notifications = React.createContext({notifications:[]});
 
 // --- Redux ---
 const store = createStore(reduxStore);
@@ -65,14 +70,16 @@ firebase.auth().onAuthStateChanged(user => {
 // --- Root Render ---
 ReactDOM.render(
   <Provider store={store}>
-    <ParallaxProvider>
-      <App />
-    </ParallaxProvider>
+    <NotificationProvider>
+      <ParallaxProvider>
+        <App />
+      </ParallaxProvider>
+    </NotificationProvider>
   </Provider>,
   document.getElementById('root')
 );
 
-export { firebase };
+export { firebase , Notifications };
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
