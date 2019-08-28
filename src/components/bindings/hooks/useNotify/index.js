@@ -4,7 +4,7 @@ import { Notifications } from '../../../../index.js';
 
 const defaultConfig = {
   alertType:'info', // mui-snackbar variants
-  timeoutColor:["#8A2387","#E94057","#F27121"], // gradient stops
+  timeoutColor:["#0F2027","#203A43","#2c5364"], // gradient stops
   timeout:10000 // ms
 }
 

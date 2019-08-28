@@ -8,6 +8,8 @@ import {
 import firebase from 'firebase/app';
 import 'firebase/auth';
 
+import useNotify from '../../bindings/hooks/useNotify';
+
 const styles = {
   textBox:{
     marginBottom:"10px"
@@ -23,18 +25,25 @@ const styles = {
 export default function LoginForm(props){
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
-  const [error,setError] = useState(null);
   const { loading , setLoading } = props;
+  const notify = useNotify({
+    body:"Successfully signed in!",
+    alertType:"success",
+    timeout:4500
+  });
   function handleChangeConstructor(setter){
     return evt => setter(evt.target.value);
   }
   function handleSubmit(){
     firebase.auth()
             .signInWithEmailAndPassword(email, password)
+            .then(notify)
             .catch(error => {
-              if(error.code === "auth/wrong-password"){
-                 setError("Email/Password not recognized!");
-              }
+              console.error(error);
+              notify({
+                alertType:"error",
+                body:error.toString()
+              });
             }).finally(() => {
               setLoading(false);
             });
@@ -43,11 +52,6 @@ export default function LoginForm(props){
   return (
     <Grid container direction="column">
       <Grid item>
-        {(error) ? (
-          <Typography paragraph style={styles.error} variant="caption">
-            {error}
-          </Typography>
-        ) : null}
       </Grid>
       <form>
         <Grid item>

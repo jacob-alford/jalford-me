@@ -70,6 +70,7 @@ export default function Notification(props){
   useEffect(() => {
     if(shouldUnmount)
       closeAlert();
+    return () => setShouldUnmount(false);
   },[shouldUnmount,closeAlert]);
   return (
     <React.Fragment>

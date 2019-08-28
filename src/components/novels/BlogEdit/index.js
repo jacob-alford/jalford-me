@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from 'react';
+import React, { useState , useEffect , useCallback } from 'react';
 import Markdown from 'react-markdown';
 import { useTransition , animated as a } from 'react-spring';
 import {
@@ -18,6 +18,7 @@ import withPageFade from '../../bindings/wrappers/withPageFade';
 import useRHook from '../../bindings/hooks/useRHook';
 import usePostConnect from '../../bindings/hooks/usePostConnect';
 import useTitleSize from '../../bindings/hooks/useTitleSize';
+import useNotify from '../../bindings/hooks/useNotify';
 
 import { getPostId , getSliderSnapshots } from './selectors.js';
 
@@ -280,6 +281,17 @@ function BlogEdit(props){
   const postId = getPostId(props);
   const { user } = useRHook();
   const data = usePostConnect(postId);
+  const notify = useNotify({
+    timeout:4500,
+    alertType:"success"
+  });
+  const notifyError = useCallback(error => {
+    console.error(error);
+    notify({
+      body:error.toString(),
+      alertType:"error"
+    });
+  },[notify]);
 
   // --- Database Resync ---
   const [shouldUpdate,setShouldUpdate] = useState(false);
@@ -434,9 +446,11 @@ function BlogEdit(props){
           ...data.postData.snapshots.slice(0,5)
         ]
       }).then(() => {
-        console.log("Snapped!");
         setShouldUpdate(true);
-      }).catch(error => console.error(error))
+        notify({
+          body:"Successfully snapped!"
+        });
+      }).catch(notifyError)
         .finally(() => setIsEditing(false));
     }
   }
@@ -459,9 +473,11 @@ function BlogEdit(props){
         ],
         snippit:blogSnippit
       }).then(() => {
-        console.log("Published!");
         setShouldUpdate(true);
-      }).catch(error => console.error(error))
+        notify({
+          body:"Successfully published post!"
+        });
+      }).catch(notifyError)
         .finally(() => setIsEditing(false));
     }
   }

@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState , useCallback } from 'react';
 import {
   Paper, Modal, TextField,
   Typography, Button, CircularProgress
 } from '@material-ui/core/';
 
 import { firebase } from '../../../index.js';
+
+import useNotify from '../../bindings/hooks/useNotify';
 
 const styles = {
   container:{
@@ -59,6 +61,18 @@ export default function CreatePostDialogue(props){
   const handleTitleChange = evt => setTitle(evt.target.value);
   const handleSlugChange = evt => setSlug(evt.target.value);
   const isFilled = () => title !== "" && slug !== "";
+  const notify = useNotify({
+    timeout:4500,
+    body:"Successfully created post!",
+    alertType:"success"
+  });
+  const notifyError = useCallback(error => {
+    console.error(error);
+    notify({
+      body:error.toString(),
+      alertType:"error"
+    });
+  },[notify]);
   const handleCreate = () => {
     if(user.activeUser && user.activeUser.permissions.value >= 8){
       setLoading(true);
@@ -87,14 +101,14 @@ export default function CreatePostDialogue(props){
           }).then(() => {
             console.log("Successfully created post!");
             setLoading(false);
-          }).catch(error => {
-            console.error(error);
-          }).finally(() => {
-            setCreatePostIsOpen(false);
-            history.push(`/posts/edit/${slug}`);
-          });
+            notify();
+          }).catch(notifyError)
+            .finally(() => {
+              setCreatePostIsOpen(false);
+              history.push(`/posts/edit/${slug}`);
+            });
         }
-      }).catch(error => console.error(error))
+      }).catch(notifyError)
         .finally(() => setLoading(false));
     }
   }

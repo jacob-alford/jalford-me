@@ -1,4 +1,4 @@
-import React , { useState , useEffect } from 'react';
+import React , { useState , useEffect , useRef , useCallback } from 'react';
 import { SketchPicker } from 'react-color';
 import { Grid,
          Typography, Paper,
@@ -20,10 +20,9 @@ import useReactRouter from 'use-react-router';
 import { firebase } from '../../../index.js';
 
 import useRHook from '../../bindings/hooks/useRHook';
+import useNotify from '../../bindings/hooks/useNotify';
 
 import { getTextColorBasedOnBg } from '../../../functions';
-
-let db;
 
 const getUser = user => user.activeUser;
 const getPermissions = user => {
@@ -92,6 +91,23 @@ function UserSettings(props){
   const [usernameField,setUsernameField] = useState("");
   const [colorField,setColorField] = useState("");
   const [imageField,setImageField] = useState("");
+  const notify = useNotify({
+    timeout:4500
+  });
+  const notifyError = useCallback((error,msg) => {
+    console.error(error);
+    notify({
+      body:msg || error.toString(),
+      alertType:"error"
+    });
+  },[notify]);
+  const notifyUpdate = useCallback(msg => {
+    notify({
+      body:msg || "Successfully updated user!",
+      alertType:"success"
+    });
+  },[notify]);
+  const db = useRef(firebase.firestore());
   // --- Handlers ---
   const fieldHandlerConstructor = setter => {
     return evt => {
@@ -99,35 +115,32 @@ function UserSettings(props){
     }
   }
   const handleUserImageUpdate = () => {
-    if(db && user.loggedIn){
-      const dbUser = db.collection("users").doc(getUser(user).uid);
+    if(db.current && user.loggedIn){
+      const dbUser = db.current.collection("users").doc(getUser(user).uid);
       dbUser.update({
         username:usernameField,
         image:imageField
-      }).then(console.log("Updated successfully!"))
-        .catch(error => console.error(error));
+      }).then(notifyUpdate).catch(notifyError);
     }
   }
   const handleColorUpdate = () => {
-    if(db && user.loggedIn){
-      const dbUser = db.collection("users").doc(getUser(user).uid);
+    if(db.current && user.loggedIn){
+      const dbUser = db.current.collection("users").doc(getUser(user).uid);
       dbUser.update({
         color:colorField
-      }).then(console.log("Updated successfully!"))
-        .catch(error => console.error(error));
+      }).then(notifyUpdate).catch(notifyError);
     }
   }
   const handleUserDelete = () => {
-    if(firebase && db && user.loggedIn){
+    if(firebase && db.current && user.loggedIn){
       const authUser = firebase.auth().currentUser;
       if(authUser){
         authUser.delete().then(() => {
-          console.log("Successfully deleted auth user.");
-          const dbUser = db.collection("users").doc(authUser.uid);
+          const dbUser = db.current.collection("users").doc(authUser.uid);
           dbUser.delete().then(() => {
-            console.log("Successfully deleted database user.");
-          }).catch(error => console.error(error));
-        }).catch(error => console.error(error));
+            notifyUpdate("Successfully deleted user :-(");
+          }).catch(error => notifyError("Unable to fully delete user, please contact Jacob for assistance!  Sorry about that! :-("));
+        }).catch(notifyError);
       }
     }
   }
@@ -158,9 +171,6 @@ function UserSettings(props){
   useEffect(() => {
     setColorField(getUser(user).color);
   },[user]);
-  useEffect(() => {
-    if(firebase) db = firebase.firestore();
-  });
   return (
     <React.Fragment>
       <Grid style={styles.loader} container justify="center">
