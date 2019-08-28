@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import {
   Grid, Button,
-  TextField, Typography,
-  CircularProgress
+  TextField, CircularProgress
 } from '@material-ui/core/';
 
 import firebase from 'firebase/app';
