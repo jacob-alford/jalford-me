@@ -1,16 +1,15 @@
 import React, { useState , useEffect } from 'react';
 import useReactRouter from 'use-react-router';
-import { AppBar, Toolbar, Typography,
-         Button, Grid, IconButton, Menu, MenuItem,
-         ListItemText, ListItemIcon, Fade, Slide
-       } from '@material-ui/core/';
+import {
+  AppBar, Toolbar, Typography,
+  Button, Grid, IconButton, Menu, MenuItem,
+  ListItemText, ListItemIcon, Fade, Slide
+} from '@material-ui/core/';
 
-import { AccountCircle,
-         Group,
-         Lock,
-         ListAlt,
-         Eject
-       } from '@material-ui/icons/';
+import {
+  AccountCircle, Group,
+  Lock, ListAlt, Eject
+} from '@material-ui/icons/';
 
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 

@@ -1,8 +1,11 @@
-import React , { useState } from 'react';
+import React from 'react';
 import { ParallaxBanner } from 'react-scroll-parallax';
 import { Typography , Button , Divider } from '@material-ui/core/';
 
 import { homePageImage } from '../../../../config';
+
+import useHoverHandlers from '../../../bindings/hooks/useHoverHandler';
+import useRedirect from '../../../bindings/hooks/useRedirect';
 
 const styles = {
   banner:{
@@ -56,22 +59,27 @@ const styles = {
 }
 
 export default function IceCaveFeatured(props){
-  const [isHovering,setIsHovering] = useState(false);
-  const [buttonHover,setButtonHover] = useState(false);
+  const hoverHandlers = useHoverHandlers({
+    base:styles.children,
+    over:styles.childrenHover
+  });
+  const btnHoverHandlers = useHoverHandlers({
+    base:styles.button,
+    over:styles.buttonHover
+  });
   const imageLayer = [
     { image:homePageImage.img, amount:.1 }
   ];
-  const handleOnClick = () => {
-    window.location.href = "https://www.icecaves.com/";
-  }
+  const btnClick = useRedirect("https://www.icecaves.com/");
+
   return (
     <ParallaxBanner style={styles.banner} layers={imageLayer}>
-      <div style={(isHovering) ? {...styles.children,...styles.childrenHover} : styles.children} onMouseOut={() => setIsHovering(false)} onMouseOver={() => setIsHovering(true)} >
+      <div {...hoverHandlers}>
         <Typography variant="h2" style={styles.sweetText}>
           Ice Cave and Bandera Volcano
         </Typography>
         <Divider style={styles.divider} light component="div"/>
-        <Button style={(buttonHover) ? {...styles.button,...styles.buttonHover} : styles.button} onMouseOut={() => setButtonHover(false)} onMouseOver={() => setButtonHover(true)} variant="outlined" onClick={handleOnClick}>
+        <Button {...btnHoverHandlers} variant="outlined" onClick={btnClick}>
           Check it out
         </Button>
       </div>

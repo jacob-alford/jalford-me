@@ -1,11 +1,11 @@
 import React , { useState , useEffect } from 'react';
-import useReactRouter from 'use-react-router';
 import { ParallaxBanner } from 'react-scroll-parallax';
 import { Typography , Button } from '@material-ui/core/';
 
 import Image from '../../../words/Image';
 
 import rpnImage from '../../../../assets/projects/RPN_New.png';
+import useRedirect from '../../../bindings/hooks/useRedirect';
 
 const styles = {
   banner:{
@@ -77,14 +77,11 @@ const styles = {
 export default function RPNFeatured(props){
   const [containerHover,setContainerHover] = useState(false);
   const [buttonHover,setButtonHover] = useState(false);
-  const { history } = useReactRouter();
+  const handleOnClick = useRedirect("/projects/rpn");
   let canvasElement = React.createRef();
   const imageLayer = [
     { children:<canvas ref={canvasElement} style={styles.gradientScroller}/>, amount:.1 }
   ];
-  const handleOnClick = () => {
-    history.push("/projects/rpn");
-  }
   const constructOnOver = setter => {
     return () => setter(true);
   }

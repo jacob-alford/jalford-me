@@ -1,11 +1,12 @@
-import React , { useState } from 'react';
-import useReactRouter from 'use-react-router';
+import React from 'react';
 import { ParallaxBanner } from 'react-scroll-parallax';
 import { Typography , Button , Grid , Divider } from '@material-ui/core/';
 
 import Typed from '../../../sentences/Typed';
 
 import useTitleSize from '../../../bindings/hooks/useTitleSize';
+import useHoverHandler from '../../../bindings/hooks/useHoverHandler';
+import useRedirect from '../../../bindings/hooks/useRedirect';
 
 import flowerImage from '../../../../assets/photos/Posts_Flower.jpg';
 
@@ -60,18 +61,16 @@ const styles = {
 }
 
 export default function BlogFeatured(props){
-  const { history } = useReactRouter();
   const { h2:titleSize } = useTitleSize();
-  const [containerHover,setContainerHover] = useState(false);
-  const [buttonHovered,setButtonHovered] = useState(false);
-
-  const handleOnClick = () => history.push('/posts');
-  const constructOnOver = setter => {
-    return () => setter(true);
-  }
-  const constructOnOut = setter => {
-    return () => setter(false);
-  }
+  const hoverHandlers = useHoverHandler({
+    base:styles.container,
+    over:styles.containerHover
+  });
+  const btnHoverHandlers = useHoverHandler({
+    base:styles.button,
+    over:styles.buttonHover
+  });
+  const btnClick = useRedirect('/posts');
 
   const strings = [
     'Welcome!^1000','Read my blog! ^500🙂^1000',
@@ -84,7 +83,7 @@ export default function BlogFeatured(props){
 
   return (
     <ParallaxBanner style={styles.banner} layers={imageLayer}>
-      <div style={(containerHover) ? {...styles.container,...styles.containerHover} : styles.container} onMouseOver={constructOnOver(setContainerHover)} onMouseOut={constructOnOut(setContainerHover)}>
+      <div {...hoverHandlers}>
         <Grid container direction="column" justify="center" alignItems="center">
           <Grid item>
             <Typography variant="h1" paragraph style={{...styles.title,fontSize:titleSize}}>
@@ -96,13 +95,9 @@ export default function BlogFeatured(props){
           </Grid>
           <Grid item>
             <Button
-              style={(buttonHovered) ?
-                    {...styles.button,...styles.buttonHover}
-                  : {...styles.button}}
+              {...btnHoverHandlers}
               variant="outlined"
-              onClick={handleOnClick}
-              onMouseOver={constructOnOver(setButtonHovered)}
-              onMouseOut={constructOnOut(setContainerHover)}>
+              onClick={btnClick}>
               Read
             </Button>
           </Grid>

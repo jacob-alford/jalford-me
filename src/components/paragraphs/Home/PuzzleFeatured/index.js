@@ -1,12 +1,12 @@
 import React , { useState , useEffect , useReducer , useRef } from 'react';
 import { useSprings , animated as a } from 'react-spring';
-import useReactRouter from 'use-react-router';
 import { ParallaxBanner } from 'react-scroll-parallax';
 
 import { Typography , Button } from '@material-ui/core/';
 import { OpenWith } from '@material-ui/icons/';
 
 import useColorAdapt from '../../../bindings/hooks/useColorAdapt';
+import useRedirect from '../../../bindings/hooks/useRedirect';
 
 const styles = {
   banner:{
@@ -337,7 +337,7 @@ const getYs = state => state.map(item => item.y);
 const getColorByVI = (state,VI) => state.find(item => item.visibleIndex === VI);
 
 export default function PuzzleFeatured(props){
-  const { history } = useReactRouter();
+  const handleOnClick = useRedirect("/puzzles");
 
   let canvasElement = React.createRef();
   let canvasHolder = React.createRef();
@@ -350,10 +350,6 @@ export default function PuzzleFeatured(props){
   const imageLayer = [
     { children:<canvas ref={canvasElement} style={styles.bgCanvas}/>, amount:.1 }
   ];
-
-  const handleOnClick = () => {
-    history.push("/puzzles");
-  }
 
   const updateColors = () => {
     dispatchColorChange({type:'resetColors'});

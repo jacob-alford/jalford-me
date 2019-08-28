@@ -1,5 +1,4 @@
 import React from 'react';
-import useReactRouter from 'use-react-router';
 
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { coy as codeTheme } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -14,6 +13,8 @@ import { CheckCircleOutline , RadioButtonUnchecked } from '@material-ui/icons';
 
 import AdaptiveHeading from '../components/words/AdaptiveHeading';
 import Image from '../components/words/Image';
+
+import useRedirect from '../components/bindings/hooks/useRedirect';
 
  const getInnermostProps = props => {
    if(typeof props.children === "string" || typeof props.value === "string")
@@ -84,13 +85,8 @@ import Image from '../components/words/Image';
  }
 
  const InBlogLink = props => {
-   const { history } = useReactRouter();
    const { href } = props;
-   const handleClick = () => {
-     if(href.includes("http"))
-       window.location.href = href;
-     else history.push(href);
-   }
+   const handleClick = useRedirect(href);
    return (
      <Link style={styles.link} onClick={handleClick}>
        {props.children}
