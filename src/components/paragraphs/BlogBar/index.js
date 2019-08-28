@@ -22,6 +22,7 @@ import CreatePostDialogue from '../../sentences/CreatePostDialogue';
 import { firebase } from '../../../index.js';
 
 import useRHook from '../../bindings/hooks/useRHook';
+import useNotify from '../../bindings/hooks/useNotify';
 
 import { getTextColorBasedOnBg } from '../../../functions'
 
@@ -38,6 +39,9 @@ const getUserPermissions = user => user.activeUser.permissions.value;
 export default function BlogBar(props){
   const { user } = useRHook();
   const scrollTrigger = useScrollTrigger();
+  const notify = useNotify({
+    timeout:4500
+  });
   const [signInIsOpen,setSignInIsOpen] = useState(false);
   const [signUpIsOpen,setSignUpIsOpen] = useState(false);
   const [createPostIsOpen,setCreatePostIsOpen] = useState(false);
@@ -63,10 +67,17 @@ export default function BlogBar(props){
   }
   const handleSignout = () => {
     firebase.auth().signOut().then(function() {
-      console.log("Successfully signed out");
       setUserMenuAnchor(null);
+      notify({
+        body:"Successfully signed out!",
+        alertType:"info"
+      });
     }).catch(function(error) {
-      console.error("Failed to sign out!  Reason:",error.toString());
+      console.error(error);
+      notify({
+        body:error.toString(),
+        alertType:"error"
+      });
     });
   }
   let bgColor = user.activeUser.color;
