@@ -20,6 +20,7 @@ import CreatePostDialogue from '../../sentences/CreatePostDialogue';
 
 import { firebase } from '../../../index.js';
 
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useRHook from '../../bindings/hooks/useRHook';
 import useNotify from '../../bindings/hooks/useNotify';
 
@@ -41,6 +42,7 @@ export default function BlogBar(props){
   const notify = useNotify({
     timeout:4500
   });
+  const screenTooSmall = useMediaQuery('(max-width:500px)');
   const [signInIsOpen,setSignInIsOpen] = useState(false);
   const [signUpIsOpen,setSignUpIsOpen] = useState(false);
   const [createPostIsOpen,setCreatePostIsOpen] = useState(false);
@@ -108,11 +110,13 @@ export default function BlogBar(props){
                       <Grid item>
                         <Fade in={user.loggedIn === true} timeout={1500}>
                           <Grid container direction="row" alignItems="center">
-                            <Grid item>
-                              <Typography variant="body2" style={{color:textColor}}>
-                                Welcome, {user.activeUser.username}
-                              </Typography>
-                            </Grid>
+                            {(!screenTooSmall) ? (
+                              <Grid item>
+                                <Typography variant="body2" style={{color:textColor}}>
+                                  Welcome, {user.activeUser.username}
+                                </Typography>
+                              </Grid>
+                            ) : null}
                             <Grid item>
                               <IconButton onClick={anchorHandlerCreator(setUserMenuAnchor)}>
                                 <AccountCircle style={{color:textColor}}/>

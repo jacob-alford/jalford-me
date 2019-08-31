@@ -6,6 +6,7 @@ import { ArrowForwardIos , ArrowBackIos } from '@material-ui/icons';
 
 import { ParallaxBanner } from 'react-scroll-parallax';
 
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useSeriesConnect from '../../../bindings/hooks/useSeriesConnect';
 
 import BlogCard from '../../../words/BlogListing/BlogCard';
@@ -14,6 +15,7 @@ import BlogCard from '../../../words/BlogListing/BlogCard';
 
 export default function DuncanStrauss(props){
   const { minHeight = 1000 , widthStr = '100vw' } = props;
+  const screenTooSmall = useMediaQuery('(max-width:400px)');
   const styles = {
     canvas:{
       position:"absolute",
@@ -69,23 +71,24 @@ export default function DuncanStrauss(props){
 
   useEffect(() => {
     const context = bgCanvas.current.getContext("2d");
-    bgCanvas.current.width *= 2;
-    bgCanvas.current.height *= 2;
-    const width = bgCanvas.current.width;
-    const height = bgCanvas.current.height;
+    bgCanvas.current.width = bgCanvas.current.clientWidth;
+    bgCanvas.current.height = bgCanvas.current.clientHeight;
+    const width = bgCanvas.current.clientWidth;
+    const height = bgCanvas.current.clientHeight;
 
-    context.strokeStyle = 'rgba(174,194,224,.5)';
-    context.lineWidth = .75;
+    context.strokeStyle = 'rgba(174,194,224,.25)';
+    context.lineWidth = 2.25;
     context.lineCap = 'round';
 
     const particles = [];
-    for(let i=0;i<1000;i++)
+    for(let i=0;i<250;i++)
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        dx: Math.random() * .25,
-        dy: Math.random() * 3.5 + 2,
-        length: Math.random() * 3.5
+        dx: Math.random() * .4 -.05,
+        dy: Math.random() * 20 + 4,
+        length: Math.random() * (height/550) + 5,
+        opacity: Math.random() * .25 + .025
       });
     const fall = particle => {
       particle.x += particle.dx;
@@ -105,23 +108,25 @@ export default function DuncanStrauss(props){
         lightning = 1;
       if(lightning > 0){
         const testValue2 = Math.random();
-        if(testValue2 < .005) lightning = 1;
+        if(testValue2 < .01) lightning = 1;
         const interpVal =
-          lightning - .04 * (Math.random() * .05 + .25) * Math.exp(lightning);
+          lightning - Math.exp(-1.9 - lightning);
         if(interpVal > 0)
           lightning = interpVal;
         else lightning = 0;
-        context.fillStyle = `rgba(225,225,255,${lightning/1.5})`;
+        context.fillStyle = `rgba(225,225,255,${lightning * .85})`;
         context.fillRect(0,0,width,height);
       }
       // eslint-disable-next-line
       for(let particle of particles){
-        context.beginPath();
-        context.moveTo(particle.x,particle.y);
-        context.lineTo(
+        const change = [
           particle.x + particle.length * particle.dx,
           particle.y + particle.length * particle.dy
-        );
+        ];
+        context.strokeStyle = `rgba(174,194,224,${particle.opacity})`
+        context.beginPath();
+        context.moveTo(particle.x,particle.y);
+        context.lineTo(change[0],change[1]);
         context.stroke();
       }
       particles.forEach(fall);
@@ -139,8 +144,8 @@ export default function DuncanStrauss(props){
             </Typography>
           </Grid>
           <Grid item>
-            <Grid container direction="row" justify="space-around" alignItems="center">
-              {(data.postData && data.postData.length > 1) ? (
+            <Grid container direction={(!screenTooSmall) ? "row" : "column"} justify="space-around" alignItems="center">
+              {(!screenTooSmall && data.postData && data.postData.length > 1) ? (
                 <Grid item>
                   <IconButton onClick={navLeft}>
                     <ArrowBackIos style={styles.navButton}/>
@@ -150,11 +155,27 @@ export default function DuncanStrauss(props){
               <Grid item>
                 <BlogCard selectedPost={selectedDuncan} data={data} />
               </Grid>
-              {(data.postData && data.postData.length > 1) ? (
+              {(!screenTooSmall && data.postData && data.postData.length > 1) ? (
                 <Grid item>
                   <IconButton onClick={navRight}>
                     <ArrowForwardIos style={styles.navButton}/>
                   </IconButton>
+                </Grid>
+              ) : null}
+              {(screenTooSmall && data.postData && data.postData.length > 1) ? (
+                <Grid item>
+                  <Grid container justify="center" alignItems="center">
+                    <Grid item>
+                      <IconButton onClick={navLeft}>
+                        <ArrowBackIos style={styles.navButton}/>
+                      </IconButton>
+                    </Grid>
+                    <Grid item>
+                      <IconButton onClick={navRight}>
+                        <ArrowForwardIos style={styles.navButton}/>
+                      </IconButton>
+                    </Grid>
+                  </Grid>
                 </Grid>
               ) : null}
             </Grid>

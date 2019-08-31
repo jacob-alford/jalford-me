@@ -155,3 +155,9 @@ export const getTextColorBasedOnBg = bgHex => {
   if(lightness <= .179) return "#ffe";
   else return "#332";
 }
+
+export const pipe = (...funcArr) => {
+  return funcArr.reduce((aggregate,next) => {
+    return (...funcs) => aggregate(next(...funcs));
+  },val => val)
+}

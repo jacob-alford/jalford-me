@@ -6,6 +6,8 @@ import { coy as codeTheme } from 'react-syntax-highlighter/dist/esm/styles/prism
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
 
+import { pipe } from '../functions';
+
 import {
   Typography, Paper, Table,
   TableHead, TableBody, TableRow,
@@ -67,11 +69,16 @@ import useRedirect from '../components/bindings/hooks/useRedirect';
         : [false,false];
  }
 
- const katexMarkdown = str => str && typeof str === 'string' &&
-                              str.replace(/\n\$\$\$[^\s]/gm,match => `~~#${match[4]}`)
-                                 .replace(/[^\s]\$\$\$\n/gm,match => `${match[0]}~~`)
-                                 .replace(/ \$\$[^\s$]/gm,match => ` ~~@${match[3]}`)
-                                 .replace(/[^\s$]\$\$ /gm,match => `${match[0]}~~ `);
+ const inlineMath = str => str && typeof str === 'string' &&
+                          str.replace(/ \$\$[^\s$]/gm,match => ` ~~@${match[3]}`)
+                             .replace(/[^\s$]\$\$ /gm,match => `${match[0]}~~ `);
+ const blockMath = str => str && typeof str === 'string' &&
+                          str.replace(/\n\$\$\$[^\s]/gm,match => `~~#${match[4]}`)
+                             .replace(/[^\s]\$\$\$\n/gm,match => `${match[0]}~~`);
+
+ const katexMarkdown = pipe(inlineMath,blockMath);
+
+
 
  const styles = {
    link:{
@@ -116,7 +123,8 @@ import useRedirect from '../components/bindings/hooks/useRedirect';
    math:{
      textAlign:'center',
      display:'block',
-     marginBottom:'16px'
+     marginBottom:'16px',
+     overflow:'auto'
    },
    strikethrough:{
      textDecoration:'line-through'
@@ -124,7 +132,7 @@ import useRedirect from '../components/bindings/hooks/useRedirect';
  }
 
 const Katex = props => {
-  const [html,setHtml] = useState("loading...");
+  const [html,setHtml] = useState(null);
   const [katexStr,katexType] = useMemo(() => {
     return getKatex(props);
   },[props]);

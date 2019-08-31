@@ -21,7 +21,7 @@ export default function Philosophy(props){
       top:"0px",
       width:'100%',
       height:'100%',
-      background: 'linear-gradient(to bottom, #000C40,#F0F2F0)'
+      background: '#151825'
     },
     parallaxContainer:{
       width:widthStr,
@@ -102,19 +102,19 @@ export default function Philosophy(props){
     class randomBokehBall{
       constructor(width,height,index){
         this.index = index;
-        this.radius = Math.random() * (width / 3) + (width / 20);
+        this.radius = Math.random() * (width / 15) + (width / 20);
         this.x = Math.random() * width;
-        this.y = Math.random() * height;
+        this.y = Math.random() * 2 * height / 3 + (1/8) * height;
         this.fadeRate = .01;
         this.color = randomColor();
-        this.lingerDuration = Math.floor(Math.random() * 1380) + 90;
+        this.lingerDuration = Math.floor(Math.random() * 950) + 90;
         this.currentLinger = 0;
         this.maxOpacity = Math.random() * .4 + .15;
         this.currentFade = 0;
-        this.moveDirectionX = (Math.random() < .5) ? -1 : 1;
-        this.moveDirectionY = (Math.random() < .5) ? -1 : 1;
-        this.moveRateX = Math.random() * .6;
-        this.moveRateY = Math.random() * .6;
+        // this.moveDirectionX = (Math.random() < .5) ? -1 : 1;
+        // this.moveDirectionY = (Math.random() < .5) ? -1 : 1;
+        // this.moveRateX = Math.random() * .6;
+        // this.moveRateY = Math.random() * .6;
       }
     }
 
@@ -124,8 +124,8 @@ export default function Philosophy(props){
         bokeh.splice(ball.index,1,new randomBokehBall(width,height,ball.index));
         ball = null;
       }else{
-        ball.x += ball.moveDirectionX * ball.moveRateX;
-        ball.y += ball.moveDirectionY * ball.moveRateY;
+        // ball.x += ball.moveDirectionX * ball.moveRateX;
+        // ball.y += ball.moveDirectionY * ball.moveRateY;
         /* Fade / Grow In */
         if(ball.currentFade < ball.maxOpacity && ball.currentLinger < ball.lingerDuration){
           if(ball.currentFade + ball.fadeRate < ball.maxOpacity)
@@ -145,10 +145,10 @@ export default function Philosophy(props){
       }
     }
 
-    const bokeh = [];
+    const bokeh = [new randomBokehBall(width,height,0)];
     let counter = 0;
-    let breakpointStagger = 250;
-    const maxBokeh = 32;
+    let breakpointStagger = 125;
+    const maxBokeh = 16;
 
     let request;
     const draw = () => {
