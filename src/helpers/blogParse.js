@@ -1,7 +1,10 @@
-import React from 'react';
+import React , { useEffect , useState , useMemo } from 'react';
 
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { coy as codeTheme } from 'react-syntax-highlighter/dist/esm/styles/prism';
+
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
 
 import {
   Typography, Paper, Table,
@@ -29,7 +32,7 @@ import useRedirect from '../components/bindings/hooks/useRedirect';
 
  const getDepthIcon = depth => {
    return {
-     __html:(!Number.isNaN(depth)) ?
+     __html:(typeof depth === "number" && !Number.isNaN(depth)) ?
        ["&#9823;","&#9822;","&#9821;","&#9820;","&#9819;"][(depth <= 4) ? depth : 4]
      : null
    }
@@ -41,6 +44,34 @@ import useRedirect from '../components/bindings/hooks/useRedirect';
     return child.map(subChild => getDeepQuote(subChild));
   else return null;
  }
+
+ const inSplice = (arr,...options) => {
+   const copy = [...arr];
+   copy.splice(...options);
+   return copy;
+ }
+
+ const getKatexType = str => (str === '@') ?
+                              'inline'
+                           : (str === '#') ?
+                              'block'
+                           : false;
+
+ const getKatex = object => {
+   const deepArr = getDeepQuote(getInnermostProps(object));
+   return (deepArr
+        && deepArr[0]
+        && typeof deepArr[0] === 'string'
+        && (deepArr[0][0] === '#' || deepArr[0][0] === '@')) ?
+          [[deepArr[0].substring(1),...inSplice(deepArr,0,1)].join("").replace(/\s,\\,\\,\s/gm,` \\\\ `),getKatexType(deepArr[0][0])]
+        : [false,false];
+ }
+
+ const katexMarkdown = str => str && typeof str === 'string' &&
+                              str.replace(/\n\$\$\$[^\s]/gm,match => `~~#${match[4]}`)
+                                 .replace(/[^\s]\$\$\$\n/gm,match => `${match[0]}~~`)
+                                 .replace(/ \$\$[^\s$]/gm,match => ` ~~@${match[3]}`)
+                                 .replace(/[^\s$]\$\$ /gm,match => `${match[0]}~~ `);
 
  const styles = {
    link:{
@@ -81,8 +112,37 @@ import useRedirect from '../components/bindings/hooks/useRedirect';
    },
    h1:{
 
+   },
+   math:{
+     textAlign:'center',
+     display:'block',
+     marginBottom:'16px'
+   },
+   strikethrough:{
+     textDecoration:'line-through'
    }
  }
+
+const Katex = props => {
+  const [html,setHtml] = useState("loading...");
+  const [katexStr,katexType] = useMemo(() => {
+    return getKatex(props);
+  },[props]);
+  useEffect(() => {
+    if(typeof katexStr === 'string' && katexType !== false)
+      setHtml(
+        katex.renderToString(katexStr, {
+          throwOnError: false,
+          displayMode:katexType === 'block'
+        })
+      );
+  },[katexStr,katexType]);
+  return (katexStr === false || katexType === false) ?
+    <span style={styles.strikethrough}>
+      {props.children}
+    </span>
+  : <span style={(katexType === 'block') ? styles.math : null} dangerouslySetInnerHTML={{__html:html}} />;
+}
 
  const InBlogLink = props => {
    const { href } = props;
@@ -133,6 +193,7 @@ import useRedirect from '../components/bindings/hooks/useRedirect';
       </Paper>
     );
   },
+  "delete":Katex,
   "heading":props => (
     <AdaptiveHeading level={props.level}>
       {props.children}
@@ -142,11 +203,6 @@ import useRedirect from '../components/bindings/hooks/useRedirect';
     <span>
       <Image naked scrollFade imageStyles={styles.blogImage} alt={props.alt} src={props.src}/>
     </span>
-  ),
-  "inlineCode":props => (
-      <code style={styles.inlineCode}>
-        {props.value}
-      </code>
   ),
   "link":InBlogLink,
   "paragraph":props => (
@@ -233,3 +289,4 @@ import useRedirect from '../components/bindings/hooks/useRedirect';
 }
 
 export default markdownConfig;
+export { katexMarkdown };

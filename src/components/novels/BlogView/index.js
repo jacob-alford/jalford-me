@@ -15,6 +15,7 @@ import useTitleSize from '../../bindings/hooks/useTitleSize';
 import getPostId from './selectors.js';
 
 import markdownConfig from '../../../helpers/blogParse.js';
+import { katexMarkdown } from '../../../helpers/blogParse.js';
 
 const styles = {
   header:{
@@ -92,7 +93,7 @@ function BlogView(props){
                   ) : null}
                 </React.Fragment>
               ) : null}
-              <Markdown renderers={markdownConfig} source={data.postData.body} />
+              <Markdown renderers={markdownConfig} source={katexMarkdown(data.postData.body)} />
             </React.Fragment>
           ) : null}
         </Paper>

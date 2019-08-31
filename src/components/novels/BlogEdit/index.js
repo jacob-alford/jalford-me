@@ -23,6 +23,7 @@ import useNotify from '../../bindings/hooks/useNotify';
 import { getPostId , getSliderSnapshots } from './selectors.js';
 
 import markdownConfig from '../../../helpers/blogParse.js';
+import { katexMarkdown } from '../../../helpers/blogParse.js';
 
 const styles = {
   header:{
@@ -158,7 +159,7 @@ const EditPost = props => {
       value={blogText} />
   );
   else return (
-    <Markdown style={{width:'100%'}} renderers={markdownConfig} source={blogText} />
+    <Markdown style={{width:'100%'}} renderers={markdownConfig} source={katexMarkdown(blogText)} />
   );
 }
 
