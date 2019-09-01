@@ -10,6 +10,70 @@ import useSeriesConnect from '../../../bindings/hooks/useSeriesConnect';
 
 import BlogCard from '../../../words/BlogListing/BlogCard';
 
+const toRGB = (...hexes) => hexes.map(hex => [
+  parseInt(`${hex[1]}${hex[2]}`,16),
+  parseInt(`${hex[3]}${hex[4]}`,16),
+  parseInt(`${hex[5]}${hex[6]}`,16)
+]);
+
+const colorList = [
+  '#5DE8E5','#F44D9B','#E9275B',
+  '#01FFC3','#00A9FE','#28CF75',
+  '#F89899','#5AFFFF','#FC6B68'
+];
+const neonColors = [...toRGB(...colorList)];
+const randomColor = () => neonColors[Math.floor(Math.random() * neonColors.length)];
+const colorString = (arr,alpha) => `rgba(${arr[0]},${arr[1]},${arr[2]},${alpha})`;
+class randomBokehBall{
+  constructor(width,height,index){
+    this.index = index;
+    this.radius = Math.random() * (width / 15) + (width / 20);
+    this.x = Math.random() * width * .5;
+    this.y = Math.random() * height / 2 + (1/4) * height;
+    this.fadeRate = .01;
+    this.color = randomColor();
+    this.lingerDuration = Math.floor(Math.random() * 950) + 90;
+    this.currentLinger = 0;
+    this.maxOpacity = Math.random() * .5 + .25;
+    this.currentFade = 0;
+    this.containerHeight = height;
+    this.containerWidth = width;
+    this.direction = (Math.random() < .009) ? -1 : 1;
+    this.doesGrow = (Math.random() < .009) ? 0 : 1;
+    this.doesMove = (Math.random() < .009) ? 0 : 1;
+    this.moveRate = (Math.random() * .35 + .35) * this.direction * this.doesMove * this.doesGrow;
+    this.growRate = .00045 * this.direction * this.doesMove * this.doesGrow;
+    this.currentGrow = 1;
+  }
+}
+
+const progressBall = (ball,bokeh) => {
+  /* Life cycle has ended, begin anew */
+  ball.currentGrow += ball.growRate;
+  ball.x += ball.moveRate;
+  if(ball.currentFade === 0 && ball.currentLinger >= ball.lingerDuration){
+    bokeh.splice(ball.index,1,new randomBokehBall(ball.containerWidth,ball.containerHeight,ball.index));
+    ball = null;
+  }else{
+    /* Fade / Grow In */
+    if(ball.currentFade < ball.maxOpacity && ball.currentLinger < ball.lingerDuration){
+      if(ball.currentFade + ball.fadeRate < ball.maxOpacity)
+        ball.currentFade += ball.fadeRate;
+      else ball.currentFade = ball.maxOpacity;
+    }else{
+      /* Persist for fixed time */
+      if(ball.currentLinger < ball.lingerDuration){
+        ball.currentLinger++;
+      /* Fade Out */
+      }else{
+        if(ball.currentFade - ball.fadeRate > 0)
+          ball.currentFade -= ball.fadeRate;
+        else ball.currentFade = 0;
+      }
+    }
+  }
+}
+
 export default function Philosophy(props){
   const data = useSeriesConnect("Philosophy");
   const [selectedPhi,setSelectedPhi] = useState(0);
@@ -85,70 +149,10 @@ export default function Philosophy(props){
       }
     }
 
-    const toRGB = (...hexes) => hexes.map(hex => [
-      parseInt(`${hex[1]}${hex[2]}`,16),
-      parseInt(`${hex[3]}${hex[4]}`,16),
-      parseInt(`${hex[5]}${hex[6]}`,16)
-    ]);
-    const colorList = [
-      '#5DE8E5','#F44D9B','#E9275B','#392270',
-      '#01FFC3','#00A9FE','#28CF75','#FFE3F1',
-      '#80FF00','#F89899','#5AFFFF','#FC6B68'
-    ];
-    const neonColors = [...toRGB(...colorList)];
-    const randomColor = () => neonColors[Math.floor(Math.random() * neonColors.length)];
-    const colorString = (arr,alpha) => `rgba(${arr[0]},${arr[1]},${arr[2]},${alpha})`;
-
-    class randomBokehBall{
-      constructor(width,height,index){
-        this.index = index;
-        this.radius = Math.random() * (width / 15) + (width / 20);
-        this.x = Math.random() * width;
-        this.y = Math.random() * 2 * height / 3 + (1/8) * height;
-        this.fadeRate = .01;
-        this.color = randomColor();
-        this.lingerDuration = Math.floor(Math.random() * 950) + 90;
-        this.currentLinger = 0;
-        this.maxOpacity = Math.random() * .4 + .15;
-        this.currentFade = 0;
-        // this.moveDirectionX = (Math.random() < .5) ? -1 : 1;
-        // this.moveDirectionY = (Math.random() < .5) ? -1 : 1;
-        // this.moveRateX = Math.random() * .6;
-        // this.moveRateY = Math.random() * .6;
-      }
-    }
-
-    const progressBall = (ball,bokeh) => {
-      /* Life cycle has ended, begin anew */
-      if(ball.currentFade === 0 && ball.currentLinger >= ball.lingerDuration){
-        bokeh.splice(ball.index,1,new randomBokehBall(width,height,ball.index));
-        ball = null;
-      }else{
-        // ball.x += ball.moveDirectionX * ball.moveRateX;
-        // ball.y += ball.moveDirectionY * ball.moveRateY;
-        /* Fade / Grow In */
-        if(ball.currentFade < ball.maxOpacity && ball.currentLinger < ball.lingerDuration){
-          if(ball.currentFade + ball.fadeRate < ball.maxOpacity)
-            ball.currentFade += ball.fadeRate;
-          else ball.currentFade = ball.maxOpacity;
-        }else{
-          /* Persist for fixed time */
-          if(ball.currentLinger < ball.lingerDuration){
-            ball.currentLinger++;
-          /* Fade Out */
-          }else{
-            if(ball.currentFade - ball.fadeRate > 0)
-              ball.currentFade -= ball.fadeRate;
-            else ball.currentFade = 0;
-          }
-        }
-      }
-    }
-
     const bokeh = [new randomBokehBall(width,height,0)];
     let counter = 0;
     let breakpointStagger = 125;
-    const maxBokeh = 16;
+    const maxBokeh = 25;
 
     let request;
     const draw = () => {
@@ -166,7 +170,7 @@ export default function Philosophy(props){
         context.beginPath();
         context.ellipse(
           ball.x,ball.y,
-          ball.radius * h2w, ball.radius * w2h,
+          ball.radius * h2w * ball.currentGrow, ball.radius * w2h * ball.currentGrow,
           0, 0, 2 * Math.PI
         );
         context.fill();
