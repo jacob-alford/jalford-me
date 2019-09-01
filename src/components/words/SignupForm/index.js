@@ -96,7 +96,8 @@ export default function SignupForm(props){
             value:1
           },
           icon:"person",
-          image:null
+          image:null,
+          uid:user.uid
         }).then(function(docRef) {
           console.log("Successfully added user:",docRef);
           notifyError({

@@ -16,6 +16,7 @@ import withPageFade from '../../bindings/wrappers/withPageFade';
 
 import useRsConnect from '../../bindings/hooks/useRsConnect';
 import useTitleSize from '../../bindings/hooks/useTitleSize';
+import useNotify from '../../bindings/hooks/useNotify';
 
 import { firebase } from '../../../index.js';
 
@@ -95,6 +96,10 @@ function UsersTable(props){
   const [selectedFields,setSelectedFields] = useState(["Username","Permissions"]);
   const [currentPermsEdit,setCurrentPermsEdit] = useState(null);
   const [currentPermsText,setCurrentPermsText] = useState("");
+  const notify = useNotify({
+    alertType:'success',
+    timeout:4500
+  });
   const { h1:title } = useTitleSize();
   const createFieldToggler = field => {
     return () => {
@@ -125,9 +130,12 @@ function UsersTable(props){
             permissions:{
               value:parseInt(currentPermsText,10)
             }
-          }).then(() => console.log(`Successfully updated permissions of user with UID ${uid}`))
-            .catch(err => console.error(err))
-            .finally(setCurrentPermsEdit(null));
+          }).then(() => notify({
+            body:`Successfully updated user with uid: ${uid}`
+          })).catch(err => notify({
+            alertType:'error',
+            body:err.toString()
+          })).finally(setCurrentPermsEdit(null));
         }
       }
 
@@ -141,6 +149,7 @@ function UsersTable(props){
   const headerConfig = [
     {label:"Username",ref:["username"],sortable:true},
     {label:"Permissions",deepAccessor:obj => obj.value,ref:["permissions","uid"],sortable:true,transform:(perms,uid) => {
+      console.log(uid);
       if(currentPermsEdit === uid){
         return (
           <Grid container direction="row" justify="center" alignItems="center">

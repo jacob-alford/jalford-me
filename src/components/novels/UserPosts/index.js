@@ -20,6 +20,7 @@ import withPageFade from '../../bindings/wrappers/withPageFade';
 
 import useRPostConnect from '../../bindings/hooks/useRPostConnect';
 import useTitleSize from '../../bindings/hooks/useTitleSize';
+import useNotify from '../../bindings/hooks/useNotify';
 
 import { firebase } from '../../../index.js';
 
@@ -91,6 +92,9 @@ const getPermissions = user => user.activeUser.permissions.value;
 function UserPosts(props){
   const { history } = useReactRouter();
   const { isLoading , postData , error , user } = useRPostConnect('title');
+  const notify = useNotify({
+    timeout:4500
+  });
   const [currentDelete,setCurrentDelete] = useState(null);
   const [currentPublic,setCurrentPublic] = useState(null);
   const [selectedFields,setSelectedFields] = useState(["Title","Date","Public"]);
@@ -101,8 +105,13 @@ function UserPosts(props){
         const db = firebase.firestore();
         const doc = db.collection('posts').doc(uid);
         doc.update({erased:true})
-           .then(() => setCurrentDelete(null))
-           .catch(err => console.error(err));
+           .then(() => notify({
+             alertType:'success',
+             body:`Successfully deleted post with slug: ${uid}`
+           })).catch(err => notify({
+             alertType:'error',
+             body:err.toString()
+           })).finally(() => setCurrentDelete(null));
       }
     }else{
       setCurrentDelete(uid);
@@ -129,8 +138,13 @@ function UserPosts(props){
         const db = firebase.firestore();
         const doc = db.collection('posts').doc(uid);
         doc.update({isPublic:!isPublic})
-           .then(() => setCurrentPublic(null))
-           .catch(err => console.error(err));
+           .then(() => notify({
+             alertType:'success',
+             body:`Successfully ${(isPublic) ? 'hid' : 'publicized'} ${uid}!`
+           })).catch(err => notify({
+             alertType:'error',
+             body:err.toString()
+           })).finally(() => setCurrentPublic(null));
       }
     }else{
       setCurrentPublic(uid);
