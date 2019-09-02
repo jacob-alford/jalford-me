@@ -149,7 +149,6 @@ function UsersTable(props){
   const headerConfig = [
     {label:"Username",ref:["username"],sortable:true},
     {label:"Permissions",deepAccessor:obj => obj.value,ref:["permissions","uid"],sortable:true,transform:(perms,uid) => {
-      console.log(uid);
       if(currentPermsEdit === uid){
         return (
           <Grid container direction="row" justify="center" alignItems="center">

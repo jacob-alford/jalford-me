@@ -7,6 +7,7 @@ import { ArrowForwardIos , ArrowBackIos } from '@material-ui/icons';
 import { ParallaxBanner } from 'react-scroll-parallax';
 
 import useSeriesConnect from '../../../bindings/hooks/useSeriesConnect';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import BlogCard from '../../../words/BlogListing/BlogCard';
 
@@ -27,9 +28,9 @@ const colorString = (arr,alpha) => `rgba(${arr[0]},${arr[1]},${arr[2]},${alpha})
 class randomBokehBall{
   constructor(width,height,index){
     this.index = index;
-    this.radius = Math.random() * (width / 15) + (width / 20);
+    this.radius = Math.random() * (Math.min(width,1000) / 15) + (Math.min(width,1000) / 20);
     this.x = Math.random() * width * .5;
-    this.y = Math.random() * height / 2 + (1/4) * height;
+    this.y = Math.random() * height / 2 + height / 4;
     this.fadeRate = .01;
     this.color = randomColor();
     this.lingerDuration = Math.floor(Math.random() * 950) + 90;
@@ -76,6 +77,7 @@ const progressBall = (ball,bokeh) => {
 
 export default function Philosophy(props){
   const data = useSeriesConnect("Philosophy");
+  const screenTooSmall = useMediaQuery('(max-width:400px)');
   const [selectedPhi,setSelectedPhi] = useState(0);
   const { minHeight = 1000 , widthStr = '100vw' , heightStr = '75vh' } = props;
   const styles = {
@@ -85,7 +87,7 @@ export default function Philosophy(props){
       top:"0px",
       width:'100%',
       height:'100%',
-      background: '#151825'
+      background: 'rgba(21,24,37,1)'
     },
     parallaxContainer:{
       width:widthStr,
@@ -193,7 +195,7 @@ export default function Philosophy(props){
           </Grid>
           <Grid item>
             <Grid container direction="row" justify="space-around" alignItems="center">
-              {(data.postData && data.postData.length > 1) ? (
+              {(!screenTooSmall && data.postData && data.postData.length > 1) ? (
                 <Grid item>
                   <IconButton onClick={navLeft}>
                     <ArrowBackIos style={styles.navButton}/>
@@ -203,11 +205,27 @@ export default function Philosophy(props){
               <Grid item>
                 <BlogCard selectedPost={selectedPhi} data={data} />
               </Grid>
-              {(data.postData && data.postData.length > 1) ? (
+              {(!screenTooSmall && data.postData && data.postData.length > 1) ? (
                 <Grid item>
                   <IconButton onClick={navRight}>
                     <ArrowForwardIos style={styles.navButton}/>
                   </IconButton>
+                </Grid>
+              ) : null}
+              {(screenTooSmall && data.postData && data.postData.length > 1) ? (
+                <Grid item>
+                  <Grid container justify="center" alignItems="center">
+                    <Grid item>
+                      <IconButton onClick={navLeft}>
+                        <ArrowBackIos style={styles.navButton}/>
+                      </IconButton>
+                    </Grid>
+                    <Grid item>
+                      <IconButton onClick={navRight}>
+                        <ArrowForwardIos style={styles.navButton}/>
+                      </IconButton>
+                    </Grid>
+                  </Grid>
                 </Grid>
               ) : null}
             </Grid>
