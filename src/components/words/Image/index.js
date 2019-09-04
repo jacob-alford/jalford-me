@@ -25,7 +25,7 @@ export default function Image(props){
   const {
     src, alt, naked,
     imageStyles, holderStyles,
-    scrollFade = false
+    scrollFade = false, onClick
   } = props;
   const [hasLoaded,setHasLoaded] = useState(false);
   const handleLoaded = () => setHasLoaded(true);
@@ -39,6 +39,7 @@ export default function Image(props){
       ref={imageRef}
       onLoad={handleLoaded}
       src={src}
+      onClick={onClick}
       style={{...imageStyles,opacity:interpolate([opacity],opacity => opacity)}} />
   );
   else return (
@@ -48,6 +49,7 @@ export default function Image(props){
         ref={imageRef}
         onLoad={handleLoaded}
         src={src}
+        onClick={onClick}
         style={{...styles.image,...imageStyles}} />
     </a.div>
   );

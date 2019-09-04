@@ -18,6 +18,7 @@ import BlogBar from './components/paragraphs/BlogBar';
 import BlogView from './components/novels/BlogView';
 import BlogEdit from './components/novels/BlogEdit';
 import Puzzles from './components/novels/Puzzles';
+import Websites from './components/novels/Websites';
 
 
 
@@ -31,8 +32,7 @@ const styles = {
     position:'absolute',
     left:'calc(50% - 24px)',
     top:'6px',
-    zIndex:1,
-    transition:"color .75s"
+    zIndex:1
   }
 }
 
@@ -44,12 +44,12 @@ export default function App() {
       <NotificationsHolder />
       <Heading headerIsOpen={headerIsOpen}/>
       <Spring
-        to={{transform:`rotateZ(${(headerIsOpen) ? 0 : 180}deg)`}}>
+        to={{transform:`rotateZ(${(headerIsOpen) ? 0 : 180}deg)`,color:(headerIsOpen) ? '#FFFFFF' : "#5433FF"}}>
         {newStyles => (
           <IconButton
             onClick={toggleHeader}
             style={styles.button}>
-              <KeyboardArrowUp style={{transform:newStyles.transform}}/>
+              <KeyboardArrowUp style={{transform:newStyles.transform,color:newStyles.color}}/>
           </IconButton>
         )}
       </Spring>
@@ -60,6 +60,7 @@ export default function App() {
             <Route key={`projectRoute${index}`} path={project.url} render={props => (<Component headerIsOpen={headerIsOpen} {...props} />)} />
           );
         })}
+        <Route path="/websites" component={Websites} />
         <Route path="/admin/users">
           <UsersTable />
           <BlogBar breadcrumb={{link:'/admin/users',label:'Users'}}/>

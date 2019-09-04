@@ -5,7 +5,10 @@ import Philosophy from '../../sentences/BlogSeries/Philosophy';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';
 
-function Blog(props) {
+import useScrollToTopOnload from '../../bindings/hooks/useScrollToTopOnload';
+
+function Blog() {
+  useScrollToTopOnload();
   return (
     <React.Fragment>
       <DuncanStrauss minHeight={1000} widthStr="100vw"/>

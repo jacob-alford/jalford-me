@@ -10,14 +10,16 @@ import {
 import { StyledHome } from './style.js';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';
+import useScrollToTopOnload from '../../bindings/hooks/useScrollToTopOnload';
 
-function Home(props){
+function Home(){
+  useScrollToTopOnload();
   return (
     <StyledHome>
       <BlogFeatured />
       <IceCaveFeatured />
-      <PuzzleFeatured />
       <RPNFeatured />
+      <PuzzleFeatured />
     </StyledHome>
   );
 }
