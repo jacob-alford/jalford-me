@@ -1,5 +1,4 @@
 import React , { useEffect , useState } from 'react';
-import { useSwipeable } from 'react-swipeable';
 
 import { Grid, IconButton , Typography } from '@material-ui/core/';
 import { ArrowForwardIos , ArrowBackIos } from '@material-ui/icons';
@@ -58,11 +57,6 @@ export default function DuncanStrauss(props){
     if(data.postData && data.postData.length > 0)
       setSelectedDuncan((selectedDuncan - 1 >= 0) ? selectedDuncan - 1 : data.postData.length - 1);
   }
-
-  const swipeHandlers = useSwipeable({
-    onSwipedLeft:navRight,
-    onSwipedRight:navLeft
-  });
 
   const bgCanvas = React.useRef();
   const imageLayer = [
@@ -136,52 +130,50 @@ export default function DuncanStrauss(props){
   },[]);
   return (
     <ParallaxBanner layers={imageLayer} style={styles.parallaxContainer}>
-      <div {...swipeHandlers}>
-        <Grid wrap="nowrap" spacing={8} justify="center" style={styles.container} container direction="column">
-          <Grid item>
-            <Typography variant="h2" style={styles.header}>
-              The Duncan Strauss Mysteries
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Grid container direction={(!screenTooSmall) ? "row" : "column"} justify="space-around" alignItems="center">
-              {(!screenTooSmall && data.postData && data.postData.length > 1) ? (
-                <Grid item>
-                  <IconButton onClick={navLeft}>
-                    <ArrowBackIos style={styles.navButton}/>
-                  </IconButton>
-                </Grid>
-              ) : null}
+      <Grid wrap="nowrap" spacing={8} justify="center" style={styles.container} container direction="column">
+        <Grid item>
+          <Typography variant="h2" style={styles.header}>
+            The Duncan Strauss Mysteries
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Grid container direction={(!screenTooSmall) ? "row" : "column"} justify="space-around" alignItems="center">
+            {(!screenTooSmall && data.postData && data.postData.length > 1) ? (
               <Grid item>
-                <BlogCard selectedPost={selectedDuncan} data={data} />
+                <IconButton onClick={navLeft}>
+                  <ArrowBackIos style={styles.navButton}/>
+                </IconButton>
               </Grid>
-              {(!screenTooSmall && data.postData && data.postData.length > 1) ? (
-                <Grid item>
-                  <IconButton onClick={navRight}>
-                    <ArrowForwardIos style={styles.navButton}/>
-                  </IconButton>
-                </Grid>
-              ) : null}
-              {(screenTooSmall && data.postData && data.postData.length > 1) ? (
-                <Grid item>
-                  <Grid container justify="center" alignItems="center">
-                    <Grid item>
-                      <IconButton onClick={navLeft}>
-                        <ArrowBackIos style={styles.navButton}/>
-                      </IconButton>
-                    </Grid>
-                    <Grid item>
-                      <IconButton onClick={navRight}>
-                        <ArrowForwardIos style={styles.navButton}/>
-                      </IconButton>
-                    </Grid>
+            ) : null}
+            <Grid item>
+              <BlogCard selectedPost={selectedDuncan} data={data} />
+            </Grid>
+            {(!screenTooSmall && data.postData && data.postData.length > 1) ? (
+              <Grid item>
+                <IconButton onClick={navRight}>
+                  <ArrowForwardIos style={styles.navButton}/>
+                </IconButton>
+              </Grid>
+            ) : null}
+            {(screenTooSmall && data.postData && data.postData.length > 1) ? (
+              <Grid item>
+                <Grid container justify="center" alignItems="center">
+                  <Grid item>
+                    <IconButton onClick={navLeft}>
+                      <ArrowBackIos style={styles.navButton}/>
+                    </IconButton>
+                  </Grid>
+                  <Grid item>
+                    <IconButton onClick={navRight}>
+                      <ArrowForwardIos style={styles.navButton}/>
+                    </IconButton>
                   </Grid>
                 </Grid>
-              ) : null}
-            </Grid>
+              </Grid>
+            ) : null}
           </Grid>
         </Grid>
-      </div>
+      </Grid>
     </ParallaxBanner>
   );
 }
