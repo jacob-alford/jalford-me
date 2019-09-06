@@ -1,15 +1,7 @@
 import React, { useState , useEffect } from 'react';
 import useReactRouter from 'use-react-router';
-import {
-  AppBar, Toolbar, Typography,
-  Button, Grid, IconButton, Menu, MenuItem,
-  ListItemText, ListItemIcon, Fade, Slide
-} from '@material-ui/core/';
 
-import {
-  AccountCircle, Group,
-  Lock, ListAlt, Eject
-} from '@material-ui/icons/';
+import * as MUI_COMPONENTS from './mui.js';
 
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
@@ -24,7 +16,14 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useRHook from '../../bindings/hooks/useRHook';
 import useNotify from '../../bindings/hooks/useNotify';
 
-import { getTextColorBasedOnBg } from '../../../functions'
+import { getTextColorBasedOnBg } from '../../../functions';
+
+const {
+  AppBar, Toolbar, Typography,
+  Button, Grid, IconButton, Menu, MenuItem,
+  ListItemText, ListItemIcon, Fade, Slide,
+  AccountCircle, Group, Lock, ListAlt, Eject
+} = MUI_COMPONENTS;
 
 const styles = {
   bar:{

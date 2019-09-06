@@ -1,18 +1,7 @@
 import React , { useState } from 'react';
 import useReactRouter from 'use-react-router';
-import {
-  Container, Typography,
-  Paper, CircularProgress,
-  IconButton, Grid, Chip
-} from '@material-ui/core/';
-import {
-  DeleteForever, Edit,
-  Pageview, Public,
-  Title, Event,
-  Category, LocationCity,
-  Person, Label, Publish,
-  Build
-} from '@material-ui/icons/';
+
+import * as MUI_COMPONENTS from './mui.js';
 
 import DataTable from '../../sentences/DataTable';
 
@@ -23,6 +12,18 @@ import useTitleSize from '../../bindings/hooks/useTitleSize';
 import useNotify from '../../bindings/hooks/useNotify';
 
 import { firebase } from '../../../index.js';
+
+const {
+  Container, Typography,
+  Paper, CircularProgress,
+  IconButton, Grid, Chip,
+  DeleteForever, Edit,
+  Pageview, Public,
+  Title, Event,
+  Category, LocationCity,
+  Person, Label, Publish,
+  Build
+} = MUI_COMPONENTS;
 
 const styles = {
   container:{

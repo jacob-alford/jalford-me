@@ -2,8 +2,10 @@ import React , { useState , useEffect , useReducer , useRef } from 'react';
 import { useSprings , animated as a } from 'react-spring';
 import { ParallaxBanner } from 'react-scroll-parallax';
 
-import { Typography , Button } from '@material-ui/core/';
-import { OpenWith } from '@material-ui/icons/';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+
+import OpenWith from '@material-ui/icons/OpenWith';
 
 import useColorAdapt from '../../../bindings/hooks/useColorAdapt';
 import useRedirect from '../../../bindings/hooks/useRedirect';

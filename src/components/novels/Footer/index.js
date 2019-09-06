@@ -1,5 +1,7 @@
 import React from 'react';
-import { Typography , Container } from '@material-ui/core/';
+
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
 
 import { StyledFooter } from './style.js';
 

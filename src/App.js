@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router , Switch , Route } from "react-router-dom";
-import { Spring } from 'react-spring/renderprops'
+import { Spring } from 'react-spring/renderprops';
 
-import { IconButton } from '@material-ui/core/';
-import { KeyboardArrowUp } from '@material-ui/icons';
+import IconButton from '@material-ui/core/IconButton';
+import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
 
 import NotificationsHolder from './components/sentences/NotificationsHolder';
 import UserSettings from './components/novels/UserSettings';
@@ -19,8 +19,6 @@ import BlogView from './components/novels/BlogView';
 import BlogEdit from './components/novels/BlogEdit';
 import Puzzles from './components/novels/Puzzles';
 import Websites from './components/novels/Websites';
-
-
 
 import { projectList } from './config';
 

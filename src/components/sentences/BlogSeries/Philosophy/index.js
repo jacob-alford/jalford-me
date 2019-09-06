@@ -1,7 +1,11 @@
 import React , { useEffect , useState } from 'react';
 
-import { Grid, IconButton , Typography } from '@material-ui/core/';
-import { ArrowForwardIos , ArrowBackIos } from '@material-ui/icons';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+
+import ArrowForwardIos from '@material-ui/icons/ArrowForwardIos';
+import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 
 import { ParallaxBanner } from 'react-scroll-parallax';
 

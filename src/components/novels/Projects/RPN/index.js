@@ -1,12 +1,7 @@
 import React , { useState } from 'react';
-import { Grid , Typography,
-         Table , TableBody, TableCell,
-         TableRow, Drawer,
-         Hidden, Dialog, DialogActions,
-         DialogContent, DialogContentText,
-         DialogTitle, Button, IconButton, ButtonBase
-} from '@material-ui/core/';
-import { Reorder } from '@material-ui/icons/';
+
+import * as MUI_COMPONENTS from './mui.js';
+
 import { StyledRPN } from './style.js';
 
 import rpnImage from '../../../../assets/projects/rpn-header.jpg';
@@ -15,6 +10,16 @@ import { calcFunctions } from './calcFunc.js';
 import useScrollToTopOnload from '../../../bindings/hooks/useScrollToTopOnload';
 
 import withPageFade from '../../../bindings/wrappers/withPageFade';
+
+const {
+  Grid , Typography,
+  Table , TableBody, TableCell,
+  TableRow, Drawer,
+  Hidden, Dialog, DialogActions,
+  DialogContent, DialogContentText,
+  DialogTitle, Button, IconButton, ButtonBase,
+  Reorder
+} = MUI_COMPONENTS;
 
 const inputRows = [
   [ "drop" , "clear" , "cancelAll" , "backspace" ],

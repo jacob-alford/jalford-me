@@ -1,10 +1,12 @@
 import React from 'react';
 import Markdown from 'react-markdown';
-import {
-  Container, Typography, Paper,
-  CircularProgress, Grid,
-  Divider
- } from '@material-ui/core/';
+
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
+import Divider from '@material-ui/core/Divider';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';
 

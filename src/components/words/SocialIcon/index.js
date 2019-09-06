@@ -1,5 +1,5 @@
 import React from 'react';
-import { ButtonBase } from '@material-ui/core/';
+import ButtonBase from '@material-ui/core/ButtonBase';
 
 import { StyledSocialIcon } from './style.js';
 

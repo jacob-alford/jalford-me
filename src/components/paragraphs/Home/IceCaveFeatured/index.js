@@ -1,6 +1,9 @@
 import React from 'react';
 import { ParallaxBanner } from 'react-scroll-parallax';
-import { Typography , Button , Divider } from '@material-ui/core/';
+
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
 
 import { homePageImage } from '../../../../config';
 

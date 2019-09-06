@@ -1,7 +1,11 @@
 import React from 'react';
 
-import { IconButton, Fade } from '@material-ui/core/';
-import { NoteAdd , Edit , Pageview } from '@material-ui/icons/';
+import IconButton from '@material-ui/core/IconButton';
+import Fade from '@material-ui/core/Fade';
+
+import NoteAdd from '@material-ui/icons/NoteAdd';
+import Edit from '@material-ui/icons/Edit';
+import Pageview from '@material-ui/icons/Pageview';
 
 export default function BlogBarActions(props){
   const { user , context , color , setCreatePostIsOpen , history , match } = props;

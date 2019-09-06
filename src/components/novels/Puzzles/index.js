@@ -1,5 +1,8 @@
 import React from 'react';
-import { Container , Paper , Typography } from '@material-ui/core/';
+
+import Container from '@material-ui/core/Container';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';
 

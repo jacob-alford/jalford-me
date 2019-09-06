@@ -1,18 +1,7 @@
 import React , { useState , useEffect , useRef , useCallback } from 'react';
 import { SketchPicker } from 'react-color';
-import { Grid,
-         Typography, Paper,
-         List, ListItem,
-         ListItemText, ListItemIcon,
-         ListItemAvatar, Avatar, Fade,
-         CircularProgress, Button,
-         Grow, IconButton, Popper,
-         TextField
-      } from '@material-ui/core/';
 
-import { ColorLens, AssignmentInd,
-         Edit
-       } from '@material-ui/icons/';
+import * as MUI_COMPONENTS from './mui.js';
 
 import withPageFade from '../../bindings/wrappers/withPageFade';
 import useReactRouter from 'use-react-router';
@@ -30,6 +19,16 @@ const getPermissions = user => {
   else if(user.activeUser.permissions.value === 10) return "Admin";
   else return "None";
 }
+
+const {
+  Grid, Typography, Paper,
+  List, ListItem, ListItemText,
+  ListItemIcon, ListItemAvatar,
+  Avatar, Fade, CircularProgress,
+  Button, Grow, IconButton, Popper,
+  TextField,
+  ColorLens, AssignmentInd, Edit
+} = MUI_COMPONENTS;
 
 const styles = {
   userContainer:{

@@ -1,15 +1,8 @@
 import React, { useState , useEffect , useCallback } from 'react';
 import Markdown from 'react-markdown';
 import { useTransition , animated as a } from 'react-spring';
-import {
-  Container, Typography , Paper,
-  CircularProgress, Grid, InputBase,
-  Button, IconButton, Chip,
-  TextField, Switch, FormControlLabel,
-  Divider
- } from '@material-ui/core/';
-import Slider from '@material-ui/core/Slider';
-import { Visibility , Edit } from '@material-ui/icons';
+
+import * as MUI_COMPONENTS from './mui.js';
 
 import { firebase } from '../../../index.js';
 
@@ -24,6 +17,15 @@ import { getPostId , getSliderSnapshots } from './selectors.js';
 
 import markdownConfig from '../../../helpers/blogParse.js';
 import { katexMarkdown } from '../../../helpers/blogParse.js';
+
+const {
+  Container, Typography , Paper,
+  CircularProgress, Grid, InputBase,
+  Button, IconButton, Chip,
+  TextField, Switch, FormControlLabel,
+  Divider, Slider,
+  Visibility , Edit
+} = MUI_COMPONENTS;
 
 const styles = {
   header:{

@@ -1,12 +1,15 @@
 import React , { useState , useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSpring , animated as a } from 'react-spring';
-import { SnackbarContent , IconButton } from '@material-ui/core/';
-import {
-  CheckCircle, Error,
-  Info, Close,
-  Warning
-} from '@material-ui/icons/';
+
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import IconButton from '@material-ui/core/IconButton';
+
+import CheckCircle from '@material-ui/icons/CheckCircle';
+import Error from '@material-ui/icons/Error';
+import Info from '@material-ui/icons/Info';
+import Close from '@material-ui/icons/Close';
+import Warning from '@material-ui/icons/Warning';
 
 const variantIcon = {
   error: Error,

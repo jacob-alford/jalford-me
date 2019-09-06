@@ -1,14 +1,6 @@
 import React , { useState } from 'react';
-import {
-  Container, Typography,
-  Paper, CircularProgress,
-  IconButton, Grid, Chip,
-  InputBase
-} from '@material-ui/core/';
-import {
-  Edit, Person, AssignmentInd,
-  ColorLens, Check, KeyboardBackspace
-} from '@material-ui/icons/';
+
+import * as MUI_COMPONENTS from './mui.js';
 
 import DataTable from '../../sentences/DataTable';
 
@@ -19,6 +11,15 @@ import useTitleSize from '../../bindings/hooks/useTitleSize';
 import useNotify from '../../bindings/hooks/useNotify';
 
 import { firebase } from '../../../index.js';
+
+const {
+  Container, Typography,
+  Paper, CircularProgress,
+  IconButton, Grid, Chip,
+  InputBase, Edit, Person,
+  AssignmentInd, ColorLens, Check,
+  KeyboardBackspace
+} = MUI_COMPONENTS;
 
 const styles = {
   container:{

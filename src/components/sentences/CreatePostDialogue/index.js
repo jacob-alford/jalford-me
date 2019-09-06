@@ -1,8 +1,11 @@
 import React, { useState , useCallback } from 'react';
-import {
-  Paper, Modal, TextField,
-  Typography, Button, CircularProgress
-} from '@material-ui/core/';
+
+import Paper from '@material-ui/core/Paper';
+import Modal from '@material-ui/core/Modal';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { firebase } from '../../../index.js';
 

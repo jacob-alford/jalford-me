@@ -1,5 +1,9 @@
 import React , { useState } from 'react';
-import { Slide , Modal , Paper , Grid } from '@material-ui/core/';
+
+import Slide from '@material-ui/core/Slide';
+import Modal from '@material-ui/core/Modal';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 
 import LoginForm from '../../words/LoginForm';
 
