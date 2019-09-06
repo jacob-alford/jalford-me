@@ -1,7 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 
-import Container from '../Holder';
+import Container from 'components/words/Holder';
 
 const styles = {
   item:{

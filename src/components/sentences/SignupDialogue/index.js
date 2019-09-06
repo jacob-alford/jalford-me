@@ -5,7 +5,7 @@ import Modal from '@material-ui/core/Modal';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
-import SignupForm from '../../words/SignupForm';
+import SignupForm from 'components/words/SignupForm';
 
 const styles = {
   modal:{

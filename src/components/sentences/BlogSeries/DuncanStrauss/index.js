@@ -10,9 +10,9 @@ import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import { ParallaxBanner } from 'react-scroll-parallax';
 
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import useSeriesConnect from '../../../bindings/hooks/useSeriesConnect';
+import useSeriesConnect from 'components/bindings/hooks/useSeriesConnect';
 
-import BlogCard from '../../../words/BlogListing/BlogCard';
+import BlogCard from 'components/words/BlogListing/BlogCard';
 
 // 94892796
 

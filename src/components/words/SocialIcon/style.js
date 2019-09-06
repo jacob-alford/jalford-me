@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { constants as c } from '../../../theme';
+import { constants as c } from 'theme';
 
 export const StyledSocialIcon = styled.div`
   .icon{

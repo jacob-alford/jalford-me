@@ -5,7 +5,7 @@ import Container from '@material-ui/core/Container';
 
 import { StyledFooter } from './style.js';
 
-import { footerText } from '../../../config';
+import { footerText } from 'config';
 
 export default function Footer(props){
   return (

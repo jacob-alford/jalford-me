@@ -4,12 +4,12 @@ import * as MUI_COMPONENTS from './mui.js';
 
 import { StyledRPN } from './style.js';
 
-import rpnImage from '../../../../assets/projects/rpn-header.jpg';
+import rpnImage from 'assets/projects/rpn-header.jpg';
 import { calcFunctions } from './calcFunc.js';
 
-import useScrollToTopOnload from '../../../bindings/hooks/useScrollToTopOnload';
+import useScrollToTopOnload from 'components/bindings/hooks/useScrollToTopOnload';
 
-import withPageFade from '../../../bindings/wrappers/withPageFade';
+import withPageFade from 'components/bindings/wrappers/withPageFade';
 
 const {
   Grid , Typography,

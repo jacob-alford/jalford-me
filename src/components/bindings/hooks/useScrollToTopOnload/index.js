@@ -1,7 +1,7 @@
 import { useRef , useEffect } from 'react';
 import { useSpring } from 'react-spring';
 
-import { detectMobile } from '../../../../functions';
+import { detectMobile } from 'functions';
 
 export default function useScrollToTopOnload(){
   const hasFinished = useRef(false);

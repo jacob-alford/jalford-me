@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 
-import useNotify from '../../bindings/hooks/useNotify';
+import useNotify from 'components/bindings/hooks/useNotify';
 
 const styles = {
   textBox:{

@@ -5,18 +5,18 @@ import * as MUI_COMPONENTS from './mui.js';
 
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
-import LoginDialogue from '../../sentences/LoginDialogue';
-import SignupDialogue from '../../sentences/SignupDialogue';
-import BlogBarActions from '../../sentences/BlogBarActions';
-import CreatePostDialogue from '../../sentences/CreatePostDialogue';
+import LoginDialogue from 'components/sentences/LoginDialogue';
+import SignupDialogue from 'components/sentences/SignupDialogue';
+import BlogBarActions from 'components/sentences/BlogBarActions';
+import CreatePostDialogue from 'components/sentences/CreatePostDialogue';
 
-import { firebase } from '../../../index.js';
+import firebase from 'firebase.js';
 
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import useRHook from '../../bindings/hooks/useRHook';
-import useNotify from '../../bindings/hooks/useNotify';
+import useRHook from 'components/bindings/hooks/useRHook';
+import useNotify from 'components/bindings/hooks/useNotify';
 
-import { getTextColorBasedOnBg } from '../../../functions';
+import { getTextColorBasedOnBg } from 'functions';
 
 const {
   AppBar, Toolbar, Typography,

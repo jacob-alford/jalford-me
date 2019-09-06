@@ -3,15 +3,15 @@ import useReactRouter from 'use-react-router';
 
 import * as MUI_COMPONENTS from './mui.js';
 
-import DataTable from '../../sentences/DataTable';
+import DataTable from 'components/sentences/DataTable';
 
-import withPageFade from '../../bindings/wrappers/withPageFade';
+import withPageFade from 'components/bindings/wrappers/withPageFade';
 
-import useRPostConnect from '../../bindings/hooks/useRPostConnect';
-import useTitleSize from '../../bindings/hooks/useTitleSize';
-import useNotify from '../../bindings/hooks/useNotify';
+import useRPostConnect from 'components/bindings/hooks/useRPostConnect';
+import useTitleSize from 'components/bindings/hooks/useTitleSize';
+import useNotify from 'components/bindings/hooks/useNotify';
 
-import { firebase } from '../../../index.js';
+import firebase from 'firebase.js';
 
 const {
   Container, Typography,

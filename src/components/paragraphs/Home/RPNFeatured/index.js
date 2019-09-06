@@ -4,10 +4,10 @@ import { ParallaxBanner } from 'react-scroll-parallax';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-import Image from '../../../words/Image';
+import Image from 'components/words/Image';
 
-import rpnImage from '../../../../assets/projects/RPN_New.png';
-import useRedirect from '../../../bindings/hooks/useRedirect';
+import rpnImage from 'assets/projects/RPN_New.png';
+import useRedirect from 'components/bindings/hooks/useRedirect';
 
 const styles = {
   banner:{

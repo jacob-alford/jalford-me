@@ -5,10 +5,10 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 
-import { homePageImage } from '../../../../config';
+import { homePageImage } from 'config';
 
-import useHoverHandlers from '../../../bindings/hooks/useHoverHandler';
-import useRedirect from '../../../bindings/hooks/useRedirect';
+import useHoverHandlers from 'components/bindings/hooks/useHoverHandler';
+import useRedirect from 'components/bindings/hooks/useRedirect';
 
 const styles = {
   banner:{

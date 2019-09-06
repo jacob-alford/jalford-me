@@ -3,7 +3,7 @@ import React , { useCallback } from 'react';
 import useReactRouter from 'use-react-router';
 import styled from 'styled-components';
 
-import Container from '../Holder';
+import Container from 'components/words/Holder';
 
 const ArrowedSpan = styled.span`
   cursor:pointer;

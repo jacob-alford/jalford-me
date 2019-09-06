@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSpring , animated as a } from 'react-spring';
 
-import Header from '../../paragraphs/Header';
+import Header from 'components/paragraphs/Header';
 
 const styles = {
   container:{

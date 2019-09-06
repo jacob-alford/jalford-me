@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTransition , animated as a } from 'react-spring';
 
-import Notification from '../../words/Notification';
+import Notification from 'components/words/Notification';
 
-import useNotifications from '../../bindings/hooks/useNotifications';
+import useNotifications from 'components/bindings/hooks/useNotifications';
 
 const styles = {
   container:{

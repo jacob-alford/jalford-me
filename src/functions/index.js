@@ -1,4 +1,4 @@
-import { navItems } from '../config';
+import { navItems } from 'config';
 
 export const searchObject = (obj,value) => {
   Object.keys(obj).forEach((key,index) => {

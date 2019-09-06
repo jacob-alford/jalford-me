@@ -4,19 +4,19 @@ import { useTransition , animated as a } from 'react-spring';
 
 import * as MUI_COMPONENTS from './mui.js';
 
-import { firebase } from '../../../index.js';
+import firebase from 'firebase.js';
 
-import withPageFade from '../../bindings/wrappers/withPageFade';
+import withPageFade from 'components/bindings/wrappers/withPageFade';
 
-import useRHook from '../../bindings/hooks/useRHook';
-import usePostConnect from '../../bindings/hooks/usePostConnect';
-import useTitleSize from '../../bindings/hooks/useTitleSize';
-import useNotify from '../../bindings/hooks/useNotify';
+import useRHook from 'components/bindings/hooks/useRHook';
+import usePostConnect from 'components/bindings/hooks/usePostConnect';
+import useTitleSize from 'components/bindings/hooks/useTitleSize';
+import useNotify from 'components/bindings/hooks/useNotify';
 
 import { getPostId , getSliderSnapshots } from './selectors.js';
 
-import markdownConfig from '../../../helpers/blogParse.js';
-import { katexMarkdown } from '../../../helpers/blogParse.js';
+import markdownConfig from 'helpers/blogParse.js';
+import { katexMarkdown } from 'helpers/blogParse.js';
 
 const {
   Container, Typography , Paper,

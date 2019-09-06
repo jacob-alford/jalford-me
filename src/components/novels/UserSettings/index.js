@@ -3,15 +3,15 @@ import { SketchPicker } from 'react-color';
 
 import * as MUI_COMPONENTS from './mui.js';
 
-import withPageFade from '../../bindings/wrappers/withPageFade';
+import withPageFade from 'components/bindings/wrappers/withPageFade';
 import useReactRouter from 'use-react-router';
 
-import { firebase } from '../../../index.js';
+import firebase from 'firebase.js';
 
-import useRHook from '../../bindings/hooks/useRHook';
-import useNotify from '../../bindings/hooks/useNotify';
+import useRHook from 'components/bindings/hooks/useRHook';
+import useNotify from 'components/bindings/hooks/useNotify';
 
-import { getTextColorBasedOnBg } from '../../../functions';
+import { getTextColorBasedOnBg } from 'functions';
 
 const getUser = user => user.activeUser;
 const getPermissions = user => {

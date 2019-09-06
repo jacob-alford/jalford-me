@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-// import { constants as c } from '../../../theme';
 
 export const StyledBlog = styled.div`
   .textCenter{

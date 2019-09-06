@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { Notifications } from '../../../../index.js';
+import { Notifications } from 'notifications.js';
 
 export default function useNotifications(){
   const { notifications , removeNotification } = useContext(Notifications);

@@ -16,6 +16,8 @@ const notifier = (state,action) => {
   }
 }
 
+export { Notifications , NotificationProvider };
+
 export default function NotificationProvider(props){
   const [notifications,actOnNotifications] = useReducer(notifier,[]);
   const addNotification = notification =>

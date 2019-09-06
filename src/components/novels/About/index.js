@@ -9,15 +9,15 @@ import Avatar from '@material-ui/core/Avatar';
 
 import Email from '@material-ui/icons/Email';
 
-import SocialIcon from '../../words/SocialIcon';
-import Image from '../../words/Image';
+import SocialIcon from 'components/words/SocialIcon';
+import Image from 'components/words/Image';
 
-import { aboutContactImage , socialMedia } from '../../../config';
+import { aboutContactImage , socialMedia } from 'config';
 
-import withPageFade from '../../bindings/wrappers/withPageFade';
-import useTitleSize from '../../bindings/hooks/useTitleSize';
+import withPageFade from 'components/bindings/wrappers/withPageFade';
+import useTitleSize from 'components/bindings/hooks/useTitleSize';
 
-import markdownConfig from '../../../helpers/blogParse.js';
+import markdownConfig from 'helpers/blogParse.js';
 
 const aboutText =
 `I love javascript; perhaps four degrees too much.  I made this site in React, and I love that too.

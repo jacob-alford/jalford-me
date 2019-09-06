@@ -5,12 +5,12 @@ import {
   RPNFeatured,
   BlogFeatured,
   PuzzleFeatured
-} from '../../paragraphs/Home';
+} from 'components/paragraphs/Home';
 
 import { StyledHome } from './style.js';
 
-import withPageFade from '../../bindings/wrappers/withPageFade';
-import useScrollToTopOnload from '../../bindings/hooks/useScrollToTopOnload';
+import withPageFade from 'components/bindings/wrappers/withPageFade';
+import useScrollToTopOnload from 'components/bindings/hooks/useScrollToTopOnload';
 
 function Home(){
   useScrollToTopOnload();

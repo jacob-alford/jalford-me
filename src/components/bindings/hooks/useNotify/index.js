@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { Notifications } from '../../../../index.js';
+import { Notifications } from 'notifications.js';
 
 const defaultConfig = {
   alertType:'info', // mui-snackbar variants

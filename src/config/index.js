@@ -1,8 +1,8 @@
-import meImage from '../assets/me/JA_Pro_Square_web.jpg';
-import linkedIn from '../assets/social/LinkedIn.png';
-import icecaveImage from '../assets/photos/IC_Med_Back_op2_Web-2000-Med.jpg';
-import icecaveStore from '../assets/photos/TP_Front_FB-862.jpg';
-import { projectList } from '../components/novels/Projects';
+import meImage from 'assets/me/JA_Pro_Square_web.jpg';
+import linkedIn from 'assets/social/LinkedIn.png';
+import icecaveImage from 'assets/photos/IC_Med_Back_op2_Web-2000-Med.jpg';
+import icecaveStore from 'assets/photos/TP_Front_FB-862.jpg';
+import { projectList } from 'components/novels/Projects';
 
 export const socialMedia = {
   linkedIn:{

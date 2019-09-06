@@ -3,9 +3,9 @@ import { useSpring , animated as a } from 'react-spring';
 
 import Typography from '@material-ui/core/Typography';
 
-import NavBar from '../../sentences/NavBar';
+import NavBar from 'components/sentences/NavBar';
 
-import { navItems } from '../../../config';
+import { navItems } from 'config';
 
 const styles = {
   title:{

@@ -6,13 +6,13 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 
-import Typed from '../../../sentences/Typed';
+import Typed from 'components/sentences/Typed';
 
-import useTitleSize from '../../../bindings/hooks/useTitleSize';
-import useHoverHandler from '../../../bindings/hooks/useHoverHandler';
-import useRedirect from '../../../bindings/hooks/useRedirect';
+import useTitleSize from 'components/bindings/hooks/useTitleSize';
+import useHoverHandler from 'components/bindings/hooks/useHoverHandler';
+import useRedirect from 'components/bindings/hooks/useRedirect';
 
-import flowerImage from '../../../../assets/photos/Posts_Flower.jpg';
+import flowerImage from 'assets/photos/Posts_Flower.jpg';
 
 const styles = {
   banner:{

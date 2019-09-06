@@ -6,7 +6,7 @@ import { coy as codeTheme } from 'react-syntax-highlighter/dist/esm/styles/prism
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
 
-import { pipe } from '../functions';
+import { pipe } from 'functions';
 
 import {
   Typography, Paper, Table,
@@ -16,10 +16,10 @@ import {
  } from '@material-ui/core/';
 import { CheckCircleOutline , RadioButtonUnchecked } from '@material-ui/icons';
 
-import AdaptiveHeading from '../components/words/AdaptiveHeading';
-import Image from '../components/words/Image';
+import AdaptiveHeading from 'components/words/AdaptiveHeading';
+import Image from 'components/words/Image';
 
-import useRedirect from '../components/bindings/hooks/useRedirect';
+import useRedirect from 'components/bindings/hooks/useRedirect';
 
  const getInnermostProps = props => {
    if(typeof props.children === "string" || typeof props.value === "string")

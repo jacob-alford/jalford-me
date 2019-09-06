@@ -1,7 +1,7 @@
 import { useState , useEffect } from 'react';
-import { firebase } from '../../../../index.js';
+import firebase from 'firebase.js';
 
-import useRHook from '../useRHook';
+import useRHook from 'components/bindings/hooks/useRHook';
 
 export default function useRsConnect(){
   const [isLoading,setIsLoading] = useState(true);

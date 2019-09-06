@@ -9,10 +9,10 @@ import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 
 import { ParallaxBanner } from 'react-scroll-parallax';
 
-import useSeriesConnect from '../../../bindings/hooks/useSeriesConnect';
+import useSeriesConnect from 'components/bindings/hooks/useSeriesConnect';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-import BlogCard from '../../../words/BlogListing/BlogCard';
+import BlogCard from 'components/words/BlogListing/BlogCard';
 
 const toRGB = (...hexes) => hexes.map(hex => [
   parseInt(`${hex[1]}${hex[2]}`,16),

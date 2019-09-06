@@ -1,11 +1,11 @@
 import React , { useCallback } from 'react';
 import Typography from '@material-ui/core/Typography';
 
-import Image from '../../words/Image';
-import Container from '../../words/Holder';
-import LiveDemo from '../../words/ArrowLink';
+import Image from 'components/words/Image';
+import Container from 'components/words/Holder';
+import LiveDemo from 'components/words/ArrowLink';
 
-import useTitleSize from '../../bindings/hooks/useTitleSize';
+import useTitleSize from 'components/bindings/hooks/useTitleSize';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useReactRouter from 'use-react-router';
 

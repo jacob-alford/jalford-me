@@ -1,5 +1,5 @@
 import { useState , useEffect } from 'react';
-import { firebase } from '../../../../index.js';
+import firebase from 'firebase.js';
 
 export default function usePostConnect(id){
   const [isLoading,setIsLoading] = useState(true);

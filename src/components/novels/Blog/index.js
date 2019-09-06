@@ -1,11 +1,11 @@
 import React from 'react';
 
-import DuncanStrauss from '../../sentences/BlogSeries/DuncanStrauss';
-import Philosophy from '../../sentences/BlogSeries/Philosophy';
+import DuncanStrauss from 'components/sentences/BlogSeries/DuncanStrauss';
+import Philosophy from 'components/sentences/BlogSeries/Philosophy';
 
-import withPageFade from '../../bindings/wrappers/withPageFade';
+import withPageFade from 'components/bindings/wrappers/withPageFade';
 
-import useScrollToTopOnload from '../../bindings/hooks/useScrollToTopOnload';
+import useScrollToTopOnload from 'components/bindings/hooks/useScrollToTopOnload';
 
 function Blog() {
   useScrollToTopOnload();

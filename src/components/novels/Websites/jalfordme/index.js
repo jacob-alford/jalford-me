@@ -1,12 +1,12 @@
 import React from 'react';
 
-import TemplateWebsite from '../Template.js';
-import TechListing from '../../../words/IconText';
+import TemplateWebsite from 'components/novels/Websites/Template.js';
+import TechListing from 'components/words/IconText';
 
-import reactlogo from '../../../../assets/websites/reactlogo.svg';
-import reduxlogo from '../../../../assets/websites/reduxlogo.svg';
-import firebaselogo from '../../../../assets/websites/firebaselogo.svg';
-import featured2 from '../../../../assets/websites/jalfordme_feat2.png';
+import reactlogo from 'assets/websites/reactlogo.svg';
+import reduxlogo from 'assets/websites/reduxlogo.svg';
+import firebaselogo from 'assets/websites/firebaselogo.svg';
+import featured2 from 'assets/websites/jalfordme_feat2.png';
 
 export default function Jalfordme(){
   return (

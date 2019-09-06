@@ -1,7 +1,7 @@
 import React , { useState } from 'react';
 import { useSpring , animated as a , interpolate } from 'react-spring';
 
-import useScrollTrigger from '../../bindings/hooks/useScrollTrigger';
+import useScrollTrigger from 'components/bindings/hooks/useScrollTrigger';
 
 const styles = {
   image:{

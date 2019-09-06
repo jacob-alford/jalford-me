@@ -7,9 +7,9 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { firebase } from '../../../index.js';
+import firebase from 'firebase.js';
 
-import useNotify from '../../bindings/hooks/useNotify';
+import useNotify from 'components/bindings/hooks/useNotify';
 
 const styles = {
   container:{

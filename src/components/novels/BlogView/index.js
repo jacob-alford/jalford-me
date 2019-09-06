@@ -8,16 +8,16 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 
-import withPageFade from '../../bindings/wrappers/withPageFade';
+import withPageFade from 'components/bindings/wrappers/withPageFade';
 
-import useRHook from '../../bindings/hooks/useRHook';
-import usePostConnect from '../../bindings/hooks/usePostConnect';
-import useTitleSize from '../../bindings/hooks/useTitleSize';
+import useRHook from 'components/bindings/hooks/useRHook';
+import usePostConnect from 'components/bindings/hooks/usePostConnect';
+import useTitleSize from 'components/bindings/hooks/useTitleSize';
 
 import getPostId from './selectors.js';
 
-import markdownConfig from '../../../helpers/blogParse.js';
-import { katexMarkdown } from '../../../helpers/blogParse.js';
+import markdownConfig from 'helpers/blogParse.js';
+import { katexMarkdown } from 'helpers/blogParse.js';
 
 const styles = {
   header:{

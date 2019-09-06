@@ -2,7 +2,7 @@ import React from 'react';
 
 import Jalfordme from './jalfordme';
 
-import withPageFade from '../../bindings/wrappers/withPageFade';
+import withPageFade from 'components/bindings/wrappers/withPageFade';
 
 function Websites(){
   return (

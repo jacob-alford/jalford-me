@@ -1,7 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 
-import useTitleSize from '../../bindings/hooks/useTitleSize';
+import useTitleSize from 'components/bindings/hooks/useTitleSize';
 
 const styles = {
   header:{

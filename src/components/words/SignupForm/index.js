@@ -8,16 +8,16 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { SliderPicker } from 'react-color';
 
-import useNotify from '../../bindings/hooks/useNotify';
+import useNotify from 'components/bindings/hooks/useNotify';
 
 import zxcvbn from 'zxcvbn';
 
 import { validateEmail,
          validateUsername,
          randomColor
-       } from '../../../functions';
+       } from 'functions';
 
-import { firebase } from '../../../index.js';
+import firebase from 'firebase.js';
 let db;
 
 const styles = {

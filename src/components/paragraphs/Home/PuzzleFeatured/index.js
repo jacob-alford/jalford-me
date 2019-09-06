@@ -7,8 +7,8 @@ import Button from '@material-ui/core/Button';
 
 import OpenWith from '@material-ui/icons/OpenWith';
 
-import useColorAdapt from '../../../bindings/hooks/useColorAdapt';
-import useRedirect from '../../../bindings/hooks/useRedirect';
+import useColorAdapt from 'components/bindings/hooks/useColorAdapt';
+import useRedirect from 'components/bindings/hooks/useRedirect';
 
 const styles = {
   banner:{

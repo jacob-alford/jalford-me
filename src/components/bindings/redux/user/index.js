@@ -1,4 +1,4 @@
-import initialState from '../initialState.js';
+import initialState from 'components/bindings/redux/initialState.js';
 import { LOG_IN , LOG_OUT , LOG_OUT_WITH_WATER } from './actions.js';
 
 
