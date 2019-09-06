@@ -14,11 +14,12 @@
     "react-redux": "^7.1.0",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "^3.0.1",
+    "react-scripts": "3.1.1",
     "react-scroll-parallax": "^2.1.2",
     "react-spring": "^8.0.27",
     "react-syntax-highlighter": "^11.0.2",
     "redux": "^4.0.1",
+    "source-map-explorer": "^2.0.1",
     "styled-components": "^4.3.2",
     "typed.js": "^2.0.10",
     "typeface-roboto": "0.0.54",
@@ -26,6 +27,7 @@
     "zxcvbn": "^4.4.2"
   },
   "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

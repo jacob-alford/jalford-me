@@ -22,8 +22,6 @@ import Websites from './components/novels/Websites';
 
 import { projectList } from './config';
 
-require('typeface-roboto');
-
 const styles = {
   button:{
     color:"rgba(255,255,255,1)",

@@ -17,16 +17,13 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 
+require('typeface-roboto');
+
 // --- Notifications ---
 const Notifications = React.createContext({notifications:[]});
 
 // --- Redux ---
 const store = createStore(reduxStore);
-// console.log(store.getState().user);
-// function handleChange() {
-//   console.log(store.getState().user);
-// }
-// store.subscribe(handleChange);
 
 // --- Firebase ---
 const firebaseConfig = {
