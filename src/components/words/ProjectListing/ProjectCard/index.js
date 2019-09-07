@@ -10,7 +10,14 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-import { StyledProjectCard } from './style.js';
+const styles = {
+  card:{
+    maxWidth:'345px'
+  },
+  image:{
+    height:'140px'
+  }
+}
 
 export default function ProjectCard(props){
   const { history } = useReactRouter();
@@ -20,28 +27,26 @@ export default function ProjectCard(props){
     else history.push(url);
   }
   return (
-    <StyledProjectCard>
-      <Card className="card">
-        <CardActionArea>
-          <CardMedia className="image" image={projectDetails.image} title={projectDetails.imageTitle} />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              {projectDetails.title}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {projectDetails.body}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-        <CardActions>
-          {projectDetails.actions.map((action,index) => (
-            <Button key={`Project${index}`} variant={action.type} size="small" style={action.style} color={action.color} onClick={() => handleClick(action.url)}>
-              {action.text}
-            </Button>
-          ))}
-        </CardActions>
-      </Card>
-    </StyledProjectCard>
+    <Card style={styles.card}>
+      <CardActionArea>
+        <CardMedia style={styles.media} image={projectDetails.image} title={projectDetails.imageTitle} />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            {projectDetails.title}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {projectDetails.body}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+      <CardActions>
+        {projectDetails.actions.map((action,index) => (
+          <Button key={`Project${index}`} variant={action.type} size="small" style={action.style} color={action.color} onClick={() => handleClick(action.url)}>
+            {action.text}
+          </Button>
+        ))}
+      </CardActions>
+    </Card>
   );
 }
 

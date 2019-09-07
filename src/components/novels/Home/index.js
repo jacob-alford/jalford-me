@@ -7,20 +7,18 @@ import {
   PuzzleFeatured
 } from 'components/paragraphs/Home';
 
-import { StyledHome } from './style.js';
-
 import withPageFade from 'components/bindings/wrappers/withPageFade';
 import useScrollToTopOnload from 'components/bindings/hooks/useScrollToTopOnload';
 
 function Home(){
   useScrollToTopOnload();
   return (
-    <StyledHome>
+    <React.Fragment>
       <BlogFeatured />
       <IceCaveFeatured />
       <RPNFeatured />
       <PuzzleFeatured />
-    </StyledHome>
+    </React.Fragment>
   );
 }
 

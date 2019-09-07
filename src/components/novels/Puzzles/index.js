@@ -6,15 +6,18 @@ import Typography from '@material-ui/core/Typography';
 
 import withPageFade from 'components/bindings/wrappers/withPageFade';
 
-const styles = {
-  paper:{
-    marginTop:'28px',
-    padding:'14px',
-    paddingTop:'28px',
-    paddingBottom:'28px',
-    textAlign:'center'
-  }
-}
+import themeConstruct from 'theme';
+
+const styles = themeConstruct(
+  ['getPaperPadding','getMajorSpacing'],
+  ([paperPadding,majorSpacing]) => ({
+    paper:{
+      marginTop:majorSpacing,
+      padding:paperPadding,
+      textAlign:'center'
+    }
+  })
+);
 
 function Puzzles(){
   return (

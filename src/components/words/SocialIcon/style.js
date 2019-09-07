@@ -1,5 +1,10 @@
 import styled from 'styled-components';
-import { constants as c } from 'theme';
+
+import { themeSelect } from 'theme';
+
+const [link,hover] = themeSelect(
+  ['getLinkColor','getLinkHover']
+);
 
 export const StyledSocialIcon = styled.div`
   .icon{
@@ -11,10 +16,10 @@ export const StyledSocialIcon = styled.div`
   .iconHolder{
     margin: 20px 15px 20px;
     border-radius:50%;
-    background-color:${c.link};
+    background-color: ${link};
     transition:background .25s;
   }
   .iconHolder:hover{
-    background-color:${c.linkHover}
+    background-color: ${hover}
   }
 `;

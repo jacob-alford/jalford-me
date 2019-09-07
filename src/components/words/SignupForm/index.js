@@ -17,7 +17,7 @@ import { validateEmail,
          randomColor
        } from 'functions';
 
-import firebase from 'firebase.js';
+import { firebase } from 'firebase.js';
 let db;
 
 const styles = {

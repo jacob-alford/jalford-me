@@ -1,10 +1,14 @@
 import styled from 'styled-components';
 
-import { constants as c } from 'theme';
+import { themeSelect } from 'theme';
+
+const [link,linkHover,linkActive] = themeSelect(
+  ['getLinkColor','getLinkHover','getLinkActive']
+);
 
 export const StyledNavItem = styled.div`
   .link{
-   color:${props => (props.active) ? c.linkActive : c.link};
+   color:${props => (props.active) ? linkActive : link};
    cursor:${props => (props.active) ? "default" : "pointer"};
    -webkit-transition: color .15s;
    transition: color .25s;
@@ -16,7 +20,7 @@ export const StyledNavItem = styled.div`
             user-select: none;
   }
   .link:hover{
-    color:${props => (props.active) ? null : c.linkHover};
+    color:${props => (props.active) ? null : linkHover};
     text-decoration:none;
   }
 `;
