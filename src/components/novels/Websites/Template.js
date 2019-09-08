@@ -61,7 +61,7 @@ const resolveDirection = tooSmall => (tooSmall) ? 'col' : 'row';
 export default function TemplateWebsite(props){
   const { heading , tagline , action , techRP , image , year , video } = props;
   const { h2:titleSize , h5:captionSize } = useTitleSize();
-  const screenTooSmall = useMediaQuery('(max-width:400px)');
+  const screenTooSmall = useMediaQuery('(max-width:450px)');
   const tooSmall4Img = useMediaQuery('(max-width:600px)');
   const { history } = useReactRouter();
   const handleImgRedirect = useCallback(() => {

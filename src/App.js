@@ -18,6 +18,7 @@ import BlogBar from './components/paragraphs/BlogBar';
 import BlogView from './components/novels/BlogView';
 import BlogEdit from './components/novels/BlogEdit';
 import Puzzles from './components/novels/Puzzles';
+import NoMatch from 'components/novels/NotFound';
 
 import RPN from 'components/novels/Projects/RPN';
 
@@ -50,15 +51,18 @@ export default function App() {
         {newStyles => (
           <IconButton
             onClick={toggleHeader}
-            style={styles.button}>
+            style={styles.button}
+            aria-expanded={headerIsOpen}
+            aria-label="Toggle Header">
               <KeyboardArrowUp style={{transform:newStyles.transform,color:newStyles.color}}/>
           </IconButton>
         )}
       </Spring>
       <Switch>
-        <Route path='/projects/rpn' render={props => (<RPN headerIsOpen={headerIsOpen} {...props} />)} />
+        <Route exact path='/projects/rpn' render={props => (<RPN headerIsOpen={headerIsOpen} {...props} />)} />
         <Route
           path="/websites"
+          exact
           render={
             () => (
               <Suspense fallback={<Loader />}>
@@ -66,21 +70,21 @@ export default function App() {
               </Suspense>
             )
           }/>
-        <Route path="/admin/users">
+        <Route exact path="/admin/users">
           <UsersTable />
           <BlogBar breadcrumb={{link:'/admin/users',label:'Users'}}/>
         </Route>
-        <Route path="/user/posts">
+        <Route exact path="/user/posts">
           <UserPosts />
           <BlogBar context="inBlog" breadcrumb={{link:'/user/posts',label:'Posts'}}/>
         </Route>
-        <Route path="/user">
+        <Route exact path="/user">
           <UserSettings />
           <BlogBar context="inUser" breadcrumb={{link:'/user',label:'User'}}/>
         </Route>
-        <Route path="/puzzles" component={Puzzles} />
-        <Route path="/about" component={About} />
-        <Route path="/posts/view/:postId" children={props => {
+        <Route exact path="/puzzles" component={Puzzles} />
+        <Route exact path="/about" component={About} />
+        <Route exact path="/posts/view/:postId" children={props => {
           const { match , history } = props;
           return (
             <React.Fragment>
@@ -89,7 +93,7 @@ export default function App() {
             </React.Fragment>
           );
         }} />
-        <Route path="/posts/edit/:postId" children={props => {
+        <Route exact path="/posts/edit/:postId" children={props => {
           const { match } = props;
           return (
             <React.Fragment>
@@ -98,11 +102,12 @@ export default function App() {
             </React.Fragment>
           );
         }} />
-        <Route path="/posts">
+        <Route exact path="/posts">
           <Blog headerIsOpen={headerIsOpen} />
           <BlogBar breadcrumb={{link:'/posts',label:'Posts'}}/>
         </Route>
-        <Route path="/" component={Home} />
+        <Route exact path="/" component={Home} />
+        <Route path="*" component={NoMatch} />
       </Switch>
       <Footing />
     </Router>
