@@ -1,8 +1,6 @@
 import meImage from 'assets/me/profile_pic.webp';
 import linkedIn from 'assets/social/LinkedIn.png';
 import icecaveImage from 'assets/photos/IceCaves_onHome.webp';
-import icecaveStore from 'assets/photos/TP_Front_FB-862.jpg';
-import { projectList } from 'components/novels/Projects';
 
 export const socialMedia = {
   linkedIn:{
@@ -11,8 +9,6 @@ export const socialMedia = {
   },
   email:"jalford-website@pm.me"
 }
-
-export { projectList };
 
 export const navItems = [
   {text:"Home",url:"/"},
@@ -25,18 +21,10 @@ export const navItems = [
 
 export {meImage as aboutContactImage};
 
-const homePageImageArray = [
-  {img:icecaveImage,caption:"The Ice Cave",body:"A breathtaking diversion in Grants, NM.  It's where I grew up! My family has owned it for generations."},
-  {img:icecaveStore,caption:"The Trading Post",body:"An olde time store."}
-];
-
-export const homePageImage = homePageImageArray[0];
+export const homePageImage = {
+  img:icecaveImage,
+  caption:"The Ice Cave",
+  body:"A breathtaking diversion in Grants, NM.  It's where I grew up! My family has owned it for generations."
+}
 
 export const footerText = "Copyright © 2019 Jacob Alford";
-
-export const blogCategories = [
-  "Philosophy","Movies","Stories"
-];
-export const blogSearchBy = [
-  "Tags" , "Name" , "Date"
-];

@@ -19,9 +19,9 @@ import BlogView from './components/novels/BlogView';
 import BlogEdit from './components/novels/BlogEdit';
 import Puzzles from './components/novels/Puzzles';
 
-import Loader from 'components/words/Loader';
+import RPN from 'components/novels/Projects/RPN';
 
-import { projectList } from './config';
+import Loader from 'components/words/Loader';
 
 const Websites = React.lazy(() => import('./components/novels/Websites'));
 
@@ -43,7 +43,10 @@ export default function App() {
       <NotificationsHolder />
       <Heading headerIsOpen={headerIsOpen}/>
       <Spring
-        to={{transform:`rotateZ(${(headerIsOpen) ? 0 : 180}deg)`,color:(headerIsOpen) ? '#FFFFFF' : "#5433FF"}}>
+        to={{
+          transform:`rotateZ(${(headerIsOpen) ? 0 : 180}deg)`,
+          color:(headerIsOpen) ? '#FFFFFF' : "#5433FF"
+        }}>
         {newStyles => (
           <IconButton
             onClick={toggleHeader}
@@ -53,12 +56,7 @@ export default function App() {
         )}
       </Spring>
       <Switch>
-        {projectList.filter(project => !project.disabled).map((project,index) => {
-          const { component:Component } = project;
-          return (
-            <Route key={`projectRoute${index}`} path={project.url} render={props => (<Component headerIsOpen={headerIsOpen} {...props} />)} />
-          );
-        })}
+        <Route path='/projects/rpn' render={props => (<RPN headerIsOpen={headerIsOpen} {...props} />)} />
         <Route
           path="/websites"
           render={

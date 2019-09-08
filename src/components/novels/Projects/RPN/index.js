@@ -278,6 +278,8 @@ function RPN(props){
   );
 }
 
+export default withPageFade(RPN);
+
 export const meta = {
   title:"RPN Calculator",
   featured:true,
