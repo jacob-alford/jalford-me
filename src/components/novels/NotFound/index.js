@@ -39,7 +39,7 @@ export default function NotFound(){
         404
       </Typography>
       <Typography paragraph variant='h3' style={styles.title}>
-        Opps! I couldn't find '{pathStr}.'
+        Oops! I couldn't find '{pathStr}.'
       </Typography>
       <Typography paragraph variant="h6">
         My bad...
