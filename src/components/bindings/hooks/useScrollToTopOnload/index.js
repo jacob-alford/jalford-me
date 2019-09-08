@@ -3,10 +3,13 @@ import { useSpring } from 'react-spring';
 
 import { detectMobile } from 'functions';
 
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+
 export default function useScrollToTopOnload(){
   const hasFinished = useRef(false);
   const startPosition = useRef(window.scrollY);
   const isTouchDevice = useRef(detectMobile());
+  const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
   const [,,stopInter] = useSpring(() => {
     return {
       y:0,
@@ -26,13 +29,13 @@ export default function useScrollToTopOnload(){
     }
   });
   useEffect(() => {
-    if(!isTouchDevice.current){
+    if(!isTouchDevice.current && !prefersReducedMotion){
       window.addEventListener('wheel',stopInter);
       return () => window.removeEventListener('wheel',stopInter);
     }
-  },[stopInter,isTouchDevice]);
+  },[stopInter,isTouchDevice,prefersReducedMotion]);
   useEffect(() => {
-    if(isTouchDevice.current)
+    if(isTouchDevice.current || prefersReducedMotion)
       window.scrollTo(0,0);
-  },[isTouchDevice]);
+  },[isTouchDevice,prefersReducedMotion]);
 }

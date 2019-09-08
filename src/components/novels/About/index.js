@@ -80,6 +80,9 @@ const styles = {
   title:{
     color:'rgba(0,0,0,.85)',
     textAlign:'center'
+  },
+  image:{
+    height:'auto'
   }
 }
 
@@ -87,7 +90,7 @@ function About(props){
   const { h3:titleSize } = useTitleSize();
   return (
     <Container fixed>
-      <Image src={aboutContactImage} alt="me" />
+      <Image src={aboutContactImage} alt="me" imageStyles={styles.image}/>
       <Paper style={styles.aboutText} elevation={0}>
         <Typography paragraph variant="h2" style={{...styles.title,fontSize:titleSize}}>
           About

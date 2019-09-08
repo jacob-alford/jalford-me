@@ -14,7 +14,7 @@ const styles = themeConstruct(
     'getMajorSpacing',
     'getMinorSpacing'
   ],
-  ([textColor, footerBg, majorSpacing,minorSpacing]) => ({
+  ([textColor, footerBg, majorSpacing, minorSpacing]) => ({
     text:{
       color:textColor,
       textAlign:'center'

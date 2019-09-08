@@ -6,19 +6,21 @@ import TechListing from 'components/words/IconText';
 import reactlogo from 'assets/websites/reactlogo.svg';
 import reduxlogo from 'assets/websites/reduxlogo.svg';
 import firebaselogo from 'assets/websites/firebaselogo.svg';
-import featured2 from 'assets/websites/jalfordme_feat2.png';
+import featured2 from 'assets/websites/jalfordme_feat2.webp';
 
 export default function Jalfordme(){
   return (
     <TemplateWebsite
       heading='jalford.me'
       tagline='Inspiring artful design, and proper practice'
+      year='(2019)'
       action={{
         text:'Live Demo',
         href:'/'
       }}
       image={{
         source:featured2,
+        alt:'The Duncan Strauss Mysteries',
         href:'/posts'
       }}
       techRP={() => (

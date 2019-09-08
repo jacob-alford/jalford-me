@@ -1,6 +1,6 @@
-import meImage from 'assets/me/JA_Pro_Square_web.jpg';
+import meImage from 'assets/me/profile_pic.webp';
 import linkedIn from 'assets/social/LinkedIn.png';
-import icecaveImage from 'assets/photos/IC_Med_Back_op2_Web-2000-Med.jpg';
+import icecaveImage from 'assets/photos/IceCaves_onHome.webp';
 import icecaveStore from 'assets/photos/TP_Front_FB-862.jpg';
 import { projectList } from 'components/novels/Projects';
 

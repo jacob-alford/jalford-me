@@ -20,8 +20,8 @@ export default function TechListing(props){
   const handleRedirect = () => window.location.href = url;
   return (
     <Container direction='row' style={styles.item}>
-      <img src={img} width='32' height='32' alt={text}/>
-      <Typography variant="h6" style={{color:'white'}} onClick={handleRedirect}>
+      <img src={img} width='32' height='32' alt={text} />
+      <Typography variant="h6" style={{color:'white',marginLeft:'3px'}} onClick={handleRedirect}>
         {text}
       </Typography>
     </Container>

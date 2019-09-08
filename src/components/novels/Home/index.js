@@ -8,10 +8,8 @@ import {
 } from 'components/paragraphs/Home';
 
 import withPageFade from 'components/bindings/wrappers/withPageFade';
-import useScrollToTopOnload from 'components/bindings/hooks/useScrollToTopOnload';
 
 function Home(){
-  useScrollToTopOnload();
   return (
     <React.Fragment>
       <BlogFeatured />

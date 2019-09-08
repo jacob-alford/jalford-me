@@ -2,9 +2,11 @@ import React from 'react';
 import { useSpring , animated as a } from 'react-spring';
 
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useScrollToTopOnload from 'components/bindings/hooks/useScrollToTopOnload';
 
 export default function withPageFade(Component){
   return props => {
+    useScrollToTopOnload();
     const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
     const { opacity , transform } = useSpring({
       opacity:1,

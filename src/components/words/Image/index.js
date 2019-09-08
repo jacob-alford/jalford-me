@@ -11,7 +11,6 @@ const styles = {
   },
   imageHolder:{
     width:'50%',
-    height:'0',
     paddingBottom:'50%',
     position:'relative',
     marginLeft:'auto',

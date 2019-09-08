@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , Suspense } from 'react';
 import { BrowserRouter as Router , Switch , Route } from "react-router-dom";
 import { Spring } from 'react-spring/renderprops';
 
@@ -18,9 +18,12 @@ import BlogBar from './components/paragraphs/BlogBar';
 import BlogView from './components/novels/BlogView';
 import BlogEdit from './components/novels/BlogEdit';
 import Puzzles from './components/novels/Puzzles';
-import Websites from './components/novels/Websites';
+
+import Loader from 'components/words/Loader';
 
 import { projectList } from './config';
+
+const Websites = React.lazy(() => import('./components/novels/Websites'));
 
 const styles = {
   button:{
@@ -56,7 +59,15 @@ export default function App() {
             <Route key={`projectRoute${index}`} path={project.url} render={props => (<Component headerIsOpen={headerIsOpen} {...props} />)} />
           );
         })}
-        <Route path="/websites" component={Websites} />
+        <Route
+          path="/websites"
+          render={
+            () => (
+              <Suspense fallback={<Loader />}>
+                <Websites />
+              </Suspense>
+            )
+          }/>
         <Route path="/admin/users">
           <UsersTable />
           <BlogBar breadcrumb={{link:'/admin/users',label:'Users'}}/>

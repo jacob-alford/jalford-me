@@ -12,7 +12,7 @@ import useTitleSize from 'components/bindings/hooks/useTitleSize';
 import useHoverHandler from 'components/bindings/hooks/useHoverHandler';
 import useRedirect from 'components/bindings/hooks/useRedirect';
 
-import flowerImage from 'assets/photos/Posts_Flower.jpg';
+import flowerImage from 'assets/photos/Posts_Flower.webp';
 
 const styles = {
   banner:{
