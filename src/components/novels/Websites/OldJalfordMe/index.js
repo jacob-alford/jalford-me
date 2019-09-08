@@ -3,7 +3,6 @@ import React from 'react';
 import TemplateWebsite from 'components/novels/Websites/Template.js';
 import TechListing from 'components/words/IconText';
 
-import cssLogo from 'assets/websites/csslogo.svg';
 import bootstrapLogo from 'assets/websites/Boostrap_logo.svg';
 import jquery from 'assets/websites/jquery-icon.svg';
 import jalfordMe from 'assets/websites/jalford-me-just.webp';
