@@ -1,6 +1,8 @@
 import React from 'react';
 
 import Jalfordme from './jalfordme';
+import OldJalfordMe from './OldJalfordMe';
+import Jalfordco from './Jalfordco';
 import OldWebsite from './OldWebsite';
 import LaBellaVita from './LaBellaVita';
 import SurfShackPizza from './SurfShackPizza';
@@ -18,6 +20,8 @@ function Websites(){
       <LaBellaVita />
       <StuderDreams />
       <IceCaves />
+      <Jalfordco />
+      <OldJalfordMe />
     </React.Fragment>
   );
 }
