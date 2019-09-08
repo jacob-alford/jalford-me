@@ -34,7 +34,7 @@ const styles = {
     flexDirection:'column',
     flexWrap:'nowrap',
     justifyContent:'center',
-    alignItems:'center',
+    alignItems:'center'
   },
   button:{
     color:'#58E855',

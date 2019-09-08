@@ -8,11 +8,14 @@ import Divider from '@material-ui/core/Divider';
 
 import Typed from 'components/sentences/Typed';
 
+import Image from 'components/words/Image';
+
 import useTitleSize from 'components/bindings/hooks/useTitleSize';
 import useHoverHandler from 'components/bindings/hooks/useHoverHandler';
 import useRedirect from 'components/bindings/hooks/useRedirect';
 
 import flowerImage from 'assets/photos/Posts_Flower.webp';
+import flowerImageForAppleDevicesThanks from 'assets/photos/Posts_Flower.jpg';
 
 const styles = {
   banner:{
@@ -61,6 +64,12 @@ const styles = {
     width:"50vw",
     marginTop:'9px',
     marginBottom:'25px'
+  },
+  image:{
+    width:'100%',
+    height:'100%',
+    objectFit:'cover',
+    objectPosition:'center center'
   }
 }
 
@@ -95,7 +104,15 @@ if(Math.random() < .005)
   ];
 
 const imageLayer = [
-  { image:flowerImage, amount:.1 }
+  { children:
+      <Image
+        src={flowerImage}
+        naked
+        imageStyles={styles.image}
+        fallbackSrc={flowerImageForAppleDevicesThanks}
+        alt="Desert rose (not really, but kinda)" />,
+    amount:.1
+  }
 ];
 
 export default function BlogFeatured(props){

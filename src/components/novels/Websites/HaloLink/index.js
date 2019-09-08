@@ -4,6 +4,7 @@ import TemplateWebsite from 'components/novels/Websites/Template.js';
 import TechListing from 'components/words/IconText';
 
 import haloLink from 'assets/websites/haloLink.webp';
+import haloLinkGodDamnitApple from 'assets/websites/haloLink.jpg';
 import reactLogo from 'assets/websites/reactlogo.svg';
 import graphQlLogo from 'assets/websites/GraphQL_Logo.svg';
 import tensorflowLogo from 'assets/websites/TF_White_Icon.svg';
@@ -20,6 +21,7 @@ export default function HaloLink(){
       }}
       image={{
         source:haloLink,
+        altSource:haloLinkGodDamnitApple,
         alt:'A pathologists toolbag',
         href:'http://www.indicalab.com/halolink/'
       }}

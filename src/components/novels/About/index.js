@@ -12,7 +12,10 @@ import Email from '@material-ui/icons/Email';
 import SocialIcon from 'components/words/SocialIcon';
 import Image from 'components/words/Image';
 
-import { aboutContactImage , socialMedia } from 'config';
+import aboutContactImage from 'assets/me/profile_pic.webp';
+import aboutContactImageImAnnoyedAtApple from 'assets/me/profile_pic.jpg';
+
+import { socialMedia } from 'config';
 
 import withPageFade from 'components/bindings/wrappers/withPageFade';
 import useTitleSize from 'components/bindings/hooks/useTitleSize';
@@ -90,7 +93,11 @@ function About(props){
   const { h3:titleSize } = useTitleSize();
   return (
     <Container fixed>
-      <Image src={aboutContactImage} alt="me" imageStyles={styles.image}/>
+      <Image
+        src={aboutContactImage}
+        fallbackSrc={aboutContactImageImAnnoyedAtApple} 
+        alt="me"
+        imageStyles={styles.image}/>
       <Paper style={styles.aboutText} elevation={0}>
         <Typography paragraph variant="h2" style={{...styles.title,fontSize:titleSize}}>
           About

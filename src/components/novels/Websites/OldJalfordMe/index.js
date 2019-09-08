@@ -6,6 +6,7 @@ import TechListing from 'components/words/IconText';
 import bootstrapLogo from 'assets/websites/Boostrap_logo.svg';
 import jquery from 'assets/websites/jquery-icon.svg';
 import jalfordMe from 'assets/websites/jalford-me-just.webp';
+import jalfordMeForSafariONLY from 'assets/websites/jalford-me-just.jpg';
 
 export default function OldJalfordMe(){
   return (
@@ -19,6 +20,7 @@ export default function OldJalfordMe(){
       }}
       image={{
         source:jalfordMe,
+        altSource:jalfordMeForSafariONLY,
         alt:'My previous iteration',
         href:'https://jalford.me/'
       }}

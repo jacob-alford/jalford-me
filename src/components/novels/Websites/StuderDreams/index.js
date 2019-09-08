@@ -4,6 +4,7 @@ import TemplateWebsite from 'components/novels/Websites/Template.js';
 import TechListing from 'components/words/IconText';
 
 import studerdreams from 'assets/websites/StuderDreams.webp';
+import studerdreamsForLesserDevices from 'assets/websites/StuderDreams.jpg';
 import html5 from 'assets/websites/html5logo.svg';
 import jqueryLogo from 'assets/websites/jquery-icon.svg';
 
@@ -19,6 +20,7 @@ export default function StuderDreams(){
       }}
       image={{
         source:studerdreams,
+        altSource:studerdreamsForLesserDevices,
         alt:'Rest in peace',
         href:'/websites'
       }}

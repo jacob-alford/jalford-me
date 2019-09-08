@@ -6,6 +6,7 @@ import TechListing from 'components/words/IconText';
 import cssLogo from 'assets/websites/csslogo.svg';
 import jqueryLogo from 'assets/websites/jquery-icon.svg';
 import labellavita from 'assets/websites/labellavita.webp';
+import labellavitaForApple from 'assets/websites/labellavita.jpg';
 
 export default function LaBellaVita(){
   return (
@@ -18,6 +19,7 @@ export default function LaBellaVita(){
       }}
       image={{
         source:labellavita,
+        altSource:labellavitaForApple,
         alt:'Rest in peace, old friend',
         href:'/websites'
       }}

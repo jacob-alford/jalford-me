@@ -7,6 +7,7 @@ import reactlogo from 'assets/websites/reactlogo.svg';
 import reduxlogo from 'assets/websites/reduxlogo.svg';
 import firebaselogo from 'assets/websites/firebaselogo.svg';
 import featured2 from 'assets/websites/jalfordme_feat2.webp';
+import featured2Jpeg from 'assets/websites/jalfordme_feat2.jpg';
 
 export default function Jalfordme(){
   return (
@@ -20,6 +21,7 @@ export default function Jalfordme(){
       }}
       image={{
         source:featured2,
+        altSource:featured2Jpeg,
         alt:'The Duncan Strauss Mysteries',
         href:'/posts'
       }}

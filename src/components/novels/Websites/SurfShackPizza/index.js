@@ -4,6 +4,7 @@ import TemplateWebsite from 'components/novels/Websites/Template.js';
 import TechListing from 'components/words/IconText';
 
 import surfshackpizza from 'assets/websites/surfshackpizza.webp';
+import surfshackpizzaAppleEdition from 'assets/websites/surfshackpizza.jpg';
 import wordpress from 'assets/websites/Wordpress-Logo.svg';
 
 export default function SurfShackPizza(){
@@ -18,6 +19,7 @@ export default function SurfShackPizza(){
       }}
       image={{
         source:surfshackpizza,
+        altSource:surfshackpizzaAppleEdition,
         alt:'California Carbs',
         href:'http://surfshackpizza.net/'
       }}

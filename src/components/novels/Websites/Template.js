@@ -99,6 +99,7 @@ export default function TemplateWebsite(props){
         <Container justify='flex-start' style={{...styles.imageHolder, marginBottom: (tooSmall4Img) ? '0px' : '96px'}}>
           <Image
             src={image.source}
+            fallbackSrc={image.altSource}
             naked
             scrollFade
             onClick={handleImgRedirect}

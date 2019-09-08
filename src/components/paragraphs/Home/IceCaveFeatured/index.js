@@ -5,7 +5,10 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 
-import { homePageImage } from 'config';
+import Image from 'components/words/Image'
+
+import icecavesImage from 'assets/photos/IceCaves_onHome.webp';
+import icecavesButtHoleSurfers from 'assets/photos/IceCaves_onHome.jpg';
 
 import useHoverHandlers from 'components/bindings/hooks/useHoverHandler';
 import useRedirect from 'components/bindings/hooks/useRedirect';
@@ -58,8 +61,25 @@ const styles = {
     width:"50vw",
     marginTop:"25px",
     marginBottom:"25px"
+  },
+  image:{
+    width:'100%',
+    height:'100%',
+    objectFit:'cover',
+    objectPosition:'right center'
   }
 }
+
+const imageLayer = [
+  { children:
+      <Image
+        src={icecavesImage}
+        naked
+        fallbackSrc={icecavesButtHoleSurfers}
+        imageStyles={styles.image}
+        alt="The Beautiful Ice Cave" />,
+    amount:.1 }
+];
 
 export default function IceCaveFeatured(props){
   const hoverHandlers = useHoverHandlers({
@@ -70,9 +90,6 @@ export default function IceCaveFeatured(props){
     base:styles.button,
     over:styles.buttonHover
   });
-  const imageLayer = [
-    { image:homePageImage.img, amount:.1 }
-  ];
   const btnClick = useRedirect("https://www.icecaves.com/");
 
   return (
