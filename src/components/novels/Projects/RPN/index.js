@@ -4,7 +4,7 @@ import * as MUI_COMPONENTS from './mui.js';
 
 import { StyledRPN } from './style.js';
 
-import rpnImage from 'assets/projects/rpn-header.jpg';
+import rpnImage from 'assets/projects/RPN_New.png';
 import { calcFunctions } from './calcFunc.js';
 
 import withPageFade from 'components/bindings/wrappers/withPageFade';

@@ -2,7 +2,7 @@ import React from 'react';
 
 import Container from 'components/words/Holder';
 
-import loader from 'assets/svg-loaders/puff.svg';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import themeConstruct from 'theme';
 
@@ -25,7 +25,7 @@ export default function Loader(){
   return (
     <Container style={styles.superholder}>
       <Container style={styles.holder}>
-        <img src={loader} width='50' height='50' alt='loader'/>
+        <CircularProgress />
       </Container>
     </Container>
   );

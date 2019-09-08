@@ -22,7 +22,7 @@ const styles = themeConstruct(
 
 export default function Heading(props){
   const { headerIsOpen } = props;
-  const { height , minHeight , paddingTop } = useSpring({
+  const { height, minHeight, paddingTop } = useSpring({
     height:`${(headerIsOpen) ? 25 : 0}vh`,
     minHeight:`${(headerIsOpen) ? 135 : 0}px`,
     paddingTop:`${(headerIsOpen) ? 48 : 0}px`

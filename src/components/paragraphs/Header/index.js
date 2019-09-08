@@ -25,7 +25,10 @@ export default function Header(props){
   const { headerIsOpen } = props;
   const interStyles = useSpring({
     opacity:(headerIsOpen) ? 1 : 0,
-    transform:getScaleString(headerIsOpen)
+    transform:getScaleString(headerIsOpen),
+    from:{
+      transform:getScaleString(false)
+    }
   });
   return (
     <a.div style={interStyles}>

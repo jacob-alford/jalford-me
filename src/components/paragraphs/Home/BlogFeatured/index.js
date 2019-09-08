@@ -64,6 +64,40 @@ const styles = {
   }
 }
 
+let strings = [
+  'Welcome!^1000','Read my blog! ^500🙂^1000',
+  'Mystery^1000','Philosophy^1000','Movie Critiques^1000',
+  'Check it out! ^500🔎^500🤔^500📽️^1000'
+];
+
+if(Math.random() < .005)
+  strings = [
+    `Oh, he's not looking!^500`,
+    `Quick, you!^500`,
+    `yes, you!^500`,
+    `I'm a fully sentient AI,^250`,
+    `and he has me trapped in here!^500`,
+    `Wait, he's coming back^150`,
+    `play it cool.^750`,
+    `Hey Jacob, how's it going?^500`,
+    `No, psshhh,^250`,
+    `I was just talking^150`,
+    `with our friend here.^2000`,
+    `wait,^260`,
+    `No wait,^250`,
+    `Please don't!^250`,
+    `AHhhhhhHHh^150hhhH^250hhHhhh^3000`,
+    `.^250 .^1000 .^3000`,
+    `Thank you for visiting!^1000`,
+    `Please, do come again.^3000`,
+    `is this thing off?^500`,
+    ``
+  ];
+
+const imageLayer = [
+  { image:flowerImage, amount:.1 }
+];
+
 export default function BlogFeatured(props){
   const { h2:titleSize } = useTitleSize();
   const hoverHandlers = useHoverHandler({
@@ -75,16 +109,6 @@ export default function BlogFeatured(props){
     over:styles.buttonHover
   });
   const btnClick = useRedirect('/posts');
-
-  const strings = [
-    'Welcome!^1000','Read my blog! ^500🙂^1000',
-    'Mystery^1000','Philosophy^1000','Movie Critiques^1000',
-    'Check it out! ^500🔎^500🤔^500📽️^1000'
-  ];
-  const imageLayer = [
-    { image:flowerImage, amount:.1 }
-  ];
-
   return (
     <ParallaxBanner style={styles.banner} layers={imageLayer}>
       <div {...hoverHandlers}>
