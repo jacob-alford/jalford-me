@@ -6,25 +6,23 @@ import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
 
 import NotificationsHolder from './components/sentences/NotificationsHolder';
-import UserSettings from './components/novels/UserSettings';
-import UsersTable from './components/novels/UsersTable';
-import UserPosts from './components/novels/UserPosts';
 import Heading from './components/novels/Heading';
 import Footing from './components/novels/Footer';
-import About from './components/novels/About';
-import Home from './components/novels/Home';
-import Blog from './components/novels/Blog';
 import BlogBar from './components/paragraphs/BlogBar';
-import BlogView from './components/novels/BlogView';
-import BlogEdit from './components/novels/BlogEdit';
-import Puzzles from './components/novels/Puzzles';
 import NoMatch from 'components/novels/NotFound';
-
-import RPN from 'components/novels/Projects/RPN';
-
 import Loader from 'components/words/Loader';
 
+const UserSettings = React.lazy(() => import('./components/novels/UserSettings'));
+const UsersTable = React.lazy(() => import('./components/novels/UsersTable'));
+const UserPosts = React.lazy(() => import('./components/novels/UserPosts'));
+const BlogEdit = React.lazy(() => import('./components/novels/BlogEdit'));
+const BlogView = React.lazy(() => import('./components/novels/BlogView'));
 const Websites = React.lazy(() => import('./components/novels/Websites'));
+const Puzzles = React.lazy(() => import('./components/novels/Puzzles'));
+const About = React.lazy(() => import('./components/novels/About'));
+const Blog = React.lazy(() => import('./components/novels/Blog'));
+const Home = React.lazy(() => import('./components/novels/Home'));
+const RPN = React.lazy(() => import('./components/novels/Projects/RPN'));
 
 const styles = {
   button:{
@@ -58,57 +56,50 @@ export default function App() {
           </IconButton>
         )}
       </Spring>
-      <Switch>
-        <Route exact path='/projects/rpn' render={props => (<RPN headerIsOpen={headerIsOpen} {...props} />)} />
-        <Route
-          path="/websites"
-          exact
-          render={
-            () => (
-              <Suspense fallback={<Loader />}>
-                <Websites />
-              </Suspense>
-            )
-          }/>
-        <Route exact path="/admin/users">
-          <UsersTable />
-          <BlogBar breadcrumb={{link:'/admin/users',label:'Users'}}/>
-        </Route>
-        <Route exact path="/user/posts">
-          <UserPosts />
-          <BlogBar context="inBlog" breadcrumb={{link:'/user/posts',label:'Posts'}}/>
-        </Route>
-        <Route exact path="/user">
-          <UserSettings />
-          <BlogBar context="inUser" breadcrumb={{link:'/user',label:'User'}}/>
-        </Route>
-        <Route exact path="/puzzles" component={Puzzles} />
-        <Route exact path="/about" component={About} />
-        <Route exact path="/posts/view/:postId" children={props => {
-          const { match , history } = props;
-          return (
-            <React.Fragment>
-              <BlogView match={match} {...props}/>
-              <BlogBar match={match} history={history} context="inPostView" breadcrumb={{link:'/posts',label:'Posts'}}/>
-            </React.Fragment>
-          );
-        }} />
-        <Route exact path="/posts/edit/:postId" children={props => {
-          const { match } = props;
-          return (
-            <React.Fragment>
-              <BlogEdit match={match} {...props}/>
-              <BlogBar context="inPostEdit" breadcrumb={{link:'/posts',label:'Posts'}}/>
-            </React.Fragment>
-          );
-        }} />
-        <Route exact path="/posts">
-          <Blog headerIsOpen={headerIsOpen} />
-          <BlogBar breadcrumb={{link:'/posts',label:'Posts'}}/>
-        </Route>
-        <Route exact path="/" component={Home} />
-        <Route path="*" component={NoMatch} />
-      </Switch>
+      <Suspense fallback={<Loader />}>
+        <Switch>
+          <Route exact path='/projects/rpn' render={props => (<RPN headerIsOpen={headerIsOpen} {...props} />)} />
+          <Route exact path="/websites" component={Websites}/>
+          <Route exact path="/admin/users">
+            <UsersTable />
+            <BlogBar breadcrumb={{link:'/admin/users',label:'Users'}}/>
+          </Route>
+          <Route exact path="/user/posts">
+            <UserPosts />
+            <BlogBar context="inBlog" breadcrumb={{link:'/user/posts',label:'Posts'}}/>
+          </Route>
+          <Route exact path="/user">
+            <UserSettings />
+            <BlogBar context="inUser" breadcrumb={{link:'/user',label:'User'}}/>
+          </Route>
+          <Route exact path="/puzzles" component={Puzzles} />
+          <Route exact path="/about" component={About} />
+          <Route exact path="/posts/view/:postId" children={props => {
+            const { match , history } = props;
+            return (
+              <React.Fragment>
+                <BlogView match={match} {...props}/>
+                <BlogBar match={match} history={history} context="inPostView" breadcrumb={{link:'/posts',label:'Posts'}}/>
+              </React.Fragment>
+            );
+          }} />
+          <Route exact path="/posts/edit/:postId" children={props => {
+            const { match } = props;
+            return (
+              <React.Fragment>
+                <BlogEdit match={match} {...props}/>
+                <BlogBar context="inPostEdit" breadcrumb={{link:'/posts',label:'Posts'}}/>
+              </React.Fragment>
+            );
+          }} />
+          <Route exact path="/posts">
+            <Blog headerIsOpen={headerIsOpen} />
+            <BlogBar breadcrumb={{link:'/posts',label:'Posts'}}/>
+          </Route>
+          <Route exact path="/" component={Home} />
+          <Route path="*" component={NoMatch} />
+        </Switch>
+      </Suspense>
       <Footing />
     </Router>
   );
