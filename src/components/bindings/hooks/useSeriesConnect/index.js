@@ -19,7 +19,7 @@ export default function useSeriesConnect(series){
          });
          setPostData(seriesPosts);
        }, error => setError(error));
-      return () => unsubscribe;
+      return () => unsubscribe();
     }
   },[error,postData,series]);
   useEffect(() => {

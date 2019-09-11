@@ -1,9 +1,9 @@
 import { useState , useEffect } from 'react';
-import { useSelector } from 'react-redux'
+import { useSelect } from 'globalState';
 
 export default function useRHook(){
   const [userLoading,setUserIsLoading] = useState(true);
-  const user = useSelector(state => state.user);
+  const user = useSelect('getUser');
   useEffect(() => {
     if(user.hydrated) setUserIsLoading(false);
   },[userLoading,user]);

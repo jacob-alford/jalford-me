@@ -102,7 +102,6 @@ export default function CreatePostDialogue(props){
             title:title,
             uid:slug
           }).then(() => {
-            console.log("Successfully created post!");
             setLoading(false);
             notify();
           }).catch(notifyError)

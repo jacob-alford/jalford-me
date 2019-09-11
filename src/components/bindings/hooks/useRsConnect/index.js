@@ -25,7 +25,7 @@ export default function useRsConnect(){
            });
            setUsers(userArr);
          }, error => setError(error));
-        return () => unsubscribe;
+        return () => unsubscribe();
       }
     }
   },[error,users,user,userLoading]);

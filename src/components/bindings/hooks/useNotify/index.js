@@ -1,6 +1,4 @@
-import { useContext } from 'react';
-
-import { Notifications } from 'notifications.js';
+import { useDispatch } from 'globalState';
 
 const defaultConfig = {
   alertType:'info', // mui-snackbar variants
@@ -11,7 +9,14 @@ const defaultConfig = {
 const getRandomUID = () => (Math.random() * 100000 | 0).toString(16);
 
 export default function useNotify(compStyle = {}){
-  const { addNotification } = useContext(Notifications);
+  const addNotification = useDispatch('add','notifications');
   return notification =>
-    addNotification({...defaultConfig,...compStyle,...notification,uid:getRandomUID()});
+    addNotification({
+      notification:{
+        ...defaultConfig,
+        ...compStyle,
+        ...notification,
+        uid:getRandomUID()
+      }
+    });
 }

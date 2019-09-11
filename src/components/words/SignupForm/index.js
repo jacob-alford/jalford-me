@@ -102,7 +102,6 @@ export default function SignupForm(props){
           image:null,
           uid:user.uid
         }).then(function(docRef) {
-          console.log("Successfully added user:",docRef);
           notifyError({
             body:"Account successfully created!",
             alertType:"success"

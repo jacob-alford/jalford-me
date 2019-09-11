@@ -16,7 +16,7 @@ export default function usePostConnect(id){
           setError("Post not found!");
         }
       }, error => setError(error));
-      return () => unsubscribe;
+      return () => unsubscribe();
     }
   },[error,id,postData]);
   useEffect(() => {

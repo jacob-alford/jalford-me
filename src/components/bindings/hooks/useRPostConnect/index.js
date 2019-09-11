@@ -25,7 +25,7 @@ export default function useRPostConnect(orderBy){
            });
            setPostData(userPosts);
          }, error => setError(error));
-        return () => unsubscribe;
+        return () => unsubscribe();
       }else if(!error && !postData && user.loggedIn && user.activeUser.permissions.value >= 8){
         const db = firebase.firestore();
         const posts = db.collection("posts")
@@ -39,7 +39,7 @@ export default function useRPostConnect(orderBy){
            });
            setPostData(userPosts);
          }, error => setError(error));
-        return () => unsubscribe;
+        return () => unsubscribe();
       }
     }
   },[error,postData,user,userLoading,orderBy]);

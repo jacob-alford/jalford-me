@@ -1,8 +1,11 @@
-import { useContext } from 'react';
-
-import { Notifications } from 'notifications.js';
+import { useCallback } from 'react';
+import { useSelect , useDispatch } from 'globalState';
 
 export default function useNotifications(){
-  const { notifications , removeNotification } = useContext(Notifications);
+  const notifications = useSelect('getNotifications');
+  const dispatchNotification = useDispatch('remove','notifications');
+  const removeNotification = useCallback(
+    uid => dispatchNotification({uid}) , [dispatchNotification]
+  );
   return { notifications , removeNotification };
 }
