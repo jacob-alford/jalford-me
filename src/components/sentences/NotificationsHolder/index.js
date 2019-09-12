@@ -4,6 +4,7 @@ import { useTransition , animated as a } from 'react-spring';
 import Notification from 'components/words/Notification';
 
 import useNotifications from 'components/bindings/hooks/useNotifications';
+import useRemoveNotification from 'components/bindings/hooks/useRemoveNotification';
 
 const styles = {
   container:{
@@ -23,7 +24,8 @@ const styles = {
 }
 
 export default function NotificationsHolder(){
-  const { notifications:notifsDetails , removeNotification } = useNotifications();
+  const notifsDetails = useNotifications();
+  const removeNotification = useRemoveNotification();
   const notifications = useTransition(notifsDetails,item => item.uid,{
     from: {transform: `translate3d(-350px,0,0)`,opacity:1},
     enter: {transform: `translate3d(0,0,0)`,opacity:1},

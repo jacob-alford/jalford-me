@@ -27,10 +27,6 @@ const defaultState = {
 
 const reducer = (state,action) => {
   const { domain , selector , payload } = action;
-  console.log({
-    ...state,
-    [domain]:actions[domain][selector](state,payload)
-  });
   try{
     return {
       ...state,

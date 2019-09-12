@@ -3,7 +3,7 @@ const actors = {
   logout:'logout'
 }
 const actions = {
-  [actors.login]: ({userState},{user}) => ({
+  [actors.login]: ({user:userState},{user}) => ({
     ...userState,
     loggedIn:true,
     hydrated:true,
@@ -17,7 +17,7 @@ const actions = {
       username:user.username
     }
   }),
-  [actors.logout]: userState => ({
+  [actors.logout]: ({user:userState}) => ({
     ...userState,
     loggedIn:false,
     hydrated:true,

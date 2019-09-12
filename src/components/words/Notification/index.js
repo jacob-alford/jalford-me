@@ -1,4 +1,4 @@
-import React , { useState , useEffect } from 'react';
+import React , { useState , useEffect , useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useSpring , animated as a } from 'react-spring';
 
@@ -52,6 +52,7 @@ const toGradStr = arr => `linear-gradient(to right, ${arr.join(", ")})`;
 
 export default function Notification(props){
   const [shouldUnmount,setShouldUnmount] = useState(false);
+  const isTransitioning = useRef(false);
   const {
     body, alertType,
     timeout, timeoutColor,
@@ -71,8 +72,10 @@ export default function Notification(props){
   });
   const Badge = variantIcon[alertType];
   useEffect(() => {
-    if(shouldUnmount)
+    if(shouldUnmount && !isTransitioning.current){
+      isTransitioning.current = true;
       closeAlert();
+    }
     return () => setShouldUnmount(false);
   },[shouldUnmount,closeAlert]);
   return (
