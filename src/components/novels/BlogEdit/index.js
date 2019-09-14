@@ -279,29 +279,7 @@ function BlogEdit(props){
   }
 
   const { h1:titleSize } = useTitleSize();
-  // --- New Method ---
-  // const {
-  //   snapshots: [snapshots,setSnapshots], // Needs custom handlers
-  //   title: [blogTitle,,blogTitleHandlers],
-  //   snippit: [blogSnippit,,blogSnippitHandlers],
-  //   date: [blogDate,setBlogDate], // Needs custom handlers
-  //   series: [blogSeries,,blogSeriesHandlers],
-  //   tags: [blogTags,setBlogTags], // Needs custom handlers
-  //   isPublic: [isPublic,setIsPublic], // Needs custom handlers
-  //   displayHeading: [displayHeading,setDisplayHeading], // Needs custom handlers
-  //   body: [blogText,setBlogText] // Needs custom handlers
-  // } = useDocReducer('posts',getPostId(props),[
-  //   'snapshots', 'title', 'snippit',
-  //   {
-  //     key: 'date',
-  //     transform: date =>
-  //       new Date(date.toDate())
-  //           .toISOString()
-  //           .slice(0,-1)
-  //   },
-  //   'series', 'tags', 'isPublic',
-  //   'displayHeading', 'body'
-  // ]);
+  
   // --- Incoming ---
   const postId = getPostId(props);
   const { user } = useRHook();

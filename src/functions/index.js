@@ -1,5 +1,10 @@
 import { navItems } from 'config';
 
+export const inlineLog = (log,callback) => {
+  console.log(log);
+  return callback();
+}
+
 export const searchObject = (obj,value) => {
   Object.keys(obj).forEach((key,index) => {
     if(obj[key] === value)
