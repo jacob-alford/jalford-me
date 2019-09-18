@@ -23,10 +23,12 @@ export default function Holder(props){
     justify = 'center',
     align = 'center',
     style,
-    wrap = 'wrap'
+    wrap = 'wrap',
+    className
   } = props;
   return (
     <div
+      className={className}
       style={{
         ...styles.container,
         ...style,

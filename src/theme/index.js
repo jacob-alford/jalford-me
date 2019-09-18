@@ -1,3 +1,4 @@
+import themeHook from './themeHook';
 const theme = {
   header:{
     link:{
@@ -30,6 +31,9 @@ const theme = {
     },
     light:{
       color:'#ffffff'
+    },
+    gray:{
+      color:'rgba(0,0,0,.69)'
     }
   }
 }
@@ -45,6 +49,7 @@ const getters = {
   getInlineLink: () => theme.link.actionable,
   getDarkText: () => theme.text.dark.color,
   getLightText: () => theme.text.light.color,
+  getGrayText: () => theme.text.gray.color,
   getHeader: () => theme.header,
   getHeaderLink: () => theme.header.link,
   getHeaderBg: () => theme.header.background,
@@ -76,6 +81,6 @@ const themeSelect = grabbers => {
   });
 }
 
-export { themeSelect };
+export { themeSelect , themeHook };
 
 export default themeConstruct;

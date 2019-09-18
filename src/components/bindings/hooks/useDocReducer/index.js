@@ -23,7 +23,7 @@ const reducer = (state,action) => {
   try{
     return actions[type](state,{key,data});
   }catch(error){
-    throw new Error(`Unable to reduce.  It is likely a call to an unknown reducer! err: ${error}`);
+    throw new Error(`Unable to reduce.  It is likely a call to an unknown reducer! type: ${type}; err: ${error}`);
   }
 }
 
