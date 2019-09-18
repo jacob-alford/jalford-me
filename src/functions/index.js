@@ -125,8 +125,8 @@ export const validatePassword = password => {
   }
 }
 
-export const validateUsername = password => {
-  return true;
+export const validateUsername = username => {
+  return username.length > 2;
 }
 
 export const randomColor = () => {

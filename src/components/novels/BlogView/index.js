@@ -1,4 +1,4 @@
-import React from 'react';
+import React , { useMemo } from 'react';
 import Markdown from 'react-markdown';
 
 import Container from '@material-ui/core/Container';
@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 
 import Comment from 'components/words/Comment';
+import NewComment from 'components/words/NewComment';
 
 import withPageFade from 'components/bindings/wrappers/withPageFade';
 
@@ -20,6 +21,8 @@ import getPostId from './selectors.js';
 
 import markdownConfig from 'helpers/blogParse.js';
 import { katexMarkdown } from 'helpers/blogParse.js';
+
+import { strctureComments } from './commentStructure.js';
 
 const styles = {
   header:{
@@ -64,81 +67,54 @@ const NotFoundPlaceholder = () => (
   </Typography>
 );
 
-const tempCommentDefault = {
+const newComments = {
   user:{
     image:'https://jalford.me/assets/me/JA_Pro_Square_web.jpg',
     username:'Jacob'
   },
-  comment:{
-    body:"Lady running down to the riptide taken away to the dark side, I want to be your left hand man, I got a lump in my throat cus you gonna sing the words wolf",
-    comments:[
-      {
-        body:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        user:{
-          image:'https://jalford.me/assets/me/JA_Pro_Square_web.jpg',
-          username:'Bob or something'
-        },
-        depth:5,
-        comments:[
-          {
-            body:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            user:{
-              image:'https://jalford.me/assets/me/JA_Pro_Square_web.jpg',
-              username:'Bob or something'
-            },
-            depth:2,
-            comments:[
-
-            ]
-          },
-          {
-            body:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            user:{
-              image:'https://jalford.me/assets/me/JA_Pro_Square_web.jpg',
-              username:'Bob or something'
-            },
-            depth:2,
-            comments:[
-              {
-                body:"Hi.",
-                user:{
-                  image:'https://jalford.me/assets/me/JA_Pro_Square_web.jpg',
-                  username:'Bob or something'
-                },
-                depth:3,
-                comments:[
-                  {
-                    body:"Hi.",
-                    user:{
-                      image:'https://jalford.me/assets/me/JA_Pro_Square_web.jpg',
-                      username:'Bob or something'
-                    },
-                    depth:4,
-                    comments:[
-
-                    ]
-                  },
-                  {
-                    body:"Hi.",
-                    user:{
-                      image:'https://jalford.me/assets/me/JA_Pro_Square_web.jpg',
-                      username:'Bob or something'
-                    },
-                    depth:1,
-                    comments:[
-
-                    ]
-                  }
-                ]
-              }
-            ],
-          }
-        ]
+  comments:[
+    {
+      body:'comment1',
+      depth:0,
+      id:0,
+      user:{
+        username:'Jacob',
+        uid:'abc'
       }
-    ],
-    depth:0
-  }
+    },
+    {
+      body:'comment2',
+      depth:1,
+      id:1,
+      parentId:0,
+      user:{
+        username:'Raul',
+        uid:'def'
+      }
+    },
+    {
+      body:'comment3',
+      depth:2,
+      id:2,
+      parentId:1,
+      user:{
+        username:'Ryan',
+        uid:'ghi'
+      }
+    },
+    {
+      body:'comment4',
+      depth:3,
+      id:3,
+      parentId:2,
+      user:{
+        username:'James',
+        uid:'jkl'
+      }
+    },
+  ]
 }
+const comments = strctureComments(newComments.comments);
 
 function BlogView(props){
   const postId = getPostId(props);
@@ -147,7 +123,10 @@ function BlogView(props){
   const { h1:titleSize } = useTitleSize();
   return (
     <React.Fragment>
-      <Comment {...tempCommentDefault}/>
+      <NewComment user={user} />
+      {comments.map((comment,index) => (
+        <Comment key={`commentTopLevel${index}`} user={newComments.user} comment={comment}/>
+      ))}
       <Grid container justify="center">
         <Container style={styles.container}>
           <Paper style={styles.sheet}>
