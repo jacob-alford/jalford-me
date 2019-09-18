@@ -1,14 +1,14 @@
 import { useState , useEffect } from 'react';
 import { firebase } from 'firebase.js';
 
-export default function usePostConnect(id){
+export default function useComments(id){
   const [isLoading,setIsLoading] = useState(true);
   const [postData,setPostData] = useState(null);
   const [error, setError] = useState(null);
   useEffect(() => {
     const db = firebase.firestore();
-    const post = db.collection("posts").doc(id);
-    const unsubscribe = post.onSnapshot(doc => {
+    const postComments = db.collection("postComments").doc(id);
+    const unsubscribe = postComments.onSnapshot(doc => {
       if(doc.exists){
         setPostData(doc.data());
       }else{
@@ -24,5 +24,10 @@ export default function usePostConnect(id){
     if((postData || error) && postData && postData.uid !== id)
       setIsLoading(true);
   },[id,postData,error]);
-  return { isLoading , postData , error };
+  return {
+    isLoading,
+    comments:
+      (postData && postData.comments) || [],
+    error
+  };
 }

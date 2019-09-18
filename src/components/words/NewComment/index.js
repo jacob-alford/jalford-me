@@ -6,60 +6,56 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Holder from 'components/words/Holder';
-
-import { themeHook } from 'theme';
+import Loader from 'components/words/Loader';
 
 import useRHook from 'components/bindings/hooks/useRHook';
 
+import { themeHook } from 'theme';
+
 const useClasses = themeHook({
-  holder:{
-    color:'black',
-    marginTop:'14px'
-  },
-  card:{
-    width:'100%'
-  },
-  title:{
-    textAlign:'center'
+  loginMessage:{
+    color:'rgba(0,0,0,.64)',
+    marginTop:'8px'
   }
 });
 
-export default function NewComment(){
-  const [commentText,setCommentText] = useState("");
-  const handleCommentEdit = evt => setCommentText(evt.target.value);
+export default function NewComment(props){
+  const { addComment } = props;
   const { user , userLoading } = useRHook();
+  const [commentText,setCommentText] = useState("");
   const classes = useClasses();
+  const handleCommentEdit = evt => setCommentText(evt.target.value);
+  if(userLoading) return <Loader />;
   return (
-    <Card className={classes.card}>
+    <Card>
       <CardContent>
-        <Holder className={classes.holder}>
-          {(userLoading) ? <CircularProgress />
-         : (!user.loggedIn) ? (
-            <Typography variant="body2">
-              You must log in first!
+        <Holder>
+         {(!user.loggedIn) ? (
+            <Typography variant="body1" className={classes.loginMessage}>
+              log in to post a comment
             </Typography>
-           ) : (
-            <React.Fragment>
-              <Typography variant="h3" className={classes.title}>
-                New Comment
-              </Typography>
-              <TextField
-                multiline
-                fullWidth
-                onChange={handleCommentEdit}
-                value={commentText} />
-            </React.Fragment>
-           )}
+          ) : (
+            <TextField
+              multiline
+              fullWidth
+              label="New Comment"
+              onChange={handleCommentEdit}
+              value={commentText} />
+          )}
         </Holder>
       </CardContent>
-      <CardActions>
-        <Button color='primary' disabled={!user.loggedIn || userLoading}>
-          Submit
-        </Button>
-      </CardActions>
+      {(user.loggedIn) ? (
+        <CardActions>
+          <Button
+            color='primary'
+            disabled={!user.loggedIn}
+            onClick={() => addComment(commentText)}>
+            Submit
+          </Button>
+        </CardActions>
+      ) : null}
     </Card>
   );
 }

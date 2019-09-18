@@ -81,10 +81,14 @@ export default function CreatePostDialogue(props){
       setLoading(true);
       const db = firebase.firestore();
       const newPost = db.collection("posts").doc(slug);
+      const newPostComments = db.collection("postComments").doc(slug);
       newPost.get().then(doc => {
         if(doc.exists){
           setConflict(true);
         }else{
+          newPostComments.set({
+            comments:[]
+          });
           newPost.set({
             author:user.activeUser.username,
             body:"",
@@ -93,7 +97,6 @@ export default function CreatePostDialogue(props){
             isPublic:false,
             displayHeading:false,
             likes:[],
-            comments:[],
             owner:user.activeUser.uid,
             series:"default",
             snapshots:[],

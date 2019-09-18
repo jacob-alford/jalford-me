@@ -5,6 +5,9 @@ export const inlineLog = (log,callback) => {
   return callback();
 }
 
+export const getRandomUID =
+  () => (Math.random() * 10000000 | 0).toString(16);
+
 export const searchObject = (obj,value) => {
   Object.keys(obj).forEach((key,index) => {
     if(obj[key] === value)

@@ -9,14 +9,18 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import InputBase from '@material-ui/core/InputBase';
+import Modal from '@material-ui/core/Modal';
 
 import Holder from 'components/words/Holder';
 import CommentActions from './CommentActions.js';
+
+import NewComment from 'components/words/NewComment';
 
 import markdownConfig from 'helpers/blogParse.js';
 import { katexMarkdown } from 'helpers/blogParse.js';
 
 import { themeHook } from 'theme';
+
 
 const useClasses = themeHook(
   ['getGrayText','getDarkText'],
@@ -53,29 +57,52 @@ const useClasses = themeHook(
     },
     commyMarkdown:{
       width:'100%'
+    },
+    newCommentHolder:{
+      display:'flex',
+      alignItems:'center',
+      justifyContent:'center'
     }
   })
 );
 
 export default function Comment(props){
-  const [isEditing,setIsEditing] = useState(false);
+  const classes = useClasses(props);
   const {
     comment:{
       body,
       depth,
       comments,
-      user
-    }
+      user,
+      id:commentId
+    },
+    docId,
+    updateComment,
+    deleteComment,
+    permDelete,
+    addComment,
+    loggedUser
   } = props;
+  /* Edit Comment */
   const [bodyText,setBodyText] = useState(body);
   const handleBodyTextChange = evt => setBodyText(evt.target.value);
+  const [isEditing,setIsEditing] = useState(false);
   const handleEdit = () => setIsEditing(true);
-  const handleSave = () => setIsEditing(false);
+  const handleSave = () => {
+    updateComment(bodyText,commentId);
+    setIsEditing(false);
+  }
   const handleRevert = () => {
     setBodyText(body);
     setIsEditing(false);
   }
-  const classes = useClasses(props);
+  const handleDelete = () => deleteComment(commentId);
+  const handlePermDelete = () => permDelete(commentId);
+  /* Reply - Create */
+  const [isReplying,setIsReplying] = useState(false);
+  const handleDoReply = () => setIsReplying(true);
+  const handleCloseReply = () => setIsReplying(false);
+
   return (
     <React.Fragment>
       <Container className={classes.holderHolder}>
@@ -90,7 +117,7 @@ export default function Comment(props){
                   <Avatar src={user.image} />
                 ) : (
                   <Avatar>
-                    {user.username.substring(0,2)}
+                    {(user.username || "NA").substring(0,2)}
                   </Avatar>
                 )}
                 <Typography variant="h3" className={classes.user}>
@@ -99,10 +126,11 @@ export default function Comment(props){
               </Holder>
               <Holder direction="row">
                 <CommentActions
-                  activeUser={{uid:'ghi',permissions:{value:10}}}
+                  activeUser={loggedUser.activeUser}
                   commentUser={user}
                   edit={handleEdit}
-                  delete={val => val}
+                  remove={handleDelete}
+                  permDelete={handlePermDelete}
                   isEditing={isEditing}/>
               </Holder>
             </Holder>
@@ -121,8 +149,8 @@ export default function Comment(props){
             )}
           </CardContent>
           <CardActions>
-            {(depth < 6 && !isEditing) ? (
-              <Button size="small">Reply</Button>
+            {(depth < 6 && !isEditing && loggedUser.loggedIn) ? (
+              <Button size="small" onClick={handleDoReply}>Reply</Button>
             ) : null}
             {(isEditing) ? (
               <React.Fragment>
@@ -138,8 +166,31 @@ export default function Comment(props){
         </Card>
       </Container>
       {comments && comments.map((comment,index) => (
-        <Comment comment={comment} user={comment.user} key={`comment#${index}Depth${comment.depth}`}/>
+        <Comment
+          docId={docId}
+          updateComment={updateComment}
+          deleteComment={deleteComment}
+          permDelete={permDelete}
+          addComment={addComment}
+          loggedUser={loggedUser}
+          comment={comment}
+          user={comment.user}
+          key={`comment#${index}Depth${comment.depth}`}/>
       ))}
+      <Modal
+        className={classes.newCommentHolder}
+        open={isReplying}
+        onClose={handleCloseReply}
+        aria-labelledby="Comment Reply"
+        aria-describedby="Comment Reply">
+        <Container>
+          <NewComment
+            depth={depth}
+            docId={docId}
+            user={user}
+            addComment={text => addComment(depth + 1,text,commentId)}/>
+        </Container>
+      </Modal>
     </React.Fragment>
   );
 }
