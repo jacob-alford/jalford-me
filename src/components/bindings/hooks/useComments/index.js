@@ -3,14 +3,14 @@ import { firebase } from 'firebase.js';
 
 export default function useComments(id){
   const [isLoading,setIsLoading] = useState(true);
-  const [postData,setPostData] = useState(null);
+  const [comments,setComments] = useState(null);
   const [error, setError] = useState(null);
   useEffect(() => {
     const db = firebase.firestore();
     const postComments = db.collection("postComments").doc(id);
     const unsubscribe = postComments.onSnapshot(doc => {
       if(doc.exists){
-        setPostData(doc.data());
+        setComments(doc.data());
       }else{
         setError("Post not found!");
       }
@@ -18,16 +18,12 @@ export default function useComments(id){
     return () => unsubscribe();
   },[id]);
   useEffect(() => {
-    if(isLoading && ((postData && postData.uid === id) || error)) setIsLoading(false);
-  },[postData,isLoading,error,id]);
-  useEffect(() => {
-    if((postData || error) && postData && postData.uid !== id)
-      setIsLoading(true);
-  },[id,postData,error]);
+    if(isLoading && (comments || error)) setIsLoading(false);
+  },[comments,isLoading,error]);
   return {
     isLoading,
     comments:
-      (postData && postData.comments) || [],
+      (comments && comments.comments) || [],
     error
   };
 }

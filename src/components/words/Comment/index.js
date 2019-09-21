@@ -9,12 +9,9 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import InputBase from '@material-ui/core/InputBase';
-import Modal from '@material-ui/core/Modal';
 
 import Holder from 'components/words/Holder';
 import CommentActions from './CommentActions.js';
-
-import NewComment from 'components/words/NewComment';
 
 import markdownConfig from 'helpers/blogParse.js';
 import { katexMarkdown } from 'helpers/blogParse.js';
@@ -79,6 +76,7 @@ export default function Comment(props){
     docId,
     updateComment,
     deleteComment,
+    handleReply,
     permDelete,
     addComment,
     loggedUser
@@ -98,10 +96,7 @@ export default function Comment(props){
   }
   const handleDelete = () => deleteComment(commentId);
   const handlePermDelete = () => permDelete(commentId);
-  /* Reply - Create */
-  const [isReplying,setIsReplying] = useState(false);
-  const handleDoReply = () => setIsReplying(true);
-  const handleCloseReply = () => setIsReplying(false);
+  const handleDoReply = () => handleReply(depth + 1,commentId);
 
   return (
     <React.Fragment>
@@ -173,24 +168,11 @@ export default function Comment(props){
           permDelete={permDelete}
           addComment={addComment}
           loggedUser={loggedUser}
+          handleReply={handleReply}
           comment={comment}
           user={comment.user}
-          key={`comment#${index}Depth${comment.depth}`}/>
+          key={comment.id}/>
       ))}
-      <Modal
-        className={classes.newCommentHolder}
-        open={isReplying}
-        onClose={handleCloseReply}
-        aria-labelledby="Comment Reply"
-        aria-describedby="Comment Reply">
-        <Container>
-          <NewComment
-            depth={depth}
-            docId={docId}
-            user={user}
-            addComment={text => addComment(depth + 1,text,commentId)}/>
-        </Container>
-      </Modal>
     </React.Fragment>
   );
 }
