@@ -47,13 +47,11 @@ export default function CommentHolder(props){
 
   const permDelete = useCallback(commentId => {
     const db = firebase.firestore();
-    const docRef = db.collection('posts').doc(docId);
-    docRef.update({
-      [`comments.${commentId}`]:null
-    }).then(
+    const docRef = db.collection('posts').doc(docId).collection('comments').doc(commentId);
+    docRef.delete().then(
       () => notify({
         alertType:'info',
-        body:'Successfully deleted comment; Beware: child comments still present in database.'
+        body:`Successfully deleted comment; Beware: child comments still present in database, but won't appear in UI!`
       })
     ).catch(
       err => notify({
@@ -64,10 +62,10 @@ export default function CommentHolder(props){
   },[docId,notify]);
   const deleteComment = useCallback(commentId => {
     const db = firebase.firestore();
-    const docRef = db.collection('posts').doc(docId);
+    const docRef = db.collection('posts').doc(docId).collection('comments').doc(commentId);
     docRef.update({
-      [`comments.${commentId}.body`]:'*This comment has been deleted*',
-      [`comments.${commentId}.deleted`]:true
+      body:'*This comment has been deleted*',
+      deleted:true
     }).then(
       () => notify({
         alertType:'info',
@@ -82,9 +80,9 @@ export default function CommentHolder(props){
   },[docId,notify]);
   const updateComment = useCallback((newText,commentId) => {
     const db = firebase.firestore();
-    const docRef = db.collection('posts').doc(docId);
+    const docRef = db.collection('posts').doc(docId).collection('comments').doc(commentId);
     docRef.update({
-      [`comments.${commentId}.body`]:newText
+      body:newText
     }).then(
       () => notify({
         alertType:'info',
@@ -98,23 +96,20 @@ export default function CommentHolder(props){
     );
   },[docId,notify]);
   const addComment = useCallback((text,depth,parentId) => {
+    const commentId = getRandomUID();
     const db = firebase.firestore();
-    const docRef = db.collection('posts').doc(docId);
-    const commentID = getRandomUID();
-    docRef.update({
-      [`comments.${commentID}`]:{
-        depth,
-        parentId,
-        body:text,
-        id:commentID,
-        date:new Date(),
-        user:{
-          username:user.activeUser.username,
-          image:user.activeUser.image,
-          uid:user.activeUser.uid
-        }
+    const docRef = db.collection('posts').doc(docId).collection('comments').doc(commentId);
+    docRef.set({
+      depth,
+      parentId,
+      body:text,
+      id:commentId,
+      date:new Date(),
+      user:{
+        username:user.activeUser.username,
+        image:user.activeUser.image,
+        uid:user.activeUser.uid
       }
-
     }).then(
       () => notify({
         alertType:'success',

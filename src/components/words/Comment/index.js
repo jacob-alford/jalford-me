@@ -67,6 +67,8 @@ const useClasses = themeHook(
   })
 );
 
+const isAdmin = user => user && user.activeUser && user.activeUser.permissions && user.activeUser.permissions.value === 10;
+
 export default function Comment(props){
   const classes = useClasses(props);
   const {
@@ -112,7 +114,7 @@ export default function Comment(props){
         ))}
         <Card className={classes.card}>
           <CardContent>
-            {(!deleted) ? (
+            {(!deleted || isAdmin(loggedUser)) ? (
               <Holder direction="row" justify="space-between">
                 <Holder direction="row" justify="flex-start">
                   {(user.image) ? (

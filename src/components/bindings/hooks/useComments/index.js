@@ -10,13 +10,13 @@ export default function useComments(id){
   const gottenComments = useMemo(() => comments && transformComments(comments),[comments]);
   useEffect(() => {
     const db = firebase.firestore();
-    const postComments = db.collection("posts").doc(id);
-    const unsubscribe = postComments.onSnapshot(doc => {
-      if(doc.exists){
-        setComments(doc.data().comments);
-      }else{
-        setError("Post not found!");
-      }
+    const postComments = db.collection("posts").doc(id).collection("comments");
+    const unsubscribe = postComments.onSnapshot(docs => {
+      const comments = [];
+      docs.forEach(doc => {
+        comments.push(doc.data());
+      });
+      setComments(comments);
     }, error => setError(error));
     return () => unsubscribe();
   },[id]);
