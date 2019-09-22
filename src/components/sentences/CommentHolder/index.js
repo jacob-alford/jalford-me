@@ -2,6 +2,7 @@ import React , { useMemo , useState , useCallback } from 'react';
 
 import Container from '@material-ui/core/Container';
 import Modal from '@material-ui/core/Modal';
+import Typography from '@material-ui/core/Typography';
 
 import Comment from 'components/words/Comment';
 import NewComment from 'components/words/NewComment';
@@ -17,32 +18,23 @@ import { getRandomUID } from 'functions';
 
 import { themeHook } from 'theme';
 
-const getTopMostParentId = (comments,id,topMostParentDepth) => {
-  const { depth , id:newId , parentId } = comments.find(comment => comment.id === id);
-  if(!depth || depth === topMostParentDepth) return newId;
-  else return getTopMostParentId(comments,parentId,topMostParentDepth);
-}
-
-const removeParentAndChildren = (comments,topMostParentId) => {
-  const topParentDepth = comments.find(comment => comment.id === topMostParentId).depth;
-  return comments.filter(comment =>
-       comment.id !== topMostParentId
-    && comment.parentId !== topMostParentId
-    && getTopMostParentId(comments,comment.id,topParentDepth) !== topMostParentId
-  );
-}
-
 const useClasses = themeHook({
   newCommentHolder:{
     display:'flex',
     alignItems:'center',
     justifyContent:'center'
+  },
+  beTheFirst:{
+    color:'rgba(255,255,255,.6)',
+    marginTop:'16px',
+    textAlign:'center',
+    fontSize:'1.46rem'
   }
 });
 
 export default function CommentHolder(props){
   const { user , docId } = props;
-  const { comments } = useComments(docId);
+  const { comments , isLoading } = useComments(docId);
   const mappedComments = useMemo(
     () => strctureComments(comments),[comments]
   );
@@ -55,16 +47,13 @@ export default function CommentHolder(props){
 
   const permDelete = useCallback(commentId => {
     const db = firebase.firestore();
-    const docRef = db.collection('postComments').doc(docId);
-    const newComments = removeParentAndChildren(comments,commentId);
+    const docRef = db.collection('posts').doc(docId);
     docRef.update({
-      comments:[
-        ...newComments
-      ]
+      [`comments.${commentId}`]:null
     }).then(
       () => notify({
         alertType:'info',
-        body:'Successfully deleted comment and children'
+        body:'Successfully deleted comment; Beware: child comments still present in database.'
       })
     ).catch(
       err => notify({
@@ -72,24 +61,17 @@ export default function CommentHolder(props){
         body:err.toString()
       })
     );
-  },[docId,comments,notify]);
+  },[docId,notify]);
   const deleteComment = useCallback(commentId => {
     const db = firebase.firestore();
-    const docRef = db.collection('postComments').doc(docId);
-    const itemToUpdate = comments.find(comment => comment.id === commentId);
-    const newComments = comments.filter(comment => comment.id !== commentId);
+    const docRef = db.collection('posts').doc(docId);
     docRef.update({
-      comments:[
-        ...newComments,
-        {
-          ...itemToUpdate,
-          body:'*This comment has been deleted*'
-        }
-      ]
+      [`comments.${commentId}.body`]:'*This comment has been deleted*',
+      [`comments.${commentId}.deleted`]:true
     }).then(
       () => notify({
         alertType:'info',
-        body:'Successfully deleted comment.'
+        body:'Successfully deleted comment, reload the page to observe the effect.'
       })
     ).catch(
       err => notify({
@@ -97,20 +79,12 @@ export default function CommentHolder(props){
         body:err.toString()
       })
     );
-  },[docId,comments,notify]);
+  },[docId,notify]);
   const updateComment = useCallback((newText,commentId) => {
     const db = firebase.firestore();
-    const docRef = db.collection('postComments').doc(docId);
-    const itemToUpdate = comments.find(comment => comment.id === commentId);
-    const newComments = comments.filter(comment => comment.id !== commentId);
+    const docRef = db.collection('posts').doc(docId);
     docRef.update({
-      comments:[
-        ...newComments,
-        {
-          ...itemToUpdate,
-          body:newText
-        }
-      ]
+      [`comments.${commentId}.body`]:newText
     }).then(
       () => notify({
         alertType:'info',
@@ -122,25 +96,25 @@ export default function CommentHolder(props){
         body:err.toString()
       })
     );
-  },[docId,comments,notify]);
+  },[docId,notify]);
   const addComment = useCallback((text,depth,parentId) => {
     const db = firebase.firestore();
-    const docRef = db.collection('postComments').doc(docId);
+    const docRef = db.collection('posts').doc(docId);
+    const commentID = getRandomUID();
     docRef.update({
-      comments:[
-        ...comments,
-        {
-          body:text,
-          depth:depth,
-          id:getRandomUID(),
-          parentId,
-          user:{
-            username:user.activeUser.username,
-            image:user.activeUser.image,
-            uid:user.activeUser.uid
-          }
+      [`comments.${commentID}`]:{
+        depth,
+        parentId,
+        body:text,
+        id:commentID,
+        date:new Date(),
+        user:{
+          username:user.activeUser.username,
+          image:user.activeUser.image,
+          uid:user.activeUser.uid
         }
-      ]
+      }
+
     }).then(
       () => notify({
         alertType:'success',
@@ -152,7 +126,7 @@ export default function CommentHolder(props){
         body:err.toString()
       })
     );
-  },[docId,comments,user,notify]);
+  },[docId,user,notify]);
 
   return(
     <React.Fragment>
@@ -174,6 +148,11 @@ export default function CommentHolder(props){
           depth={0}
           docId={docId}
           addComment={text => addComment(text,0,null)}/>
+        {(mappedComments && !isLoading && mappedComments.length === 0) ? (
+          <Typography paragraph variant="body2" className={classes.beTheFirst}>
+            be the first to comment
+          </Typography>
+        ) : null}
         {mappedComments.map((comment,index) => (
           <Comment
             key={comment.id}

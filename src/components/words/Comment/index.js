@@ -59,6 +59,10 @@ const useClasses = themeHook(
       display:'flex',
       alignItems:'center',
       justifyContent:'center'
+    },
+    date:{
+      fontSize:'.75rem',
+      color:'rgba(0,0,0,.69)'
     }
   })
 );
@@ -71,6 +75,8 @@ export default function Comment(props){
       depth,
       comments,
       user,
+      date,
+      deleted,
       id:commentId
     },
     docId,
@@ -106,29 +112,38 @@ export default function Comment(props){
         ))}
         <Card className={classes.card}>
           <CardContent>
-            <Holder direction="row" justify="space-between">
-              <Holder direction="row" justify="flex-start">
-                {(user.image) ? (
-                  <Avatar src={user.image} />
-                ) : (
-                  <Avatar>
-                    {(user.username || "NA").substring(0,2)}
-                  </Avatar>
-                )}
-                <Typography variant="h3" className={classes.user}>
-                  {user.username}
-                </Typography>
+            {(!deleted) ? (
+              <Holder direction="row" justify="space-between">
+                <Holder direction="row" justify="flex-start">
+                  {(user.image) ? (
+                    <Avatar src={user.image} />
+                  ) : (
+                    <Avatar>
+                      {(user.username || "NA").substring(0,2)}
+                    </Avatar>
+                  )}
+                  <Typography variant="h3" className={classes.user}>
+                    {user.username}
+                  </Typography>
+                </Holder>
+                <Holder>
+                  {(date) ? (
+                    <Typography variant="body1" className={classes.date}>
+                      {date.toDate().toLocaleString("default",{year: 'numeric', month: '2-digit', day: 'numeric',hour:'numeric',minute:'numeric',second:'numeric'})}
+                    </Typography>
+                  ) : null}
+                </Holder>
+                <Holder direction="row">
+                  <CommentActions
+                    activeUser={loggedUser.activeUser}
+                    commentUser={user}
+                    edit={handleEdit}
+                    remove={handleDelete}
+                    permDelete={handlePermDelete}
+                    isEditing={isEditing}/>
+                </Holder>
               </Holder>
-              <Holder direction="row">
-                <CommentActions
-                  activeUser={loggedUser.activeUser}
-                  commentUser={user}
-                  edit={handleEdit}
-                  remove={handleDelete}
-                  permDelete={handlePermDelete}
-                  isEditing={isEditing}/>
-              </Holder>
-            </Holder>
+            ) : null}
             {(isEditing) ? (
               <Holder className={classes.bodyHolder}>
                 <InputBase
@@ -144,7 +159,7 @@ export default function Comment(props){
             )}
           </CardContent>
           <CardActions>
-            {(depth < 6 && !isEditing && loggedUser.loggedIn) ? (
+            {(depth < 6 && !isEditing && loggedUser.loggedIn && !deleted) ? (
               <Button size="small" onClick={handleDoReply}>Reply</Button>
             ) : null}
             {(isEditing) ? (

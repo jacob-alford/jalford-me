@@ -17,7 +17,8 @@ import { themeHook } from 'theme';
 const useClasses = themeHook({
   loginMessage:{
     color:'rgba(0,0,0,.64)',
-    marginTop:'8px'
+    marginTop:'8px',
+    textAlign:'center'
   }
 });
 
@@ -37,12 +38,19 @@ export default function NewComment(props){
               log in to post a comment
             </Typography>
           ) : (
-            <TextField
-              multiline
-              fullWidth
-              label="New Comment"
-              onChange={handleCommentEdit}
-              value={commentText} />
+            <React.Fragment>
+              <TextField
+                multiline
+                fullWidth
+                label="New Comment"
+                onChange={handleCommentEdit}
+                value={commentText} />
+              <Typography variant="body1" className={classes.loginMessage}>
+                **<strong>[bold]</strong>** —
+                *<i>[italic]</i>* —
+                ~~<strike>[strikethrough]</strike>~~
+              </Typography>
+            </React.Fragment>
           )}
         </Holder>
       </CardContent>
@@ -50,7 +58,7 @@ export default function NewComment(props){
         <CardActions>
           <Button
             color='primary'
-            disabled={!user.loggedIn}
+            disabled={!user.loggedIn || commentText === ""}
             onClick={() => addComment(commentText)}>
             Submit
           </Button>
