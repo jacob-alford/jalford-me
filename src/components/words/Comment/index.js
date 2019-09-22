@@ -64,7 +64,8 @@ const useClasses = themeHook(
     },
     date:{
       fontSize:'.75rem',
-      color:'rgba(0,0,0,.69)'
+      color:'rgba(0,0,0,.69)',
+      marginTop:'5px'
     }
   })
 );
