@@ -23,7 +23,7 @@ const useClasses = themeHook({
 });
 
 export default function NewComment(props){
-  const { addComment } = props;
+  const { addComment , closeModal = val => val } = props;
   const { user , userLoading } = useRHook();
   const [commentText,setCommentText] = useState("");
   const classes = useClasses();
@@ -59,7 +59,10 @@ export default function NewComment(props){
           <Button
             color='primary'
             disabled={!user.loggedIn || commentText === ""}
-            onClick={() => addComment(commentText)}>
+            onClick={() => {
+              addComment(commentText);
+              closeModal();
+            }}>
             Submit
           </Button>
         </CardActions>

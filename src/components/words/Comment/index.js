@@ -1,6 +1,8 @@
 import React , { useState } from 'react';
 import Markdown from 'react-markdown';
 
+import { useTransition , animated as a } from 'react-spring';
+
 import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -106,6 +108,30 @@ export default function Comment(props){
   const handlePermDelete = () => permDelete(commentId);
   const handleDoReply = () => handleReply(depth + 1,commentId);
 
+  const subcommentTrail = useTransition(
+    comments || [],
+    comment => comment.id,
+    {
+      config:{
+        mass: 5,
+        tension: 2000,
+        friction: 200
+      },
+      initial: {
+        transform: 'scale3d(1,1,1)'
+      },
+      from: {
+        transform: 'scale3d(1,0,1)'
+      },
+      enter: {
+        transform: 'scale3d(1,1,1)'
+      },
+      leave: {
+        transform: 'scale3d(1,0,1)'
+      }
+    }
+  );
+
   return (
     <React.Fragment>
       <Container className={classes.holderHolder}>
@@ -177,19 +203,23 @@ export default function Comment(props){
           </CardActions>
         </Card>
       </Container>
-      {comments && comments.map((comment,index) => (
-        <Comment
-          docId={docId}
-          updateComment={updateComment}
-          deleteComment={deleteComment}
-          permDelete={permDelete}
-          addComment={addComment}
-          loggedUser={loggedUser}
-          handleReply={handleReply}
-          comment={comment}
-          user={comment.user}
-          key={comment.id}/>
-      ))}
+      {subcommentTrail.map(({item:comment,key,props:newStyles}) => (
+        <a.div
+          key={key}
+          style={newStyles}>
+          <Comment
+            docId={docId}
+            updateComment={updateComment}
+            deleteComment={deleteComment}
+            permDelete={permDelete}
+            addComment={addComment}
+            loggedUser={loggedUser}
+            handleReply={handleReply}
+            comment={comment}
+            user={comment.user}
+            key={comment.id}/>
+        </a.div>
+        ))}
     </React.Fragment>
   );
 }

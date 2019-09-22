@@ -10,7 +10,10 @@ export default function useComments(id){
   const gottenComments = useMemo(() => comments && transformComments(comments),[comments]);
   useEffect(() => {
     const db = firebase.firestore();
-    const postComments = db.collection("posts").doc(id).collection("comments");
+    const postComments = db.collection("posts")
+                           .doc(id)
+                           .collection("comments")
+                           .orderBy('date','desc');
     const unsubscribe = postComments.onSnapshot(docs => {
       const comments = [];
       docs.forEach(doc => {
