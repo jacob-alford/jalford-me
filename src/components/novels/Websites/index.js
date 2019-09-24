@@ -9,6 +9,7 @@ import SurfShackPizza from './SurfShackPizza';
 import IceCaves from './IceCaves';
 import StuderDreams from './StuderDreams';
 import HaloLink from './HaloLink';
+import WordPressMe from './WordPressMe';
 
 import withPageFade from 'components/bindings/wrappers/withPageFade';
 
@@ -21,6 +22,7 @@ function Websites(){
       <OldWebsite />
       <LaBellaVita />
       <StuderDreams />
+      <WordPressMe />
       <IceCaves />
       <Jalfordco />
       <OldJalfordMe />

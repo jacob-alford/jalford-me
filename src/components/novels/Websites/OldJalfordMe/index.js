@@ -15,8 +15,7 @@ export default function OldJalfordMe(){
       tagline='(Really just copying Squarespace)'
       year='(late 2018)'
       action={{
-        text:'Live Demo',
-        href:'https://jalford.me/'
+        disabled:true
       }}
       image={{
         source:jalfordMe,
