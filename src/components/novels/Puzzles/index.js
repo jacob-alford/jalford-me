@@ -1,34 +1,27 @@
 import React from 'react';
 
-import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import PuzzleCard from './PuzzleCard';
+
+import Holder from 'components/words/Holder';
+
+import puzzleListings from './puzzleListing.js';
 
 import withPageFade from 'components/bindings/wrappers/withPageFade';
 
-import themeConstruct from 'theme';
+import useRHook from 'components/bindings/hooks/useRHook';
 
-const styles = themeConstruct(
-  ['getPaperPadding','getMajorSpacing'],
-  ([paperPadding,majorSpacing]) => ({
-    paper:{
-      marginTop:majorSpacing,
-      padding:paperPadding,
-      textAlign:'center'
-    }
-  })
-);
+const getPuzzles = user => (user && user.activeUser && user.activeUser.puzzles) || [];
 
 function Puzzles(){
+  const { user } = useRHook();
   return (
-    <Container>
-      <Paper style={styles.paper}>
-        <Typography variant="h4">
-          No puzzles yet!  Check back soon <span role="img" aria-label="smiley face">🙂</span>
-        </Typography>
-      </Paper>
-    </Container>
+    <Holder direction="row">
+      {Object.values(puzzleListings).map(({emoji,difficulty,link,uid}) => (
+        <PuzzleCard completed={getPuzzles(user).includes(uid)} difficulty={difficulty} emoji={emoji} key={link} link={link} />
+      ))}
+    </Holder>
   );
 }
 
 export default withPageFade(Puzzles);
+export { puzzleListings };

@@ -24,6 +24,9 @@ const Blog = React.lazy(() => import('./components/novels/Blog'));
 const Home = React.lazy(() => import('./components/novels/Home'));
 const RPN = React.lazy(() => import('./components/novels/Projects/RPN'));
 
+/* Puzzles */
+const Puzzle1 = React.lazy(() => import('./components/novels/Puzzles/PuzzlePages/Puzzle1'));
+
 const styles = {
   button:{
     color:"rgba(255,255,255,1)",
@@ -72,7 +75,14 @@ export default function App() {
             <UserSettings />
             <BlogBar context="inUser" breadcrumb={{link:'/user',label:'User'}}/>
           </Route>
-          <Route exact path="/puzzles" component={Puzzles} />
+          <Route exact path="/puzzles/19-2-22">
+            <Puzzle1 />
+            <BlogBar context="inPuzzles" breadcrumb={{link:'/puzzles',label:'Puzzle'}}/>
+          </Route>
+          <Route exact path="/puzzles">
+            <Puzzles />
+            <BlogBar context="inPuzzles" breadcrumb={{link:'/puzzles',label:'Puzzles'}}/>
+          </Route>
           <Route exact path="/about" component={About} />
           <Route exact path="/posts/view/:postId" children={props => {
             const { match , history } = props;

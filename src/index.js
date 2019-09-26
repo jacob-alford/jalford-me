@@ -37,7 +37,8 @@ const Root = () => {
                 image:userData.image,
                 likes:userData.likes,
                 permissions:userData.permissions,
-                username:userData.username
+                username:userData.username,
+                puzzles:userData.puzzles
               }
             });
           }else{

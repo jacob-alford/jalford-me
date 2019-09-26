@@ -100,7 +100,8 @@ export default function SignupForm(props){
           },
           icon:"person",
           image:null,
-          uid:user.uid
+          uid:user.uid,
+          puzzles:[]
         }).then(function(docRef) {
           notifyError({
             body:"Account successfully created!",

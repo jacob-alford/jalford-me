@@ -14,7 +14,8 @@ const actions = {
       image:user.image,
       likes:user.likes,
       permissions:user.permissions,
-      username:user.username
+      username:user.username,
+      puzzles:user.puzzles
     }
   }),
   [actors.logout]: ({user:userState}) => ({
@@ -28,7 +29,8 @@ const actions = {
       image:null,
       likes:null,
       permissions:0,
-      username:null
+      username:null,
+      puzzles:[]
     }
   })
 }
@@ -43,7 +45,8 @@ const defaultUserState = {
       image:null,
       likes:null,
       permissions:0,
-      username:null
+      username:null,
+      puzzles:[]
     }
   }
 }
