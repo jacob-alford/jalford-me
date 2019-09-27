@@ -3,6 +3,7 @@ import React , { useReducer , useState , useEffect , useCallback } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import Holder from 'components/words/Holder';
@@ -81,6 +82,7 @@ function Puzzle1(){
   const [hint2Valid,setHint2Valid] = useState(null);
   const [hint3Valid,setHint3Valid] = useState(null);
   const classes = useClasses();
+  const shuffle = () => actOnPuzzleState({type:'shuffle'});
   const checkCombo = useCallback(() => {
     const combo = puzzleState.join("_");
     const ciphers = getHintCiphers(puzzleData);
@@ -91,7 +93,7 @@ function Puzzle1(){
                            .toString(UTF8Enc);
         },false);
         if(Boolean(hintReturn)){
-          setHeading(`*You did it!`);
+          setHeading(`*${hintReturn}`);
         }else{
           setHeading(`#${getRandomIncorrect()}`);
         }
@@ -162,10 +164,15 @@ function Puzzle1(){
           </Holder>
         ))}
       </Holder>
-      <Holder>
-        <Button variant="outlined" className={classes.checkButton} onClick={checkCombo}>
-          Check
-        </Button>
+      <Holder direction="row">
+        <ButtonGroup className={classes.checkButton}>
+          <Button variant="outlined" onClick={checkCombo}>
+            Check
+          </Button>
+          <Button variant="outlined" onClick={shuffle}>
+            Shuffle
+          </Button>
+        </ButtonGroup>
       </Holder>
       <div className={strCat(classes.divider,classes.vertSpacing)} />
       <Holder className={classes.fieldHolder} direction="row">

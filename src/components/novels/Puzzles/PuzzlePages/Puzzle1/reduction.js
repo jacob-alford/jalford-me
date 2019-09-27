@@ -8,7 +8,7 @@ const comboBank = [
   "&tau;","&upsilon;","&phi;",
   "&chi;","&psi;","&omega;"
 ];
-const getRandomLetter = () => (Math.random() * 24) | 0
+const getRandomLetter = () => (Math.random() * 24) | 0;
 const initialState = [getRandomLetter(),getRandomLetter(),getRandomLetter()];
 const dec = value =>
   (value - 1 >= 0) ?
@@ -31,7 +31,8 @@ const actors = {
   outerInc:'outerInc',
   outerDec:'outerDec',
   rightInc:'rightInc',
-  rightDec:'rightDec'
+  rightDec:'rightDec',
+  shuffle:'shuffle'
 }
 const actions = {
   [actors.leftInc]:state => operate([...state],[0,1],inc),
@@ -39,7 +40,8 @@ const actions = {
   [actors.outerInc]:state => operate([...state],[0,2],inc),
   [actors.outerDec]:state => operate([...state],[0,2],dec),
   [actors.rightInc]:state => operate([...state],[1,2],inc),
-  [actors.rightDec]:state => operate([...state],[1,2],dec)
+  [actors.rightDec]:state => operate([...state],[1,2],dec),
+  [actors.shuffle]:() => [getRandomLetter(),getRandomLetter(),getRandomLetter()]
 }
 
 const reducer = (state,{index,type}) => {
