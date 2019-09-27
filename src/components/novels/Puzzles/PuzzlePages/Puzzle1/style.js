@@ -65,6 +65,12 @@ const useClasses = themeHook(
       marginBottom:majorSpacing,
       fontWeight:'lighter',
       textAlign:'center'
+    },
+    sucessSpan:{
+      color:'#357e37'
+    },
+    problemSpan:{
+      color:'#d32f2f'
     }
   })
 );

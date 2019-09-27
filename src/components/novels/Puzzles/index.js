@@ -16,7 +16,7 @@ function Puzzles(){
   const { user } = useRHook();
   return (
     <Holder direction="row">
-      {Object.values(puzzleListings).map(({emoji,difficulty,link,uid}) => (
+      {Object.values(puzzleListings).filter(({hidden}) => !hidden).map(({emoji,difficulty,link,uid}) => (
         <PuzzleCard completed={getPuzzles(user).includes(uid)} difficulty={difficulty} emoji={emoji} key={link} link={link} />
       ))}
     </Holder>

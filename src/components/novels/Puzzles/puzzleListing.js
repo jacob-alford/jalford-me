@@ -10,19 +10,21 @@ const puzzles = {
     emoji:"thinking_face",
     link:`/puzzles/${puzzleAccessors.feb22_19}`,
     difficulty:"hard",
-    uid:"aaaaaa"
+    uid:"19-2-22"
   },
   [puzzleAccessors.feb26_19]:{
     emoji:"eagle",
     link:puzzleAccessors.feb26_19,
     difficulty:"medium",
-    uid:"aaaaab"
+    uid:"aaaaab",
+    hidden:true
   },
   [puzzleAccessors.mar3_19]:{
     emoji:"selfie",
     link:puzzleAccessors.mar3_19,
     difficulty:"easy",
-    uid:"aaaaad"
+    uid:"aaaaad",
+    hidden:true
   }
 }
 

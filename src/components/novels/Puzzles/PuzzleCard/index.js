@@ -42,7 +42,8 @@ const useClasses = themeHook(
     },
     banner:{
       width:`${200 + 2 * parseInt(paperPadding,10) + 37}px`,
-      position:'absolute'
+      position:'absolute',
+      cursor:'pointer'
     },
     button:{
       color:'white',
@@ -60,7 +61,7 @@ export default function PuzzleCard(props){
     <Holder className={classes.paper} justify='space-between'>
       <div className={`em-svg em-${emoji} ${classes.icon}`} />
       {(completed) ? (
-        <img alt="success banner" src={banner} className={classes.banner}/>
+        <img alt="success banner" src={banner} className={classes.banner} onClick={() => history.push(link)}/>
       ) : null}
       <Button variant="outlined" disabled={completed} className={classes.button} onClick={() => history.push(link)}>
         {(completed) ? "solved" : "solve"}

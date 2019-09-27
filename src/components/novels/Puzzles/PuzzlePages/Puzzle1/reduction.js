@@ -8,10 +8,8 @@ const comboBank = [
   "&tau;","&upsilon;","&phi;",
   "&chi;","&psi;","&omega;"
 ];
-const initialState = [12,20,4];
- // 23 => psi,
- // 15 => omicron,
- // 11 => lamba
+const getRandomLetter = () => (Math.random() * 24) | 0
+const initialState = [getRandomLetter(),getRandomLetter(),getRandomLetter()];
 const dec = value =>
   (value - 1 >= 0) ?
     value - 1
