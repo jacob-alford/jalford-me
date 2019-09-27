@@ -48,7 +48,7 @@
             "type": "image/png"
         }
     ],
-    "start_url":".",
+    "start_url":"/",
     "theme_color": "#69beef",
     "background_color": "#212832",
     "display": "standalone"
