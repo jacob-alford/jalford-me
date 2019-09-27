@@ -5,7 +5,7 @@ import { ParallaxBanner } from 'react-scroll-parallax';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-import OpenWith from '@material-ui/icons/OpenWith';
+import PanTool from '@material-ui/icons/PanTool';
 
 import useColorAdapt from 'components/bindings/hooks/useColorAdapt';
 import useRedirect from 'components/bindings/hooks/useRedirect';
@@ -22,6 +22,8 @@ const styles = {
     left:'0',
     right:'0',
     bottom:'0',
+    width:'100vw',
+    height:'100%',
     display:'flex',
     flexWrap:'nowrap',
     flexDirection:'row',
@@ -60,7 +62,8 @@ const styles = {
     touchAction:'none'
   },
   circleEphemeral:{
-    opacity:.5
+    opacity:.5,
+    background:'rgba(0,0,0,.39)'
   },
   circleHolder:{
     height:'100%'
@@ -73,7 +76,10 @@ const styles = {
     position:'absolute',
     display:'flex',
     flexDirection:'column',
-    alignItems:'center'
+    justifyContent:'center',
+    alignItems:'center',
+    width:'75px',
+    height:'150px'
   },
   bgCanvas:{
     width:'100vw',
@@ -125,14 +131,15 @@ const ColorCircle = props => {
       onTouchStart={onTouchStart}
       draggable
       style={{...styles.colorCircle,borderColor:borderColor,backgroundColor:color}}>
-      <OpenWith style={{color:textColor}}/>
+      <PanTool style={{color:textColor}}/>
     </div>
   );
 };
 
 const getYTouchOffset = (touch1,touch2) => {
-  if(touch2.clientY && touch1.clientY)
+  if(touch2 && touch2.clientY && touch1 && touch1.clientY)
     return touch2.clientY - touch1.clientY;
+  else return 0;
 }
 
 const CircleHolder = props => {
@@ -251,10 +258,10 @@ const CircleHolder = props => {
       <a.div
         style={(!ephemeral) ?
               {...styles.circleGroup,
-                top:y.interpolate(newY => `calc(${newY}% - 26px)`)}
+                top:y.interpolate(newY => `calc(${newY}% - 101px)`)}
             : {...styles.circleGroup,
                ...styles.circleEphemeral,
-                top:y.interpolate(newY => `calc(${newY}% - 26px`)}}
+                top:y.interpolate(newY => `calc(${newY}% - 101px`)}}
         ref={touchHandlers.current[index]}
         onDragEnter={evt => handleDragOver(evt,visibleIndex)}
         onDragEnd={() => handleDragEnd(visibleIndex)}
