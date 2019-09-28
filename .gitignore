@@ -28,3 +28,4 @@ firebase.json
 firestore.indexes.json
 firestore.rules
 src/firebase.js
+public/publicAssets/Lamgods_open/*

@@ -14,10 +14,9 @@ const puzzles = {
   },
   [puzzleAccessors.feb26_19]:{
     emoji:"eagle",
-    link:puzzleAccessors.feb26_19,
+    link:`/puzzles/${puzzleAccessors.feb26_19}`,
     difficulty:"medium",
-    uid:"aaaaab",
-    hidden:true
+    uid:"19-2-26"
   },
   [puzzleAccessors.mar3_19]:{
     emoji:"selfie",

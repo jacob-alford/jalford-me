@@ -26,6 +26,7 @@ const RPN = React.lazy(() => import('./components/novels/Projects/RPN'));
 
 /* Puzzles */
 const Puzzle1 = React.lazy(() => import('./components/novels/Puzzles/PuzzlePages/Puzzle1'));
+const Puzzle2 = React.lazy(() => import('./components/novels/Puzzles/PuzzlePages/Puzzle2'));
 
 const styles = {
   button:{
@@ -77,6 +78,10 @@ export default function App() {
           </Route>
           <Route exact path="/puzzles/19-2-22">
             <Puzzle1 />
+            <BlogBar context="inPuzzles" breadcrumb={{link:'/puzzles',label:'Puzzle'}}/>
+          </Route>
+          <Route exact path="/puzzles/19-2-26">
+            <Puzzle2 headerIsOpen={headerIsOpen}/>
             <BlogBar context="inPuzzles" breadcrumb={{link:'/puzzles',label:'Puzzle'}}/>
           </Route>
           <Route exact path="/puzzles">
