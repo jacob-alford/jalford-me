@@ -9,13 +9,13 @@ const puzzles = {
   [puzzleAccessors.feb22_19]:{
     emoji:"thinking_face",
     link:`/puzzles/${puzzleAccessors.feb22_19}`,
-    difficulty:"hard",
+    difficulty:"medium",
     uid:"19-2-22"
   },
   [puzzleAccessors.feb26_19]:{
     emoji:"eagle",
     link:`/puzzles/${puzzleAccessors.feb26_19}`,
-    difficulty:"medium",
+    difficulty:"hard",
     uid:"19-2-26"
   },
   [puzzleAccessors.mar3_19]:{

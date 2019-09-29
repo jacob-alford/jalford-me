@@ -155,7 +155,7 @@ function Puzzle1(){
           <Holder key={`actionSet${index}`} className={`${classes.operatorHolder} ${classes[`bg${index + 1}`]}`} style={{margin:(screenTooSmall) ? "0px" : null}}>
             {btn.map((actBtn,subIndex) => (
               <React.Fragment key={`subActionSet${actBtn}`}>
-                <Button  style={{color:'rgba(255,255,255,1)'}} className={classes.btnOperator} onClick={() => actOnPuzzleState({type:actBtn})}>
+                <Button style={{color:'rgba(255,255,255,1)'}} className={classes.btnOperator} onClick={() => actOnPuzzleState({type:actBtn})}>
                   {(subIndex % 2 === 0) ? '+' : '-'}
                 </Button>
                 {(subIndex === 0) ? <div className={classes.divider} /> : null}
