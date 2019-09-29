@@ -20,6 +20,8 @@ import SHA3 from 'crypto-js/sha3';
 import AES from 'crypto-js/aes';
 import UTF8Enc from 'crypto-js/enc-utf8';
 
+import withPageFade from 'components/bindings/wrappers/withPageFade';
+
 import useClasses from './style.js';
 import usePuzzleConnect from '../usePuzzleConnect.js';
 import useRPuzzUpdate from '../useRPuzzUpdate.js';
@@ -67,7 +69,7 @@ const getHintCiphers = data => data && [
   data.hint4.cipher
 ];
 
-export default function Puzzle2(props){
+function Puzzle2(props){
   const [isLoading,setIsLoading] = useState(true);
   const [puzzleState,actOnPuzzleState] = useReducer(reducer,initialState);
   const { puzzleData } = usePuzzleConnect('19-2-26');
@@ -202,7 +204,7 @@ export default function Puzzle2(props){
                 <ListItemIcon>
                   <div className={`em-svg em-gb ${classes.icon}`} />
                 </ListItemIcon>
-                <ListItemText primary="The Great Charter of the Liberties" />
+                <ListItemText primary="The Great Charter of Liberties" />
               </ListItem>
               <ListItem>
                 <ListItemIcon>
@@ -311,3 +313,5 @@ export default function Puzzle2(props){
     </Holder>
   );
 }
+
+export default withPageFade(Puzzle2);

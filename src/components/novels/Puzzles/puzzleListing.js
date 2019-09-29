@@ -15,7 +15,7 @@ const puzzles = {
   [puzzleAccessors.feb26_19]:{
     emoji:"eagle",
     link:`/puzzles/${puzzleAccessors.feb26_19}`,
-    difficulty:"hard",
+    difficulty:"medium",
     uid:"19-2-26"
   },
   [puzzleAccessors.mar3_19]:{
