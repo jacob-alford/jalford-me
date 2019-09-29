@@ -79,7 +79,8 @@ const styles = {
     justifyContent:'center',
     alignItems:'center',
     width:'75px',
-    height:'150px'
+    height:'150px',
+    marginLeft:'-38px'
   },
   bgCanvas:{
     width:'100vw',

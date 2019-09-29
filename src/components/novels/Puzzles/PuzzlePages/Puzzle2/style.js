@@ -11,6 +11,9 @@ const useClasses = themeHook(
       boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.72)',
       marginTop:majorSpacing
     },
+    checkButton:{
+      marginTop:minorSpacing
+    },
     puzzleHolder:{
       width:'100vw',
       backgroundColor:'#71EEB8'

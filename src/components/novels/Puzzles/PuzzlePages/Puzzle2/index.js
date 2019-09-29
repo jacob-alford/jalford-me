@@ -22,7 +22,10 @@ import UTF8Enc from 'crypto-js/enc-utf8';
 
 import useClasses from './style.js';
 import usePuzzleConnect from '../usePuzzleConnect.js';
+import useRPuzzUpdate from '../useRPuzzUpdate.js';
 import useTitleSize from 'components/bindings/hooks/useTitleSize';
+import useNotify from 'components/bindings/hooks/useNotify';
+import useLock from 'components/bindings/hooks/useLock';
 
 import { detectMobile } from 'functions';
 
@@ -44,22 +47,37 @@ const getRandomIncorrect = date => [
   'INSERT WRONG MSG HERE','Eleventh message',
   'Just plane wrong.  Zoom'
 ][(Math.random() * 12) | 0];
+const getRandomSolIncorrect = () => [
+  `Don't you see the red?`,'What about all that red',
+  `I've heard the phrase seeing red, but give me a break`,
+  'One or more hints are incorrect', 'hints are wrong',
+  'in the wise words of Obi Wan Kanobe, make like a tree and the puzzle is wrong.'
+][(Math.random() * 12) | 0];
 
 const getH1Hash = data => data && data.hint1.hash;
 const getH2Hash = data => data && data.hint2.hash;
 const getH3Hash = data => data && data.hint3.hash;
+const getH4Hash = data => data && data.hint4.hash;
 
 const getPuzzleCipher = data => data && data.solution.cipher;
 const getHintCiphers = data => data && [
   data.hint1.cipher,
   data.hint2.cipher,
-  data.hint3.cipher
+  data.hint3.cipher,
+  data.hint4.cipher
 ];
 
 export default function Puzzle2(props){
   const [isLoading,setIsLoading] = useState(true);
   const [puzzleState,actOnPuzzleState] = useReducer(reducer,initialState);
-  const { puzzleData } = usePuzzleConnect('19-2-22');
+  const { puzzleData } = usePuzzleConnect('19-2-26');
+  const [notifyLock,lockNotifications] = useLock(false);
+
+  const setUserSuccess = useRPuzzUpdate('19-2-26');
+  const notify = useNotify({
+    timeout:Infinity,
+    alertType:'success'
+  });
 
   const [hint1Valid,setHint1Valid] = useState(null);
   const [hint2Valid,setHint2Valid] = useState(null);
@@ -71,7 +89,7 @@ export default function Puzzle2(props){
   const [hint3,setHint3] = useState("");
   const [hint4,setHint4] = useState("");
 
-  const [heading,setHeading] = useState("February 22");
+  const [heading,setHeading] = useState("February 26");
   const { h1:titleSize } = useTitleSize();
   const isMobile = useRef(detectMobile());
   const screenTooSmall = useMediaQuery('(max-width: 500px)');
@@ -98,22 +116,54 @@ export default function Puzzle2(props){
       viewer.current.addOnceHandler('open',() => setIsLoading(false));
     }
   },[]);
+  useEffect(() => {
+    if(hint1Valid && hint2Valid && hint3Valid && hint4Valid && !notifyLock){
+      try{
+        const solution = AES.decrypt(
+          getPuzzleCipher(puzzleData),`${hint1}${hint2}${hint3}${hint4}`
+        ).toString(UTF8Enc);
+        if(Boolean(solution)){
+          lockNotifications();
+          setHeading(`*You did it!`);
+          notify({
+            body:solution
+          });
+          setUserSuccess();
+        }
+        else setHeading(`#${getRandomSolIncorrect()}`);
+      }catch(err){
+        console.error(err);
+        setHeading(`#${getRandomSolIncorrect()}`);
+      }
+    }
+  },[
+    hint1Valid,hint2Valid,hint3Valid,hint4Valid,
+    hint1,hint2,hint3,hint4,
+    puzzleData,notify,
+    notifyLock,lockNotifications,
+    setUserSuccess
+  ]);
   const checkCombo = useCallback(() => {
     const combo = puzzleState.join("_");
     const ciphers = getHintCiphers(puzzleData);
     if(ciphers){
       try{
         const hintReturn = ciphers.reduce((acc,cipher) => {
-          return acc || AES.decrypt(cipher,combo)
-                           .toString(UTF8Enc);
+          try{
+            return acc || AES.decrypt(cipher,combo)
+                             .toString(UTF8Enc);
+          }catch(err){
+            return acc;
+          }
         },false);
         if(Boolean(hintReturn)){
           setHeading(`*${hintReturn}`);
         }else{
-          setHeading(`#${getRandomIncorrect()}`);
+          setHeading(`#${getRandomIncorrect(puzzleState.join(""))}`);
         }
       }catch(err){
-        setHeading(`#${getRandomIncorrect()}`);
+        console.log("error?",err);
+        setHeading(`#${getRandomIncorrect(puzzleState.join(""))}`);
       }
     }
   },[puzzleData,puzzleState]);
@@ -189,7 +239,7 @@ export default function Puzzle2(props){
             ))}
           </Holder>
           <Holder>
-            <Button variant="outlined" onClick={checkCombo}>
+            <Button variant="outlined" onClick={checkCombo} className={classes.checkButton}>
               Check
             </Button>
           </Holder>
@@ -221,7 +271,7 @@ export default function Puzzle2(props){
                 2
               </Typography>
               <TextField label="Hint 2" onChange={createHandler(setHint2)} value={hint2} className={classes.textField}/>
-              <Button variant="outlined" onClick={setSuccessHeader(hint2,getH1Hash(puzzleData),setHint2Valid)}>
+              <Button variant="outlined" onClick={setSuccessHeader(hint2,getH2Hash(puzzleData),setHint2Valid)}>
                 Check
               </Button>
             </Holder>
@@ -236,7 +286,7 @@ export default function Puzzle2(props){
                 3
               </Typography>
               <TextField label="Hint 3" onChange={createHandler(setHint3)} value={hint3} className={classes.textField}/>
-              <Button variant="outlined" onClick={setSuccessHeader(hint3,getH1Hash(puzzleData),setHint3Valid)}>
+              <Button variant="outlined" onClick={setSuccessHeader(hint3,getH3Hash(puzzleData),setHint3Valid)}>
                 Check
               </Button>
             </Holder>
@@ -251,7 +301,7 @@ export default function Puzzle2(props){
                 4
               </Typography>
               <TextField label="Hint 4" onChange={createHandler(setHint4)} value={hint4} className={classes.textField}/>
-              <Button variant="outlined" onClick={setSuccessHeader(hint4,getH1Hash(puzzleData),setHint4Valid)}>
+              <Button variant="outlined" onClick={setSuccessHeader(hint4,getH4Hash(puzzleData),setHint4Valid)}>
                 Check
               </Button>
             </Holder>
