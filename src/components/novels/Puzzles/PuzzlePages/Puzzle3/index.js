@@ -100,7 +100,7 @@ function Puzzle3(){
         </Typography>
       </Holder>
       <Holder className={classes.analogyHolder} direction="column">
-        <PnPill pChildren="Windmill" nChildren="Windbreaker" clearShadow mBot/>
+        <PnPill pChildren="windmill" nChildren="windbreaker" clearShadow mBot/>
         {pillTransitions.map(
           ({item:{label,answer,swap},props:newStyles,key},index) => (
             <a.div style={newStyles} key={key}>
@@ -121,7 +121,7 @@ function Puzzle3(){
                   : (<TextField
                       value={getVal(puzzleState,index)}
                       onChange={createSetter(actOnPuzzleState,index)}
-                      label={`Analogy ${index + 1}`}/>)
+                      label={`analogy ${index + 1}`}/>)
                 }
                 swap={swap}
                 mBot
@@ -131,7 +131,7 @@ function Puzzle3(){
                   : (<TextField
                       value={getVal(puzzleState,index)}
                       onChange={createSetter(actOnPuzzleState,index)}
-                      label={`Analogy ${index + 1}`}/>)
+                      label={`analogy ${index + 1}`}/>)
                 }/>
             </a.div>
           )
