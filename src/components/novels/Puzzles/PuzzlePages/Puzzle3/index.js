@@ -96,7 +96,7 @@ function Puzzle3(){
     <Holder className={classes.puzzleHolder}>
       <Holder style={{maxWidth:'75vw'}}>
         <Typography variant="h1" className={classes.title} style={{fontSize:titleSize}}>
-          March 3
+          March 3, 2019
         </Typography>
       </Holder>
       <Holder className={classes.analogyHolder} direction="column">

@@ -74,7 +74,7 @@ function Puzzle1(){
     alertType:'success'
   });
   const [notifyLock,lockNotifications] = useLock(false);
-  const [heading,setHeading] = useState("February 22");
+  const [heading,setHeading] = useState("February 22, 2019");
   const [hint1,setHint1] = useState("");
   const [hint2,setHint2] = useState("");
   const [hint3,setHint3] = useState("");

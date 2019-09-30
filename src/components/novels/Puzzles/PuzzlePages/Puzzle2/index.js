@@ -91,7 +91,7 @@ function Puzzle2(props){
   const [hint3,setHint3] = useState("");
   const [hint4,setHint4] = useState("");
 
-  const [heading,setHeading] = useState("February 26");
+  const [heading,setHeading] = useState("February 26, 2019");
   const { h1:titleSize } = useTitleSize();
   const isMobile = useRef(detectMobile());
   const screenTooSmall = useMediaQuery('(max-width: 500px)');
