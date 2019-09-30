@@ -7,14 +7,37 @@ import NavBar from 'components/sentences/NavBar';
 
 import { navItems } from 'config';
 
-const styles = {
+import { themeHook } from 'theme';
+
+import logo from 'assets/Logo.png';
+
+const useClasses = themeHook({
   title:{
     fontWeight:'bold',
     fontSize:'3.5rem',
     textAlign:'center',
-    color:'#ffe'
+    color:'black'
+  },
+  image:{
+    width:'350px'
+  },
+  holder:{
+    display:'flex',
+    justifyContent:'center',
+    alignItems:'center',
+    flexDirection:'column'
+  },
+  colorBlue:{
+    color:'#69beef'
+  },
+  colorBlueGray:{
+    color:'#212832'
+  },
+  colorGray:{
+    color:'#262626'
   }
-}
+});
+
 
 const getScaleString = headerIsOpen => {
   const scale = (headerIsOpen) ? 1 : 0;
@@ -23,6 +46,7 @@ const getScaleString = headerIsOpen => {
 
 export default function Header(props){
   const { headerIsOpen } = props;
+  const classes = useClasses();
   const interStyles = useSpring({
     opacity:(headerIsOpen) ? 1 : 0,
     transform:getScaleString(headerIsOpen),
@@ -31,9 +55,11 @@ export default function Header(props){
     }
   });
   return (
-    <a.div style={interStyles}>
-      <Typography style={styles.title} variant="h1" paragraph>
-        Jacob Alford
+    <a.div style={interStyles} className={classes.holder}>
+      <Typography variant="h1" className={classes.title} paragraph>
+        <span className={classes.colorBlueGray}>j</span>
+        <span className={classes.colorBlue}>a</span>
+        <span className={classes.colorGray}>lford</span>
       </Typography>
       <NavBar navList={navItems} />
     </a.div>

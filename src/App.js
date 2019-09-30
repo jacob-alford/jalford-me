@@ -49,7 +49,7 @@ export default function App() {
       <Spring
         to={{
           transform:`rotateZ(${(headerIsOpen) ? 0 : 180}deg)`,
-          color:(headerIsOpen) ? '#FFFFFF' : "#5433FF"
+          color:(headerIsOpen) ? '#000000' : "#5433FF"
         }}>
         {newStyles => (
           <IconButton

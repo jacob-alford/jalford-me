@@ -17,6 +17,11 @@ import useRedirect from 'components/bindings/hooks/useRedirect';
 import flowerImage from 'assets/photos/Posts_Flower.webp';
 import flowerImageForAppleDevicesThanks from 'assets/photos/Posts_Flower.jpg';
 
+import backdrop from 'assets/home/blog_wood.png';
+import cup from 'assets/home/Cup_256_s.png';
+import paper from 'assets/home/Paper_512_s.png';
+import pen from 'assets/home/Pen_512_s.png';
+
 const styles = {
   banner:{
     marginTop:"8px",
@@ -65,11 +70,36 @@ const styles = {
     marginTop:'9px',
     marginBottom:'25px'
   },
-  image:{
+  backdrop:{
     width:'100%',
     height:'100%',
-    objectFit:'cover',
-    objectPosition:'center center'
+    backgroundImage:`url(${backdrop})`,
+    backgroundRepeat:'repeat',
+    backgroundSize:'256px 256px'
+  },
+  cupHolder:{
+    width:'100%',
+    height:'100%'
+  },
+  cup:{
+    position:'absolute',
+    top:'calc(35% - 100px)',
+    left:'7.5%',
+    width:'200px',
+    transform:'rotateZ(-15deg)'
+  },
+  paper:{
+    position:'absolute',
+    top:'calc(50% - 200px)',
+    left:'calc(89% - 200px)',
+    width:'400px',
+    transform:'rotateZ(-5deg)'
+  },
+  pen:{
+    position:'absolute',
+    top:'38%',
+    left:'75%',
+    width:'150px'
   }
 }
 
@@ -105,14 +135,26 @@ if(Math.random() < .005)
 
 const imageLayer = [
   { children:
-      <Image
-        src={flowerImage}
-        naked
-        imageStyles={styles.image}
-        fallbackSrc={flowerImageForAppleDevicesThanks}
-        alt="Desert rose (not really, but kinda)" />,
-    amount:.1
-  }
+      <div style={styles.backdrop} />,
+    amount:.5 },
+  { children:(
+      <div style={styles.cupHolder}>
+        <img src={paper} alt="Planning Paper" style={styles.paper} />
+      </div>
+    ),
+    amount:.5 },
+  { children:(
+      <div style={styles.cupHolder}>
+        <img src={cup} alt="coffee mug" style={styles.cup} />
+      </div>
+    ),
+    amount:.5 },
+  { children:(
+      <div style={styles.cupHolder}>
+        <img src={pen} alt="Planning Pen" style={styles.pen} />
+      </div>
+    ),
+    amount:.5 }
 ];
 
 export default function BlogFeatured(props){

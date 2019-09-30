@@ -6,7 +6,7 @@ const theme = {
       hover:'#A5FECB',
       active:'#fdeff9'
     },
-    background:'linear-gradient(to right, #56CCF2, #2F80ED)'
+    background:'linear-gradient(to top, #ff00cc, #333399)'
   },
   footer:{
     color:'rgba(255,255,255,.85)',
