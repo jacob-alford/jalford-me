@@ -20,10 +20,9 @@ const puzzles = {
   },
   [puzzleAccessors.mar3_19]:{
     emoji:"selfie",
-    link:puzzleAccessors.mar3_19,
+    link:`/puzzles/${puzzleAccessors.mar3_19}`,
     difficulty:"easy",
-    uid:"aaaaad",
-    hidden:true
+    uid:puzzleAccessors.mar3_19
   }
 }
 

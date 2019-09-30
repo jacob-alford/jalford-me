@@ -16,7 +16,7 @@ const boolHandler = (state,index,truthfullness) => {
 
 const initialState = {
   values:["","","","","",""],
-  success:[false,false,false,false,false,false]
+  success:[null,null,null,null,null,null]
 }
 
 const actors = {

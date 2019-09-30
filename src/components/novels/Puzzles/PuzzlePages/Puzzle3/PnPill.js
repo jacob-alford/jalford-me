@@ -13,6 +13,12 @@ const useClasses = themeHook(
     cell:{
       width:'32.5vw',
       minHeight:'76px',
+      color:({solved}) =>
+        (solved === true) ?
+          '#357e37'
+        : (solved === false) ?
+            '#d32f2f'
+          : 'rgba(0,0,0,.89)',
       padding:cardPadding,
       marginTop:({mTop}) => (mTop) ? minorSpacing : 0,
       marginBottom:({mBot}) => (mBot) ? minorSpacing : 0,
@@ -54,7 +60,8 @@ const getZString = test => ({zIndex:(test) ? 2 : 1});
 
 export default function PnPill(props){
   const {
-    pChildren, nChildren, swap, clearShadow
+    pChildren, nChildren, clearShadow,
+    checkFunc
   } = props;
   const classes = useClasses(props);
   return (
@@ -68,7 +75,11 @@ export default function PnPill(props){
           {(typeof pChildren === 'string') ? (
             <React.Fragment>
               {(!clearShadow) ?
-                <Button variant="outlined" className={classes.checkButton} size="small">
+                <Button
+                  variant="outlined"
+                  className={classes.checkButton}
+                  size="small"
+                  onClick={checkFunc}>
                   Check
                 </Button>
               : null}
@@ -89,7 +100,11 @@ export default function PnPill(props){
                 {nChildren}
               </Typography>
               {(!clearShadow) ?
-                <Button variant="outlined" className={classes.checkButton} size="small">
+                <Button
+                  variant="outlined"
+                  className={classes.checkButton}
+                  size="small"
+                  onClick={checkFunc}>
                   Check
                 </Button>
               : null}

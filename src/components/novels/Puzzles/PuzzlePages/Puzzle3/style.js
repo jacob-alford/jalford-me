@@ -5,7 +5,8 @@ const useClasses = themeHook(
   ([cardPadding,minorSpacing,majorSpacing]) => ({
     puzzleHolder:{
       width:'100vw',
-      backgroundColor:'#FF1690'
+      backgroundColor:'#FF1690',
+      paddingBottom:majorSpacing
     },
     cell:{
       width:'32.5vw',
@@ -35,7 +36,7 @@ const useClasses = themeHook(
     },
     title:{
       marginBottom:majorSpacing,
-      marginTop:minorSpacing,
+      marginTop:majorSpacing,
       fontWeight:'lighter',
       textAlign:'center'
     },
