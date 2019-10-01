@@ -44,7 +44,7 @@ export default function Image(props){
     src, alt, naked,
     imageStyles, holderStyles,
     scrollFade = false, onClick,
-    fallbackSrc
+    fallbackSrc, className
   } = props;
   const [hasLoaded,setHasLoaded] = useState(false);
   const handleLoaded = () => setHasLoaded(true);
@@ -63,6 +63,7 @@ export default function Image(props){
             srcSet={src}
             onClick={onClick}
             type={resolveType(src)}
+            className={className}
             style={{...imageStyles,opacity:interpolate([opacity],opacity => opacity)}} />
           <a.img
             alt={alt}
@@ -70,6 +71,7 @@ export default function Image(props){
             onLoad={handleLoaded}
             src={fallbackSrc}
             onClick={onClick}
+            className={className}
             style={{...imageStyles,opacity:interpolate([opacity],opacity => opacity)}} />
         </picture>
       );
@@ -81,6 +83,7 @@ export default function Image(props){
           onLoad={handleLoaded}
           src={src}
           onClick={onClick}
+          className={className}
           style={{...imageStyles,opacity:interpolate([opacity],opacity => opacity)}} />
       );
   }else{
@@ -95,6 +98,7 @@ export default function Image(props){
               srcSet={src}
               onClick={onClick}
               type={resolveType(src)}
+              className={className}
               style={{...styles.image,...imageStyles}} />
             <img
               alt={alt}
@@ -102,6 +106,7 @@ export default function Image(props){
               onLoad={handleLoaded}
               src={fallbackSrc}
               onClick={onClick}
+              className={className}
               style={{...styles.image,...imageStyles}} />
           </picture>
         </a.div>
@@ -115,6 +120,7 @@ export default function Image(props){
             onLoad={handleLoaded}
             src={src}
             onClick={onClick}
+            className={className}
             style={{...styles.image,...imageStyles}} />
         </a.div>
       );

@@ -22,7 +22,7 @@ import pen from 'assets/home/Pen_512_s.png';
 const styles = {
   banner:{
     height:"100vh",
-    maxHeight:"500px"
+    maxHeight:"750px"
   },
   container:{
     position:'absolute',

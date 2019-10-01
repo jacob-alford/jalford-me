@@ -13,12 +13,13 @@ import { themeHook } from 'theme';
 const useClasses = themeHook({
   banner:{
     height:"100vh",
-    maxHeight:"500px",
+    maxHeight:"750px",
     display:'flex',
     justifyContent:'center',
     alignItems:'center',
     flexDirection:'column',
-    textAlign:'center'
+    textAlign:'center',
+    overflow:'hidden'
   },
   children:{
     position:'absolute',
