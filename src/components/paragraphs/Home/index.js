@@ -1,6 +1,6 @@
-import IceCaveFeatured from './IceCaveFeatured';
+import WebsitesFeatured from './WebsitesFeatured';
 import RPNFeatured from './RPNFeatured';
 import BlogFeatured from './BlogFeatured';
 import PuzzleFeatured from './PuzzleFeatured';
 
-export { IceCaveFeatured , RPNFeatured , BlogFeatured , PuzzleFeatured };
+export { WebsitesFeatured , RPNFeatured , BlogFeatured , PuzzleFeatured };

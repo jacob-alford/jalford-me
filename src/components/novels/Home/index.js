@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  IceCaveFeatured,
+  WebsitesFeatured,
   RPNFeatured,
   BlogFeatured,
   PuzzleFeatured
@@ -13,7 +13,7 @@ function Home(){
   return (
     <React.Fragment>
       <BlogFeatured />
-      <IceCaveFeatured />
+      <WebsitesFeatured />
       <RPNFeatured />
       <PuzzleFeatured />
     </React.Fragment>

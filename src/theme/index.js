@@ -2,8 +2,8 @@ import themeHook from './themeHook';
 const theme = {
   header:{
     link:{
-      color:'#5433FF',
-      hover:'#A5FECB',
+      color:'#262626',
+      hover:'#69beef',
       active:'#fdeff9'
     },
     background:'linear-gradient(to top, #ff00cc, #333399)'

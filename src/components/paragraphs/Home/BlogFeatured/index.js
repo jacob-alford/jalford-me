@@ -14,9 +14,6 @@ import useTitleSize from 'components/bindings/hooks/useTitleSize';
 import useHoverHandler from 'components/bindings/hooks/useHoverHandler';
 import useRedirect from 'components/bindings/hooks/useRedirect';
 
-import flowerImage from 'assets/photos/Posts_Flower.webp';
-import flowerImageForAppleDevicesThanks from 'assets/photos/Posts_Flower.jpg';
-
 import backdrop from 'assets/home/blog_wood.png';
 import cup from 'assets/home/Cup_256_s.png';
 import paper from 'assets/home/Paper_512_s.png';
@@ -98,7 +95,8 @@ const styles = {
     position:'absolute',
     top:'38%',
     left:'75%',
-    width:'150px'
+    width:'150px',
+    transform:'rotateZ(-13deg)'
   }
 }
 
@@ -138,19 +136,9 @@ const imageLayer = [
     amount:.5 },
   { children:(
       <div style={styles.cupHolder}>
-        <img src={paper} alt="Planning Paper" style={styles.paper} />
-      </div>
-    ),
-    amount:.5 },
-  { children:(
-      <div style={styles.cupHolder}>
-        <img src={cup} alt="coffee mug" style={styles.cup} />
-      </div>
-    ),
-    amount:.5 },
-  { children:(
-      <div style={styles.cupHolder}>
-        <img src={pen} alt="Planning Pen" style={styles.pen} />
+        <Image src={paper} alt="Planning Paper" imageStyles={styles.paper} naked />
+        <Image src={cup} alt="coffee mug" imageStyles={styles.cup} naked />
+        <Image src={pen} alt="Planning Pen" imageStyles={styles.pen} naked />
       </div>
     ),
     amount:.5 }
