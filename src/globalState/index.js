@@ -7,6 +7,8 @@ import userActions,
   { defaultUserState } from './user';
 import notificationActions,
   { defaultNotifState } from './notifications';
+  import tldActions,
+    { defaultTLDState } from './lightDarkToggles';
 
 const GlobalState = React.createContext();
 const MutateGlobalState = React.createContext();
@@ -17,12 +19,16 @@ const actions = {
   },
   notifications:{
     ...notificationActions
+  },
+  themeMode:{
+    ...tldActions
   }
 }
 
 const defaultState = {
   ...defaultUserState,
-  ...defaultNotifState
+  ...defaultNotifState,
+  ...defaultTLDState
 }
 
 const reducer = (state,action) => {

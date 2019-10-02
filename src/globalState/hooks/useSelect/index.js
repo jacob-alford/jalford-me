@@ -1,10 +1,12 @@
 import useConnect from '../useConnect';
 import { userSelectors } from 'globalState/user';
 import { notifSelectors } from 'globalState/notifications';
+import { tldSelectors } from 'globalState/lightDarkToggles';
 
 const selectors = {
   ...userSelectors,
-  ...notifSelectors
+  ...notifSelectors,
+  ...tldSelectors
 }
 
 const getSelectors = getters => {
