@@ -56,7 +56,8 @@ const useClasses = themeHook({
     backgroundColor:"white",
     width:"50vw",
     marginTop:"25px",
-    marginBottom:"25px"
+    marginBottom:"25px",
+    maxWidth:'400px'
   }
 });
 
@@ -109,10 +110,6 @@ const FadingBackdrop = ({children,className}) => {
 
 export default function IceCaveFeatured(props){
   const classes = useClasses();
-  const hoverHandlers = useHoverHandlers({
-    base:hoverStyles.children,
-    over:hoverStyles.childrenHover
-  });
   const btnHoverHandlers = useHoverHandlers({
     base:hoverStyles.button,
     over:hoverStyles.buttonHover
@@ -121,18 +118,16 @@ export default function IceCaveFeatured(props){
 
   return (
     <FadingBackdrop>
-      <div {...hoverHandlers}>
-        <Typography variant="h2" paragraph className={classes.sweetText}>
-          Websites
-        </Typography>
-        <Typography variant="body1" paragraph>
-          Like an airplane museum, but with websites.
-        </Typography>
-        <div className={classes.divider} />
-        <Button {...btnHoverHandlers} variant="outlined" onClick={btnClick}>
-          Enter
-        </Button>
-      </div>
+      <Typography variant="h2" paragraph className={classes.sweetText}>
+        Websites
+      </Typography>
+      <Typography variant="body1">
+        Like an airplane museum, but with websites.
+      </Typography>
+      <div className={classes.divider} />
+      <Button {...btnHoverHandlers} variant="outlined" onClick={btnClick}>
+        Enter
+      </Button>
     </FadingBackdrop>
   );
 }
