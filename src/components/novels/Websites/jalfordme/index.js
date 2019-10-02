@@ -9,7 +9,7 @@ import firebaselogo from 'assets/websites/firebaselogo.svg';
 import featured2 from 'assets/websites/jalfordme_feat2.webp';
 import featured2Jpeg from 'assets/websites/jalfordme_feat2.jpg';
 
-export default function Jalfordme(){
+export default function Jalfordme({featured}){
   return (
     <TemplateWebsite
       heading='jalford.me'
@@ -25,6 +25,7 @@ export default function Jalfordme(){
         alt:'The Duncan Strauss Mysteries',
         href:'/posts'
       }}
+      featured={featured}
       techRP={() => (
         <React.Fragment>
           <TechListing img={reactlogo} text="React" url='https://reactjs.org/'/>

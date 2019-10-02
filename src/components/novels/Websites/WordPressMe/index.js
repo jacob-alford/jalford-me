@@ -7,7 +7,7 @@ import wordpressWebP from 'assets/websites/wordpress_site.webp';
 import wordPressJpegForAEPL from 'assets/websites/wordpress_site.jpg';
 import wordpress from 'assets/websites/Wordpress-Logo.svg';
 
-export default function WordPressMe(){
+export default function WordPressMe({featured}){
   return (
     <TemplateWebsite
       heading='[OG] jalford.co'
@@ -22,6 +22,7 @@ export default function WordPressMe(){
         alt:'My WordPress Site',
         href:'/websites'
       }}
+      featured={featured}
       techRP={() => (
         <TechListing img={wordpress} text="Wordpress" url='https://wordpress.com/'/>
       )}/>

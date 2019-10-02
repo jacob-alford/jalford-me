@@ -1,5 +1,4 @@
 import React , { useState } from 'react';
-import { ParallaxBanner } from 'react-scroll-parallax';
 
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -16,7 +15,7 @@ const useClasses = themeHook({
   banner:{
     width:'100vw',
     height:"100vh",
-    maxHeight:'750px',
+    maxHeight:'1500px',
     display:'flex',
     justifyContent:'space-around',
     alignItems:'center',
@@ -63,9 +62,9 @@ const useClasses = themeHook({
     height:'100%',
     width:'100%',
     minHeight:'550px',
-    maxHeight:'700px',
+    maxHeight:Math.max(window.innerHeight,1500),
     objectFit:'cover',
-    objectPosition:'top right',
+    objectPosition:'center right',
     cursor:'pointer'
   }
 });

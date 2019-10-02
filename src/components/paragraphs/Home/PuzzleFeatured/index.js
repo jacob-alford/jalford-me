@@ -12,9 +12,8 @@ import useRedirect from 'components/bindings/hooks/useRedirect';
 
 const styles = {
   banner:{
-    marginTop:"8px",
     height:"100vh",
-    maxHeight:"750px"
+    maxHeight:"1500px"
   },
   container:{
     position:'absolute',
@@ -28,8 +27,7 @@ const styles = {
     flexWrap:'nowrap',
     flexDirection:'row',
     justifyContent:'space-evenly',
-    alignItems:'center',
-    boxShadow:'inset 0px 0px 70px 0px rgba(0,0,0,.8)'
+    alignItems:'center'
   },
   subContainer:{
     display:'flex',
@@ -37,6 +35,9 @@ const styles = {
     flexWrap:'nowrap',
     justifyContent:'center',
     alignItems:'center'
+  },
+  paragraph:{
+    maxWidth:'200px'
   },
   button:{
     color:'#58E855',
@@ -88,13 +89,19 @@ const styles = {
   }
 }
 
-const randomGray = () => Math.random() * 255 | 0;
-const randomColor = () => `rgba(${randomGray()},${randomGray()},${randomGray()},1)`;
-const randomColorArr = () => [randomColor(),randomColor(),randomColor()];
+const colors = [
+  ['#1E9600','#FFF200','#FF0000'],
+  ['#40E0D0','#FF8C00','#FF0000'],
+  ['#1a2a6c','#b21f1f','#FF0000'],
+  ['#833ab4','#fd1d1d','#fcb045'],
+  ['#77A1D3','#79CBCA','#fcb045'],
+  ['#12c2e9','#c471ed','#fcb045'],
+  ['#C6FFDD','#FBD786','#fcb045'],
+  ['#8A2387','#E94057','#fcb045']
+];
 
-const toHex = rgba => rgba.slice(5,-1).split(",")
-                          .map(num => parseInt(num,10).toString(16))
-                          .slice(0,-1).join("");
+const randomColorArr = () => colors[(Math.random() * colors.length) | 0];
+
 const toRGBA = (hex,alpha=1) => {
   let wrkHex;
   if(hex.includes("#")) wrkHex = hex.substring(1);
@@ -124,8 +131,8 @@ const isEqual = (arr1,arr2) => {
 
 const ColorCircle = props => {
   const { color , bgColor , onDragStart , onTouchStart } = props;
-  const textColor = useColorAdapt(toHex(color));
-  const borderColor = useColorAdapt(toHex(bgColor));
+  const textColor = useColorAdapt(color);
+  const borderColor = useColorAdapt(bgColor);
   return (
     <div
       onDragStart={onDragStart}
@@ -167,7 +174,7 @@ const CircleHolder = props => {
   }
   const handleTouchMove = (evt,visibleIndex) => {
     const offset = getYTouchOffset(initialTouch.current,evt.changedTouches[0]);
-    const swapWith = offset/100 | 0;
+    const swapWith = offset/(window.innerHeight * .175) | 0;
     if(swapWith >= 1){
       const swapStr = (visibleIndex === 0) ?
                       `01`
@@ -220,7 +227,7 @@ const CircleHolder = props => {
   }
 
   useEffect(() => {
-    if(isEqual(getYs(colorState),[25,50,75]))
+    if(isEqual(getYs(colorState),[75,50,25]))
       setHasSolved(true);
     else
       setHasSolved(false);
@@ -281,9 +288,9 @@ const CircleHolder = props => {
 }
 
 const colorKey = randomColorArr();
-
+// 75 50 25
 const initialOrientation = [
-  [50,25,75],[50,75,25],[25,75,50],[75,25,50],[75,50,25]
+  [25,50,75],[25,75,50],[75,25,50],[50,25,75],[50,75,25]
 ][Math.random() * 5 | 0];
 
 const initialState = colorKey.map((key,index) => {
@@ -316,15 +323,6 @@ const swapYs = (state,index1,index2) => {
   return copyArr;
 }
 
-const refreshColors = state => {
-  return state.map(item => {
-    return {
-      ...item,
-      color:randomColor()
-    }
-  });
-}
-
 const reducer = (state,action) => {
   switch(action.type){
     case 'swap01':
@@ -335,12 +333,14 @@ const reducer = (state,action) => {
       return swapYs(state,1,2);
     case 'toggleEphemeral':
       return toggleEphemeral(state,action.payload.index);
-    case 'resetColors':
-      return refreshColors(state);
     default:
       throw new Error('Undefined action in reducer in PuzzleFeatured!');
   }
 }
+
+const imageLayer = [
+  { children:<div style={styles.bgCanvas}/>, amount:.1 }
+];
 
 const getColors = state => state.map(item => item.color);
 const getYs = state => state.map(item => item.y);
@@ -349,49 +349,30 @@ const getColorByVI = (state,VI) => state.find(item => item.visibleIndex === VI);
 export default function PuzzleFeatured(props){
   const handleOnClick = useRedirect("/puzzles");
 
-  let canvasElement = React.createRef();
   let canvasHolder = React.createRef();
 
   const [colorState,dispatchColorChange] = useReducer(reducer,initialState);
 
-  const textColor = useColorAdapt(toHex(getColors(colorState)[1]));
+  const textColor = useColorAdapt(getColors(colorState)[1]);
   const [hasSolved,setHasSolved] = useState(false);
 
-  const imageLayer = [
-    { children:<canvas ref={canvasElement} style={styles.bgCanvas}/>, amount:.1 }
-  ];
-
-  const updateColors = () => {
-    dispatchColorChange({type:'resetColors'});
-  }
-
-  useEffect(() => {
-    const width = canvasHolder.current.clientWidth;
-    const height = canvasHolder.current.clientHeight * 1.4;
-    canvasElement.current.width = width;
-    canvasElement.current.height = height;
-
-    const context = canvasElement.current.getContext("2d");
-    const gradient = context.createLinearGradient(0, 0, width, height);
-
-    const length = getColors(colorState).length;
-    getColors(colorState).forEach((color,index) => {
-      gradient.addColorStop(index/length,color);
-    });
-    context.fillStyle = gradient;
-    context.fillRect(0, 0, width, height);
-  },[canvasElement,canvasHolder,colorState]);
-
   return (
-    <ParallaxBanner style={styles.banner} layers={imageLayer}>
+    <ParallaxBanner
+      style={{
+        ...styles.banner,
+        background:
+          `linear-gradient(to top left, ${getColors(colorState).join(",")})`
+      }}
+      layers={imageLayer}>
       <div style={styles.container} ref={canvasHolder}>
-        <div style={styles.subContainer}>
-          <div>
+        <div style={styles.paragraph}>
+          <div style={styles.subContainer}>
             <Typography variant="h2" paragraph style={{color:textColor}}>
               Puzzles
             </Typography>
-          </div>
-          <div>
+            <Typography variant="body1" paragraph style={{textAlign:'center',color:textColor}}>
+              Strain your faculties; wallow in the minutia; soundly solved.
+            </Typography>
             <Button
               style={(hasSolved) ?
                 styles.button
@@ -400,11 +381,6 @@ export default function PuzzleFeatured(props){
               disabled={!hasSolved}
               onClick={handleOnClick}>
               {(hasSolved) ? "Proceed to Puzzles" : "Solve to Proceed"}
-            </Button>
-          </div>
-          <div>
-            <Button onClick={updateColors} style={{color:textColor}}>
-              Refresh Colors
             </Button>
           </div>
         </div>

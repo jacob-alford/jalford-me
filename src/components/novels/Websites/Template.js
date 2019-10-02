@@ -5,28 +5,28 @@ import Image from 'components/words/Image';
 import Container from 'components/words/Holder';
 import LiveDemo from 'components/words/ArrowLink';
 
-import themeConstruct from 'theme';
+import { themeHook } from 'theme';
 
 import useTitleSize from 'components/bindings/hooks/useTitleSize';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useReactRouter from 'use-react-router';
 
-const styles = themeConstruct(
+const useClasses = themeHook(
   ['getGutter'],
   ([gutter]) => ({
     title:{
       textAlign:'center',
-      color:'#223',
+      color:({featured}) => (featured) ? '#fff' : '#223',
       fontWeight:'bold'
     },
     subtitle:{
-      textAlign:'center'
+      textAlign:'center',
+      color:({featured}) => (featured) ? '#fff' : '#223'
     },
     superContainer:{
       width:'100%',
       paddingTop:'96px',
-      marginTop:'8px',
-      backgroundColor:'#fefeff'
+      backgroundColor:({featured}) => (featured) ? '#232323' : '#fefeff'
     },
     image:{
       width:'75vw',
@@ -50,6 +50,7 @@ const styles = themeConstruct(
     },
     date:{
       fontWeight:'lighter',
+      color:({featured}) => (featured) ? '#ffe' : '#223',
       marginTop:gutter,
       marginBottom:gutter
     }
@@ -63,6 +64,7 @@ export default function TemplateWebsite(props){
   const { h2:titleSize , h5:captionSize } = useTitleSize();
   const screenTooSmall = useMediaQuery('(max-width:450px)');
   const tooSmall4Img = useMediaQuery('(max-width:600px)');
+  const classes = useClasses(props);
   const { history } = useReactRouter();
   const handleImgRedirect = useCallback(() => {
     if((image && image.href.includes('http')) || (video && video.href.includes('http')))
@@ -71,52 +73,52 @@ export default function TemplateWebsite(props){
       history.push((image && image.href) || (video && video.href));
   },[image,video,history]);
   return (
-    <Container direction='col' style={styles.superContainer} justify='space-evenly'>
+    <Container direction='col' className={classes.superContainer} justify='space-evenly'>
       <Container direction='col'>
-        <Typography paragraph variant="h2" style={{...styles.title,fontSize:titleSize}}>
+        <Typography paragraph variant="h2" className={classes.title} style={{fontSize:titleSize}}>
           {heading}
         </Typography>
-        <Typography paragraph variant="body2" style={{...styles.subtitle,fontSize:captionSize}}>
+        <Typography paragraph variant="body2" className={classes.subtitle} style={{fontSize:captionSize}}>
           {tagline}
         </Typography>
       </Container>
       {(!action.disabled) ?
-        <Container direction="row" justify="space-around" style={styles.button}>
+        <Container direction="row" justify="space-around" className={classes.button}>
           <LiveDemo text={action.text} href={action.href}/>
         </Container>
       : null}
-      <Container direction={resolveDirection(screenTooSmall)} justify='space-between' style={styles.itemContainer}>
+      <Container direction={resolveDirection(screenTooSmall)} justify='space-between' className={classes.itemContainer}>
         {techRP()}
       </Container>
       {(year) ?
         <Container>
-          <Typography variant="h4" style={styles.date}>
+          <Typography variant="h4" className={classes.date}>
             {year}
           </Typography>
         </Container>
       : null}
       {(image) ?
-        <Container justify='flex-start' style={{...styles.imageHolder, marginBottom: (tooSmall4Img) ? '0px' : '96px'}}>
+        <Container justify='flex-start' className={classes.imageHolder} style={{marginBottom: (tooSmall4Img) ? '0px' : '96px'}}>
           <Image
             src={image.source}
             fallbackSrc={image.altSource}
             naked
             scrollFade
             onClick={handleImgRedirect}
+            className={classes.image}
             imageStyles={{
-              ...styles.image,
               width:(tooSmall4Img) ? '100vw' : '75vw'
             }}/>
         </Container>
       : null}
       {(video) ?
-        <Container justify='flex-start' style={{...styles.imageHolder, marginBottom: (tooSmall4Img) ? '0px' : '96px'}}>
+        <Container justify='flex-start' className={classes.imageHolder} style={{marginBottom: (tooSmall4Img) ? '0px' : '96px'}}>
           <video
             src={video.source}
             autoPlay
             loop
+            className={classes.image}
             style={{
-              ...styles.image,
               width:(tooSmall4Img) ? '100vw' : '75vw'
             }}/>
         </Container>

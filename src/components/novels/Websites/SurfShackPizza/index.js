@@ -7,7 +7,7 @@ import surfshackpizza from 'assets/websites/surfshackpizza.webp';
 import surfshackpizzaAppleEdition from 'assets/websites/surfshackpizza.jpg';
 import wordpress from 'assets/websites/Wordpress-Logo.svg';
 
-export default function SurfShackPizza(){
+export default function SurfShackPizza({featured}){
   return (
     <TemplateWebsite
       heading='Surf Shack Pizza'
@@ -23,6 +23,7 @@ export default function SurfShackPizza(){
         alt:'California Carbs',
         href:'http://surfshackpizza.net/'
       }}
+      featured={featured}
       techRP={() => (
         <TechListing img={wordpress} text="Wordpress" url='https://wordpress.com/'/>
       )}/>

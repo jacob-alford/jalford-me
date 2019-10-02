@@ -9,8 +9,6 @@ import { navItems } from 'config';
 
 import { themeHook } from 'theme';
 
-import logo from 'assets/Logo.png';
-
 const useClasses = themeHook({
   title:{
     fontWeight:'bold',

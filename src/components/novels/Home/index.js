@@ -14,8 +14,8 @@ function Home(){
     <React.Fragment>
       <BlogFeatured />
       <WebsitesFeatured />
-      <RPNFeatured />
       <PuzzleFeatured />
+      <RPNFeatured />
     </React.Fragment>
   );
 }

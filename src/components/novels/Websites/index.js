@@ -17,13 +17,13 @@ function Websites(){
   return (
     <React.Fragment>
       <Jalfordme />
-      <HaloLink />
+      <HaloLink featured />
       <SurfShackPizza />
       <OldWebsite />
       <LaBellaVita />
       <StuderDreams />
       <WordPressMe />
-      <IceCaves />
+      <IceCaves featured />
       <Jalfordco />
       <OldJalfordMe />
     </React.Fragment>

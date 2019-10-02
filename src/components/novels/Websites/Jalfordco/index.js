@@ -6,7 +6,7 @@ import TechListing from 'components/words/IconText';
 import squarespace from 'assets/websites/squarespacelogo.svg';
 import jalfordCO from 'assets/websites/jalford-co.png';
 
-export default function Jalfordco(){
+export default function Jalfordco({featured}){
   return (
     <TemplateWebsite
       heading='jalford.co the sequel'
@@ -21,6 +21,7 @@ export default function Jalfordco(){
         alt:'My squarespace site',
         href:'/websites'
       }}
+      featured={featured}
       techRP={() => (
         <React.Fragment>
           <TechListing img={squarespace} text="Squarespace" url='https://www.squarespace.com/'/>

@@ -9,7 +9,7 @@ import reactLogo from 'assets/websites/reactlogo.svg';
 import graphQlLogo from 'assets/websites/GraphQL_Logo.svg';
 import tensorflowLogo from 'assets/websites/TF_White_Icon.svg';
 
-export default function HaloLink(){
+export default function HaloLink({featured}){
   return (
     <TemplateWebsite
       heading='Halo Link'
@@ -25,6 +25,7 @@ export default function HaloLink(){
         alt:'A pathologists toolbag',
         href:'http://www.indicalab.com/halolink/'
       }}
+      featured={featured}
       techRP={() => (
         <React.Fragment>
           <TechListing img={reactLogo} text="React" url='https://reactjs.org/'/>

@@ -8,7 +8,7 @@ import gsapLogo from 'assets/websites/GSAP.png';
 import jqueryLogo from 'assets/websites/jquery-icon.svg';
 import phpLogo from 'assets/websites/phplogo.svg';
 
-export default function OldWebsite(){
+export default function OldWebsite({featured}){
   return (
     <TemplateWebsite
       heading='Long Ago'
@@ -22,6 +22,7 @@ export default function OldWebsite(){
         alt:'An old website from long ago',
         href:'/websites'
       }}
+      featured={featured}
       techRP={() => (
         <React.Fragment>
           <TechListing img={phpLogo} text="PHP" url='https://www.php.net/'/>

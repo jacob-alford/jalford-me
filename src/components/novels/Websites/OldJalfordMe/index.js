@@ -8,7 +8,7 @@ import jquery from 'assets/websites/jquery-icon.svg';
 import jalfordMe from 'assets/websites/jalford-me-just.webp';
 import jalfordMeForSafariONLY from 'assets/websites/jalford-me-just.jpg';
 
-export default function OldJalfordMe(){
+export default function OldJalfordMe({featured}){
   return (
     <TemplateWebsite
       heading='The Website of Yesteryear'
@@ -23,6 +23,7 @@ export default function OldJalfordMe(){
         alt:'My previous iteration',
         href:'https://jalford.me/'
       }}
+      featured={featured}
       techRP={() => (
         <React.Fragment>
           <TechListing img={jquery} text="jQuery" url='https://jquery.com/'/>

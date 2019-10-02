@@ -7,7 +7,7 @@ import icecaves from 'assets/websites/icecaves.webp';
 import icecavesFrick from 'assets/websites/icecaves.jpg';
 import squarespace from 'assets/websites/squarespacelogo.svg';
 
-export default function IceCaves(){
+export default function IceCaves({featured}){
   return (
     <TemplateWebsite
       heading='Ice Cave and Bandera Volcano'
@@ -23,6 +23,7 @@ export default function IceCaves(){
         alt:'The chillest place, but hot at the same time',
         href:'https://www.icecaves.com/'
       }}
+      featured={featured}
       techRP={() => (
         <TechListing img={squarespace} imgColor='#ffffff' text="Squarespace" url='https://www.squarespace.com/'/>
       )}/>

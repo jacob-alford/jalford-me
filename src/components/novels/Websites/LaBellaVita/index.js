@@ -8,7 +8,7 @@ import jqueryLogo from 'assets/websites/jquery-icon.svg';
 import labellavita from 'assets/websites/labellavita.webp';
 import labellavitaForApple from 'assets/websites/labellavita.jpg';
 
-export default function LaBellaVita(){
+export default function LaBellaVita({featured}){
   return (
     <TemplateWebsite
       heading='La Bella Vita'
@@ -23,6 +23,7 @@ export default function LaBellaVita(){
         alt:'Rest in peace, old friend',
         href:'/websites'
       }}
+      featured={featured}
       techRP={() => (
         <React.Fragment>
           <TechListing img={jqueryLogo} text="jQuery" url='https://jquery.com/'/>

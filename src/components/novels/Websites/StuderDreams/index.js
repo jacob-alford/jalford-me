@@ -8,7 +8,7 @@ import studerdreamsForLesserDevices from 'assets/websites/StuderDreams.jpg';
 import html5 from 'assets/websites/html5logo.svg';
 import jqueryLogo from 'assets/websites/jquery-icon.svg';
 
-export default function StuderDreams(){
+export default function StuderDreams({featured}){
   return (
     <TemplateWebsite
       heading='Studer Dreams'
@@ -24,6 +24,7 @@ export default function StuderDreams(){
         alt:'Rest in peace',
         href:'/websites'
       }}
+      featured={featured}
       techRP={() => (
         <React.Fragment>
           <TechListing img={html5} text="HTML 5" url='https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5'/>

@@ -10,6 +10,8 @@ import Typed from 'components/sentences/Typed';
 
 import Image from 'components/words/Image';
 
+import { themeHook } from 'theme';
+
 import useTitleSize from 'components/bindings/hooks/useTitleSize';
 import useHoverHandler from 'components/bindings/hooks/useHoverHandler';
 import useRedirect from 'components/bindings/hooks/useRedirect';
@@ -19,10 +21,10 @@ import cup from 'assets/home/Cup_256_s.png';
 import paper from 'assets/home/Paper_512_s.png';
 import pen from 'assets/home/Pen_512_s.png';
 
-const styles = {
+const useClasses = themeHook({
   banner:{
     height:"100vh",
-    maxHeight:"750px"
+    maxHeight:"1500px"
   },
   container:{
     position:'absolute',
@@ -31,9 +33,9 @@ const styles = {
     right:'0',
     bottom:'0',
     display:'flex',
-    flexDirection:'row',
+    flexDirection:'column',
     flexWrap:'nowrap',
-    justifyContent:'space-evenly',
+    justifyContent:'center',
     alignItems:'center',
     transition:'box-shadow .25s',
     boxShadow:'inset 0px 0px 70px 0px rgba(0,0,0,.8)'
@@ -51,15 +53,7 @@ const styles = {
   title:{
     color:'white'
   },
-  button:{
-    color:'#EB1F25',
-    backgroundColor:'rgba(0,0,0,.5)',
-    borderColor:'white',
-    transition:'background-color .4s'
-  },
-  buttonHover:{
-    backgroundColor:'rgba(0,0,0,.2)'
-  },
+
   divider:{
     backgroundColor:"white",
     width:"50vw",
@@ -79,7 +73,7 @@ const styles = {
   },
   cup:{
     position:'absolute',
-    top:'calc(35% - 100px)',
+    top:'calc(39% - 100px)',
     left:'7.5%',
     width:'200px',
     transform:'rotateZ(-15deg)'
@@ -93,10 +87,22 @@ const styles = {
   },
   pen:{
     position:'absolute',
-    top:'38%',
+    top:'46%',
     left:'75%',
     width:'150px',
     transform:'rotateZ(-13deg)'
+  }
+});
+
+const styles = {
+  button:{
+    color:'#EB1F25',
+    backgroundColor:'rgba(0,0,0,.5)',
+    borderColor:'white',
+    transition:'background-color .4s'
+  },
+  buttonHover:{
+    backgroundColor:'rgba(0,0,0,.2)'
   }
 }
 
@@ -130,53 +136,55 @@ if(Math.random() < .005)
     ``
   ];
 
+const TableItems = () => {
+  const classes = useClasses();
+  return (
+    <div className={classes.cupHolder}>
+      <Image src={paper} alt="Planning Paper" className={classes.paper} naked />
+      <Image src={cup} alt="coffee mug" className={classes.cup} naked />
+      <Image src={pen} alt="Planning Pen" className={classes.pen} naked />
+    </div>
+  );
+}
+
+const Backdrop = () => {
+  const classes = useClasses();
+  return <div className={classes.backdrop} />
+}
+
 const imageLayer = [
-  { children:
-      <div style={styles.backdrop} />,
-    amount:.5 },
-  { children:(
-      <div style={styles.cupHolder}>
-        <Image src={paper} alt="Planning Paper" imageStyles={styles.paper} naked />
-        <Image src={cup} alt="coffee mug" imageStyles={styles.cup} naked />
-        <Image src={pen} alt="Planning Pen" imageStyles={styles.pen} naked />
-      </div>
-    ),
-    amount:.5 }
+  { children: <Backdrop /> , amount:.5 },
+  { children:<TableItems /> , amount:.5 }
 ];
 
 export default function BlogFeatured(props){
   const { h2:titleSize } = useTitleSize();
-  const hoverHandlers = useHoverHandler({
-    base:styles.container,
-    over:styles.containerHover
-  });
+  const classes = useClasses();
   const btnHoverHandlers = useHoverHandler({
     base:styles.button,
     over:styles.buttonHover
   });
   const btnClick = useRedirect('/posts');
   return (
-    <ParallaxBanner style={styles.banner} layers={imageLayer}>
-      <div {...hoverHandlers}>
-        <Grid container direction="column" justify="center" alignItems="center">
-          <Grid item>
-            <Typography variant="h1" paragraph style={{...styles.title,fontSize:titleSize}}>
-              <Typed backDelay={0} strings={strings} />
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Divider style={styles.divider} light component="div"/>
-          </Grid>
-          <Grid item>
-            <Button
-              {...btnHoverHandlers}
-              variant="outlined"
-              onClick={btnClick}>
-              Read
-            </Button>
-          </Grid>
+    <ParallaxBanner style={{height:'100vh'}} className={classes.banner} layers={imageLayer}>
+      <Grid container direction="column" justify="center" alignItems="center" className={classes.container}>
+        <Grid item>
+          <Typography variant="h1" paragraph style={{fontSize:titleSize}} className={classes.title}>
+            <Typed backDelay={0} strings={strings} />
+          </Typography>
         </Grid>
-      </div>
+        <Grid item>
+          <Divider className={classes.divider} light component="div"/>
+        </Grid>
+        <Grid item>
+          <Button
+            {...btnHoverHandlers}
+            variant="outlined"
+            onClick={btnClick}>
+            Read
+          </Button>
+        </Grid>
+      </Grid>
     </ParallaxBanner>
   );
 }

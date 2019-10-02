@@ -13,7 +13,7 @@ import { themeHook } from 'theme';
 const useClasses = themeHook({
   banner:{
     height:"100vh",
-    maxHeight:"750px",
+    maxHeight:"1500px",
     display:'flex',
     justifyContent:'center',
     alignItems:'center',
@@ -122,8 +122,11 @@ export default function IceCaveFeatured(props){
   return (
     <FadingBackdrop>
       <div {...hoverHandlers}>
-        <Typography variant="h2" className={classes.sweetText}>
+        <Typography variant="h2" paragraph className={classes.sweetText}>
           Websites
+        </Typography>
+        <Typography variant="body1" paragraph>
+          Like an airplane museum, but with websites.
         </Typography>
         <div className={classes.divider} />
         <Button {...btnHoverHandlers} variant="outlined" onClick={btnClick}>
