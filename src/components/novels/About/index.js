@@ -4,16 +4,18 @@ import Markdown from 'react-markdown';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
 
 import Email from '@material-ui/icons/Email';
 
 import SocialIcon from 'components/words/SocialIcon';
 import Image from 'components/words/Image';
+import Holder from 'components/words/Holder';
+import LightDarkToggler from 'components/words/LightDarkToggler';
 
-import aboutContactImage from 'assets/me/profile_pic.webp';
-import aboutContactImageImAnnoyedAtApple from 'assets/me/profile_pic.jpg';
+import useTLD from 'components/bindings/hooks/useTLD';
+
+import aboutContactImage from 'assets/me/CUMP_jalford-me.jpg';
 
 import { socialMedia } from 'config';
 
@@ -21,6 +23,8 @@ import withPageFade from 'components/bindings/wrappers/withPageFade';
 import useTitleSize from 'components/bindings/hooks/useTitleSize';
 
 import markdownConfig from 'helpers/blogParse.js';
+
+import { themeHook } from 'theme';
 
 const aboutText =
 `I love javascript; perhaps four degrees too much.  I made this site in React, and I love that too.
@@ -75,43 +79,67 @@ Line 22: Warning: Each child in an array or iterator should have a unique "key" 
 \`\`\`
 `;
 
+const useClasses = themeHook(
+  ['getMinorSpacing','getMajorSpacing'],
+  ([minorSpacing,majorSpacing]) => ({
+    holder:{
+      color:({tldState}) => (tldState === 'light') ? "rgba(0,0,0,.87)" : 'rgba(255,255,255,1)',
+      background:({tldState}) => (tldState === 'light') ? '#fff' : '#232323',
+      paddingTop:minorSpacing,
+      paddingBottom:majorSpacing,
+      marginBottom:minorSpacing,
+      transition: 'background .5s, color .5s'
+    },
+    title:{
+      textAlign:'center'
+    },
+    togglerHolder:{
+      width:'100%'
+    }
+  })
+);
+
 const styles = {
-  aboutText:{
-    padding:'18px',
-    marginBottom:'2rem'
-  },
-  title:{
-    color:'rgba(0,0,0,.85)',
-    textAlign:'center'
-  },
   image:{
-    height:'auto'
+    width:'100%',
+    height:'100%',
+    objectFit:'cover',
+    objectPosition:'center right',
+    boxShadow:'0px 0px 77px -32px rgba(0,0,0,0.75)'
+  },
+  imgContainer:{
+    width:'60%',
+    paddingBottom:'40%',
+    lineHeight:'0px'
   }
 }
 
 function About(props){
   const { h3:titleSize } = useTitleSize();
+  const [tldState,toggleTld] = useTLD();
+  const classes = useClasses({tldState});
   return (
-    <Container fixed>
-      <Image
-        src={aboutContactImage}
-        fallbackSrc={aboutContactImageImAnnoyedAtApple} 
-        alt="me"
-        imageStyles={styles.image}/>
-      <Paper style={styles.aboutText} elevation={0}>
-        <Typography paragraph variant="h2" style={{...styles.title,fontSize:titleSize}}>
-          About
-        </Typography>
-        <Markdown renderers={markdownConfig} source={aboutText} />
-        <Typography paragraph variant="h2" style={{...styles.title,fontSize:titleSize}}>
-          Javascript Translation
-        </Typography>
-        <Markdown renderers={markdownConfig} source={javascriptTranslation} />
-        <Typography paragraph variant="h2" style={{...styles.title,fontSize:titleSize}}>
-          Output
-        </Typography>
-        <Markdown renderers={markdownConfig} source={output} />
-      </Paper>
+    <Container className={classes.holder}>
+    <Holder className={classes.togglerHolder} justify='flex-end' direction='row'>
+      <LightDarkToggler mode={tldState} toggle={toggleTld} />
+    </Holder>
+    <Image
+      src={aboutContactImage}
+      alt="me"
+      imageStyles={styles.image}
+      holderStyles={styles.imgContainer}/>
+      <Typography paragraph variant="h2" className={classes.title} style={{fontSize:titleSize}}>
+        About
+      </Typography>
+      <Markdown renderers={markdownConfig} source={aboutText} />
+      <Typography paragraph variant="h2" className={classes.title} style={{fontSize:titleSize}}>
+        Javascript Translation
+      </Typography>
+      <Markdown renderers={markdownConfig} source={javascriptTranslation} />
+      <Typography paragraph variant="h2" className={classes.title} style={{fontSize:titleSize}}>
+        Output
+      </Typography>
+      <Markdown renderers={markdownConfig} source={output} />
       <Grid container justify="center" alignItems="center">
         <Grid item>
           <SocialIcon onClick={() => window.location.href = socialMedia.linkedIn.url}>

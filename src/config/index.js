@@ -1,4 +1,3 @@
-import meImage from 'assets/me/profile_pic.webp';
 import linkedIn from 'assets/social/LinkedIn.png';
 import icecaveImage from 'assets/photos/IceCaves_onHome.webp';
 
@@ -18,8 +17,6 @@ export const navItems = [
   {text:"GitHub",url:"https://github.com/jacob-alford"},
   {text:"Resume",url:"https://www.visualcv.com/jacob-alford"}
 ];
-
-export {meImage as aboutContactImage};
 
 export const homePageImage = {
   img:icecaveImage,
