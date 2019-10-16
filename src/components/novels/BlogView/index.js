@@ -44,6 +44,7 @@ const useClasses = themeHook(
       padding:'34px'
     },
     notFound:{
+      marginTop:minorSpacing,
       textAlign:'center',
       color:"rgba(0,0,0,.87)"
     },
@@ -89,6 +90,7 @@ function BlogView(props){
   const data = usePostConnect(postId,user);
   const { h1:titleSize } = useTitleSize();
   const classes = useClasses({tldState});
+  console.log(data.isLoading,data.error,data.postData,!data.isLoading && (data.error || !data.postData));
   return (
     <React.Fragment>
       <Grid container justify="center">
@@ -125,13 +127,15 @@ function BlogView(props){
           ) : null}
         </Container>
       </Grid>
-      <CommentHolder
-        user={user}
-        comments={
-          (data.postData
-        && data.postData.sandbox
-        && data.postData.sandbox.comments) || []}
-        docId={postId}/>
+      {(!data.isLoading && !data.error && data.postData) ?
+        <CommentHolder
+          user={user}
+          comments={
+            (data.postData
+          && data.postData.sandbox
+          && data.postData.sandbox.comments) || []}
+          docId={postId}/>
+      : null}
     </React.Fragment>
   );
 }
