@@ -90,7 +90,6 @@ function BlogView(props){
   const data = usePostConnect(postId,user);
   const { h1:titleSize } = useTitleSize();
   const classes = useClasses({tldState});
-  console.log(data.isLoading,data.error,data.postData,!data.isLoading && (data.error || !data.postData));
   return (
     <React.Fragment>
       <Grid container justify="center">
