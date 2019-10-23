@@ -12,6 +12,19 @@ const theme = {
     color:'rgba(255,255,255,.85)',
     background: null
   },
+  border:{
+    radius:'8px'
+  },
+  background:{
+    light:'#fff',
+    dark:'#232323'
+  },
+  icon:{
+    color:{
+      dark:'rgba(0,0,0,.54)',
+      light:'rgba(255,255,255,.54)'
+    }
+  },
   link:{
     actionable:{
       color:'#33AAFF'
@@ -57,7 +70,12 @@ const getters = {
   getFooterBg: () => theme.footer.background,
   getLinkColor: () => theme.header.link.color,
   getLinkHover: () => theme.header.link.hover,
-  getLinkActive: () => theme.header.link.active
+  getLinkActive: () => theme.header.link.active,
+  getBorderRadius: () => theme.border.radius,
+  getLightBackground: () => theme.background.light,
+  getDarkBackground: () => theme.background.dark,
+  getLightIcon: () => theme.icon.color.light,
+  getDarkIcon: () => theme.icon.color.dark
 }
 
 const themeConstruct = (grabbers,styleCreator) => {

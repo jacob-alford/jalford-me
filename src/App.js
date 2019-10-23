@@ -20,6 +20,7 @@ const BlogView = React.lazy(() => import('./components/novels/BlogView'));
 const Websites = React.lazy(() => import('./components/novels/Websites'));
 const Puzzles = React.lazy(() => import('./components/novels/Puzzles'));
 const About = React.lazy(() => import('./components/novels/About'));
+const Media = React.lazy(() => import('./components/novels/Media'));
 const Blog = React.lazy(() => import('./components/novels/Blog'));
 const Home = React.lazy(() => import('./components/novels/Home'));
 const RPN = React.lazy(() => import('./components/novels/Projects/RPN'));
@@ -94,6 +95,7 @@ export default function App() {
             <BlogBar context="inPuzzles" breadcrumb={{link:'/puzzles',label:'Puzzles'}}/>
           </Route>
           <Route exact path="/about" component={About} />
+          <Route exact path="/media" component={Media} />
           <Route exact path="/posts/view/:postId" children={props => {
             const { match , history } = props;
             return (
