@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { themeHook } from 'theme';
+
 const resolveDir = dir =>
   (dir === 'col' || dir === 'column') ?
     'column'
@@ -11,32 +13,25 @@ const resolveWrap = wrap =>
     : 'wrap'
   : 'nowrap';
 
-const styles = {
+const useClasses = themeHook({
   container:{
-    display:'flex'
+    display:'flex',
+    justifyContent: ({justify = 'center'}) => justify,
+    alignItems: ({align = 'center'}) => align,
+    flexWrap: ({wrap = 'wrap'}) => resolveWrap(wrap),
+    flexDirection: ({direction = 'column'}) => resolveDir(direction)
   }
-}
+});
+
+const cat = (...str) => str.join(" ");
 
 export default function Holder(props){
-  const {
-    direction = 'column',
-    justify = 'center',
-    align = 'center',
-    style,
-    wrap = 'wrap',
-    className
-  } = props;
+  const { style, className } = props;
+  const classes = useClasses(props);
   return (
     <div
-      className={className}
-      style={{
-        ...styles.container,
-        ...style,
-        justifyContent:justify,
-        alignItems:align,
-        flexWrap:resolveWrap(wrap),
-        flexDirection:resolveDir(direction)
-      }}>
+      className={cat(className,classes.container)}
+      style={style}>
       {props.children}
     </div>
   );
