@@ -16,6 +16,14 @@ import withPageFade from 'components/bindings/wrappers/withPageFade';
 
 import { themeHook } from 'theme';
 
+const getMargins = width => {
+  if(width >= 960)
+    return 32;
+  else if(width < 960 && width >= 600)
+    return 24;
+  else return 16;
+}
+
 const mediaPages = {
   'photos':Photos,
   'videos':Photos
@@ -25,44 +33,31 @@ const useClasses = themeHook(
   ['getDarkBackground','getLightBackground'],
   ([darkBg,lightBg]) => ({
     container:{
-      width:'100%',
       background: ({tldState}) => (tldState === 'light') ? lightBg : darkBg,
-      transition: 'background .5s, color .5s'
+      transition: 'background .5s, color .5s',
+      width:'100vw'
     },
     togglerHolder:{
-      width:'100%'
+      width:'100%',
+      paddingTop:'12px'
     },
     viewHolder:{
       display:'flex',
-      width:'200vw',
       overflow:'hidden',
       flexDirection:'row'
     },
     view:{
-      
+
     }
   })
 );
-
-const indexResolve = pane => (pane === 'photos') ? 0 : 1;
-const getFromTranslate = pane =>
-  (pane === 'photos') ?
-    `translate3d(-100vw,0,0)`
-  : `translate3d(100vw,0,0)`;
-const getToTranslate = pane =>
-  (pane === 'photos') ?
-    `translate3d(0,0,0)`
-  : `translate3d(0,0,0)`;
-const getLeaveTranslate = pane =>
-  (pane === 'photos') ?
-    `translate3d(100vw,0,0)`
-  : `translate3d(-100vw,0,0)`;
 
 function Media(){
   const [tldState,toggleTld] = useTLD();
   const [currentPane,setCurrentPane] = useState('photos');
   const [tIndex,settIndex] = useState(0);
   const [parentHeight,setParentHeight] = useState(null);
+  const [parentWidth,setParentWidth] = useState(null);
   const classes = useClasses({tldState});
   const mediaTransitories = useTransition(currentPane, null, {
     initial:{ opacity:0 },
@@ -71,9 +66,14 @@ function Media(){
     leave:{ opacity:0 }
   });
   const photosRef = useRef(null);
+  const containerRef = useRef(null);
   useEffect(() => {
     if(photosRef.current)
       setParentHeight(photosRef.current.clientHeight + 228 + 50);
+  },[]);
+  useEffect(() => {
+    if(containerRef.current)
+      setParentWidth(containerRef.current.clientWidth - 2 * getMargins(containerRef.current.clientWidth));
   },[]);
   useEffect(() => {
     if(tIndex !== 2){
@@ -81,6 +81,16 @@ function Media(){
       return () => clearTimeout(timeout);
     }
   },[tIndex]);
+  useEffect(() => {
+    const handleResize = () => {
+      if(photosRef.current)
+        setParentHeight(photosRef.current.clientHeight + 228);
+      if(containerRef.current)
+        setParentWidth(containerRef.current.clientWidth - 2 * getMargins(containerRef.current.clientWidth));
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  });
   const setVideo = () => {
     if(currentPane !== 'videos'){
       setCurrentPane('videos');
@@ -94,7 +104,7 @@ function Media(){
     }
   }
   return (
-    <Container className={classes.container} style={{height:`${parentHeight}px`}}>
+    <Container className={classes.container} style={{height:`${parentHeight}px`}} ref={containerRef}>
       <Holder className={classes.togglerHolder} justify='flex-end' direction='row'>
         <LightDarkToggler mode={tldState} toggle={toggleTld} />
       </Holder>
@@ -107,7 +117,7 @@ function Media(){
           const Item = mediaPages[item];
           return (
             <a.div key={key} style={newStyle} className={classes.view}>
-              <Item ref={photosRef} title={item}/>
+              <Item ref={photosRef} title={item} width={parentWidth}/>
             </a.div>
           );
         })}

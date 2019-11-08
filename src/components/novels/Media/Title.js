@@ -1,4 +1,4 @@
-import React , { useState , useEffect } from 'react';
+import React from 'react';
 import { useTransition, animated as a } from 'react-spring'
 
 import MUITypography from '@material-ui/core/Typography';
