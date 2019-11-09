@@ -53,6 +53,8 @@ export default function PhotoGrid(props){
     const Dobj = getGridSizer[cols];
     return <Dobj photos={photos} />
   }
+  if(photos.length === 4 || photos.length === 8 || photos.length === 6)
+    return <GridBy2 photos={photos} />;
   if(divzBy4(photos.length))
     return <GridBy4 photos={photos} />;
   else if(divzBy3(photos.length))

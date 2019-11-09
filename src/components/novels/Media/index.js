@@ -1,5 +1,5 @@
-import React , { useState , useEffect , useRef } from 'react';
-import { useTransition , animated as a } from 'react-spring';
+import React , { useState , useEffect } from 'react';
+import { useSpring , animated as a } from 'react-spring';
 
 import Container from '@material-ui/core/Container';
 
@@ -16,95 +16,70 @@ import withPageFade from 'components/bindings/wrappers/withPageFade';
 
 import { themeHook } from 'theme';
 
-const getMargins = width => {
-  if(width >= 960)
-    return 32;
-  else if(width < 960 && width >= 600)
-    return 24;
-  else return 16;
-}
-
-const mediaPages = {
-  'photos':Photos,
-  'videos':Photos
-}
-
 const useClasses = themeHook(
-  ['getDarkBackground','getLightBackground'],
-  ([darkBg,lightBg]) => ({
+  ['getDarkBackground','getLightBackground','getMajorSpacing'],
+  ([darkBg,lightBg,majorSpacing]) => ({
     container:{
       background: ({tldState}) => (tldState === 'light') ? lightBg : darkBg,
       transition: 'background .5s, color .5s',
-      width:'100vw'
+      width:'100vw',
+      overflowX:'hidden'
     },
     togglerHolder:{
       width:'100%',
       paddingTop:'12px'
     },
     viewHolder:{
+      position:'relative',
+      width:'200%',
       display:'flex',
       overflow:'hidden',
       flexDirection:'row'
     },
     view:{
 
+    },
+    seperator:{
+      width:`calc(100% - ${2 * parseInt(majorSpacing,10)}px)`,
+      height:'1px',
+      backgroundColor: ({tldState}) => (tldState === 'light') ? 'black' : 'white',
+      margin:majorSpacing,
+      marginTop:'0px',
+      transition:'color .5s'
     }
   })
 );
 
 function Media(){
   const [tldState,toggleTld] = useTLD();
+  const classes = useClasses({tldState});
   const [currentPane,setCurrentPane] = useState('photos');
   const [tIndex,settIndex] = useState(0);
-  const [parentHeight,setParentHeight] = useState(null);
-  const [parentWidth,setParentWidth] = useState(null);
-  const classes = useClasses({tldState});
-  const mediaTransitories = useTransition(currentPane, null, {
-    initial:{ opacity:0 },
-    from:{ opacity:0 },
-    enter:{ opacity:1 },
-    leave:{ opacity:0 }
-  });
-  const photosRef = useRef(null);
-  const containerRef = useRef(null);
-  useEffect(() => {
-    if(photosRef.current)
-      setParentHeight(photosRef.current.clientHeight + 228 + 50);
-  },[]);
-  useEffect(() => {
-    if(containerRef.current)
-      setParentWidth(containerRef.current.clientWidth - 2 * getMargins(containerRef.current.clientWidth));
-  },[]);
+  const [transitionStyles,setTransitionState] = useSpring(() => ({
+    left:'0%'
+  }));
   useEffect(() => {
     if(tIndex !== 2){
       const timeout = setTimeout(() => settIndex(2),5000);
       return () => clearTimeout(timeout);
     }
   },[tIndex]);
-  useEffect(() => {
-    const handleResize = () => {
-      if(photosRef.current)
-        setParentHeight(photosRef.current.clientHeight + 228);
-      if(containerRef.current)
-        setParentWidth(containerRef.current.clientWidth - 2 * getMargins(containerRef.current.clientWidth));
-    }
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  });
   const setVideo = () => {
     if(currentPane !== 'videos'){
       setCurrentPane('videos');
       settIndex(1);
+      setTransitionState({left:'-100%'});
     }
   }
   const setPhotos = () => {
     if(currentPane !== 'photos'){
       setCurrentPane('photos');
       settIndex(0);
+      setTransitionState({left:'0%'});
     }
   }
   return (
-    <Container className={classes.container} style={{height:`${parentHeight}px`}} ref={containerRef}>
+    <Container className={classes.container}>
       <Holder className={classes.togglerHolder} justify='flex-end' direction='row'>
         <LightDarkToggler mode={tldState} toggle={toggleTld} />
       </Holder>
@@ -112,16 +87,11 @@ function Media(){
       <Holder>
         <IconBar pane={currentPane} setVideo={setVideo} setPhotos={setPhotos}/>
       </Holder>
-      <div className={classes.viewHolder}>
-        {mediaTransitories.map(({item,key,props:newStyle},index) => {
-          const Item = mediaPages[item];
-          return (
-            <a.div key={key} style={newStyle} className={classes.view}>
-              <Item ref={photosRef} title={item} width={parentWidth}/>
-            </a.div>
-          );
-        })}
-      </div>
+      <div className={classes.seperator} />
+      <a.div style={transitionStyles} className={classes.viewHolder}>
+        <Photos title='Gallery' active={currentPane === 'photos'}/>
+        <Photos title='YouTube' active={currentPane === 'videos'} />
+      </a.div>
     </Container>
   );
 }
