@@ -14,43 +14,46 @@ import useSeriesConnect from 'components/bindings/hooks/useSeriesConnect';
 
 import BlogCard from 'components/words/BlogListing/BlogCard';
 
+import { themeHook } from 'theme';
+
+const useClasses = themeHook({
+  canvas:{
+    position:"absolute",
+    left:"0px",
+    top:"0px",
+    width:'100%',
+    height:'100%',
+    background: 'linear-gradient(to bottom, #0f0c29, #302b63, #24243e)'
+  },
+  parallaxContainer:{
+    width:'100vw',
+    height:'100vh',
+    minHeight:'1000px'
+  },
+  container:{
+    position:'absolute',
+    top:'0',
+    left:'0',
+    right:'0',
+    bottom:'0',
+    boxShadow:'inset 0px 0px 70px 0px rgba(0,0,0,.8)'
+  },
+  navButton:{
+    color:"white"
+  },
+  header:{
+    textAlign:'center',
+    background:'linear-gradient(#FF416C,#FF4B2B)',
+    WebkitBackgroundClip:'text',
+    WebkitTextFillColor:'transparent'
+  }
+});
+
 // 94892796
 
 export default function DuncanStrauss(props){
-  const { minHeight = 1000 , widthStr = '100vw' } = props;
   const screenTooSmall = useMediaQuery('(max-width:400px)');
-  const styles = {
-    canvas:{
-      position:"absolute",
-      left:"0px",
-      top:"0px",
-      width:'100%',
-      height:'100%',
-      background: 'linear-gradient(to bottom, #0f0c29, #302b63, #24243e)'
-    },
-    parallaxContainer:{
-      width:widthStr,
-      minHeight:`${minHeight}px`
-    },
-    container:{
-      position:'absolute',
-      top:'0',
-      left:'0',
-      right:'0',
-      bottom:'0',
-      boxShadow:'inset 0px 0px 70px 0px rgba(0,0,0,.8)'
-    },
-    navButton:{
-      color:"white"
-    },
-    header:{
-      textAlign:'center',
-      background:'linear-gradient(#FF416C,#FF4B2B)',
-      WebkitBackgroundClip:'text',
-      WebkitTextFillColor:'transparent'
-    }
-  }
-
+  const classes = useClasses();
   const data = useSeriesConnect("Duncan");
   const [selectedDuncan,setSelectedDuncan] = useState(0);
   const navRight = () => {
@@ -64,7 +67,7 @@ export default function DuncanStrauss(props){
 
   const bgCanvas = React.useRef();
   const imageLayer = [
-    { children: <canvas ref={bgCanvas} style={styles.canvas}/> , amount:.1 }
+    { children: <canvas ref={bgCanvas} className={classes.canvas}/> , amount:.1 }
   ];
 
   useEffect(() => {
@@ -133,10 +136,10 @@ export default function DuncanStrauss(props){
     return () => cancelAnimationFrame(request);
   },[]);
   return (
-    <ParallaxBanner layers={imageLayer} style={styles.parallaxContainer}>
-      <Grid wrap="nowrap" spacing={8} justify="center" style={styles.container} container direction="column">
+    <ParallaxBanner layers={imageLayer} className={classes.parallaxContainer} style={{height:'100vh',width:'100vw'}}>
+      <Grid wrap="nowrap" spacing={8} justify="center" className={classes.container} container direction="column">
         <Grid item>
-          <Typography variant="h2" style={styles.header}>
+          <Typography variant="h2" className={classes.header}>
             The Duncan Strauss Mysteries
           </Typography>
         </Grid>
@@ -145,7 +148,7 @@ export default function DuncanStrauss(props){
             {(!screenTooSmall && data.postData && data.postData.length > 1) ? (
               <Grid item>
                 <IconButton onClick={navLeft}>
-                  <ArrowBackIos style={styles.navButton}/>
+                  <ArrowBackIos className={classes.navButton}/>
                 </IconButton>
               </Grid>
             ) : null}
@@ -155,7 +158,7 @@ export default function DuncanStrauss(props){
             {(!screenTooSmall && data.postData && data.postData.length > 1) ? (
               <Grid item>
                 <IconButton onClick={navRight}>
-                  <ArrowForwardIos style={styles.navButton}/>
+                  <ArrowForwardIos className={classes.navButton}/>
                 </IconButton>
               </Grid>
             ) : null}
@@ -164,12 +167,12 @@ export default function DuncanStrauss(props){
                 <Grid container justify="center" alignItems="center">
                   <Grid item>
                     <IconButton onClick={navLeft}>
-                      <ArrowBackIos style={styles.navButton}/>
+                      <ArrowBackIos className={classes.navButton}/>
                     </IconButton>
                   </Grid>
                   <Grid item>
                     <IconButton onClick={navRight}>
-                      <ArrowForwardIos style={styles.navButton}/>
+                      <ArrowForwardIos className={classes.navButton}/>
                     </IconButton>
                   </Grid>
                 </Grid>

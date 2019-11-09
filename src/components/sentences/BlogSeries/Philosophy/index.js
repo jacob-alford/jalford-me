@@ -14,6 +14,8 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import BlogCard from 'components/words/BlogListing/BlogCard';
 
+import { themeHook } from 'theme';
+
 const toRGB = (...hexes) => hexes.map(hex => [
   parseInt(`${hex[1]}${hex[2]}`,16),
   parseInt(`${hex[3]}${hex[4]}`,16),
@@ -78,44 +80,44 @@ const progressBall = (ball,bokeh) => {
   }
 }
 
+const useClasses = themeHook({
+  canvas:{
+    position:"absolute",
+    left:"0px",
+    top:"0px",
+    width:'100%',
+    height:'100%',
+    background: 'rgba(21,24,37,1)'
+  },
+  parallaxContainer:{
+    width:'100vw',
+    height:'100vh',
+    minHeight:'1000px'
+  },
+  container:{
+    position:'absolute',
+    top:'0',
+    left:'0',
+    right:'0',
+    bottom:'0',
+    boxShadow:'inset 0px 0px 70px 0px rgba(0,0,0,.8)'
+  },
+  navButton:{
+    color:"white"
+  },
+  header:{
+    textAlign:'center',
+    background:'linear-gradient(to right, #12c2e9, #c471ed, #f64f59)',
+    WebkitBackgroundClip:'text',
+    WebkitTextFillColor:'transparent'
+  }
+})
+
 export default function Philosophy(props){
   const data = useSeriesConnect("Philosophy");
   const screenTooSmall = useMediaQuery('(max-width:400px)');
   const [selectedPhi,setSelectedPhi] = useState(0);
-  const { minHeight = 1000 , widthStr = '100vw' , heightStr = '75vh' } = props;
-  const styles = {
-    canvas:{
-      position:"absolute",
-      left:"0px",
-      top:"0px",
-      width:'100%',
-      height:'100%',
-      background: 'rgba(21,24,37,1)'
-    },
-    parallaxContainer:{
-      width:widthStr,
-      minHeight:`${minHeight}px`,
-      height:heightStr
-    },
-    container:{
-      position:'absolute',
-      top:'0',
-      left:'0',
-      right:'0',
-      bottom:'0',
-      boxShadow:'inset 0px 0px 70px 0px rgba(0,0,0,.8)'
-    },
-    navButton:{
-      color:"white"
-    },
-    header:{
-      textAlign:'center',
-      background:'linear-gradient(to right, #12c2e9, #c471ed, #f64f59)',
-      WebkitBackgroundClip:'text',
-      WebkitTextFillColor:'transparent'
-    }
-  }
-
+  const classes = useClasses();
   const navRight = () => {
     if(data.postData && data.postData.length > 0)
       setSelectedPhi((selectedPhi + 1) % data.postData.length);
@@ -127,21 +129,21 @@ export default function Philosophy(props){
 
   const bgCanvas = React.useRef();
   const imageLayer = [
-    { children: <canvas ref={bgCanvas} style={styles.canvas}/> , amount:.1 }
+    { children: <canvas ref={bgCanvas} className={classes.canvas}/> , amount:.1 }
   ];
 
   useEffect(() => {
     const context = bgCanvas.current.getContext("2d");
     bgCanvas.current.width = window.innerWidth;
-    bgCanvas.current.height = Math.max(minHeight,window.innerHeight * (parseInt(heightStr,10)/100));
+    bgCanvas.current.height = Math.max(1000,window.innerHeight);
     let width = bgCanvas.current.width;
     let height = bgCanvas.current.height;
     let w2h = (height > width) ? height/width : (height === width) ? 1 : width/height;
     let h2w = (width > height) ? width/height : (height === width) ? 1 : height/width;
     const updateWidthHeight = () => {
-      if(bgCanvas.current.width !== window.innerWidth || bgCanvas.current.height !== window.innerHeight * (parseInt(heightStr,10)/100)){
+      if(bgCanvas.current.width !== window.innerWidth || bgCanvas.current.height !== Math.max(1000,window.innerHeight)){
         bgCanvas.current.width = window.innerWidth;
-        bgCanvas.current.height = Math.max(minHeight,window.innerHeight * .75);
+        bgCanvas.current.height = Math.max(1000,window.innerHeight);
         width = bgCanvas.current.width;
         height = bgCanvas.current.height;
         w2h = (height > width) ? height/width : (height === width) ? 1 : width/height;
@@ -181,12 +183,12 @@ export default function Philosophy(props){
     }
     requestAnimationFrame(draw);
     return () => cancelAnimationFrame(request);
-  },[heightStr,minHeight]);
+  },[]);
   return (
-    <ParallaxBanner layers={imageLayer} style={styles.parallaxContainer}>
-      <Grid wrap="nowrap" spacing={8} justify="center" style={styles.container} container direction="column">
+    <ParallaxBanner layers={imageLayer} className={classes.parallaxContainer} style={{height:'100vh',width:'100vw'}}>
+      <Grid wrap="nowrap" spacing={8} justify="center" className={classes.container} container direction="column">
         <Grid item>
-          <Typography variant="h2" style={styles.header}>
+          <Typography variant="h2" className={classes.header}>
             Philosophy
           </Typography>
         </Grid>
@@ -195,7 +197,7 @@ export default function Philosophy(props){
             {(!screenTooSmall && data.postData && data.postData.length > 1) ? (
               <Grid item>
                 <IconButton onClick={navLeft}>
-                  <ArrowBackIos style={styles.navButton}/>
+                  <ArrowBackIos className={classes.navButton}/>
                 </IconButton>
               </Grid>
             ) : null}
@@ -205,7 +207,7 @@ export default function Philosophy(props){
             {(!screenTooSmall && data.postData && data.postData.length > 1) ? (
               <Grid item>
                 <IconButton onClick={navRight}>
-                  <ArrowForwardIos style={styles.navButton}/>
+                  <ArrowForwardIos className={classes.navButton}/>
                 </IconButton>
               </Grid>
             ) : null}
@@ -214,12 +216,12 @@ export default function Philosophy(props){
                 <Grid container justify="center" alignItems="center">
                   <Grid item>
                     <IconButton onClick={navLeft}>
-                      <ArrowBackIos style={styles.navButton}/>
+                      <ArrowBackIos className={classes.navButton}/>
                     </IconButton>
                   </Grid>
                   <Grid item>
                     <IconButton onClick={navRight}>
-                      <ArrowForwardIos style={styles.navButton}/>
+                      <ArrowForwardIos className={classes.navButton}/>
                     </IconButton>
                   </Grid>
                 </Grid>
