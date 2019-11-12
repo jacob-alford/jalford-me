@@ -23,7 +23,8 @@ const useClasses = themeHook(
       background: ({tldState}) => (tldState === 'light') ? lightBg : darkBg,
       transition: 'background .5s, color .5s',
       width:'100vw',
-      overflowX:'hidden'
+      overflowX:'hidden',
+      paddingBottom:majorSpacing
     },
     togglerHolder:{
       width:'100%',
