@@ -13,6 +13,7 @@ import NoMatch from 'components/novels/NotFound';
 import Loader from 'components/words/Loader';
 
 const UserSettings = React.lazy(() => import('./components/novels/UserSettings'));
+const MediaUpload = React.lazy(() => import('./components/novels/MediaUpload'));
 const UsersTable = React.lazy(() => import('./components/novels/UsersTable'));
 const UserPosts = React.lazy(() => import('./components/novels/UserPosts'));
 const BlogEdit = React.lazy(() => import('./components/novels/BlogEdit'));
@@ -96,6 +97,7 @@ export default function App() {
           </Route>
           <Route exact path="/about" component={About} />
           <Route exact path="/media" component={Media} />
+          <Route exact path="/media/upload" component={MediaUpload} />
           <Route exact path="/posts/view/:postId" children={props => {
             const { match , history } = props;
             return (
