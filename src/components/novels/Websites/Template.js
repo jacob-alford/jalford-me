@@ -44,7 +44,7 @@ const useClasses = themeHook(
 		},
 		superContainer: {
 			width: '100%',
-			height: '100vh',
+			minHeight: '100vh',
 			backgroundColor: ({ featured, tldState }) =>
 				getBgColor(featured, tldState),
 			transition: 'background .5s'
