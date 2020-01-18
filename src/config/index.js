@@ -25,4 +25,4 @@ export const homePageImage = {
 		"A breathtaking diversion in Grants, NM.  It's where I grew up! My family has owned it for generations."
 };
 
-export const footerText = 'Copyright © 2019 Jacob Alford';
+export const footerText = 'Copyright © 2020 Jacob Alford';
