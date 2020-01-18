@@ -26,8 +26,7 @@ import markdownConfig from 'helpers/blogParse.js';
 
 import { themeHook } from 'theme';
 
-const aboutText =
-`I love javascript; perhaps four degrees too much.  I made this site in React, and I love that too.
+const aboutText = `I love javascript; perhaps four degrees too much.  I made this site in React, and I love that too.
 
 I'm a mathematician attending New Mexico State University, anxiously anticipating graduation
 by the Spring of 2020.
@@ -39,8 +38,7 @@ I've sold cars, so watch out!
 My favourite thing to do besides adopt UK idiosyncrasies is to write.
 I'm a philosophy writer, and have started a new series 'The Duncan Strauss Mysteries.'  [Check 'em out!](/posts) 🙂
 `;
-const javascriptTranslation =
-`\`\`\`javascript
+const javascriptTranslation = `\`\`\`javascript
 const Jacob = usePerson('me');
 Jacob.loves('javascript').degree >= 4;
 
@@ -80,80 +78,105 @@ Line 22: Warning: Each child in an array or iterator should have a unique "key" 
 `;
 
 const useClasses = themeHook(
-  ['getMinorSpacing','getMajorSpacing'],
-  ([minorSpacing,majorSpacing]) => ({
-    holder:{
-      color:({tldState}) => (tldState === 'light') ? "rgba(0,0,0,.87)" : 'rgba(255,255,255,1)',
-      background:({tldState}) => (tldState === 'light') ? '#fff' : '#232323',
-      paddingTop:minorSpacing,
-      paddingBottom:majorSpacing,
-      marginBottom:minorSpacing,
-      transition: 'background .5s, color .5s'
-    },
-    title:{
-      textAlign:'center'
-    },
-    togglerHolder:{
-      width:'100%'
-    }
-  })
+	['getMinorSpacing', 'getMajorSpacing'],
+	([minorSpacing, majorSpacing]) => ({
+		holder: {
+			color: ({ tldState }) =>
+				tldState === 'light' ? 'rgba(0,0,0,.87)' : 'rgba(255,255,255,1)',
+			background: ({ tldState }) => (tldState === 'light' ? '#fff' : '#232323'),
+			paddingTop: minorSpacing,
+			paddingBottom: majorSpacing,
+			marginBottom: minorSpacing,
+			transition: 'background .5s, color .5s'
+		},
+		title: {
+			textAlign: 'center'
+		},
+		togglerHolder: {
+			width: '100%'
+		}
+	})
 );
 
 const styles = {
-  image:{
-    width:'100%',
-    height:'100%',
-    objectFit:'cover',
-    objectPosition:'center right',
-    boxShadow:'0px 0px 77px -32px rgba(0,0,0,0.75)'
-  },
-  imgContainer:{
-    width:'60%',
-    paddingBottom:'40%',
-    lineHeight:'0px'
-  }
-}
+	image: {
+		width: '100%',
+		height: '100%',
+		objectFit: 'cover',
+		objectPosition: 'center right',
+		boxShadow: '0px 0px 77px -32px rgba(0,0,0,0.75)'
+	},
+	imgContainer: {
+		width: '100%',
+		paddingBottom: '60%',
+		lineHeight: '0px'
+	}
+};
 
-function About(props){
-  const { h3:titleSize } = useTitleSize();
-  const [tldState,toggleTld] = useTLD();
-  const classes = useClasses({tldState});
-  return (
-    <Container className={classes.holder}>
-    <Holder className={classes.togglerHolder} justify='flex-end' direction='row'>
-      <LightDarkToggler mode={tldState} toggle={toggleTld} />
-    </Holder>
-    <Image
-      src={aboutContactImage}
-      alt="me"
-      imageStyles={styles.image}
-      holderStyles={styles.imgContainer}/>
-      <Typography paragraph variant="h2" className={classes.title} style={{fontSize:titleSize}}>
-        About
-      </Typography>
-      <Markdown renderers={markdownConfig} source={aboutText} />
-      <Typography paragraph variant="h2" className={classes.title} style={{fontSize:titleSize}}>
-        Javascript Translation
-      </Typography>
-      <Markdown renderers={markdownConfig} source={javascriptTranslation} />
-      <Typography paragraph variant="h2" className={classes.title} style={{fontSize:titleSize}}>
-        Output
-      </Typography>
-      <Markdown renderers={markdownConfig} source={output} />
-      <Grid container justify="center" alignItems="center">
-        <Grid item>
-          <SocialIcon onClick={() => window.location.href = socialMedia.linkedIn.url}>
-            <Avatar alt="LinkedIn" src={socialMedia.linkedIn.img} style={{filter:"invert(1)"}}/>
-          </SocialIcon>
-        </Grid>
-        <Grid item>
-          <SocialIcon onClick={() => window.location.href = `mailto:${socialMedia.email}`}>
-            <Email />
-          </SocialIcon>
-        </Grid>
-      </Grid>
-    </Container>
-  );
+function About(props) {
+	const { h3: titleSize } = useTitleSize();
+	const [tldState, toggleTld] = useTLD();
+	const classes = useClasses({ tldState });
+	return (
+		<Container className={classes.holder}>
+			<Holder
+				className={classes.togglerHolder}
+				justify='flex-end'
+				direction='row'>
+				<LightDarkToggler mode={tldState} toggle={toggleTld} />
+			</Holder>
+			<Image
+				src={aboutContactImage}
+				alt='me'
+				imageStyles={styles.image}
+				holderStyles={styles.imgContainer}
+			/>
+			<Typography
+				paragraph
+				variant='h2'
+				className={classes.title}
+				style={{ fontSize: titleSize }}>
+				About
+			</Typography>
+			<Markdown renderers={markdownConfig} source={aboutText} />
+			<Typography
+				paragraph
+				variant='h2'
+				className={classes.title}
+				style={{ fontSize: titleSize }}>
+				Javascript Translation
+			</Typography>
+			<Markdown renderers={markdownConfig} source={javascriptTranslation} />
+			<Typography
+				paragraph
+				variant='h2'
+				className={classes.title}
+				style={{ fontSize: titleSize }}>
+				Output
+			</Typography>
+			<Markdown renderers={markdownConfig} source={output} />
+			<Grid container justify='center' alignItems='center'>
+				<Grid item>
+					<SocialIcon
+						onClick={() => (window.location.href = socialMedia.linkedIn.url)}>
+						<Avatar
+							alt='LinkedIn'
+							src={socialMedia.linkedIn.img}
+							style={{ filter: 'invert(1)' }}
+						/>
+					</SocialIcon>
+				</Grid>
+				<Grid item>
+					<SocialIcon
+						onClick={() =>
+							(window.location.href = `mailto:${socialMedia.email}`)
+						}>
+						<Email />
+					</SocialIcon>
+				</Grid>
+			</Grid>
+		</Container>
+	);
 }
 
 export default withPageFade(About);
