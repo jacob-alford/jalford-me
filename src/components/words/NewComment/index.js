@@ -22,7 +22,7 @@ const useClasses = themeHook({
 		marginTop: '8px',
 		textAlign: 'center'
 	},
-	newComment: {
+	newCommentCard: {
 		background: ({ tldState }) => (tldState === 'light' ? '#fff' : '#454545')
 	},
 	commentText: {
@@ -39,7 +39,7 @@ export default function NewComment(props) {
 	const handleCommentEdit = evt => setCommentText(evt.target.value);
 	if (userLoading) return <Loader />;
 	return (
-		<Card>
+		<Card className={classes.newCommentCard}>
 			<CardContent>
 				<Holder>
 					{!user.loggedIn ? (
