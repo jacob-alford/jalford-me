@@ -1,5 +1,5 @@
 import React from 'react';
-import useReactRouter from 'use-react-router';
+import { useHistory } from 'react-router-dom';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import Card from '@material-ui/core/Card';
@@ -37,7 +37,7 @@ const mapData = (data, id) => {
 };
 
 export default function BlogCard(props) {
-	const { history } = useReactRouter();
+	const history = useHistory();
 	const { data, selectedPost } = props;
 	const screenTooSmall = useMediaQuery('(min-width: 450px)');
 	const getPost = () => mapData(data, selectedPost);

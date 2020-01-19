@@ -10,7 +10,7 @@ import { themeHook } from 'theme';
 
 import useTitleSize from 'components/bindings/hooks/useTitleSize';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import useReactRouter from 'use-react-router';
+import { useHistory } from 'react-router-dom';
 
 import useTLD from 'components/bindings/hooks/useTLD';
 
@@ -91,7 +91,7 @@ export default function TemplateWebsite(props) {
 	const screenTooSmall = useMediaQuery('(max-width:450px)');
 	const tooSmall4Img = useMediaQuery('(max-width:600px)');
 	const classes = useClasses({ ...props, tldState });
-	const { history } = useReactRouter();
+	const history = useHistory();
 	const handleImgRedirect = useCallback(() => {
 		if (
 			(image && image.href.includes('http')) ||

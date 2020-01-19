@@ -24,7 +24,6 @@
 		"styled-components": "5.0.0",
 		"typed.js": "2.0.11",
 		"typeface-roboto": "0.0.75",
-		"use-react-router": "1.0.7",
 		"zxcvbn": "4.4.2"
 	},
 	"scripts": {

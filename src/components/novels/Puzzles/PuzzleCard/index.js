@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 
 import Holder from 'components/words/Holder';
 
-import useReactRouter from 'use-react-router';
+import { useHistory } from 'react-router-dom';
 
 import { themeHook } from 'theme';
 
@@ -54,7 +54,7 @@ const useClasses = themeHook(['getPaperPadding'], ([paperPadding]) => ({
 
 export default function PuzzleCard(props) {
 	const { emoji, completed, link } = props;
-	const { history } = useReactRouter();
+	const history = useHistory();
 	const classes = useClasses(props);
 	return (
 		<Holder

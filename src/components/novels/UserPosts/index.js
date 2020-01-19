@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useReactRouter from 'use-react-router';
+import { useHistory } from 'react-router-dom';
 
 import * as MUI_COMPONENTS from './mui.js';
 
@@ -142,7 +142,7 @@ const dateify = date =>
 const getPermissions = user => user.activeUser.permissions.value;
 
 function UserPosts(props) {
-	const { history } = useReactRouter();
+	const history = useHistory();
 	const { isLoading, postData, error, user } = useRPostConnect('title');
 	const notify = useNotify({
 		timeout: 4500
