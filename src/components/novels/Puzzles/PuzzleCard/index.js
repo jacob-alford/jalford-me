@@ -47,8 +47,7 @@ const useClasses = themeHook(['getPaperPadding'], ([paperPadding]) => ({
 		cursor: 'pointer'
 	},
 	button: {
-		color: 'white',
-		borderColor: 'white'
+		background: 'white'
 	}
 }));
 
@@ -63,12 +62,7 @@ export default function PuzzleCard(props) {
 			onClick={() => history.push(link)}>
 			<div className={`em-svg em-${emoji} ${classes.icon}`} />
 			{completed ? (
-				<img
-					alt='success banner'
-					src={banner}
-					className={classes.banner}
-					onClick={() => history.push(link)}
-				/>
+				<img alt='success banner' src={banner} className={classes.banner} />
 			) : null}
 			<Button
 				variant='outlined'
