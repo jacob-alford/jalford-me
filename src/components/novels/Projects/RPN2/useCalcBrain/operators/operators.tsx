@@ -1,9 +1,11 @@
 import React, { FunctionComponent } from 'react';
+import reduce from 'lodash/reduce';
 
 import {
 	makeSingleOp,
 	makeDoubleOp,
 	makeConstant,
+	makeReducer,
 	text,
 	symText
 } from './_constructors';
@@ -52,6 +54,35 @@ const operators: opsForm = {
 		constant: 299792458,
 		type: op.speedOfLight,
 		render: text('c')
+	}),
+	[op.sum]: makeReducer({
+		colorClass: colorClasses.function,
+		type: op.sum,
+		render: symText('&Sigma;'),
+		fn: (stack: number[]): number[] => [
+			reduce(stack, (sum: number, next: number): number => sum + next, 0)
+		]
+	}),
+	[op.product]: makeReducer({
+		colorClass: colorClasses.function,
+		type: op.product,
+		render: symText('&Pi;'),
+		fn: (stack: number[]): number[] => [
+			reduce(
+				stack,
+				(product: number, next: number): number => product * next,
+				1
+			)
+		]
+	}),
+	[op.mean]: makeReducer({
+		colorClass: colorClasses.function,
+		type: op.mean,
+		render: symText('&mu;'),
+		fn: (stack: number[]): number[] => [
+			(1 / stack.length) *
+				reduce(stack, (sum: number, next: number): number => sum + next, 0)
+		]
 	})
 };
 

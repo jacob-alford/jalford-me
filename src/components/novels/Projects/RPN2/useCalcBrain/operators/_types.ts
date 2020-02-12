@@ -53,7 +53,7 @@ export interface operator {
 	type: op;
 	act: (stack: number[]) => number[];
 	preVerify: (stack: number[]) => boolean;
-	toTape: (input: number | number[], output: number | number[]) => tapeItem;
+	toTape: (stack: number[]) => tapeItem;
 	verify: (stack: number[]) => boolean;
 }
 
