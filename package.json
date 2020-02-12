@@ -5,6 +5,10 @@
 	"dependencies": {
 		"@material-ui/core": "4.8.3",
 		"@material-ui/icons": "4.5.1",
+		"@types/jest": "^25.1.2",
+		"@types/node": "^13.7.1",
+		"@types/react": "^16.9.19",
+		"@types/react-dom": "^16.9.5",
 		"crypto-js": "3.1.9-1",
 		"katex": "0.11.1",
 		"openseadragon": "2.4.1",
@@ -23,6 +27,7 @@
 		"styled-components": "5.0.0",
 		"typed.js": "2.0.11",
 		"typeface-roboto": "0.0.75",
+		"typescript": "^3.7.5",
 		"zxcvbn": "4.4.2"
 	},
 	"scripts": {
