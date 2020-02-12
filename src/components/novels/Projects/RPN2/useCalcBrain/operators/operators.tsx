@@ -4,7 +4,8 @@ import {
 	makeSingleOp,
 	makeDoubleOp,
 	makeConstant,
-	text
+	text,
+	symText
 } from './_constructors';
 
 import { op, colorClass as colorClasses, operators as opsForm } from './_types';
@@ -44,7 +45,7 @@ const operators: opsForm = {
 		colorClass: colorClasses.function,
 		constant: Math.PI,
 		type: op.atan,
-		render: () => <span dangerouslySetInnerHTML={{ __html: '&pi;' }} />
+		render: symText('&pi;')
 	}),
 	[op.speedOfLight]: makeConstant({
 		colorClass: colorClasses.function,

@@ -4,7 +4,10 @@ import drop from 'lodash/drop';
 
 import { operator, op, colorClass as colorClasses, tapeItem } from './_types';
 
-const text = (str: string): FunctionComponent => () => <span>{str} </span>;
+const text = (str: string): FunctionComponent => () => <span>{str}</span>;
+const symText = (str: string): FunctionComponent => () => (
+	<span dangerouslySetInnerHTML={{ __html: str }} />
+);
 
 const makeSingleOp = (config: {
 	colorClass: colorClasses;
@@ -98,4 +101,4 @@ const makeConstant = (config: {
 	};
 };
 
-export { makeSingleOp, makeDoubleOp, makeConstant, text };
+export { makeSingleOp, makeDoubleOp, makeConstant, text, symText };
