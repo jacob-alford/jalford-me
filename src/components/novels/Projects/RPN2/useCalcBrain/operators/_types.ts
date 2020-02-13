@@ -45,6 +45,7 @@ export enum colorClass {
 }
 
 export type tapeItem = [string, string];
+export type calcError = null | string;
 
 export interface operator {
 	colorClass: colorClass;
@@ -54,7 +55,7 @@ export interface operator {
 	act: (stack: number[]) => number[];
 	preVerify: (stack: number[]) => boolean;
 	toTape: (stack: number[]) => tapeItem;
-	verify: (stack: number[]) => boolean;
+	error: (stack: number[]) => calcError;
 }
 
 export type operators = Record<op, operator>;

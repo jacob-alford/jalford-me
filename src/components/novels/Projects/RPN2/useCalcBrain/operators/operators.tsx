@@ -7,10 +7,16 @@ import {
 	makeConstant,
 	makeReducer,
 	text,
+	makeError,
 	symText
 } from './_constructors';
 
-import { op, colorClass as colorClasses, operators as opsForm } from './_types';
+import {
+	op,
+	colorClass as colorClasses,
+	operators as opsForm,
+	calcError
+} from './_types';
 
 const operators: opsForm = {
 	[op.sin]: makeSingleOp({
@@ -31,12 +37,22 @@ const operators: opsForm = {
 	[op.asin]: makeSingleOp({
 		colorClass: colorClasses.function,
 		type: op.asin,
-		fn: Math.asin
+		fn: Math.asin,
+		error: (stack: number[]): calcError =>
+			makeError(
+				stack[0] >= 0 && stack[1] <= 1,
+				'Inverse sine only defined for values between zero and one!'
+			)
 	}),
 	[op.acos]: makeSingleOp({
 		colorClass: colorClasses.function,
 		type: op.acos,
-		fn: Math.acos
+		fn: Math.acos,
+		error: (stack: number[]): calcError =>
+			makeError(
+				stack[0] >= 0 && stack[1] <= 1,
+				'Inverse cosine only defined for values between zero and one!'
+			)
 	}),
 	[op.atan]: makeSingleOp({
 		colorClass: colorClasses.function,

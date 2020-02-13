@@ -3,30 +3,40 @@ import concat from 'lodash/concat';
 import drop from 'lodash/drop';
 import slice from 'lodash/slice';
 
-import { operator, op, colorClass as colorClasses, tapeItem } from './_types';
+import {
+	operator,
+	op,
+	colorClass as colorClasses,
+	tapeItem,
+	calcError
+} from './_types';
 
-const formatList = (arr: number[]): string => {
-	return `[${slice(arr, 0, 3).join(', ')}]`;
+export const formatList = (arr: number[]): string => {
+	return `[${slice(arr, 0, 3).join(', ')}${(arr.length > 3 && ', ...') || ''}]`;
 };
-const text = (str: string): FunctionComponent => () => <span>{str}</span>;
-const symText = (str: string): FunctionComponent => () => (
+export const text = (str: string): FunctionComponent => () => (
+	<span>{str}</span>
+);
+export const symText = (str: string): FunctionComponent => () => (
 	<span dangerouslySetInnerHTML={{ __html: str }} />
 );
+export const makeError = (bool: boolean, str: string): calcError =>
+	(bool && str) || null;
 
-const makeReducer = (config: {
+export const makeReducer = (config: {
 	colorClass: colorClasses;
 	render?: FunctionComponent;
 	type: op;
 	toTape?: (stack: number[]) => tapeItem;
 	fn: (input: number[]) => number[];
-	verify?: (stack: number[]) => boolean;
+	error?: (stack: number[]) => calcError;
 }): operator => {
 	const {
 		colorClass,
 		render = text(config.type),
 		type,
 		fn,
-		verify = (): boolean => true,
+		error = (): calcError => null,
 		toTape = (stack: number[]): tapeItem => [
 			`${type}(${formatList(stack)})`,
 			`${fn(stack)}`
@@ -41,24 +51,24 @@ const makeReducer = (config: {
 		act,
 		preVerify,
 		toTape,
-		verify
+		error
 	};
 };
 
-const makeSingleOp = (config: {
+export const makeSingleOp = (config: {
 	colorClass: colorClasses;
 	render?: FunctionComponent;
 	type: op;
 	toTape?: (stack: number[]) => tapeItem;
 	fn: (input: number) => number;
-	verify?: (stack: number[]) => boolean;
+	error?: (stack: number[]) => calcError;
 }): operator => {
 	const {
 		colorClass,
 		render = text(config.type),
 		type,
 		fn,
-		verify = (): boolean => true,
+		error = (): calcError => null,
 		toTape = (stack: number[]): tapeItem => [
 			`${type}(${stack[0]})`,
 			`${fn(stack[0])}`
@@ -73,11 +83,11 @@ const makeSingleOp = (config: {
 		act,
 		preVerify,
 		toTape,
-		verify
+		error
 	};
 };
 
-const makeDoubleOp = (config: {
+export const makeDoubleOp = (config: {
 	colorClass: colorClasses;
 	render?: FunctionComponent;
 	type: op;
@@ -85,7 +95,7 @@ const makeDoubleOp = (config: {
 	fn: (input1: number, input2: number) => number;
 	index1?: number;
 	index2?: number;
-	verify?: (stack: number[]) => boolean;
+	error?: (stack: number[]) => calcError;
 }): operator => {
 	const {
 		colorClass,
@@ -94,7 +104,7 @@ const makeDoubleOp = (config: {
 		fn,
 		index1 = 0,
 		index2 = 1,
-		verify = (): boolean => true,
+		error = (): calcError => null,
 		toTape = (stack: number[]): tapeItem => [
 			`${type}(${stack[index1]}, ${stack[index2]})`,
 			`${fn(stack[index1], stack[index2])}`
@@ -111,11 +121,11 @@ const makeDoubleOp = (config: {
 		act,
 		preVerify,
 		toTape,
-		verify
+		error
 	};
 };
 
-const makeConstant = (config: {
+export const makeConstant = (config: {
 	colorClass: colorClasses;
 	render?: FunctionComponent;
 	type: op;
@@ -123,7 +133,7 @@ const makeConstant = (config: {
 }): operator => {
 	const { colorClass, render = text(config.type), type, constant } = config;
 	const toTape = (): tapeItem => [`${type}`, `${constant}`];
-	const verify = (): boolean => true;
+	const error = (): calcError => null;
 	const preVerify = (): boolean => true;
 	const act = (stack: number[]): number[] => concat(constant, stack);
 	return {
@@ -133,8 +143,6 @@ const makeConstant = (config: {
 		act,
 		preVerify,
 		toTape,
-		verify
+		error
 	};
 };
-
-export { makeSingleOp, makeDoubleOp, makeConstant, makeReducer, text, symText };
