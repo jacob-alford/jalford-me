@@ -2,9 +2,9 @@ import concat from 'lodash/concat';
 import dropRight from 'lodash/dropRight';
 import last from 'lodash/last';
 
-import { op } from './operators/_types';
+import { historyItem } from './operators/_types';
 
-const opCat = (arr: op[], item: any): op[] =>
+export const opCat = (arr: historyItem[], item: any): historyItem[] =>
 	(item && concat(arr, item)) || arr;
 
 enum historyActions {
@@ -13,18 +13,18 @@ enum historyActions {
 	pop = 'pop'
 }
 type calculatorState = {
-	history: op[];
-	stash: op[];
+	history: historyItem[];
+	stash: historyItem[];
 };
 type calculatorAction = (
 	state: calculatorState,
-	operation: op
+	operation: historyItem
 ) => calculatorState;
 
 const calculatorActions: Record<historyActions, calculatorAction> = {
 	[historyActions.push]: (
 		state: calculatorState,
-		operation: op
+		operation: historyItem
 	): calculatorState => {
 		const { history, stash } = state;
 		return {
@@ -55,7 +55,7 @@ export const defaultState: calculatorState = {
 
 const calcReducer = (
 	state: calculatorState,
-	action: { type: historyActions; operation: op }
+	action: { type: historyActions; operation: historyItem }
 ): calculatorState => {
 	const { type, operation } = action;
 	if (!calculatorActions[type])

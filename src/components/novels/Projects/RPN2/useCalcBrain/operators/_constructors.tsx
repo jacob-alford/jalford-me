@@ -12,7 +12,7 @@ import {
 } from './_types';
 
 export const formatList = (arr: number[]): string => {
-	return `[${slice(arr, 0, 3).join(', ')}${(arr.length > 3 && ', ...') || ''}]`;
+	return `${slice(arr, 0, 3).join(',')}${(arr.length > 3 && ', ...') || ''}`;
 };
 export const text = (str: string): FunctionComponent => () => (
 	<span>{str}</span>
@@ -21,7 +21,7 @@ export const symText = (str: string): FunctionComponent => () => (
 	<span dangerouslySetInnerHTML={{ __html: str }} />
 );
 export const makeError = (bool: boolean, str: string): calcError =>
-	(bool && str) || null;
+	(!bool && str) || null;
 
 export const makeReducer = (config: {
 	colorClass: colorClasses;

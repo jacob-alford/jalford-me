@@ -1,20 +1,21 @@
 import forEach from 'lodash/forEach';
 
-import { op, tapeItem } from './operators/_types';
-import { operators } from './operators/operators';
+import { op, tapeItem, historyItem } from './operators/_types';
+import operators from './operators/operators';
 
 const getDerivedStackAndTape = (
-	history: op[],
+	history: historyItem[],
 	notify: (config: any) => void
 ): [number[], tapeItem[]] => {
 	let stack: number[] = [];
 	const tape: tapeItem[] = [];
-	forEach(history, (operation: op): void => {
-		const { act, error: isError, preVerify, toTape } = operators[operation];
+	forEach(history, (operation: historyItem): void => {
+		const { type, payload } = operation;
+		const { act, error: isError, preVerify, toTape } = operators[type];
 		const preCheck = preVerify(stack);
 		if (!preCheck) {
 			notify({
-				body: `Unable to perform ${operation} on stack with length of ${stack.length}!`
+				body: `Unable to perform ${type} on stack with length of ${stack.length}!`
 			});
 			return;
 		}
@@ -23,8 +24,8 @@ const getDerivedStackAndTape = (
 			notify({ body: error });
 			return;
 		}
-		tape.push(toTape(stack));
-		stack = act(stack);
+		tape.push(toTape(stack, payload));
+		stack = act(stack, payload);
 	});
 	return [stack, tape];
 };

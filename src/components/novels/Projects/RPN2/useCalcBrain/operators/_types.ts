@@ -30,8 +30,7 @@ export enum op {
 	div = 'div',
 	enter = 'enter',
 	drop = 'drop',
-	cancelAll = 'cancelAll',
-	clear = 'clear',
+	clearAll = 'clearAll',
 	mod = 'mod',
 	roll = 'roll',
 	swap = 'swap'
@@ -47,14 +46,19 @@ export enum colorClass {
 export type tapeItem = [string, string];
 export type calcError = null | string;
 
+export interface historyItem {
+	type: op;
+	payload?: number;
+}
+
 export interface operator {
 	colorClass: colorClass;
 	render: FunctionComponent;
 	requiresTrigConversion?: boolean;
 	type: op;
-	act: (stack: number[]) => number[];
+	act: (stack: number[], payload?: number) => number[];
 	preVerify: (stack: number[]) => boolean;
-	toTape: (stack: number[]) => tapeItem;
+	toTape: (stack: number[], payload?: number) => tapeItem;
 	error: (stack: number[]) => calcError;
 }
 
