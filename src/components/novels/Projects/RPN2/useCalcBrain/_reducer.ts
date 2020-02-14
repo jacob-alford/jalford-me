@@ -7,26 +7,28 @@ import { historyItem } from './operators/_types';
 export const opCat = (arr: historyItem[], item: any): historyItem[] =>
 	(item && concat(arr, item)) || arr;
 
-enum historyActions {
+export enum historyActions {
 	push = 'push',
 	stash = 'stash',
 	pop = 'pop'
 }
-type calculatorState = {
+export type calculatorState = {
 	history: historyItem[];
 	stash: historyItem[];
 };
 type calculatorAction = (
 	state: calculatorState,
-	operation: historyItem
+	operation?: historyItem
 ) => calculatorState;
 
 const calculatorActions: Record<historyActions, calculatorAction> = {
 	[historyActions.push]: (
 		state: calculatorState,
-		operation: historyItem
+		operation?: historyItem
 	): calculatorState => {
 		const { history, stash } = state;
+		if (!operation)
+			throw new Error('Unable to push to history without operation!');
 		return {
 			history: concat(history, operation),
 			stash
@@ -55,7 +57,7 @@ export const defaultState: calculatorState = {
 
 const calcReducer = (
 	state: calculatorState,
-	action: { type: historyActions; operation: historyItem }
+	action: { type: historyActions; operation?: historyItem }
 ): calculatorState => {
 	const { type, operation } = action;
 	if (!calculatorActions[type])
