@@ -10,7 +10,8 @@ type ContProps = {
 const Cont = styled.div`
 	background: ${(props: ContProps) => props.backgroundColor};
 	border: 4px solid ${(props: ContProps) => props.borderColor};
-	border-radius: 8px;
+	flex-grow: 1;
+	text-align: center;
 `;
 
 type ButtProps = {
@@ -20,6 +21,7 @@ const InnerButton = styled(Button)`
 	color: ${(props: ButtProps) => props.colour};
 	text-transform: none;
 	font-size: 2rem;
+	width: 100%;
 `;
 
 export type SurfaceProps = {

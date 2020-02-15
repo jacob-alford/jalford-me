@@ -30,7 +30,7 @@ const factorial = (number: number): number => {
 };
 
 const enter: operator = {
-	colorClass: colorClasses.action,
+	colorClass: colorClasses.stackOp,
 	render: text('enter'),
 	type: op.enter,
 	act: (stack: number[], payload?: number): number[] => condCat(stack, payload),
@@ -42,7 +42,7 @@ const enter: operator = {
 	error: (): calcError => null
 };
 const drop: operator = {
-	colorClass: colorClasses.delete,
+	colorClass: colorClasses.danger,
 	render: text('delete'),
 	type: op.drop,
 	act: (stack: number[]): number[] => dropRight(stack),
@@ -51,7 +51,7 @@ const drop: operator = {
 	error: (): calcError => null
 };
 const clearAll: operator = {
-	colorClass: colorClasses.delete,
+	colorClass: colorClasses.danger,
 	render: text('AC'),
 	type: op.clearAll,
 	act: (stack: number[]): number[] => [],
@@ -60,7 +60,7 @@ const clearAll: operator = {
 	error: (): calcError => null
 };
 const roll: operator = {
-	colorClass: colorClasses.action,
+	colorClass: colorClasses.stackOp,
 	render: text('AC'),
 	type: op.roll,
 	act: (stack: number[]): number[] =>
@@ -70,7 +70,7 @@ const roll: operator = {
 	error: (): calcError => null
 };
 const swap: operator = {
-	colorClass: colorClasses.action,
+	colorClass: colorClasses.stackOp,
 	render: text('swap'),
 	type: op.swap,
 	act: (stack: number[]): number[] =>
@@ -87,13 +87,13 @@ const operators: opsForm = {
 	[op.roll]: roll,
 	[op.swap]: swap,
 	[op.mod]: makeDoubleOp({
-		colorClass: colorClasses.action,
+		colorClass: colorClasses.doubleOp,
 		type: op.mod,
 		fn: (x: number, y: number): number => x % y,
 		render: text('x % y')
 	}),
 	[op.add]: makeDoubleOp({
-		colorClass: colorClasses.action,
+		colorClass: colorClasses.doubleOp,
 		type: op.add,
 		fn: (x: number, y: number): number => x + y,
 		toTape: (stack: number[]): tapeItem => [
@@ -103,7 +103,7 @@ const operators: opsForm = {
 		render: text('+')
 	}),
 	[op.sub]: makeDoubleOp({
-		colorClass: colorClasses.action,
+		colorClass: colorClasses.doubleOp,
 		type: op.sub,
 		fn: (x: number, y: number): number => x - y,
 		toTape: (stack: number[]): tapeItem => [
@@ -113,7 +113,7 @@ const operators: opsForm = {
 		render: text('-')
 	}),
 	[op.mul]: makeDoubleOp({
-		colorClass: colorClasses.action,
+		colorClass: colorClasses.doubleOp,
 		type: op.mul,
 		fn: (x: number, y: number): number => x * y,
 		toTape: (stack: number[]): tapeItem => [
@@ -123,7 +123,7 @@ const operators: opsForm = {
 		render: symText('&times;')
 	}),
 	[op.div]: makeDoubleOp({
-		colorClass: colorClasses.action,
+		colorClass: colorClasses.doubleOp,
 		type: op.div,
 		fn: (x: number, y: number): number => x / y,
 		toTape: (stack: number[]): tapeItem => [
@@ -135,22 +135,22 @@ const operators: opsForm = {
 		render: symText('<sup>x</sup>/<sub>y</sub>')
 	}),
 	[op.sin]: makeSingleOp({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.singleOp,
 		type: op.sin,
 		fn: Math.sin
 	}),
 	[op.cos]: makeSingleOp({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.singleOp,
 		type: op.cos,
 		fn: Math.cos
 	}),
 	[op.tan]: makeSingleOp({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.singleOp,
 		type: op.tan,
 		fn: Math.tan
 	}),
 	[op.asin]: makeSingleOp({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.singleOp,
 		type: op.asin,
 		fn: Math.asin,
 		error: (stack: number[]): calcError =>
@@ -160,7 +160,7 @@ const operators: opsForm = {
 			)
 	}),
 	[op.acos]: makeSingleOp({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.singleOp,
 		type: op.acos,
 		fn: Math.acos,
 		error: (stack: number[]): calcError =>
@@ -170,24 +170,24 @@ const operators: opsForm = {
 			)
 	}),
 	[op.atan]: makeSingleOp({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.singleOp,
 		type: op.atan,
 		fn: Math.atan
 	}),
 	[op.pi]: makeConstant({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.type,
 		constant: Math.PI,
 		type: op.pi,
 		render: symText('&pi;')
 	}),
 	[op.speedOfLight]: makeConstant({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.type,
 		constant: 299792458,
 		type: op.speedOfLight,
 		render: text('c')
 	}),
 	[op.sum]: makeReducer({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.multiOp,
 		type: op.sum,
 		render: symText('&Sigma;'),
 		fn: (stack: number[]): number[] => [
@@ -195,7 +195,7 @@ const operators: opsForm = {
 		]
 	}),
 	[op.product]: makeReducer({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.multiOp,
 		type: op.product,
 		render: symText('&Pi;'),
 		fn: (stack: number[]): number[] => [
@@ -207,7 +207,7 @@ const operators: opsForm = {
 		]
 	}),
 	[op.mean]: makeReducer({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.multiOp,
 		type: op.mean,
 		render: symText('&mu;'),
 		fn: (stack: number[]): number[] => [
@@ -216,7 +216,7 @@ const operators: opsForm = {
 		]
 	}),
 	[op.ln]: makeSingleOp({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.singleOp,
 		type: op.ln,
 		fn: Math.log,
 		error: (stack: number[]): calcError =>
@@ -226,7 +226,7 @@ const operators: opsForm = {
 			)
 	}),
 	[op.log10]: makeSingleOp({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.singleOp,
 		type: op.log10,
 		fn: Math.log10,
 		render: symText('log<sub>10</sub>'),
@@ -237,7 +237,7 @@ const operators: opsForm = {
 			)
 	}),
 	[op.log2]: makeSingleOp({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.singleOp,
 		type: op.log2,
 		fn: Math.log2,
 		render: symText('log<sub>2</sub>'),
@@ -248,37 +248,37 @@ const operators: opsForm = {
 			)
 	}),
 	[op.x2]: makeSingleOp({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.singleOp,
 		type: op.x2,
 		fn: (num: number): number => Math.pow(num, 2),
 		render: symText('x<sup>2</sup>')
 	}),
 	[op.eX]: makeSingleOp({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.singleOp,
 		type: op.eX,
 		fn: Math.exp,
 		render: symText('e<sup>x</sup>')
 	}),
 	[op.twoX]: makeSingleOp({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.singleOp,
 		type: op.twoX,
 		fn: (num: number): number => Math.pow(2, num),
 		render: symText('2<sup>x</sup>')
 	}),
 	[op.tenX]: makeSingleOp({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.singleOp,
 		type: op.tenX,
 		fn: (num: number): number => Math.pow(10, num),
 		render: symText('10<sup>x</sup>')
 	}),
 	[op.yX]: makeDoubleOp({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.doubleOp,
 		type: op.yX,
 		fn: (x: number, y: number): number => Math.pow(y, x),
 		render: symText('y<sup>x</sup>')
 	}),
 	[op.sqrt]: makeSingleOp({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.singleOp,
 		type: op.sqrt,
 		fn: (num: number): number => Math.pow(10, num),
 		render: symText('x<sup>½</sup>'),
@@ -289,7 +289,7 @@ const operators: opsForm = {
 			)
 	}),
 	[op.xRty]: makeDoubleOp({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.doubleOp,
 		type: op.xRty,
 		fn: (x: number, y: number): number => Math.pow(y, x),
 		render: symText('y<sup>1/x</sup>'),
@@ -300,7 +300,7 @@ const operators: opsForm = {
 			)
 	}),
 	[op.xInv]: makeSingleOp({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.singleOp,
 		type: op.xInv,
 		fn: (num: number): number => 1 / num,
 		render: text('<sup>1</sup>/<sub>x</sub>'),
@@ -311,7 +311,7 @@ const operators: opsForm = {
 			)
 	}),
 	[op.xFact]: makeSingleOp({
-		colorClass: colorClasses.function,
+		colorClass: colorClasses.singleOp,
 		type: op.xFact,
 		fn: (num: number): number => factorial(num),
 		render: text('x!'),

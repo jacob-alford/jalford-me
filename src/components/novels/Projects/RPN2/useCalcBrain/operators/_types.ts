@@ -37,10 +37,12 @@ export enum op {
 }
 
 export enum colorClass {
-	function = 'function',
-	number = 'number',
-	action = 'action',
-	delete = 'delete'
+	stackOp = 'stackOp',
+	type = 'type',
+	singleOp = 'singleOp',
+	doubleOp = 'doubleOp',
+	multiOp = 'multiOp',
+	danger = 'danger'
 }
 
 export type tapeItem = [string, string];
