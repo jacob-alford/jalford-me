@@ -16,7 +16,7 @@ export type calculatorState = {
 	history: historyItem[];
 	stash: historyItem[];
 };
-type calculatorAction = (
+export type calculatorAction = (
 	state: calculatorState,
 	operation?: historyItem
 ) => calculatorState;

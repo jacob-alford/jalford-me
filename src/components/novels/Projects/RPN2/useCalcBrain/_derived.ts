@@ -1,6 +1,6 @@
 import forEach from 'lodash/forEach';
 
-import { op, tapeItem, historyItem } from './operators/_types';
+import { tapeItem, historyItem } from './operators/_types';
 import operators from './operators/operators';
 
 const getDerivedStackAndTape = (

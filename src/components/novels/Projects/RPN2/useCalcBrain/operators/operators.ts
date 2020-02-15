@@ -73,11 +73,8 @@ const swap: operator = {
 	colorClass: colorClasses.action,
 	render: text('swap'),
 	type: op.swap,
-	act: (stack: number[]): number[] => {
-		const first = stack[0];
-		const second = stack[1];
-		return concat([stack[1]], stack[0], _drop(_drop(stack)));
-	},
+	act: (stack: number[]): number[] =>
+		concat([stack[1]], stack[0], _drop(stack, 2)),
 	preVerify: (stack: number[]): boolean => true,
 	toTape: (stack: number[]): tapeItem => [`SWAP ${stack[0]}, ${stack[1]}`, ``],
 	error: (): calcError => null

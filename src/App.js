@@ -24,7 +24,7 @@ const Puzzles = React.lazy(() => import('./components/novels/Puzzles'));
 const About = React.lazy(() => import('./components/novels/About'));
 const Blog = React.lazy(() => import('./components/novels/Blog'));
 const Home = React.lazy(() => import('./components/novels/Home'));
-const RPN = React.lazy(() => import('./components/novels/Projects/RPN'));
+const RPN = React.lazy(() => import('./components/novels/Projects/RPN2/RPN2'));
 
 /* Puzzles */
 const Puzzle1 = React.lazy(() =>
