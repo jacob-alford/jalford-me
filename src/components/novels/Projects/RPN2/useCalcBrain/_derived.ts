@@ -13,8 +13,8 @@ const getDerivedStackAndTape = (
 	forEach(history, (operation: historyItem): void => {
 		const { type, payload, UID } = operation;
 		const { act, error: isError, preVerify, toTape } = operators[type];
-		const preCheck = preVerify(stack);
 		if (alertCache.includes(UID)) return;
+		const preCheck = preVerify(stack);
 		if (!preCheck) {
 			alertCache.push(UID);
 			notify({
@@ -24,6 +24,7 @@ const getDerivedStackAndTape = (
 		}
 		const error = isError(stack);
 		if (error) {
+			alertCache.push(UID);
 			notify({ body: error });
 			return;
 		}
