@@ -3,12 +3,12 @@ import { useReducer, useMemo } from 'react';
 import useNotify from 'components/bindings/hooks/useNotify';
 
 import calcReducer, { defaultState } from './_reducer';
-import { tapeItem } from './operators/_types';
+import { tapeItem, stackItem } from './operators/_types';
 import getDerivedStackAndTape from './_derived';
 
 export default function useCalcBrain(alertUIDCache: {
 	current: string[];
-}): [number[], tapeItem[], any] {
+}): [stackItem[], tapeItem[], any] {
 	const [calcHistory, mutateCalcHistory] = useReducer(
 		calcReducer,
 		defaultState

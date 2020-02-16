@@ -1,6 +1,15 @@
 import calcReducer, { historyActions, calculatorState } from './_reducer';
 import { historyItem, op } from './operators/_types';
 
+const neUID = (operation: { type: op; payload?: number }): historyItem => {
+	const { type, payload } = operation;
+	return {
+		type,
+		payload,
+		UID: expect.any(String)
+	};
+};
+
 describe('Calc-reducer properly manages state', () => {
 	it('Pushes an action to state', () => {
 		const testState: calculatorState = {
@@ -10,7 +19,7 @@ describe('Calc-reducer properly manages state', () => {
 		expect(
 			calcReducer(testState, {
 				type: historyActions.push,
-				operation: { type: op.enter, payload: 69 }
+				operation: neUID({ type: op.enter, payload: 69 })
 			})
 		).toMatchObject({
 			history: [
@@ -29,26 +38,26 @@ describe('Calc-reducer properly manages state', () => {
 		};
 		testState = calcReducer(testState, {
 			type: historyActions.push,
-			operation: { type: op.enter, payload: 69 }
+			operation: neUID({ type: op.enter, payload: 69 })
 		});
 		testState = calcReducer(testState, {
 			type: historyActions.push,
-			operation: { type: op.sqrt }
+			operation: neUID({ type: op.sqrt })
 		});
 		testState = calcReducer(testState, {
 			type: historyActions.stash
 		});
 		expect(testState).toMatchObject({
 			history: [
-				{
+				neUID({
 					type: op.enter,
 					payload: 69
-				}
+				})
 			],
 			stash: [
-				{
+				neUID({
 					type: op.sqrt
-				}
+				})
 			]
 		});
 	});
@@ -59,11 +68,11 @@ describe('Calc-reducer properly manages state', () => {
 		};
 		testState = calcReducer(testState, {
 			type: historyActions.push,
-			operation: { type: op.enter, payload: 69 }
+			operation: neUID({ type: op.enter, payload: 69 })
 		});
 		testState = calcReducer(testState, {
 			type: historyActions.push,
-			operation: { type: op.sqrt }
+			operation: neUID({ type: op.sqrt })
 		});
 		testState = calcReducer(testState, {
 			type: historyActions.stash
@@ -73,13 +82,13 @@ describe('Calc-reducer properly manages state', () => {
 		});
 		expect(testState).toMatchObject({
 			history: [
-				{
+				neUID({
 					type: op.enter,
 					payload: 69
-				},
-				{
+				}),
+				neUID({
 					type: op.sqrt
-				}
+				})
 			],
 			stash: []
 		});

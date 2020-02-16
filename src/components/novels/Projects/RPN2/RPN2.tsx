@@ -18,6 +18,8 @@ import {
 	Danger
 } from './words/controls';
 
+import { Stack, StackItem } from './words/display';
+
 import useCalcBrain from './useCalcBrain/useCalcBrain';
 import { op } from './useCalcBrain/operators/_types';
 import useTyper from './useTyper/useTyper';
@@ -33,12 +35,14 @@ export enum drEnum {
 const toggleDegRad = (degRad: drEnum, setDegRad: (val: any) => void): void =>
 	degRad === drEnum.deg ? setDegRad(drEnum.rad) : setDegRad(drEnum.deg);
 
+const getIndex = (index: number, length: number): string | number =>
+	index === length - 1 ? 'x' : index === length - 2 ? 'y' : index + 1;
+
 const RPNContainer = styled.div`
 	width: 100vw;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
-	padding-top: 50px;
-	background: black;
 `;
 
 export default function RPN2() {
@@ -49,6 +53,17 @@ export default function RPN2() {
 	console.log(stack, entry);
 	return (
 		<RPNContainer>
+			<Row>
+				<Stack>
+					{stack.map(({ number, UID }, index) => (
+						<StackItem
+							key={UID}
+							num={number}
+							index={getIndex(index, stack.length)}
+						/>
+					))}
+				</Stack>
+			</Row>
 			<Row>
 				<Group>
 					<Row>
@@ -86,7 +101,7 @@ export default function RPN2() {
 					<Row>
 						<StackOp
 							onClick={() => {
-								operate(enter(toNumber(entry) || stack[0]));
+								operate(enter(toNumber(entry) || stack[0].number));
 								amendEntry(press(npButt.clear));
 							}}>
 							enter

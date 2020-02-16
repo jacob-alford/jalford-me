@@ -1,52 +1,52 @@
-import React, { FunctionComponent } from 'react';
 import concat from 'lodash/concat';
 import drop from 'lodash/drop';
+import dropRight from 'lodash/dropRight';
 import slice from 'lodash/slice';
+import last from 'lodash/last';
 
-import {
-	operator,
-	op,
-	colorClass as colorClasses,
-	tapeItem,
-	calcError
-} from './_types';
+import { getRandomUID } from 'functions';
+
+import { operator, op, tapeItem, calcError, stackItem } from './_types';
+
+const toNumbers = (stack: stackItem[]): number[] =>
+	stack.map(({ number }) => number);
+const toStackItem = (number: number): stackItem => ({
+	number,
+	UID: getRandomUID()
+});
+const toStack = (numbers: number[]): stackItem[] =>
+	numbers.map(number => toStackItem(number));
+export const getLast = (stack: stackItem[]): number =>
+	stack[stack.length - 1].number;
+export const getNextToLast = (stack: stackItem[]): number =>
+	stack[stack.length - 2].number;
 
 export const formatList = (arr: number[]): string => {
 	return `${slice(arr, 0, 3).join(',')}${(arr.length > 3 && ', ...') || ''}`;
 };
-export const text = (str: string): FunctionComponent => () => (
-	<span>{str}</span>
-);
-export const symText = (str: string): FunctionComponent => () => (
-	<span dangerouslySetInnerHTML={{ __html: str }} />
-);
+
 export const makeError = (bool: boolean, str: string): calcError =>
 	(!bool && str) || null;
 
 export const makeReducer = (config: {
-	colorClass: colorClasses;
-	render?: FunctionComponent;
 	type: op;
-	toTape?: (stack: number[]) => tapeItem;
+	toTape?: (stack: stackItem[]) => tapeItem;
 	fn: (input: number[]) => number[];
-	error?: (stack: number[]) => calcError;
+	error?: (stack: stackItem[]) => calcError;
 }): operator => {
 	const {
-		colorClass,
-		render = text(config.type),
 		type,
 		fn,
 		error = (): calcError => null,
-		toTape = (stack: number[]): tapeItem => [
-			`${type}(${formatList(stack)})`,
-			`${fn(stack)}`
+		toTape = (stack: stackItem[]): tapeItem => [
+			`${type}(${formatList(toNumbers(stack))})`,
+			`${fn(toNumbers(stack))}`
 		]
 	} = config;
-	const preVerify = (stack: number[]): boolean => stack.length > 0;
-	const act = (stack: number[]): number[] => fn(stack);
+	const preVerify = (stack: stackItem[]): boolean => stack.length > 0;
+	const act = (stack: stackItem[]): stackItem[] =>
+		toStack(fn(toNumbers(stack)));
 	return {
-		colorClass,
-		render,
 		type,
 		act,
 		preVerify,
@@ -56,89 +56,79 @@ export const makeReducer = (config: {
 };
 
 export const makeSingleOp = (config: {
-	colorClass: colorClasses;
-	render?: FunctionComponent;
 	type: op;
-	toTape?: (stack: number[]) => tapeItem;
+	toTape?: (stack: stackItem[]) => tapeItem;
 	fn: (input: number) => number;
-	error?: (stack: number[]) => calcError;
+	error?: (stack: stackItem[]) => calcError;
+	requiresTrigConversion?: boolean;
 }): operator => {
 	const {
-		colorClass,
-		render = text(config.type),
 		type,
 		fn,
+		requiresTrigConversion,
 		error = (): calcError => null,
-		toTape = (stack: number[]): tapeItem => [
-			`${type}(${stack[0]})`,
-			`${fn(stack[0])}`
+		toTape = (stack: stackItem[]): tapeItem => [
+			`${type}(${getLast(stack)})`,
+			`${fn(getLast(stack))}`
 		]
 	} = config;
-	const preVerify = (stack: number[]): boolean => stack.length > 0;
-	const act = (stack: number[]): number[] => concat(fn(stack[0]), drop(stack));
+	const preVerify = (stack: stackItem[]): boolean => stack.length > 0;
+	const act = (stack: stackItem[]): stackItem[] =>
+		concat(dropRight(stack), toStackItem(fn(getLast(stack))));
 	return {
-		colorClass,
-		render,
 		type,
 		act,
 		preVerify,
 		toTape,
-		error
+		error,
+		requiresTrigConversion
 	};
 };
 
 export const makeDoubleOp = (config: {
-	colorClass: colorClasses;
-	render?: FunctionComponent;
 	type: op;
-	toTape?: (stack: number[]) => tapeItem;
+	toTape?: (stack: stackItem[]) => tapeItem;
 	fn: (input1: number, input2: number) => number;
-	index1?: number;
-	index2?: number;
-	error?: (stack: number[]) => calcError;
+	error?: (stack: stackItem[]) => calcError;
+	requiresTrigConversion?: boolean;
 }): operator => {
 	const {
-		colorClass,
-		render = text(config.type),
 		type,
 		fn,
-		index1 = 0,
-		index2 = 1,
+		requiresTrigConversion,
 		error = (): calcError => null,
-		toTape = (stack: number[]): tapeItem => [
-			`${type}(${stack[index1]}, ${stack[index2]})`,
-			`${fn(stack[index1], stack[index2])}`
+		toTape = (stack: stackItem[]): tapeItem => [
+			`${type}(${getLast(stack)}, ${getNextToLast(stack)})`,
+			`${fn(getLast(stack), getNextToLast(stack))}`
 		]
 	} = config;
-	const preVerify = (stack: number[]): boolean =>
-		stack.length > Math.max(index1, index2);
-	const act = (stack: number[]): number[] =>
-		concat(fn(stack[index1], stack[index2]), drop(stack, 2));
+	const preVerify = (stack: stackItem[]): boolean => stack.length >= 2;
+	const act = (stack: stackItem[]): stackItem[] =>
+		concat(
+			dropRight(stack, 2),
+			toStackItem(fn(getLast(stack), getNextToLast(stack)))
+		);
 	return {
-		colorClass,
-		render,
 		type,
 		act,
 		preVerify,
 		toTape,
-		error
+		error,
+		requiresTrigConversion
 	};
 };
 
 export const makeConstant = (config: {
-	colorClass: colorClasses;
-	render?: FunctionComponent;
 	type: op;
 	constant: number;
 }): operator => {
-	const { colorClass, render = text(config.type), type, constant } = config;
+	const { type, constant } = config;
 	const toTape = (): tapeItem => [`${type}`, `${constant}`];
 	const error = (): calcError => null;
 	const preVerify = (): boolean => true;
-	const act = (stack: number[]): number[] => concat(constant, stack);
+	const act = (stack: stackItem[]): stackItem[] =>
+		concat(toStackItem(constant), stack);
 	return {
-		colorClass,
-		render,
 		type,
 		act,
 		preVerify,

@@ -1,14 +1,14 @@
 import forEach from 'lodash/forEach';
 
-import { tapeItem, historyItem } from './operators/_types';
+import { tapeItem, historyItem, stackItem } from './operators/_types';
 import operators from './operators/operators';
 
 const getDerivedStackAndTape = (
 	history: historyItem[],
 	alertCache: string[],
 	notify: (config: any) => void
-): [number[], tapeItem[]] => {
-	let stack: number[] = [];
+): [stackItem[], tapeItem[]] => {
+	let stack: stackItem[] = [];
 	const tape: tapeItem[] = [];
 	forEach(history, (operation: historyItem): void => {
 		const { type, payload, UID } = operation;

@@ -1,11 +1,16 @@
 import getSAndT from './_derived';
 import { getRandomUID } from 'functions';
 
-import { historyItem, op } from './operators/_types';
+import { historyItem, op, stackItem } from './operators/_types';
 
 const notify = jest.fn();
 const emptySAndT = [[], []];
 const alertCache: string[] = [];
+
+const mkStkItm = (number: number): stackItem => ({
+	number,
+	UID: expect.any(String)
+});
 
 describe('Calculator functions operate properly', () => {
 	it('Returns empty array given empty history', () => {
@@ -21,7 +26,7 @@ describe('Calculator functions operate properly', () => {
 			}
 		];
 		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
-			[69],
+			[mkStkItm(69)],
 			[['ENTER 69', '']]
 		]);
 	});
@@ -39,7 +44,7 @@ describe('Calculator functions operate properly', () => {
 			}
 		];
 		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
-			[69, 420],
+			[mkStkItm(69), mkStkItm(420)],
 			[
 				['ENTER 69', ''],
 				['ENTER 420', '']
@@ -89,7 +94,7 @@ describe('Calculator functions operate properly', () => {
 			}
 		];
 		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
-			[9, 3, 6],
+			[mkStkItm(9), mkStkItm(3), mkStkItm(6)],
 			[
 				['ENTER 3', ''],
 				['ENTER 6', ''],
@@ -116,7 +121,7 @@ describe('Calculator functions operate properly', () => {
 			}
 		];
 		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
-			[6, 3],
+			[mkStkItm(6), mkStkItm(3)],
 			[
 				['ENTER 3', ''],
 				['ENTER 6', ''],
@@ -205,7 +210,7 @@ describe('Calculator functions operate properly', () => {
 			}
 		];
 		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
-			[-69 / 420],
+			[mkStkItm(-69 / 420)],
 			[
 				['ENTER -69', ''],
 				['ENTER 420', ''],
@@ -226,7 +231,7 @@ describe('Calculator functions operate properly', () => {
 			}
 		];
 		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
-			[1],
+			[mkStkItm(1)],
 			[
 				['ENTER 2.718281828459045', ''],
 				['ln(2.718281828459045)', '1']
@@ -256,7 +261,7 @@ describe('Calculator functions operate properly', () => {
 			}
 		];
 		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
-			[24],
+			[mkStkItm(24)],
 			[
 				['ENTER 15', ''],
 				['ENTER 25', ''],
@@ -278,7 +283,7 @@ describe('Calculator functions operate properly', () => {
 			}
 		];
 		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
-			[1307674368000],
+			[mkStkItm(1307674368000)],
 			[
 				['ENTER 15', ''],
 				['15!', '1307674368000']
@@ -299,7 +304,7 @@ describe('Calculator functions operate properly', () => {
 		];
 		const testNotify = jest.fn();
 		expect(getSAndT(history, alertCache, testNotify)).toStrictEqual([
-			[420],
+			[mkStkItm(420)],
 			[['ENTER 420', '']]
 		]);
 		expect(testNotify).toHaveBeenCalledWith({
@@ -315,7 +320,7 @@ describe('Calculator functions operate properly', () => {
 			}
 		];
 		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
-			[Math.PI],
+			[mkStkItm(Math.PI)],
 			[['pi', '3.141592653589793']]
 		]);
 	});

@@ -1,5 +1,3 @@
-import { FunctionComponent } from 'react';
-
 export enum op {
 	sin = 'sin',
 	cos = 'cos',
@@ -36,17 +34,13 @@ export enum op {
 	swap = 'swap'
 }
 
-export enum colorClass {
-	stackOp = 'stackOp',
-	type = 'type',
-	singleOp = 'singleOp',
-	doubleOp = 'doubleOp',
-	multiOp = 'multiOp',
-	danger = 'danger'
-}
-
 export type tapeItem = [string, string];
 export type calcError = null | string;
+
+export interface stackItem {
+	UID: string;
+	number: number;
+}
 
 export interface historyItem {
 	type: op;
@@ -55,14 +49,12 @@ export interface historyItem {
 }
 
 export interface operator {
-	colorClass: colorClass;
-	render: FunctionComponent;
 	requiresTrigConversion?: boolean;
 	type: op;
-	act: (stack: number[], payload?: number) => number[];
-	preVerify: (stack: number[]) => boolean;
-	toTape: (stack: number[], payload?: number) => tapeItem;
-	error: (stack: number[]) => calcError;
+	act: (stack: stackItem[], payload?: number) => stackItem[];
+	preVerify: (stack: stackItem[]) => boolean;
+	toTape: (stack: stackItem[], payload?: number) => tapeItem;
+	error: (stack: stackItem[]) => calcError;
 }
 
 export type operators = Record<op, operator>;

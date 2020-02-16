@@ -3,80 +3,82 @@ import concat from 'lodash/concat';
 import _drop from 'lodash/drop';
 import dropRight from 'lodash/dropRight';
 
+import { getRandomUID } from 'functions';
+
 import {
 	makeSingleOp,
 	makeDoubleOp,
 	makeConstant,
 	makeReducer,
-	text,
-	makeError,
-	symText
+	makeError
 } from './_constructors';
 
 import {
 	op,
-	colorClass as colorClasses,
 	operators as opsForm,
 	calcError,
 	tapeItem,
-	operator
+	operator,
+	stackItem
 } from './_types';
 
-const condCat = (arr: number[], item?: number): number[] =>
-	(item && concat(arr, item)) || arr;
+const toStackItem = (number: number): stackItem => ({
+	number,
+	UID: getRandomUID()
+});
+const condCat = (arr: stackItem[], item?: number): stackItem[] =>
+	item ? concat(arr, toStackItem(item)) : arr;
 const factorial = (number: number): number => {
 	if (number === 1) return number;
 	else return number * factorial(number - 1);
 };
 
 const enter: operator = {
-	colorClass: colorClasses.stackOp,
-	render: text('enter'),
 	type: op.enter,
-	act: (stack: number[], payload?: number): number[] => condCat(stack, payload),
-	preVerify: (stack: number[]): boolean => true,
-	toTape: (stack: number[], payload?: number): tapeItem => [
+	act: (stack: stackItem[], payload?: number): stackItem[] =>
+		condCat(stack, payload),
+	preVerify: (stack: stackItem[]): boolean => true,
+	toTape: (stack: stackItem[], payload?: number): tapeItem => [
 		`ENTER ${payload}`,
 		``
 	],
 	error: (): calcError => null
 };
 const drop: operator = {
-	colorClass: colorClasses.danger,
-	render: text('delete'),
 	type: op.drop,
-	act: (stack: number[]): number[] => dropRight(stack),
-	preVerify: (stack: number[]): boolean => stack.length > 0,
-	toTape: (stack: number[]): tapeItem => [`DROP ${stack[0]}`, ``],
+	act: (stack: stackItem[]): stackItem[] => dropRight(stack),
+	preVerify: (stack: stackItem[]): boolean => stack.length > 0,
+	toTape: (stack: stackItem[]): tapeItem => [`DROP ${stack[0].number}`, ``],
 	error: (): calcError => null
 };
 const clearAll: operator = {
-	colorClass: colorClasses.danger,
-	render: text('AC'),
 	type: op.clearAll,
-	act: (stack: number[]): number[] => [],
-	preVerify: (stack: number[]): boolean => true,
-	toTape: (stack: number[]): tapeItem => [`CLEAR ALL`, ``],
+	act: (stack: stackItem[]): stackItem[] => [],
+	preVerify: (stack: stackItem[]): boolean => true,
+	toTape: (stack: stackItem[]): tapeItem => [`CLEAR ALL`, ``],
 	error: (): calcError => null
 };
 const roll: operator = {
-	colorClass: colorClasses.stackOp,
-	render: text('AC'),
 	type: op.roll,
-	act: (stack: number[]): number[] =>
+	act: (stack: stackItem[]): stackItem[] =>
 		concat(stack[stack.length - 1], dropRight(stack)),
-	preVerify: (stack: number[]): boolean => stack.length > 1,
-	toTape: (stack: number[]): tapeItem => [`ROLL`, ``],
+	preVerify: (stack: stackItem[]): boolean => stack.length > 1,
+	toTape: (stack: stackItem[]): tapeItem => [`ROLL`, ``],
 	error: (): calcError => null
 };
 const swap: operator = {
-	colorClass: colorClasses.stackOp,
-	render: text('swap'),
 	type: op.swap,
-	act: (stack: number[]): number[] =>
-		concat([stack[1]], stack[0], _drop(stack, 2)),
-	preVerify: (stack: number[]): boolean => stack.length >= 2,
-	toTape: (stack: number[]): tapeItem => [`SWAP ${stack[0]}, ${stack[1]}`, ``],
+	act: (stack: stackItem[]): stackItem[] =>
+		concat(
+			dropRight(stack, 2),
+			stack[stack.length - 1],
+			stack[stack.length - 2]
+		),
+	preVerify: (stack: stackItem[]): boolean => stack.length >= 2,
+	toTape: (stack: stackItem[]): tapeItem => [
+		`SWAP ${stack[0].number}, ${stack[1].number}`,
+		``
+	],
 	error: (): calcError => null
 };
 
@@ -87,117 +89,97 @@ const operators: opsForm = {
 	[op.roll]: roll,
 	[op.swap]: swap,
 	[op.mod]: makeDoubleOp({
-		colorClass: colorClasses.doubleOp,
 		type: op.mod,
-		fn: (x: number, y: number): number => x % y,
-		render: text('x % y')
+		fn: (x: number, y: number): number => x % y
 	}),
 	[op.add]: makeDoubleOp({
-		colorClass: colorClasses.doubleOp,
 		type: op.add,
 		fn: (x: number, y: number): number => x + y,
-		toTape: (stack: number[]): tapeItem => [
-			`${stack[0]} + ${stack[1]}`,
-			`${stack[0] + stack[1]}`
-		],
-		render: text('+')
+		toTape: (stack: stackItem[]): tapeItem => [
+			`${stack[0].number} + ${stack[1].number}`,
+			`${stack[0].number + stack[1].number}`
+		]
 	}),
 	[op.sub]: makeDoubleOp({
-		colorClass: colorClasses.doubleOp,
 		type: op.sub,
-		fn: (x: number, y: number): number => x - y,
-		toTape: (stack: number[]): tapeItem => [
-			`${stack[0]} - ${stack[1]}`,
-			`${stack[0] - stack[1]}`
-		],
-		render: text('-')
+		fn: (x: number, y: number): number => y - x,
+		toTape: (stack: stackItem[]): tapeItem => [
+			`${stack[0].number} - ${stack[1].number}`,
+			`${stack[0].number - stack[1].number}`
+		]
 	}),
 	[op.mul]: makeDoubleOp({
-		colorClass: colorClasses.doubleOp,
 		type: op.mul,
 		fn: (x: number, y: number): number => x * y,
-		toTape: (stack: number[]): tapeItem => [
-			`${stack[0]} * ${stack[1]}`,
-			`${stack[0] * stack[1]}`
-		],
-		render: symText('&times;')
+		toTape: (stack: stackItem[]): tapeItem => [
+			`${stack[0].number} * ${stack[1].number}`,
+			`${stack[0].number * stack[1].number}`
+		]
 	}),
 	[op.div]: makeDoubleOp({
-		colorClass: colorClasses.doubleOp,
 		type: op.div,
-		fn: (x: number, y: number): number => x / y,
-		toTape: (stack: number[]): tapeItem => [
-			`${stack[0]}/${stack[1]}`,
-			`${stack[0] / stack[1]}`
+		fn: (x: number, y: number): number => y / x,
+		toTape: (stack: stackItem[]): tapeItem => [
+			`${stack[0].number}/${stack[1].number}`,
+			`${stack[0].number / stack[1].number}`
 		],
-		error: (stack: number[]): calcError =>
-			makeError(stack[1] !== 0, 'Unable to divide by zero!'),
-		render: symText('<sup>x</sup>/<sub>y</sub>')
+		error: (stack: stackItem[]): calcError =>
+			makeError(stack[1].number !== 0, 'Unable to divide by zero!')
 	}),
 	[op.sin]: makeSingleOp({
-		colorClass: colorClasses.singleOp,
 		type: op.sin,
-		fn: Math.sin
+		fn: Math.sin,
+		requiresTrigConversion: true
 	}),
 	[op.cos]: makeSingleOp({
-		colorClass: colorClasses.singleOp,
 		type: op.cos,
-		fn: Math.cos
+		fn: Math.cos,
+		requiresTrigConversion: true
 	}),
 	[op.tan]: makeSingleOp({
-		colorClass: colorClasses.singleOp,
 		type: op.tan,
-		fn: Math.tan
+		fn: Math.tan,
+		requiresTrigConversion: true
 	}),
 	[op.asin]: makeSingleOp({
-		colorClass: colorClasses.singleOp,
 		type: op.asin,
 		fn: Math.asin,
-		error: (stack: number[]): calcError =>
+		error: (stack: stackItem[]): calcError =>
 			makeError(
-				stack[0] >= 0 && stack[0] <= 1,
+				stack[0].number >= 0 && stack[0].number <= 1,
 				'Inverse sine only defined for values between zero and one!'
 			)
 	}),
 	[op.acos]: makeSingleOp({
-		colorClass: colorClasses.singleOp,
 		type: op.acos,
 		fn: Math.acos,
-		error: (stack: number[]): calcError =>
+		error: (stack: stackItem[]): calcError =>
 			makeError(
-				stack[0] >= 0 && stack[0] <= 1,
+				stack[0].number >= 0 && stack[0].number <= 1,
 				'Inverse cosine only defined for values between zero and one!'
 			)
 	}),
 	[op.atan]: makeSingleOp({
-		colorClass: colorClasses.singleOp,
 		type: op.atan,
-		fn: Math.atan
+		fn: Math.atan,
+		requiresTrigConversion: true
 	}),
 	[op.pi]: makeConstant({
-		colorClass: colorClasses.type,
 		constant: Math.PI,
-		type: op.pi,
-		render: symText('&pi;')
+		type: op.pi
 	}),
 	[op.speedOfLight]: makeConstant({
-		colorClass: colorClasses.type,
 		constant: 299792458,
-		type: op.speedOfLight,
-		render: text('c')
+		type: op.speedOfLight
 	}),
 	[op.sum]: makeReducer({
-		colorClass: colorClasses.multiOp,
 		type: op.sum,
-		render: symText('&Sigma;'),
 		fn: (stack: number[]): number[] => [
 			reduce(stack, (sum: number, next: number): number => sum + next, 0)
 		]
 	}),
 	[op.product]: makeReducer({
-		colorClass: colorClasses.multiOp,
 		type: op.product,
-		render: symText('&Pi;'),
 		fn: (stack: number[]): number[] => [
 			reduce(
 				stack,
@@ -207,122 +189,97 @@ const operators: opsForm = {
 		]
 	}),
 	[op.mean]: makeReducer({
-		colorClass: colorClasses.multiOp,
 		type: op.mean,
-		render: symText('&mu;'),
 		fn: (stack: number[]): number[] => [
 			(1 / stack.length) *
 				reduce(stack, (sum: number, next: number): number => sum + next, 0)
 		]
 	}),
 	[op.ln]: makeSingleOp({
-		colorClass: colorClasses.singleOp,
 		type: op.ln,
 		fn: Math.log,
-		error: (stack: number[]): calcError =>
+		error: (stack: stackItem[]): calcError =>
 			makeError(
-				stack[0] > 0,
+				stack[0].number > 0,
 				'Real-Valued Natural log only defined for positive numbers!'
 			)
 	}),
 	[op.log10]: makeSingleOp({
-		colorClass: colorClasses.singleOp,
 		type: op.log10,
 		fn: Math.log10,
-		render: symText('log<sub>10</sub>'),
-		error: (stack: number[]): calcError =>
+		error: (stack: stackItem[]): calcError =>
 			makeError(
-				stack[0] > 0,
+				stack[0].number > 0,
 				'Real-Valued Log-base-10 only defined for positive numbers!'
 			)
 	}),
 	[op.log2]: makeSingleOp({
-		colorClass: colorClasses.singleOp,
 		type: op.log2,
 		fn: Math.log2,
-		render: symText('log<sub>2</sub>'),
-		error: (stack: number[]): calcError =>
+		error: (stack: stackItem[]): calcError =>
 			makeError(
-				stack[0] > 0,
+				stack[0].number > 0,
 				'Real-Valued Log-base-2 only defined for positive numbers!'
 			)
 	}),
 	[op.x2]: makeSingleOp({
-		colorClass: colorClasses.singleOp,
 		type: op.x2,
-		fn: (num: number): number => Math.pow(num, 2),
-		render: symText('x<sup>2</sup>')
+		fn: (num: number): number => Math.pow(num, 2)
 	}),
 	[op.eX]: makeSingleOp({
-		colorClass: colorClasses.singleOp,
 		type: op.eX,
-		fn: Math.exp,
-		render: symText('e<sup>x</sup>')
+		fn: Math.exp
 	}),
 	[op.twoX]: makeSingleOp({
-		colorClass: colorClasses.singleOp,
 		type: op.twoX,
-		fn: (num: number): number => Math.pow(2, num),
-		render: symText('2<sup>x</sup>')
+		fn: (num: number): number => Math.pow(2, num)
 	}),
 	[op.tenX]: makeSingleOp({
-		colorClass: colorClasses.singleOp,
 		type: op.tenX,
-		fn: (num: number): number => Math.pow(10, num),
-		render: symText('10<sup>x</sup>')
+		fn: (num: number): number => Math.pow(10, num)
 	}),
 	[op.yX]: makeDoubleOp({
-		colorClass: colorClasses.doubleOp,
 		type: op.yX,
-		fn: (x: number, y: number): number => Math.pow(y, x),
-		render: symText('y<sup>x</sup>')
+		fn: (x: number, y: number): number => Math.pow(y, x)
 	}),
 	[op.sqrt]: makeSingleOp({
-		colorClass: colorClasses.singleOp,
 		type: op.sqrt,
 		fn: (num: number): number => Math.pow(10, num),
-		render: symText('x<sup>½</sup>'),
-		error: (stack: number[]): calcError =>
+		error: (stack: stackItem[]): calcError =>
 			makeError(
-				stack[0] > 0,
+				stack[0].number > 0,
 				'Real-Valued Square-root only defined for non-negative numbers!'
 			)
 	}),
 	[op.xRty]: makeDoubleOp({
-		colorClass: colorClasses.doubleOp,
 		type: op.xRty,
 		fn: (x: number, y: number): number => Math.pow(y, x),
-		render: symText('y<sup>1/x</sup>'),
-		error: (stack: number[]): calcError =>
+		error: (stack: stackItem[]): calcError =>
 			makeError(
-				stack[1] >= 0 && stack[0] !== 0,
+				stack[1].number >= 0 && stack[0].number !== 0,
 				'Real-Valued xth-root-of-y only defined for non-negative radicands, and non-zero indecies!'
 			)
 	}),
 	[op.xInv]: makeSingleOp({
-		colorClass: colorClasses.singleOp,
 		type: op.xInv,
 		fn: (num: number): number => 1 / num,
-		render: text('<sup>1</sup>/<sub>x</sub>'),
-		error: (stack: number[]): calcError =>
+		error: (stack: stackItem[]): calcError =>
 			makeError(
-				stack[0] !== 0,
+				stack[0].number !== 0,
 				`Calculator cannot represent infinity in a sufficient fashion! (at least I'm afraid)`
 			)
 	}),
 	[op.xFact]: makeSingleOp({
-		colorClass: colorClasses.singleOp,
 		type: op.xFact,
 		fn: (num: number): number => factorial(num),
-		render: text('x!'),
-		error: (stack: number[]): calcError =>
+		error: (stack: stackItem[]): calcError =>
 			makeError(
-				stack[0] <= 170 && Number.isInteger(stack[0]),
+				stack[0].number <= 170 && Number.isInteger(stack[0].number),
 				'Cannot calculate factorial of integers greater than 170 with 10^53 significant digits!'
 			),
-		toTape: (stack: number[]): tapeItem => [
-			`${stack[0]}!`,
-			`${factorial(stack[0])}`
+		toTape: (stack: stackItem[]): tapeItem => [
+			`${stack[0].number}!`,
+			`${factorial(stack[0].number)}`
 		]
 	})
 };
