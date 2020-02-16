@@ -1,6 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import toNumber from 'lodash/toNumber';
+
+import BackspaceIcon from '@material-ui/icons/Backspace';
+import FunctionsIcon from '@material-ui/icons/Functions';
+import AddIcon from '@material-ui/icons/Add';
+import SubtractIcon from '@material-ui/icons/Remove';
+import MultiplyIcon from '@material-ui/icons/Clear';
 
 import {
 	Group,
@@ -36,7 +42,8 @@ const RPNContainer = styled.div`
 `;
 
 export default function RPN2() {
-	const [stack, tape, operate] = useCalcBrain();
+	const notifUIDCache = useRef([]);
+	const [stack, tape, operate] = useCalcBrain(notifUIDCache);
 	const [degRad, setDegRad] = useState(drEnum.rad);
 	const [entry, amendEntry] = useTyper();
 	console.log(stack, entry);
@@ -44,6 +51,13 @@ export default function RPN2() {
 		<RPNContainer>
 			<Row>
 				<Group>
+					<Row>
+						<Danger onClick={() => operate(perform(op.clearAll))}>AC</Danger>
+						<Danger onClick={() => amendEntry(press(npButt.clear))}>C</Danger>
+						<Danger onClick={() => amendEntry(press(npButt.backspace))}>
+							<BackspaceIcon />
+						</Danger>
+					</Row>
 					<Row>
 						<Danger onClick={() => operate(drop())}>Drop</Danger>
 						<StackOp onClick={() => operate(perform(op.roll))}>Roll</StackOp>
@@ -70,13 +84,9 @@ export default function RPN2() {
 						<Entry onClick={() => amendEntry(press(npButt.pm))}>±</Entry>
 					</Row>
 					<Row>
-						<Danger onClick={() => amendEntry(press(npButt.backspace))}>
-							{'<-'}
-						</Danger>
-						<Danger onClick={() => amendEntry(press(npButt.clear))}>C</Danger>
 						<StackOp
 							onClick={() => {
-								operate(enter(toNumber(entry)));
+								operate(enter(toNumber(entry) || stack[0]));
 								amendEntry(press(npButt.clear));
 							}}>
 							enter
@@ -84,7 +94,87 @@ export default function RPN2() {
 					</Row>
 				</Group>
 				<Group>
-					<Row></Row>
+					<Row>
+						<Operation2 onClick={() => toggleDegRad(degRad, setDegRad)}>
+							{degRad}
+						</Operation2>
+						<Entry onClick={() => null}>C</Entry>
+						<Entry onClick={() => null}>
+							<FunctionsIcon />
+						</Entry>
+						<Operation1 onClick={() => operate(perform(op.xInv))}>
+							<sup>1</sup>/<sub>x</sub>
+						</Operation1>
+					</Row>
+					<Row>
+						<Operation2 onClick={() => operate(perform(op.add))}>
+							<AddIcon />
+						</Operation2>
+						<Operation2 onClick={() => operate(perform(op.sub))}>
+							<SubtractIcon />
+						</Operation2>
+						<Operation2 onClick={() => operate(perform(op.mul))}>
+							<MultiplyIcon />
+						</Operation2>
+						<Operation2 onClick={() => operate(perform(op.div))}>/</Operation2>
+					</Row>
+					<Row>
+						<Operation1 onClick={() => operate(perform(op.sin))}>
+							sin
+						</Operation1>
+						<Operation1 onClick={() => operate(perform(op.cos))}>
+							cos
+						</Operation1>
+						<Operation1 onClick={() => operate(perform(op.tan))}>
+							tan
+						</Operation1>
+					</Row>
+					<Row>
+						<Operation1 onClick={() => operate(perform(op.asin))}>
+							asin
+						</Operation1>
+						<Operation1 onClick={() => operate(perform(op.acos))}>
+							acos
+						</Operation1>
+						<Operation1 onClick={() => operate(perform(op.atan))}>
+							atan
+						</Operation1>
+					</Row>
+
+					<Row>
+						<Operation1 onClick={() => operate(perform(op.sqrt))}>
+							x<sup>½</sup>
+						</Operation1>
+						<Operation1 onClick={() => operate(perform(op.tenX))}>
+							10<sup>x</sup>
+						</Operation1>
+						<Operation1 onClick={() => operate(perform(op.twoX))}>
+							2<sup>x</sup>
+						</Operation1>
+						<Operation1 onClick={() => operate(perform(op.eX))}>
+							e<sup>x</sup>
+						</Operation1>
+					</Row>
+					<Row>
+						<Operation1 onClick={() => operate(perform(op.xRty))}>
+							y<sup>1/x</sup>
+						</Operation1>
+						<Operation1 onClick={() => operate(perform(op.x2))}>
+							x<sup>2</sup>
+						</Operation1>
+						<Operation1 onClick={() => operate(perform(op.yX))}>
+							y<sup>x</sup>
+						</Operation1>
+					</Row>
+					<Row>
+						<Operation1 onClick={() => operate(perform(op.log10))}>
+							log<sub>10</sub>
+						</Operation1>
+						<Operation1 onClick={() => operate(perform(op.log2))}>
+							log<sub>2</sub>
+						</Operation1>
+						<Operation1 onClick={() => operate(perform(op.ln))}>ln</Operation1>
+					</Row>
 				</Group>
 			</Row>
 		</RPNContainer>

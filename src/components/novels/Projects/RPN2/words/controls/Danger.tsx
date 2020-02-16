@@ -1,6 +1,5 @@
 import React from 'react';
 import Button, { SurfaceProps } from '../Button';
-import C from '../constants';
 
 const Danger = (props: SurfaceProps) => {
 	const { onClick, children } = props;

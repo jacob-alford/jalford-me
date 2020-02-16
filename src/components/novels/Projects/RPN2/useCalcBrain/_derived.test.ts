@@ -1,36 +1,44 @@
 import getSAndT from './_derived';
+import { getRandomUID } from 'functions';
 
 import { historyItem, op } from './operators/_types';
 
 const notify = jest.fn();
 const emptySAndT = [[], []];
+const alertCache: string[] = [];
 
 describe('Calculator functions operate properly', () => {
 	it('Returns empty array given empty history', () => {
 		const history: historyItem[] = [];
-		expect(getSAndT(history, notify)).toStrictEqual(emptySAndT);
+		expect(getSAndT(history, alertCache, notify)).toStrictEqual(emptySAndT);
 	});
 	it('Pushes a value', () => {
 		const history: historyItem[] = [
 			{
 				type: op.enter,
-				payload: 69
+				payload: 69,
+				UID: getRandomUID()
 			}
 		];
-		expect(getSAndT(history, notify)).toStrictEqual([[69], [['ENTER 69', '']]]);
+		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
+			[69],
+			[['ENTER 69', '']]
+		]);
 	});
 	it('Pushes multiple values', () => {
 		const history: historyItem[] = [
 			{
 				type: op.enter,
-				payload: 69
+				payload: 69,
+				UID: getRandomUID()
 			},
 			{
 				type: op.enter,
-				payload: 420
+				payload: 420,
+				UID: getRandomUID()
 			}
 		];
-		expect(getSAndT(history, notify)).toStrictEqual([
+		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
 			[69, 420],
 			[
 				['ENTER 69', ''],
@@ -42,13 +50,15 @@ describe('Calculator functions operate properly', () => {
 		const history: historyItem[] = [
 			{
 				type: op.enter,
-				payload: 69
+				payload: 69,
+				UID: getRandomUID()
 			},
 			{
-				type: op.drop
+				type: op.drop,
+				UID: getRandomUID()
 			}
 		];
-		expect(getSAndT(history, notify)).toStrictEqual([
+		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
 			[],
 			[
 				['ENTER 69', ''],
@@ -60,21 +70,25 @@ describe('Calculator functions operate properly', () => {
 		const history: historyItem[] = [
 			{
 				type: op.enter,
-				payload: 3
+				payload: 3,
+				UID: getRandomUID()
 			},
 			{
 				type: op.enter,
-				payload: 6
+				payload: 6,
+				UID: getRandomUID()
 			},
 			{
 				type: op.enter,
-				payload: 9
+				payload: 9,
+				UID: getRandomUID()
 			},
 			{
-				type: op.roll
+				type: op.roll,
+				UID: getRandomUID()
 			}
 		];
-		expect(getSAndT(history, notify)).toStrictEqual([
+		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
 			[9, 3, 6],
 			[
 				['ENTER 3', ''],
@@ -88,17 +102,20 @@ describe('Calculator functions operate properly', () => {
 		const history: historyItem[] = [
 			{
 				type: op.enter,
-				payload: 3
+				payload: 3,
+				UID: getRandomUID()
 			},
 			{
 				type: op.enter,
-				payload: 6
+				payload: 6,
+				UID: getRandomUID()
 			},
 			{
-				type: op.swap
+				type: op.swap,
+				UID: getRandomUID()
 			}
 		];
-		expect(getSAndT(history, notify)).toStrictEqual([
+		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
 			[6, 3],
 			[
 				['ENTER 3', ''],
@@ -111,21 +128,25 @@ describe('Calculator functions operate properly', () => {
 		const history: historyItem[] = [
 			{
 				type: op.enter,
-				payload: 420
+				payload: 420,
+				UID: getRandomUID()
 			},
 			{
 				type: op.enter,
-				payload: 69
+				payload: 69,
+				UID: getRandomUID()
 			},
 			{
 				type: op.enter,
-				payload: 42069
+				payload: 42069,
+				UID: getRandomUID()
 			},
 			{
-				type: op.clearAll
+				type: op.clearAll,
+				UID: getRandomUID()
 			}
 		];
-		expect(getSAndT(history, notify)).toStrictEqual([
+		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
 			[],
 			[
 				['ENTER 420', ''],
@@ -136,9 +157,14 @@ describe('Calculator functions operate properly', () => {
 		]);
 	});
 	it('Notifies an error for too few args', () => {
-		const history: historyItem[] = [{ type: op.ln }];
+		const history: historyItem[] = [
+			{
+				type: op.ln,
+				UID: getRandomUID()
+			}
+		];
 		const testNotify = jest.fn();
-		getSAndT(history, testNotify);
+		getSAndT(history, alertCache, testNotify);
 		expect(testNotify).toHaveBeenCalledWith({
 			body: 'Unable to perform ln on stack with length of 0!'
 		});
@@ -147,14 +173,16 @@ describe('Calculator functions operate properly', () => {
 		const history: historyItem[] = [
 			{
 				type: op.enter,
-				payload: -69
+				payload: -69,
+				UID: getRandomUID()
 			},
 			{
-				type: op.acos
+				type: op.acos,
+				UID: getRandomUID()
 			}
 		];
 		const testNotify = jest.fn();
-		getSAndT(history, testNotify);
+		getSAndT(history, alertCache, testNotify);
 		expect(testNotify).toHaveBeenCalledWith({
 			body: 'Inverse cosine only defined for values between zero and one!'
 		});
@@ -163,15 +191,20 @@ describe('Calculator functions operate properly', () => {
 		const history: historyItem[] = [
 			{
 				type: op.enter,
-				payload: -69
+				payload: -69,
+				UID: getRandomUID()
 			},
 			{
 				type: op.enter,
-				payload: 420
+				payload: 420,
+				UID: getRandomUID()
 			},
-			{ type: op.div }
+			{
+				type: op.div,
+				UID: getRandomUID()
+			}
 		];
-		expect(getSAndT(history, notify)).toStrictEqual([
+		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
 			[-69 / 420],
 			[
 				['ENTER -69', ''],
@@ -184,11 +217,15 @@ describe('Calculator functions operate properly', () => {
 		const history: historyItem[] = [
 			{
 				type: op.enter,
-				payload: Math.E
+				payload: Math.E,
+				UID: getRandomUID()
 			},
-			{ type: op.ln }
+			{
+				type: op.ln,
+				UID: getRandomUID()
+			}
 		];
-		expect(getSAndT(history, notify)).toStrictEqual([
+		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
 			[1],
 			[
 				['ENTER 2.718281828459045', ''],
@@ -200,19 +237,25 @@ describe('Calculator functions operate properly', () => {
 		const history: historyItem[] = [
 			{
 				type: op.enter,
-				payload: 15
+				payload: 15,
+				UID: getRandomUID()
 			},
 			{
 				type: op.enter,
-				payload: 25
+				payload: 25,
+				UID: getRandomUID()
 			},
 			{
 				type: op.enter,
-				payload: 32
+				payload: 32,
+				UID: getRandomUID()
 			},
-			{ type: op.mean }
+			{
+				type: op.mean,
+				UID: getRandomUID()
+			}
 		];
-		expect(getSAndT(history, notify)).toStrictEqual([
+		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
 			[24],
 			[
 				['ENTER 15', ''],
@@ -226,11 +269,15 @@ describe('Calculator functions operate properly', () => {
 		const history: historyItem[] = [
 			{
 				type: op.enter,
-				payload: 15
+				payload: 15,
+				UID: getRandomUID()
 			},
-			{ type: op.xFact }
+			{
+				type: op.xFact,
+				UID: getRandomUID()
+			}
 		];
-		expect(getSAndT(history, notify)).toStrictEqual([
+		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
 			[1307674368000],
 			[
 				['ENTER 15', ''],
@@ -242,12 +289,16 @@ describe('Calculator functions operate properly', () => {
 		const history: historyItem[] = [
 			{
 				type: op.enter,
-				payload: 420
+				payload: 420,
+				UID: getRandomUID()
 			},
-			{ type: op.xFact }
+			{
+				type: op.xFact,
+				UID: getRandomUID()
+			}
 		];
 		const testNotify = jest.fn();
-		expect(getSAndT(history, testNotify)).toStrictEqual([
+		expect(getSAndT(history, alertCache, testNotify)).toStrictEqual([
 			[420],
 			[['ENTER 420', '']]
 		]);
@@ -259,10 +310,11 @@ describe('Calculator functions operate properly', () => {
 	it('Spits out a constant (constant)', () => {
 		const history: historyItem[] = [
 			{
-				type: op.pi
+				type: op.pi,
+				UID: getRandomUID()
 			}
 		];
-		expect(getSAndT(history, notify)).toStrictEqual([
+		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
 			[Math.PI],
 			[['pi', '3.141592653589793']]
 		]);

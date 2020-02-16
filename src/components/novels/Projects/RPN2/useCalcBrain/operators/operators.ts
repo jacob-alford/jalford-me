@@ -75,7 +75,7 @@ const swap: operator = {
 	type: op.swap,
 	act: (stack: number[]): number[] =>
 		concat([stack[1]], stack[0], _drop(stack, 2)),
-	preVerify: (stack: number[]): boolean => true,
+	preVerify: (stack: number[]): boolean => stack.length >= 2,
 	toTape: (stack: number[]): tapeItem => [`SWAP ${stack[0]}, ${stack[1]}`, ``],
 	error: (): calcError => null
 };

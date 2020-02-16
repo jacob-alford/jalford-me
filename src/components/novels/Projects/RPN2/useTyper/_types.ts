@@ -1,5 +1,3 @@
-import { colorClass } from '../useCalcBrain/operators/_types';
-
 export enum npButt {
 	zero = '0',
 	one = '1',

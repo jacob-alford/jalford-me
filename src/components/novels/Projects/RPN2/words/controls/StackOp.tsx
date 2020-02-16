@@ -7,9 +7,9 @@ const StackOps = (props: SurfaceProps) => {
 	return (
 		<Button
 			onClick={onClick}
-			backgroundColor={C.blue(0)}
+			backgroundColor={C.blue(2)}
 			borderColor={C.blue(0)}
-			color='white'>
+			color={C.blue(0)}>
 			{children}
 		</Button>
 	);

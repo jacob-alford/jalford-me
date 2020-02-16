@@ -7,8 +7,8 @@ const Entry = (props: SurfaceProps) => {
 	return (
 		<Button
 			onClick={onClick}
-			backgroundColor='white'
-			borderColor='white'
+			backgroundColor={C.orange(1)}
+			borderColor={C.orange(0)}
 			color='black'>
 			{children}
 		</Button>

@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
-
 import Button from '@material-ui/core/Button';
+
+import C from './constants';
 
 type ContProps = {
 	backgroundColor: string;
@@ -12,6 +13,8 @@ const Cont = styled.div`
 	border: 4px solid ${(props: ContProps) => props.borderColor};
 	flex-grow: 1;
 	text-align: center;
+	border-radius: 16px;
+	margin: 2px;
 `;
 
 type ButtProps = {
@@ -22,6 +25,8 @@ const InnerButton = styled(Button)`
 	text-transform: none;
 	font-size: 2rem;
 	width: 100%;
+	height: ${C.H};
+	border-radius: 16px;
 `;
 
 export type SurfaceProps = {

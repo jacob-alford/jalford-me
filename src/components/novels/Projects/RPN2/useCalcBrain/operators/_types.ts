@@ -51,6 +51,7 @@ export type calcError = null | string;
 export interface historyItem {
 	type: op;
 	payload?: number;
+	UID: string;
 }
 
 export interface operator {
