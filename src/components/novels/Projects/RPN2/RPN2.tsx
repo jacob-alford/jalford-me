@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
+import { useTransition } from 'react-spring';
 import styled from 'styled-components';
 import toNumber from 'lodash/toNumber';
 
@@ -21,7 +22,9 @@ import {
 import { Stack, StackItem } from './words/display';
 
 import useCalcBrain from './useCalcBrain/useCalcBrain';
-import { op } from './useCalcBrain/operators/_types';
+import { op, stackItem, historyItem } from './useCalcBrain/operators/_types';
+import { historyActions } from './useCalcBrain/_reducer';
+
 import useTyper from './useTyper/useTyper';
 import { npButt } from './useTyper/_types';
 
@@ -38,8 +41,18 @@ const toggleDegRad = (degRad: drEnum, setDegRad: (val: any) => void): void =>
 const getIndex = (index: number, length: number): string | number =>
 	index === length - 1 ? 'x' : index === length - 2 ? 'y' : index + 1;
 
+const getEntry = (entry: string, stack: stackItem[]): number => {
+	const number = toNumber(entry);
+	console.log(number, stack);
+	if (number === 0 || number) return number;
+	else {
+		const lastItem = stack[stack.length - 1];
+		if (lastItem) return lastItem.number;
+		else return 0;
+	}
+};
+
 const RPNContainer = styled.div`
-	width: 100vw;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -47,21 +60,46 @@ const RPNContainer = styled.div`
 
 export default function RPN2() {
 	const notifUIDCache = useRef([]);
-	const [stack, tape, operate] = useCalcBrain(notifUIDCache);
+	const [stack, tape, _operate] = useCalcBrain(notifUIDCache);
 	const [degRad, setDegRad] = useState(drEnum.rad);
 	const [entry, amendEntry] = useTyper();
+	const stackItems = useTransition(stack, item => item.UID, {
+		from: { transform: 'translate3d(0,40px,0)', opacity: 0 },
+		enter: { transform: 'translate3d(0,0px,0)', opacity: 1 },
+		leave: { transform: 'translate3d(0,40px,0)', opacity: 0 }
+	});
+	const operate = useCallback(
+		(operation: { type: historyActions; operation: historyItem }): void => {
+			if (
+				operation.operation.type !== op.enter &&
+				operation.operation.type !== op.drop &&
+				operation.operation.type !== op.swap &&
+				operation.operation.type !== op.roll &&
+				toNumber(entry)
+			) {
+				_operate(enter(toNumber(entry)));
+				amendEntry(press(npButt.clear));
+			}
+			_operate(operation);
+		},
+		[entry, _operate, amendEntry]
+	);
 	console.log(stack, entry);
 	return (
 		<RPNContainer>
 			<Row>
 				<Stack>
-					{stack.map(({ number, UID }, index) => (
-						<StackItem
-							key={UID}
-							num={number}
-							index={getIndex(index, stack.length)}
-						/>
-					))}
+					{stackItems.map(
+						({ item: { number, UID }, props: animatedStyles }, index) => (
+							<StackItem
+								key={UID}
+								UID={UID}
+								num={number}
+								index={getIndex(index, stackItems.length)}
+								animatedStyles={animatedStyles}
+							/>
+						)
+					)}
 				</Stack>
 			</Row>
 			<Row>
@@ -101,7 +139,7 @@ export default function RPN2() {
 					<Row>
 						<StackOp
 							onClick={() => {
-								operate(enter(toNumber(entry) || stack[0].number));
+								operate(enter(getEntry(entry, stack)));
 								amendEntry(press(npButt.clear));
 							}}>
 							enter
@@ -171,11 +209,14 @@ export default function RPN2() {
 						</Operation1>
 					</Row>
 					<Row>
-						<Operation1 onClick={() => operate(perform(op.xRty))}>
-							y<sup>1/x</sup>
-						</Operation1>
 						<Operation1 onClick={() => operate(perform(op.x2))}>
 							x<sup>2</sup>
+						</Operation1>
+						<Operation1 onClick={() => operate(perform(op.xFact))}>
+							x!
+						</Operation1>
+						<Operation1 onClick={() => operate(perform(op.xRty))}>
+							y<sup>1/x</sup>
 						</Operation1>
 						<Operation1 onClick={() => operate(perform(op.yX))}>
 							y<sup>x</sup>

@@ -5,7 +5,6 @@ const EntryRow = styled.div`
 	flex-wrap: nowrap;
 	flex-direction: row;
 	justify-content: center;
-	width: 100%;
 `;
 
 export default EntryRow;

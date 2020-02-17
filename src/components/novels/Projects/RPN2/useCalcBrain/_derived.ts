@@ -29,7 +29,7 @@ const getDerivedStackAndTape = (
 			return;
 		}
 		tape.push(toTape(stack, payload));
-		stack = act(stack, payload);
+		stack = act(stack, payload, UID);
 	});
 	return [stack, tape];
 };

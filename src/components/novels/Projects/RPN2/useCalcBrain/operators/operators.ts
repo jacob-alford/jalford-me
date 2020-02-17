@@ -1,6 +1,5 @@
 import reduce from 'lodash/reduce';
 import concat from 'lodash/concat';
-import _drop from 'lodash/drop';
 import dropRight from 'lodash/dropRight';
 
 import { getRandomUID } from 'functions';
@@ -22,21 +21,30 @@ import {
 	stackItem
 } from './_types';
 
-const toStackItem = (number: number): stackItem => ({
+const toStackItem = (number: number, UID?: string): stackItem => ({
 	number,
-	UID: getRandomUID()
+	UID: UID || getRandomUID()
 });
-const condCat = (arr: stackItem[], item?: number): stackItem[] =>
-	item ? concat(arr, toStackItem(item)) : arr;
+const condCat = (
+	arr: stackItem[],
+	item?: number,
+	UID?: string
+): stackItem[] => {
+	if (item === 0 || item) return concat(arr, toStackItem(item, UID));
+	else return arr;
+};
 const factorial = (number: number): number => {
 	if (number === 1) return number;
 	else return number * factorial(number - 1);
 };
+const getLast = (stack: stackItem[]): stackItem => stack[stack.length - 1];
+const getNextToLast = (stack: stackItem[]): stackItem =>
+	stack[stack.length - 2];
 
 const enter: operator = {
 	type: op.enter,
-	act: (stack: stackItem[], payload?: number): stackItem[] =>
-		condCat(stack, payload),
+	act: (stack: stackItem[], payload?: number, UID?: string): stackItem[] =>
+		condCat(stack, payload, UID),
 	preVerify: (stack: stackItem[]): boolean => true,
 	toTape: (stack: stackItem[], payload?: number): tapeItem => [
 		`ENTER ${payload}`,
@@ -48,7 +56,10 @@ const drop: operator = {
 	type: op.drop,
 	act: (stack: stackItem[]): stackItem[] => dropRight(stack),
 	preVerify: (stack: stackItem[]): boolean => stack.length > 0,
-	toTape: (stack: stackItem[]): tapeItem => [`DROP ${stack[0].number}`, ``],
+	toTape: (stack: stackItem[]): tapeItem => [
+		`DROP ${getLast(stack).number}`,
+		``
+	],
 	error: (): calcError => null
 };
 const clearAll: operator = {
@@ -69,14 +80,10 @@ const roll: operator = {
 const swap: operator = {
 	type: op.swap,
 	act: (stack: stackItem[]): stackItem[] =>
-		concat(
-			dropRight(stack, 2),
-			stack[stack.length - 1],
-			stack[stack.length - 2]
-		),
+		concat(dropRight(stack, 2), getLast(stack), getNextToLast(stack)),
 	preVerify: (stack: stackItem[]): boolean => stack.length >= 2,
 	toTape: (stack: stackItem[]): tapeItem => [
-		`SWAP ${stack[0].number}, ${stack[1].number}`,
+		`SWAP ${getNextToLast(stack).number}, ${getLast(stack).number}`,
 		``
 	],
 	error: (): calcError => null
@@ -90,41 +97,41 @@ const operators: opsForm = {
 	[op.swap]: swap,
 	[op.mod]: makeDoubleOp({
 		type: op.mod,
-		fn: (x: number, y: number): number => x % y
+		fn: (x: number, y: number): number => y % x
 	}),
 	[op.add]: makeDoubleOp({
 		type: op.add,
 		fn: (x: number, y: number): number => x + y,
 		toTape: (stack: stackItem[]): tapeItem => [
-			`${stack[0].number} + ${stack[1].number}`,
-			`${stack[0].number + stack[1].number}`
+			`${getNextToLast(stack).number} + ${getLast(stack).number}`,
+			`${getLast(stack).number + getNextToLast(stack).number}`
 		]
 	}),
 	[op.sub]: makeDoubleOp({
 		type: op.sub,
 		fn: (x: number, y: number): number => y - x,
 		toTape: (stack: stackItem[]): tapeItem => [
-			`${stack[0].number} - ${stack[1].number}`,
-			`${stack[0].number - stack[1].number}`
+			`${getNextToLast(stack).number} - ${getLast(stack).number}`,
+			`${getNextToLast(stack).number - getLast(stack).number}`
 		]
 	}),
 	[op.mul]: makeDoubleOp({
 		type: op.mul,
 		fn: (x: number, y: number): number => x * y,
 		toTape: (stack: stackItem[]): tapeItem => [
-			`${stack[0].number} * ${stack[1].number}`,
-			`${stack[0].number * stack[1].number}`
+			`${getNextToLast(stack).number} * ${getLast(stack).number}`,
+			`${getLast(stack).number * getNextToLast(stack).number}`
 		]
 	}),
 	[op.div]: makeDoubleOp({
 		type: op.div,
 		fn: (x: number, y: number): number => y / x,
 		toTape: (stack: stackItem[]): tapeItem => [
-			`${stack[0].number}/${stack[1].number}`,
-			`${stack[0].number / stack[1].number}`
+			`${getNextToLast(stack).number}/${getLast(stack).number}`,
+			`${getNextToLast(stack).number / getLast(stack).number}`
 		],
 		error: (stack: stackItem[]): calcError =>
-			makeError(stack[1].number !== 0, 'Unable to divide by zero!')
+			makeError(getLast(stack).number !== 0, 'Unable to divide by zero!')
 	}),
 	[op.sin]: makeSingleOp({
 		type: op.sin,
@@ -146,7 +153,7 @@ const operators: opsForm = {
 		fn: Math.asin,
 		error: (stack: stackItem[]): calcError =>
 			makeError(
-				stack[0].number >= 0 && stack[0].number <= 1,
+				getLast(stack).number >= 0 && getLast(stack).number <= 1,
 				'Inverse sine only defined for values between zero and one!'
 			)
 	}),
@@ -155,7 +162,7 @@ const operators: opsForm = {
 		fn: Math.acos,
 		error: (stack: stackItem[]): calcError =>
 			makeError(
-				stack[0].number >= 0 && stack[0].number <= 1,
+				getLast(stack).number >= 0 && getLast(stack).number <= 1,
 				'Inverse cosine only defined for values between zero and one!'
 			)
 	}),
@@ -200,7 +207,7 @@ const operators: opsForm = {
 		fn: Math.log,
 		error: (stack: stackItem[]): calcError =>
 			makeError(
-				stack[0].number > 0,
+				getLast(stack).number > 0,
 				'Real-Valued Natural log only defined for positive numbers!'
 			)
 	}),
@@ -209,7 +216,7 @@ const operators: opsForm = {
 		fn: Math.log10,
 		error: (stack: stackItem[]): calcError =>
 			makeError(
-				stack[0].number > 0,
+				getLast(stack).number > 0,
 				'Real-Valued Log-base-10 only defined for positive numbers!'
 			)
 	}),
@@ -218,7 +225,7 @@ const operators: opsForm = {
 		fn: Math.log2,
 		error: (stack: stackItem[]): calcError =>
 			makeError(
-				stack[0].number > 0,
+				getLast(stack).number > 0,
 				'Real-Valued Log-base-2 only defined for positive numbers!'
 			)
 	}),
@@ -247,7 +254,7 @@ const operators: opsForm = {
 		fn: (num: number): number => Math.pow(10, num),
 		error: (stack: stackItem[]): calcError =>
 			makeError(
-				stack[0].number > 0,
+				getLast(stack).number > 0,
 				'Real-Valued Square-root only defined for non-negative numbers!'
 			)
 	}),
@@ -256,7 +263,7 @@ const operators: opsForm = {
 		fn: (x: number, y: number): number => Math.pow(y, x),
 		error: (stack: stackItem[]): calcError =>
 			makeError(
-				stack[1].number >= 0 && stack[0].number !== 0,
+				getNextToLast(stack).number >= 0 && getLast(stack).number !== 0,
 				'Real-Valued xth-root-of-y only defined for non-negative radicands, and non-zero indecies!'
 			)
 	}),
@@ -265,7 +272,7 @@ const operators: opsForm = {
 		fn: (num: number): number => 1 / num,
 		error: (stack: stackItem[]): calcError =>
 			makeError(
-				stack[0].number !== 0,
+				getLast(stack).number !== 0,
 				`Calculator cannot represent infinity in a sufficient fashion! (at least I'm afraid)`
 			)
 	}),
@@ -274,12 +281,12 @@ const operators: opsForm = {
 		fn: (num: number): number => factorial(num),
 		error: (stack: stackItem[]): calcError =>
 			makeError(
-				stack[0].number <= 170 && Number.isInteger(stack[0].number),
+				getLast(stack).number <= 170 && Number.isInteger(getLast(stack).number),
 				'Cannot calculate factorial of integers greater than 170 with 10^53 significant digits!'
 			),
 		toTape: (stack: stackItem[]): tapeItem => [
-			`${stack[0].number}!`,
-			`${factorial(stack[0].number)}`
+			`${getLast(stack).number}!`,
+			`${factorial(getLast(stack).number)}`
 		]
 	})
 };

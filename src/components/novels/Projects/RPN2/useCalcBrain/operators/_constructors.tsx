@@ -1,8 +1,6 @@
 import concat from 'lodash/concat';
-import drop from 'lodash/drop';
 import dropRight from 'lodash/dropRight';
 import slice from 'lodash/slice';
-import last from 'lodash/last';
 
 import { getRandomUID } from 'functions';
 
@@ -10,16 +8,18 @@ import { operator, op, tapeItem, calcError, stackItem } from './_types';
 
 const toNumbers = (stack: stackItem[]): number[] =>
 	stack.map(({ number }) => number);
-const toStackItem = (number: number): stackItem => ({
+const toStackItem = (number: number, UID: string): stackItem => ({
 	number,
-	UID: getRandomUID()
+	UID
 });
-const toStack = (numbers: number[]): stackItem[] =>
-	numbers.map(number => toStackItem(number));
+const toStack = (numbers: number[], UID: string): stackItem[] =>
+	numbers.map(number => toStackItem(number, UID));
 export const getLast = (stack: stackItem[]): number =>
 	stack[stack.length - 1].number;
 export const getNextToLast = (stack: stackItem[]): number =>
 	stack[stack.length - 2].number;
+const getLastUID = (stack: stackItem[]): string =>
+	(stack[stack.length - 1] || { UID: getRandomUID() }).UID;
 
 export const formatList = (arr: number[]): string => {
 	return `${slice(arr, 0, 3).join(',')}${(arr.length > 3 && ', ...') || ''}`;
@@ -45,7 +45,7 @@ export const makeReducer = (config: {
 	} = config;
 	const preVerify = (stack: stackItem[]): boolean => stack.length > 0;
 	const act = (stack: stackItem[]): stackItem[] =>
-		toStack(fn(toNumbers(stack)));
+		toStack(fn(toNumbers(stack)), getLastUID(stack));
 	return {
 		type,
 		act,
@@ -74,7 +74,10 @@ export const makeSingleOp = (config: {
 	} = config;
 	const preVerify = (stack: stackItem[]): boolean => stack.length > 0;
 	const act = (stack: stackItem[]): stackItem[] =>
-		concat(dropRight(stack), toStackItem(fn(getLast(stack))));
+		concat(
+			dropRight(stack),
+			toStackItem(fn(getLast(stack)), getLastUID(stack))
+		);
 	return {
 		type,
 		act,
@@ -106,7 +109,7 @@ export const makeDoubleOp = (config: {
 	const act = (stack: stackItem[]): stackItem[] =>
 		concat(
 			dropRight(stack, 2),
-			toStackItem(fn(getLast(stack), getNextToLast(stack)))
+			toStackItem(fn(getLast(stack), getNextToLast(stack)), getLastUID(stack))
 		);
 	return {
 		type,
@@ -127,7 +130,7 @@ export const makeConstant = (config: {
 	const error = (): calcError => null;
 	const preVerify = (): boolean => true;
 	const act = (stack: stackItem[]): stackItem[] =>
-		concat(toStackItem(constant), stack);
+		concat(toStackItem(constant, getLastUID(stack)), stack);
 	return {
 		type,
 		act,

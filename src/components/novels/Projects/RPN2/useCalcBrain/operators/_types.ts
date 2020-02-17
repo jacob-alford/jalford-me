@@ -51,7 +51,7 @@ export interface historyItem {
 export interface operator {
 	requiresTrigConversion?: boolean;
 	type: op;
-	act: (stack: stackItem[], payload?: number) => stackItem[];
+	act: (stack: stackItem[], payload?: number, UID?: string) => stackItem[];
 	preVerify: (stack: stackItem[]) => boolean;
 	toTape: (stack: stackItem[], payload?: number) => tapeItem;
 	error: (stack: stackItem[]) => calcError;
