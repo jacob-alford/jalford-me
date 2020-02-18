@@ -9,7 +9,8 @@ import {
 	makeDoubleOp,
 	makeConstant,
 	makeReducer,
-	makeError
+	makeError,
+	shortNum
 } from './_constructors';
 
 import {
@@ -47,7 +48,7 @@ const enter: operator = {
 		condCat(stack, payload, UID),
 	preVerify: (stack: stackItem[]): boolean => true,
 	toTape: (stack: stackItem[], payload?: number): tapeItem => [
-		`ENTER ${payload}`,
+		`ENTER ${(payload && shortNum(payload)) || ''}`,
 		``
 	],
 	error: (): calcError => null
@@ -58,7 +59,7 @@ const enterLast: operator = {
 		condCat(stack, stack[stack.length - 1].number, UID),
 	preVerify: (stack: stackItem[]): boolean => stack.length > 0,
 	toTape: (stack: stackItem[], payload?: number): tapeItem => [
-		`ENTER ${stack[stack.length - 1]}`,
+		`ENTER ${shortNum(stack[stack.length - 1].number)}`,
 		``
 	],
 	error: (): calcError => null
@@ -68,7 +69,7 @@ const drop: operator = {
 	act: (stack: stackItem[]): stackItem[] => dropRight(stack),
 	preVerify: (stack: stackItem[]): boolean => stack.length > 0,
 	toTape: (stack: stackItem[]): tapeItem => [
-		`DROP ${getLast(stack).number}`,
+		`DROP ${shortNum(getLast(stack).number)}`,
 		``
 	],
 	error: (): calcError => null
@@ -94,8 +95,10 @@ const swap: operator = {
 		concat(dropRight(stack, 2), getLast(stack), getNextToLast(stack)),
 	preVerify: (stack: stackItem[]): boolean => stack.length >= 2,
 	toTape: (stack: stackItem[]): tapeItem => [
-		`SWAP ${getNextToLast(stack).number}, ${getLast(stack).number}`,
-		``
+		`SWAP`,
+		`${shortNum(getNextToLast(stack).number)}, ${shortNum(
+			getLast(stack).number
+		)}`
 	],
 	error: (): calcError => null
 };
@@ -115,32 +118,40 @@ const operators: opsForm = {
 		type: op.add,
 		fn: (x: number, y: number): number => x + y,
 		toTape: (stack: stackItem[]): tapeItem => [
-			`${getNextToLast(stack).number} + ${getLast(stack).number}`,
-			`${getLast(stack).number + getNextToLast(stack).number}`
+			`${shortNum(getNextToLast(stack).number)} + ${shortNum(
+				getLast(stack).number
+			)}`,
+			`${shortNum(getLast(stack).number + getNextToLast(stack).number)}`
 		]
 	}),
 	[op.sub]: makeDoubleOp({
 		type: op.sub,
 		fn: (x: number, y: number): number => y - x,
 		toTape: (stack: stackItem[]): tapeItem => [
-			`${getNextToLast(stack).number} - ${getLast(stack).number}`,
-			`${getNextToLast(stack).number - getLast(stack).number}`
+			`${shortNum(getNextToLast(stack).number)} - ${shortNum(
+				getLast(stack).number
+			)}`,
+			`${shortNum(getNextToLast(stack).number - getLast(stack).number)}`
 		]
 	}),
 	[op.mul]: makeDoubleOp({
 		type: op.mul,
 		fn: (x: number, y: number): number => x * y,
 		toTape: (stack: stackItem[]): tapeItem => [
-			`${getNextToLast(stack).number} * ${getLast(stack).number}`,
-			`${getLast(stack).number * getNextToLast(stack).number}`
+			`${shortNum(getNextToLast(stack).number)} * ${shortNum(
+				getLast(stack).number
+			)}`,
+			`${shortNum(getLast(stack).number * getNextToLast(stack).number)}`
 		]
 	}),
 	[op.div]: makeDoubleOp({
 		type: op.div,
 		fn: (x: number, y: number): number => y / x,
 		toTape: (stack: stackItem[]): tapeItem => [
-			`${getNextToLast(stack).number}/${getLast(stack).number}`,
-			`${getNextToLast(stack).number / getLast(stack).number}`
+			`${shortNum(getNextToLast(stack).number)}/${shortNum(
+				getLast(stack).number
+			)}`,
+			`${shortNum(getNextToLast(stack).number / getLast(stack).number)}`
 		],
 		error: (stack: stackItem[]): calcError =>
 			makeError(getLast(stack).number !== 0, 'Unable to divide by zero!')
@@ -263,7 +274,7 @@ const operators: opsForm = {
 	}),
 	[op.sqrt]: makeSingleOp({
 		type: op.sqrt,
-		fn: (num: number): number => Math.pow(10, num),
+		fn: (num: number): number => Math.sqrt(num),
 		error: (stack: stackItem[]): calcError =>
 			makeError(
 				getLast(stack).number > 0,
@@ -299,8 +310,8 @@ const operators: opsForm = {
 				'Cannot calculate factorial of integers greater than 170 with 10^53 significant digits!'
 			),
 		toTape: (stack: stackItem[]): tapeItem => [
-			`${getLast(stack).number}!`,
-			`${factorial(getLast(stack).number)}`
+			`${shortNum(getLast(stack).number)}!`,
+			`${shortNum(factorial(getLast(stack).number))}`
 		]
 	})
 };

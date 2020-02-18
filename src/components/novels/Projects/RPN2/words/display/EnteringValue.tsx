@@ -6,7 +6,7 @@ const EnteringValue = styled.div`
 	justify-content: flex-end;
 	align-items: center;
 	font-size: 38px;
-	width: calc(50% - 8px);
+	width: calc(90vw - 110.59px);
 	background: ${C.blue(2)};
 	border: 2px solid ${C.blue(0)};
 	border-radius: 12px;

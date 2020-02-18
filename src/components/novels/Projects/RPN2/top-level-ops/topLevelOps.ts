@@ -27,6 +27,13 @@ export const enter = (
 		UID: getRandomUID()
 	}
 });
+export const stash = (): { type: historyActions; operation: historyItem } => ({
+	type: historyActions.stash,
+	operation: {
+		type: op.enterLast,
+		UID: getRandomUID()
+	}
+});
 export const drop = (): { type: historyActions; operation: historyItem } => ({
 	type: historyActions.push,
 	operation: {

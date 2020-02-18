@@ -54,6 +54,8 @@ export const makeReducer = (config: {
 		error
 	};
 };
+export const shortNum = (num: number): string =>
+	num.toLocaleString(undefined, { maximumSignificantDigits: 3 });
 
 export const makeSingleOp = (config: {
 	type: op;
@@ -68,8 +70,8 @@ export const makeSingleOp = (config: {
 		requiresTrigConversion,
 		error = (): calcError => null,
 		toTape = (stack: stackItem[]): tapeItem => [
-			`${type}(${getLast(stack)})`,
-			`${fn(getLast(stack))}`
+			`${type}(${shortNum(getLast(stack))})`,
+			`${shortNum(fn(getLast(stack)))}`
 		]
 	} = config;
 	const preVerify = (stack: stackItem[]): boolean => stack.length > 0;
@@ -101,8 +103,8 @@ export const makeDoubleOp = (config: {
 		requiresTrigConversion,
 		error = (): calcError => null,
 		toTape = (stack: stackItem[]): tapeItem => [
-			`${type}(${getLast(stack)}, ${getNextToLast(stack)})`,
-			`${fn(getLast(stack), getNextToLast(stack))}`
+			`${type}(${shortNum(getLast(stack))}, ${shortNum(getNextToLast(stack))})`,
+			`${shortNum(fn(getLast(stack), getNextToLast(stack)))}`
 		]
 	} = config;
 	const preVerify = (stack: stackItem[]): boolean => stack.length >= 2;
@@ -126,7 +128,7 @@ export const makeConstant = (config: {
 	constant: number;
 }): operator => {
 	const { type, constant } = config;
-	const toTape = (): tapeItem => [`${type}`, `${constant}`];
+	const toTape = (): tapeItem => [`${type}`, `${shortNum(constant)}`];
 	const error = (): calcError => null;
 	const preVerify = (): boolean => true;
 	const act = (stack: stackItem[]): stackItem[] =>

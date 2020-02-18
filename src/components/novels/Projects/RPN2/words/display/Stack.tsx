@@ -13,9 +13,10 @@ const Stack = styled.div`
 	border: 4px solid white;
 	filter: drop-shadow(0 0 0.75rem crimson);
 	border-radius: 12px;
-	height: 333px;
-	width: 50%;
+	height: 300px;
+	width: calc(90vw - 110.59px);
 	margin: 16px 0px 16px 0px;
+	flex-grow: 2;
 `;
 
 export default Stack;
