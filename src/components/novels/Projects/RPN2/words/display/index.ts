@@ -1,4 +1,5 @@
 import Stack from './Stack';
-import StackItem from './StackItem';
+import StackItem, { formatNumber } from './StackItem';
+import EnteringValue from './EnteringValue';
 
-export { Stack, StackItem };
+export { Stack, StackItem, EnteringValue, formatNumber };

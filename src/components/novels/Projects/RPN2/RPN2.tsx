@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useMemo } from 'react';
 import { useTransition } from 'react-spring';
 import styled from 'styled-components';
 import toNumber from 'lodash/toNumber';
@@ -19,7 +19,7 @@ import {
 	Danger
 } from './words/controls';
 
-import { Stack, StackItem } from './words/display';
+import { Stack, StackItem, EnteringValue } from './words/display';
 
 import useCalcBrain from './useCalcBrain/useCalcBrain';
 import { op, stackItem, historyItem } from './useCalcBrain/operators/_types';
@@ -43,13 +43,26 @@ const getIndex = (index: number, length: number): string | number =>
 
 const getEntry = (entry: string, stack: stackItem[]): number => {
 	const number = toNumber(entry);
-	console.log(number, stack);
 	if (number === 0 || number) return number;
 	else {
 		const lastItem = stack[stack.length - 1];
 		if (lastItem) return lastItem.number;
 		else return 0;
 	}
+};
+
+const trimFrontZeros = (num: string): string => {
+	let outStr = '';
+	let hasEncounteredNonZero = false;
+	num.split('').forEach(char => {
+		if (char !== '0' && !hasEncounteredNonZero) hasEncounteredNonZero = true;
+		if (char === '.' && outStr.length === 0) {
+			outStr += '0.';
+			return;
+		}
+		if (hasEncounteredNonZero) outStr += char;
+	});
+	return outStr;
 };
 
 const RPNContainer = styled.div`
@@ -62,7 +75,8 @@ export default function RPN2() {
 	const notifUIDCache = useRef([]);
 	const [stack, tape, _operate] = useCalcBrain(notifUIDCache);
 	const [degRad, setDegRad] = useState(drEnum.rad);
-	const [entry, amendEntry] = useTyper();
+	const [_entry, amendEntry] = useTyper();
+	const entry = useMemo(() => trimFrontZeros(_entry), [_entry]);
 	const stackItems = useTransition(stack, item => item.UID, {
 		from: { transform: 'translate3d(0,40px,0)', opacity: 0 },
 		enter: { transform: 'translate3d(0,0px,0)', opacity: 1 },
@@ -80,11 +94,22 @@ export default function RPN2() {
 				_operate(enter(toNumber(entry)));
 				amendEntry(press(npButt.clear));
 			}
+			if (operation.operation.type === op.drop && Boolean(entry)) {
+				amendEntry(press(npButt.clear));
+				return;
+			}
+			if (
+				operation.operation.type === op.enter &&
+				!Boolean(entry) &&
+				stack.length > 0
+			) {
+				_operate(perform(op.enterLast));
+				return;
+			}
 			_operate(operation);
 		},
-		[entry, _operate, amendEntry]
+		[entry, _operate, amendEntry, stack.length]
 	);
-	console.log(stack, entry);
 	return (
 		<RPNContainer>
 			<Row>
@@ -101,6 +126,9 @@ export default function RPN2() {
 						)
 					)}
 				</Stack>
+			</Row>
+			<Row>
+				<EnteringValue>{entry || '0'}</EnteringValue>
 			</Row>
 			<Row>
 				<Group>

@@ -27,6 +27,7 @@ export enum op {
 	mul = 'mul',
 	div = 'div',
 	enter = 'enter',
+	enterLast = 'enterLast',
 	drop = 'drop',
 	clearAll = 'clearAll',
 	mod = 'mod',

@@ -30,6 +30,16 @@ const StackCard = styled.div`
 	margin-left: 8px;
 `;
 
+export const formatNumber = (num: number): number | string => {
+	const decimals = num.toString().split('.');
+	if (num.toString().length > 27) return num.toPrecision(21);
+	if (decimals.length < 2) return num.toLocaleString();
+	else
+		return num.toLocaleString(undefined, {
+			minimumFractionDigits: decimals[1].length
+		});
+};
+
 const StackItem = (props: {
 	num: number;
 	index: number | string;
@@ -39,7 +49,7 @@ const StackItem = (props: {
 	const { num, index, animatedStyles, UID } = props;
 	return (
 		<ItemContainer style={animatedStyles} key={UID}>
-			<StackCard>{num}</StackCard>
+			<StackCard>{formatNumber(num)}</StackCard>
 			<ItemIndex>{index}</ItemIndex>
 		</ItemContainer>
 	);

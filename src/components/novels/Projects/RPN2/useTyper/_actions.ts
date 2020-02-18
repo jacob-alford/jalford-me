@@ -6,9 +6,11 @@ import { npButt, typeForm, typeAction } from './_types';
 
 const type = (thing: number | string): typeAction => (state: string): string =>
 	concat(state.split(''), thing).join('');
+const typeDot = (state: string): string =>
+	!state.includes('.') ? concat(state.split(''), '.').join('') : state;
 
 const typeActions: typeForm = {
-	[npButt.dot]: type('.'),
+	[npButt.dot]: typeDot,
 	[npButt.zero]: type(0),
 	[npButt.one]: type(1),
 	[npButt.two]: type(2),

@@ -7,6 +7,7 @@ const Stack = styled.div`
 	flex-direction: column;
 	justify-content: flex-end;
 	align-items: flex-end;
+	flex-wrap: nowrap;
 	background: linear-gradient(${C.blue(2)}, ${C.pink(2)}, ${C.orange(1)});
 	overflow: hidden;
 	border: 4px solid white;

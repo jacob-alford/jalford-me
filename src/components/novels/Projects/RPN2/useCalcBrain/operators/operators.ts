@@ -34,7 +34,7 @@ const condCat = (
 	else return arr;
 };
 const factorial = (number: number): number => {
-	if (number === 1) return number;
+	if (number === 1 || number === 2) return number;
 	else return number * factorial(number - 1);
 };
 const getLast = (stack: stackItem[]): stackItem => stack[stack.length - 1];
@@ -48,6 +48,17 @@ const enter: operator = {
 	preVerify: (stack: stackItem[]): boolean => true,
 	toTape: (stack: stackItem[], payload?: number): tapeItem => [
 		`ENTER ${payload}`,
+		``
+	],
+	error: (): calcError => null
+};
+const enterLast: operator = {
+	type: op.enterLast,
+	act: (stack: stackItem[], payload?: number, UID?: string): stackItem[] =>
+		condCat(stack, stack[stack.length - 1].number, UID),
+	preVerify: (stack: stackItem[]): boolean => stack.length > 0,
+	toTape: (stack: stackItem[], payload?: number): tapeItem => [
+		`ENTER ${stack[stack.length - 1]}`,
 		``
 	],
 	error: (): calcError => null
@@ -91,6 +102,7 @@ const swap: operator = {
 
 const operators: opsForm = {
 	[op.enter]: enter,
+	[op.enterLast]: enterLast,
 	[op.drop]: drop,
 	[op.clearAll]: clearAll,
 	[op.roll]: roll,
@@ -281,7 +293,9 @@ const operators: opsForm = {
 		fn: (num: number): number => factorial(num),
 		error: (stack: stackItem[]): calcError =>
 			makeError(
-				getLast(stack).number <= 170 && Number.isInteger(getLast(stack).number),
+				getLast(stack).number <= 170 &&
+					Number.isInteger(getLast(stack).number) &&
+					getLast(stack).number >= 2,
 				'Cannot calculate factorial of integers greater than 170 with 10^53 significant digits!'
 			),
 		toTape: (stack: stackItem[]): tapeItem => [
