@@ -24,6 +24,7 @@ import {
 	Tape,
 	StackItem,
 	TapeItem,
+	TapeAndStack,
 	EnteringValue
 } from './words/display';
 
@@ -80,7 +81,10 @@ const trimFrontZeros = (num: string): string => {
 const RPNContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: space-evenly;
+	width: 100%;
+	height: max-content;
+	min-height: 100vh;
 `;
 
 const Wrapper = styled.div`
@@ -89,6 +93,8 @@ const Wrapper = styled.div`
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: flex-start;
+	width: 100%;
+	height: 100%;
 `;
 
 export default function RPN2() {
@@ -133,7 +139,7 @@ export default function RPN2() {
 	return (
 		<RPNContainer>
 			<Row>
-				<Group>
+				<TapeAndStack>
 					<Row>
 						<Stack>
 							{stackItems.map(
@@ -148,44 +154,39 @@ export default function RPN2() {
 								)
 							)}
 						</Stack>
+						<Tape>
+							{tape.reverse().map(([operation, value], index) => (
+								<>
+									<TapeItem index={index}>{operation}</TapeItem>
+									<TapeItem index={index} value>
+										{value}
+									</TapeItem>
+								</>
+							))}
+						</Tape>
 					</Row>
-					<Row>
-						<EnteringValue>{entry || '0'}</EnteringValue>
-					</Row>
-				</Group>
-				<Group>
-					<Tape>
-						{tape.reverse().map(([operation, value], index) => (
-							<>
-								<TapeItem index={index}>{operation}</TapeItem>
-								<TapeItem index={index} value>
-									{value}
-								</TapeItem>
-							</>
-						))}
-					</Tape>
-				</Group>
+					<EnteringValue>{entry || '0'}</EnteringValue>
+				</TapeAndStack>
 			</Row>
 			<Row>
 				<Wrapper>
 					<Group>
-						<Entry onClick={() => operate(stash())} flexGrow={0}>
-							Undo
-						</Entry>
-						<Entry onClick={() => operate(stash())} flexGrow={0}>
-							Redo
-						</Entry>
-					</Group>
-					<Group>
 						<Row>
-							<Danger onClick={() => operate(perform(op.clearAll))}>AC</Danger>
-							<Danger onClick={() => amendEntry(press(npButt.clear))}>C</Danger>
+							<Danger onClick={() => operate(drop())}>Drop</Danger>
 							<Danger onClick={() => amendEntry(press(npButt.backspace))}>
 								<BackspaceIcon />
 							</Danger>
 						</Row>
 						<Row>
-							<Danger onClick={() => operate(drop())}>Drop</Danger>
+							<StackOp onClick={() => operate(stash())} flexGrow={0}>
+								Undo
+							</StackOp>
+							<StackOp onClick={() => operate(stash())} flexGrow={0}>
+								Redo
+							</StackOp>
+						</Row>
+
+						<Row>
 							<StackOp onClick={() => operate(perform(op.roll))}>Roll</StackOp>
 							<StackOp onClick={() => operate(perform(op.swap))}>Swap</StackOp>
 						</Row>
@@ -193,21 +194,33 @@ export default function RPN2() {
 							<Entry onClick={() => amendEntry(press(npButt.seven))}>7</Entry>
 							<Entry onClick={() => amendEntry(press(npButt.eight))}>8</Entry>
 							<Entry onClick={() => amendEntry(press(npButt.nine))}>9</Entry>
+							<Operation2 onClick={() => operate(perform(op.add))}>
+								<AddIcon />
+							</Operation2>
 						</Row>
 						<Row>
 							<Entry onClick={() => amendEntry(press(npButt.four))}>4</Entry>
 							<Entry onClick={() => amendEntry(press(npButt.five))}>5</Entry>
 							<Entry onClick={() => amendEntry(press(npButt.six))}>6</Entry>
+							<Operation2 onClick={() => operate(perform(op.sub))}>
+								<SubtractIcon />
+							</Operation2>
 						</Row>
 						<Row>
 							<Entry onClick={() => amendEntry(press(npButt.one))}>1</Entry>
 							<Entry onClick={() => amendEntry(press(npButt.two))}>2</Entry>
 							<Entry onClick={() => amendEntry(press(npButt.three))}>3</Entry>
+							<Operation2 onClick={() => operate(perform(op.mul))}>
+								<MultiplyIcon />
+							</Operation2>
 						</Row>
 						<Row>
 							<Entry onClick={() => amendEntry(press(npButt.dot))}>.</Entry>
 							<Entry onClick={() => amendEntry(press(npButt.zero))}>0</Entry>
 							<Entry onClick={() => amendEntry(press(npButt.pm))}>±</Entry>
+							<Operation2 onClick={() => operate(perform(op.div))}>
+								/
+							</Operation2>
 						</Row>
 						<Row>
 							<StackOp
@@ -219,31 +232,19 @@ export default function RPN2() {
 							</StackOp>
 						</Row>
 					</Group>
+
 					<Group>
 						<Row>
-							<Operation2 onClick={() => toggleDegRad(degRad, setDegRad)}>
-								{degRad}
-							</Operation2>
+							<Danger onClick={() => operate(perform(op.clearAll))}>AC</Danger>
+							<Danger onClick={() => amendEntry(press(npButt.clear))}>C</Danger>
+						</Row>
+						<Row>
 							<Entry onClick={() => null}>C</Entry>
 							<Entry onClick={() => null}>
 								<FunctionsIcon />
 							</Entry>
-							<Operation1 onClick={() => operate(perform(op.xInv))}>
-								<sup>1</sup>/<sub>x</sub>
-							</Operation1>
-						</Row>
-						<Row>
-							<Operation2 onClick={() => operate(perform(op.add))}>
-								<AddIcon />
-							</Operation2>
-							<Operation2 onClick={() => operate(perform(op.sub))}>
-								<SubtractIcon />
-							</Operation2>
-							<Operation2 onClick={() => operate(perform(op.mul))}>
-								<MultiplyIcon />
-							</Operation2>
-							<Operation2 onClick={() => operate(perform(op.div))}>
-								/
+							<Operation2 onClick={() => toggleDegRad(degRad, setDegRad)}>
+								{degRad}
 							</Operation2>
 						</Row>
 						<Row>
@@ -268,11 +269,21 @@ export default function RPN2() {
 								atan
 							</Operation1>
 						</Row>
-
 						<Row>
+							<Operation1 onClick={() => operate(perform(op.xInv))}>
+								x<sup>-1</sup>
+							</Operation1>
 							<Operation1 onClick={() => operate(perform(op.sqrt))}>
 								x<sup>½</sup>
 							</Operation1>
+							<Operation1 onClick={() => operate(perform(op.x2))}>
+								x<sup>2</sup>
+							</Operation1>
+							<Operation1 onClick={() => operate(perform(op.xFact))}>
+								x!
+							</Operation1>
+						</Row>
+						<Row>
 							<Operation1 onClick={() => operate(perform(op.tenX))}>
 								10<sup>x</sup>
 							</Operation1>
@@ -284,12 +295,6 @@ export default function RPN2() {
 							</Operation1>
 						</Row>
 						<Row>
-							<Operation1 onClick={() => operate(perform(op.x2))}>
-								x<sup>2</sup>
-							</Operation1>
-							<Operation1 onClick={() => operate(perform(op.xFact))}>
-								x!
-							</Operation1>
 							<Operation1 onClick={() => operate(perform(op.xRty))}>
 								y<sup>1/x</sup>
 							</Operation1>

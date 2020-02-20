@@ -9,13 +9,10 @@ const Stack = styled.div`
 	align-items: flex-end;
 	flex-wrap: nowrap;
 	background: linear-gradient(${C.blue(2)}, ${C.pink(2)}, ${C.orange(1)});
+	border-radius: 12px 0px 0px 0px;
 	overflow: hidden;
-	border: 4px solid white;
-	filter: drop-shadow(0 0 0.75rem crimson);
-	border-radius: 12px;
-	height: 300px;
-	width: calc(90vw - 110.59px);
-	margin: 16px 0px 16px 0px;
+	width: 70%;
+	height: 100%;
 	flex-grow: 2;
 `;
 

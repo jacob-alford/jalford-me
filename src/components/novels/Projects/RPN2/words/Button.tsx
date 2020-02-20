@@ -17,10 +17,7 @@ const Cont = styled.div`
 	justify-content: center;
 	flex-grow: ${({ flexGrow = 1 }) => flexGrow};
 	text-align: center;
-	border-radius: 16px;
-	margin: 2px;
-	@media (max-width: 425px) {
-	}
+	min-height: 55px;
 `;
 
 type ButtProps = {
@@ -30,11 +27,15 @@ const InnerButton = styled(Button)`
 	color: ${(props: ButtProps) => props.colour};
 	display: block;
 	text-transform: none;
-	font-size: 2rem;
+	font-size: 1.5rem;
 	width: 100%;
-	height: ${C.H};
+
 	border-radius: 16px;
-	@media (max-width: 425px) {
+	@media (max-width: 300px) {
+		font-size: 1rem;
+	}
+	@media (max-height: 816px) {
+		font-size: 1rem;
 	}
 `;
 

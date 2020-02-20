@@ -4,7 +4,10 @@ const EntryGroup = styled.div`
 	display: flex;
 	flex-wrap: nowrap;
 	flex-direction: column;
-	margin: 16px 0px 16px 0px;
+	width: 50%;
+	@media (max-width: 576px) {
+		width: 100%;
+	}
 `;
 
 export default EntryGroup;
