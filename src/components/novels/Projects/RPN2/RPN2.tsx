@@ -95,6 +95,7 @@ const Wrapper = styled.div`
 	align-items: flex-start;
 	width: 100%;
 	height: 100%;
+	max-width: 750px;
 `;
 
 export default function RPN2() {
@@ -138,7 +139,7 @@ export default function RPN2() {
 	);
 	return (
 		<RPNContainer>
-			<Row>
+			<Row flexGrow={2} minHeight='270px' maxHeight='32.5vh'>
 				<TapeAndStack>
 					<Row>
 						<Stack>

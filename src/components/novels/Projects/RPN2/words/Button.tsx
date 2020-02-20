@@ -17,7 +17,7 @@ const Cont = styled.div`
 	justify-content: center;
 	flex-grow: ${({ flexGrow = 1 }) => flexGrow};
 	text-align: center;
-	min-height: 55px;
+	height: ${C.H};
 `;
 
 type ButtProps = {
@@ -29,7 +29,7 @@ const InnerButton = styled(Button)`
 	text-transform: none;
 	font-size: 1.5rem;
 	width: 100%;
-
+	height: 100%;
 	border-radius: 16px;
 	@media (max-width: 300px) {
 		font-size: 1rem;

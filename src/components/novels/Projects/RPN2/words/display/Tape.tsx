@@ -7,10 +7,9 @@ const Tape = styled.div`
 	flex-direction: column;
 	flex-wrap: nowrap;
 	width: 30%;
-	height: 100%;
 	border-radius: 0px 12px 0px 0px;
 	padding: 8px;
-	background: ${C.blue(2)};
+	border-left: 2px solid white;
 	overflow: hidden;
 `;
 
