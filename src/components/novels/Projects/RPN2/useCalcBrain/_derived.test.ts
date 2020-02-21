@@ -5,7 +5,7 @@ import { historyItem, op, stackItem } from './operators/_types';
 
 const notify = jest.fn();
 const emptySAndT = [[], []];
-const alertCache: string[] = [];
+const alertCache: { [key: string]: boolean } = {};
 
 const mkStkItm = (number: number): stackItem => ({
 	number,
@@ -125,7 +125,7 @@ describe('Calculator functions operate properly', () => {
 			[
 				['ENTER 3', ''],
 				['ENTER 6', ''],
-				['SWAP 3, 6', '']
+				['SWAP', '3, 6']
 			]
 		]);
 	});
@@ -156,7 +156,7 @@ describe('Calculator functions operate properly', () => {
 			[
 				['ENTER 420', ''],
 				['ENTER 69', ''],
-				['ENTER 42069', ''],
+				['ENTER 42,100', ''],
 				['CLEAR ALL', '']
 			]
 		]);
@@ -214,7 +214,7 @@ describe('Calculator functions operate properly', () => {
 			[
 				['ENTER -69', ''],
 				['ENTER 420', ''],
-				['-69/420', '-0.16428571428571428']
+				['-69/420', '-0.164']
 			]
 		]);
 	});
@@ -233,8 +233,8 @@ describe('Calculator functions operate properly', () => {
 		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
 			[mkStkItm(1)],
 			[
-				['ENTER 2.718281828459045', ''],
-				['ln(2.718281828459045)', '1']
+				['ENTER 2.72', ''],
+				['ln(2.72)', '1']
 			]
 		]);
 	});
@@ -286,7 +286,7 @@ describe('Calculator functions operate properly', () => {
 			[mkStkItm(1307674368000)],
 			[
 				['ENTER 15', ''],
-				['15!', '1307674368000']
+				['15!', '1,310,000,000,000']
 			]
 		]);
 	});
@@ -321,7 +321,7 @@ describe('Calculator functions operate properly', () => {
 		];
 		expect(getSAndT(history, alertCache, notify)).toStrictEqual([
 			[mkStkItm(Math.PI)],
-			[['pi', '3.141592653589793']]
+			[['pi', '3.14']]
 		]);
 	});
 });

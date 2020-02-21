@@ -99,7 +99,7 @@ const Wrapper = styled.div`
 `;
 
 export default function RPN2() {
-	const notifUIDCache = useRef([]);
+	const notifUIDCache = useRef({});
 	const [stack, tape, _operate] = useCalcBrain(notifUIDCache);
 	const [degRad, setDegRad] = useState(drEnum.rad);
 	const [_entry, amendEntry] = useTyper();

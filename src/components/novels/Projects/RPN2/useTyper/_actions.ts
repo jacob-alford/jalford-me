@@ -4,10 +4,17 @@ import dropRight from 'lodash/dropRight';
 
 import { npButt, typeForm, typeAction } from './_types';
 
+const quickIncludes = (str: string, char: string): boolean => {
+	for (let i = 0; i < str.length; i++) {
+		if (str[i] === char) return true;
+	}
+	return false;
+};
+
 const type = (thing: number | string): typeAction => (state: string): string =>
-	concat(state.split(''), thing).join('');
+	state + thing;
 const typeDot = (state: string): string =>
-	!state.includes('.') ? concat(state.split(''), '.').join('') : state;
+	!quickIncludes(state, '.') ? state + '.' : state;
 
 const typeActions: typeForm = {
 	[npButt.dot]: typeDot,

@@ -7,7 +7,7 @@ import { tapeItem, stackItem } from './operators/_types';
 import getDerivedStackAndTape from './_derived';
 
 export default function useCalcBrain(alertUIDCache: {
-	current: string[];
+	current: { [key: string]: boolean };
 }): [stackItem[], tapeItem[], any] {
 	const [calcHistory, mutateCalcHistory] = useReducer(
 		calcReducer,

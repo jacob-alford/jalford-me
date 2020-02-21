@@ -35,6 +35,7 @@ const StackCard = styled.div`
 `;
 
 export const formatNumber = (num: number): number | string => {
+	return num;
 	const decimals = num.toString().split('.');
 	if (num.toString().length > 27) return num.toPrecision(21);
 	if (decimals.length < 2) return num.toLocaleString();
