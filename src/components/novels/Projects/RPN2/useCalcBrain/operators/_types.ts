@@ -43,11 +43,11 @@ export interface stackItem {
 	number: number;
 }
 
-export interface historyItem {
-	type: op;
-	payload?: number;
-	UID: string;
-}
+export type stackHistoryItem = stackItem[];
+export type tapeHistoryItem = tapeItem[];
+
+export type stackHistory = stackHistoryItem[];
+export type tapeHistory = tapeHistoryItem[];
 
 export interface operator {
 	requiresTrigConversion?: boolean;

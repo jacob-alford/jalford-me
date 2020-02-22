@@ -18,12 +18,14 @@ export type calculatorState = {
 };
 export type calculatorAction = (
 	state: calculatorState,
+	notify: (config: any) => void,
 	operation?: historyItem
 ) => calculatorState;
 
 const calculatorActions: Record<historyActions, calculatorAction> = {
 	[historyActions.push]: (
 		state: calculatorState,
+		notify: (config: any) => void,
 		operation?: historyItem
 	): calculatorState => {
 		const { history, stash } = state;

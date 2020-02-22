@@ -1,30 +1,43 @@
-import { useReducer, useMemo } from 'react';
+import { useReducer, useCallback } from 'react';
 
 import useNotify from 'components/bindings/hooks/useNotify';
-
-import calcReducer, { defaultState } from './_reducer';
+import { op } from './operators/_types';
+import calcReducer, {
+	defaultState,
+	reducerOpEnum,
+	getLast
+} from './reducer/reducer';
 import { tapeItem, stackItem } from './operators/_types';
-import getDerivedStackAndTape from './_derived';
 
-export default function useCalcBrain(alertUIDCache: {
-	current: { [key: string]: boolean };
-}): [stackItem[], tapeItem[], any] {
-	const [calcHistory, mutateCalcHistory] = useReducer(
-		calcReducer,
-		defaultState
-	);
+type almostOperation = {
+	type: reducerOpEnum;
+	payload: {
+		type: op;
+		UID: string;
+		number?: number;
+	};
+};
+
+export default function useCalcBrain(): [stackItem[], tapeItem[], any] {
+	const [calcState, _mutateCalcHistory] = useReducer(calcReducer, defaultState);
 	const notify = useNotify({
 		alertType: 'error',
 		timeout: Infinity
 	});
-	const [stack, tape] = useMemo(
-		() =>
-			getDerivedStackAndTape(
-				calcHistory.history,
-				alertUIDCache.current,
-				notify
-			),
-		[calcHistory.history, notify, alertUIDCache]
+	const mutateCalcHistory = useCallback(
+		(operation: almostOperation): void =>
+			_mutateCalcHistory({
+				type: operation.type,
+				payload: {
+					...operation.payload,
+					notify
+				}
+			}),
+		[notify]
 	);
-	return [stack, tape, mutateCalcHistory];
+	return [
+		getLast(calcState.stackHistory),
+		getLast(calcState.tapeHistory),
+		mutateCalcHistory
+	];
 }
