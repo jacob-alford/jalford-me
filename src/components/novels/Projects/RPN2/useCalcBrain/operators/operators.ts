@@ -112,7 +112,7 @@ const operators: opsForm = {
 	[op.swap]: swap,
 	[op.mod]: makeDoubleOp({
 		type: op.mod,
-		fn: (x: number, y: number): number => y % x
+		fn: (x: number, y: number): number => x % y
 	}),
 	[op.add]: makeDoubleOp({
 		type: op.add,
@@ -148,7 +148,7 @@ const operators: opsForm = {
 		type: op.div,
 		fn: (x: number, y: number): number => y / x,
 		toTape: (stack: stackItem[]): tapeItem => [
-			`${shortNum(getNextToLast(stack).number)}/${shortNum(
+			`${shortNum(getNextToLast(stack).number)} / ${shortNum(
 				getLast(stack).number
 			)}`,
 			`${shortNum(getNextToLast(stack).number / getLast(stack).number)}`
@@ -191,8 +191,7 @@ const operators: opsForm = {
 	}),
 	[op.atan]: makeSingleOp({
 		type: op.atan,
-		fn: Math.atan,
-		requiresTrigConversion: true
+		fn: Math.atan
 	}),
 	[op.pi]: makeConstant({
 		constant: Math.PI,

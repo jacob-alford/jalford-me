@@ -1,3 +1,5 @@
+import { drEnum } from '../../RPN2';
+
 export enum op {
 	sin = 'sin',
 	cos = 'cos',
@@ -52,9 +54,14 @@ export type tapeHistory = tapeHistoryItem[];
 export interface operator {
 	requiresTrigConversion?: boolean;
 	type: op;
-	act: (stack: stackItem[], payload?: number, UID?: string) => stackItem[];
+	act: (
+		stack: stackItem[],
+		payload?: number,
+		UID?: string,
+		degOrRad?: drEnum
+	) => stackItem[];
 	preVerify: (stack: stackItem[]) => boolean;
-	toTape: (stack: stackItem[], payload?: number) => tapeItem;
+	toTape: (stack: stackItem[], payload?: number, degOrRad?: drEnum) => tapeItem;
 	error: (stack: stackItem[]) => calcError;
 }
 

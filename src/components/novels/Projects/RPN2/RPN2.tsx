@@ -29,8 +29,7 @@ import {
 } from './words/display';
 
 import useCalcBrain from './useCalcBrain/useCalcBrain';
-import { op, stackItem, historyItem } from './useCalcBrain/operators/_types';
-import { historyActions } from './useCalcBrain/_reducer';
+import { op, stackItem } from './useCalcBrain/operators/_types';
 
 import useTyper from './useTyper/useTyper';
 import { npButt } from './useTyper/_types';
@@ -40,7 +39,8 @@ import {
 	drop,
 	press,
 	perform,
-	stash
+	stash,
+	almostOp
 } from './top-level-ops/topLevelOps';
 
 export enum drEnum {
@@ -99,8 +99,7 @@ const Wrapper = styled.div`
 `;
 
 export default function RPN2() {
-	const notifUIDCache = useRef({});
-	const [stack, tape, _operate] = useCalcBrain(notifUIDCache);
+	const [stack, tape, _operate] = useCalcBrain();
 	const [degRad, setDegRad] = useState(drEnum.rad);
 	const [_entry, amendEntry] = useTyper();
 	const entry = useMemo(() => trimFrontZeros(_entry), [_entry]);
@@ -110,23 +109,23 @@ export default function RPN2() {
 		leave: { transform: 'translate3d(0,40px,0)', opacity: 0 }
 	});
 	const operate = useCallback(
-		(operation: { type: historyActions; operation: historyItem }): void => {
+		(operation: almostOp): void => {
 			if (
-				operation.operation.type !== op.enter &&
-				operation.operation.type !== op.drop &&
-				operation.operation.type !== op.swap &&
-				operation.operation.type !== op.roll &&
+				operation.payload.type !== op.enter &&
+				operation.payload.type !== op.drop &&
+				operation.payload.type !== op.swap &&
+				operation.payload.type !== op.roll &&
 				toNumber(entry)
 			) {
 				_operate(enter(toNumber(entry)));
 				amendEntry(press(npButt.clear));
 			}
-			if (operation.operation.type === op.drop && Boolean(entry)) {
+			if (operation.payload.type === op.drop && Boolean(entry)) {
 				amendEntry(press(npButt.clear));
 				return;
 			}
 			if (
-				operation.operation.type === op.enter &&
+				operation.payload.type === op.enter &&
 				!Boolean(entry) &&
 				stack.length > 0
 			) {
@@ -156,7 +155,7 @@ export default function RPN2() {
 							)}
 						</Stack>
 						<Tape>
-							{tape.reverse().map(([operation, value], index) => (
+							{tape.map(([operation, value], index) => (
 								<>
 									<TapeItem index={index}>{operation}</TapeItem>
 									<TapeItem index={index} value>

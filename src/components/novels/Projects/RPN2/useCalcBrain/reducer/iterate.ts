@@ -9,7 +9,7 @@ const getNextStackAndTape = (
 	stack: stackHistoryItem,
 	tape: tapeHistoryItem
 ): [stackHistoryItem, tapeHistoryItem] => {
-	const { type, number: payload, UID, notify } = operation.payload;
+	const { type, number: payload, UID, notify, degOrRad } = operation.payload;
 	const { act, error: isError, preVerify, toTape } = operators[type];
 	const preCheck = preVerify(stack);
 	if (!preCheck) {
@@ -23,7 +23,10 @@ const getNextStackAndTape = (
 		notify({ body: error });
 		return [stack, tape];
 	}
-	return [act(stack, payload, UID), concat(tape, [toTape(stack, payload)])];
+	return [
+		act(stack, payload, UID, degOrRad),
+		concat(tape, [toTape(stack, payload, degOrRad)])
+	];
 };
 
 export default getNextStackAndTape;

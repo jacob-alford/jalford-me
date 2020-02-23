@@ -6,6 +6,8 @@ import { getRandomUID } from 'functions';
 
 import { operator, op, tapeItem, calcError, stackItem } from './_types';
 
+import { drEnum } from '../../RPN2';
+
 const toNumbers = (stack: stackItem[]): number[] =>
 	stack.map(({ number }) => number);
 const toStackItem = (number: number, UID: string): stackItem => ({
@@ -57,6 +59,17 @@ export const makeReducer = (config: {
 export const shortNum = (num: number): string =>
 	num.toLocaleString(undefined, { maximumSignificantDigits: 3 });
 
+const condConvertTrig = (
+	requiresTrigConversion: boolean,
+	degOrRad: drEnum,
+	value: number
+): number =>
+	requiresTrigConversion
+		? degOrRad === drEnum.deg
+			? (Math.PI / 180) * value
+			: value
+		: value;
+
 export const makeSingleOp = (config: {
 	type: op;
 	toTape?: (stack: stackItem[]) => tapeItem;
@@ -69,16 +82,42 @@ export const makeSingleOp = (config: {
 		fn,
 		requiresTrigConversion,
 		error = (): calcError => null,
-		toTape = (stack: stackItem[]): tapeItem => [
+		toTape = (
+			stack: stackItem[],
+			payload?: number,
+			degOrRad?: drEnum
+		): tapeItem => [
 			`${type}(${shortNum(getLast(stack))})`,
-			`${shortNum(fn(getLast(stack)))}`
+			`${shortNum(
+				fn(
+					condConvertTrig(
+						Boolean(requiresTrigConversion),
+						degOrRad || drEnum.rad,
+						getLast(stack)
+					)
+				)
+			)}`
 		]
 	} = config;
 	const preVerify = (stack: stackItem[]): boolean => stack.length > 0;
-	const act = (stack: stackItem[]): stackItem[] =>
+	const act = (
+		stack: stackItem[],
+		payload?: number,
+		UID?: string,
+		degOrRad?: drEnum
+	): stackItem[] =>
 		concat(
 			dropRight(stack),
-			toStackItem(fn(getLast(stack)), getLastUID(stack))
+			toStackItem(
+				fn(
+					condConvertTrig(
+						Boolean(requiresTrigConversion),
+						degOrRad || drEnum.rad,
+						getLast(stack)
+					)
+				),
+				getLastUID(stack)
+			)
 		);
 	return {
 		type,

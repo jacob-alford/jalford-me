@@ -5,7 +5,8 @@ import { op } from './operators/_types';
 import calcReducer, {
 	defaultState,
 	reducerOpEnum,
-	getLast
+	getLastStack,
+	getLastTape
 } from './reducer/reducer';
 import { tapeItem, stackItem } from './operators/_types';
 
@@ -36,8 +37,8 @@ export default function useCalcBrain(): [stackItem[], tapeItem[], any] {
 		[notify]
 	);
 	return [
-		getLast(calcState.stackHistory),
-		getLast(calcState.tapeHistory),
+		getLastStack(calcState.stackHistory),
+		getLastTape(calcState.tapeHistory),
 		mutateCalcHistory
 	];
 }

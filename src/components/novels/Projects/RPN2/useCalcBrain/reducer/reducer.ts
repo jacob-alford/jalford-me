@@ -9,6 +9,7 @@ import {
 	tapeHistoryItem
 } from '../operators/_types';
 import getNextStackAndTape from './iterate';
+import { drEnum } from '../../RPN2';
 
 export enum reducerOpEnum {
 	push = 'push',
@@ -21,6 +22,7 @@ export type reducerOperation = {
 		type: op;
 		UID: string;
 		number?: number;
+		degOrRad?: drEnum;
 		notify: (config: { body: string }) => void;
 	};
 };
@@ -43,13 +45,17 @@ const toState = (
 	stackItem?: stackHistoryItem,
 	tapeItem?: tapeHistoryItem
 ): reducerState => ({
-	stackHistory: (stackItem && concat(stackHistory, stackItem)) || stackHistory,
-	tapeHistory: (tapeItem && concat(tapeHistory, tapeItem)) || tapeHistory,
+	stackHistory:
+		(stackItem && concat(stackHistory, [stackItem])) || stackHistory,
+	tapeHistory: (tapeItem && concat(tapeHistory, [tapeItem])) || tapeHistory,
 	stackStash,
 	tapeStash
 });
 
-export const getLast = (arr: any[]): any => arr[arr.length - 1];
+export const getLastStack = (arr: stackHistory): stackHistoryItem =>
+	arr[arr.length - 1] || [];
+export const getLastTape = (arr: tapeHistory): tapeHistoryItem =>
+	arr[arr.length - 1] || [];
 
 const calcActions: Record<reducerOpEnum, reducerAction> = {
 	[reducerOpEnum.push]: (
@@ -59,8 +65,8 @@ const calcActions: Record<reducerOpEnum, reducerAction> = {
 		const { stackHistory, tapeHistory, stackStash, tapeStash } = state;
 		const [nextStackItem, nextTapeItem] = getNextStackAndTape(
 			operation,
-			getLast(stackHistory),
-			getLast(tapeHistory)
+			getLastStack(stackHistory),
+			getLastTape(tapeHistory)
 		);
 		return toState(
 			stackHistory,
@@ -76,15 +82,15 @@ const calcActions: Record<reducerOpEnum, reducerAction> = {
 		return toState(
 			dropRight(stackHistory),
 			dropRight(tapeHistory),
-			concat(stackStash, getLast(stackHistory)),
-			concat(tapeStash, getLast(tapeHistory))
+			concat(stackStash, [getLastStack(stackHistory)]),
+			concat(tapeStash, [getLastTape(tapeHistory)])
 		);
 	},
 	[reducerOpEnum.pop]: (state: reducerState): reducerState => {
 		const { stackHistory, tapeHistory, stackStash, tapeStash } = state;
 		return toState(
-			concat(stackHistory, getLast(stackStash)),
-			concat(tapeHistory, getLast(tapeStash)),
+			concat(stackHistory, [getLastStack(stackStash)]),
+			concat(tapeHistory, [getLastTape(tapeStash)]),
 			dropRight(stackStash),
 			dropRight(tapeStash)
 		);
