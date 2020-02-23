@@ -23,7 +23,7 @@ const getNextStackAndTape = (
 		notify({ body: error });
 		return [stack, tape];
 	}
-	return [act(stack, payload, UID), concat(tape, toTape(stack, payload))];
+	return [act(stack, payload, UID), concat(tape, [toTape(stack, payload)])];
 };
 
 export default getNextStackAndTape;
