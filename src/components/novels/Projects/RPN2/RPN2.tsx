@@ -1,5 +1,5 @@
-import React, { useState, useRef, useCallback, useMemo } from 'react';
-import { useTransition } from 'react-spring';
+import React, { useState, useCallback, useMemo } from 'react';
+import { useTransition, useTrail, animated as a } from 'react-spring';
 import styled from 'styled-components';
 import toNumber from 'lodash/toNumber';
 
@@ -29,6 +29,7 @@ import {
 } from './words/display';
 
 import useCalcBrain from './useCalcBrain/useCalcBrain';
+import { reducerOpEnum } from './useCalcBrain/reducer/reducer';
 import { op, stackItem } from './useCalcBrain/operators/_types';
 
 import useTyper from './useTyper/useTyper';
@@ -40,6 +41,7 @@ import {
 	press,
 	perform,
 	stash,
+	pop,
 	almostOp
 } from './top-level-ops/topLevelOps';
 
@@ -99,7 +101,7 @@ const Wrapper = styled.div`
 `;
 
 export default function RPN2() {
-	const [stack, tape, _operate] = useCalcBrain();
+	const [stack, tape, _operate, canUndo, canRedo] = useCalcBrain();
 	const [degRad, setDegRad] = useState(drEnum.rad);
 	const [_entry, amendEntry] = useTyper();
 	const entry = useMemo(() => trimFrontZeros(_entry), [_entry]);
@@ -108,8 +110,17 @@ export default function RPN2() {
 		enter: { transform: 'translate3d(0,0px,0)', opacity: 1 },
 		leave: { transform: 'translate3d(0,40px,0)', opacity: 0 }
 	});
+	const tapeAnim = useTransition(tape, item => item[2], {
+		from: { transform: 'translate3d(40px, 0px, 0)', opacity: 0 },
+		enter: { transform: 'translate3d(0,0px,0)', opacity: 1 },
+		leave: { transform: 'translate3d(-40px,0,0)', opacity: 0 }
+	});
 	const operate = useCallback(
 		(operation: almostOp): void => {
+			if (operation.type !== reducerOpEnum.push) {
+				_operate(operation);
+				return;
+			}
 			if (
 				operation.payload.type !== op.enter &&
 				operation.payload.type !== op.drop &&
@@ -132,6 +143,7 @@ export default function RPN2() {
 				_operate(perform(op.enterLast));
 				return;
 			}
+			console.log(operation);
 			_operate(operation);
 		},
 		[entry, _operate, amendEntry, stack.length]
@@ -155,14 +167,21 @@ export default function RPN2() {
 							)}
 						</Stack>
 						<Tape>
-							{tape.map(([operation, value], index) => (
-								<>
-									<TapeItem index={index}>{operation}</TapeItem>
-									<TapeItem index={index} value>
-										{value}
-									</TapeItem>
-								</>
-							))}
+							{tapeAnim.map(
+								(
+									{ item: [operation, value, UID], props: animatedStyles },
+									index
+								) => {
+									return (
+										<a.div style={animatedStyles} key={UID}>
+											<TapeItem index={index}>{operation}</TapeItem>
+											<TapeItem index={index} value>
+												{value}
+											</TapeItem>
+										</a.div>
+									);
+								}
+							)}
 						</Tape>
 					</Row>
 					<EnteringValue>{entry || '0'}</EnteringValue>
@@ -178,10 +197,16 @@ export default function RPN2() {
 							</Danger>
 						</Row>
 						<Row>
-							<StackOp onClick={() => operate(stash())} flexGrow={0}>
+							<StackOp
+								disabled={!canUndo}
+								onClick={() => operate(stash())}
+								flexGrow={0}>
 								Undo
 							</StackOp>
-							<StackOp onClick={() => operate(stash())} flexGrow={0}>
+							<StackOp
+								disabled={!canRedo}
+								onClick={() => operate(pop())}
+								flexGrow={0}>
 								Redo
 							</StackOp>
 						</Row>

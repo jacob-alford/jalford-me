@@ -40,6 +40,13 @@ export const stash = (): almostOp => ({
 		UID: getRandomUID()
 	}
 });
+export const pop = (): almostOp => ({
+	type: reducerOpEnum.pop,
+	payload: {
+		type: op.enter,
+		UID: getRandomUID()
+	}
+});
 export const drop = (): almostOp => ({
 	type: reducerOpEnum.push,
 	payload: {

@@ -3,12 +3,13 @@ import Button, { SurfaceProps } from '../Button';
 import C from '../constants';
 
 const StackOps = (props: SurfaceProps) => {
-	const { onClick, children } = props;
+	const { onClick, children, disabled } = props;
 	return (
 		<Button
 			onClick={onClick}
 			backgroundColor={C.blue(2)}
 			borderColor={C.blue(0)}
+			disabled={disabled}
 			color={C.blue(0)}>
 			{children}
 		</Button>

@@ -42,7 +42,8 @@ export const makeReducer = (config: {
 		error = (): calcError => null,
 		toTape = (stack: stackItem[]): tapeItem => [
 			`${type}(${formatList(toNumbers(stack))})`,
-			`${fn(toNumbers(stack))}`
+			`${fn(toNumbers(stack))}`,
+			getRandomUID()
 		]
 	} = config;
 	const preVerify = (stack: stackItem[]): boolean => stack.length > 0;
@@ -96,7 +97,8 @@ export const makeSingleOp = (config: {
 						getLast(stack)
 					)
 				)
-			)}`
+			)}`,
+			getRandomUID()
 		]
 	} = config;
 	const preVerify = (stack: stackItem[]): boolean => stack.length > 0;
@@ -143,7 +145,8 @@ export const makeDoubleOp = (config: {
 		error = (): calcError => null,
 		toTape = (stack: stackItem[]): tapeItem => [
 			`${type}(${shortNum(getLast(stack))}, ${shortNum(getNextToLast(stack))})`,
-			`${shortNum(fn(getLast(stack), getNextToLast(stack)))}`
+			`${shortNum(fn(getLast(stack), getNextToLast(stack)))}`,
+			getRandomUID()
 		]
 	} = config;
 	const preVerify = (stack: stackItem[]): boolean => stack.length >= 2;
@@ -167,7 +170,11 @@ export const makeConstant = (config: {
 	constant: number;
 }): operator => {
 	const { type, constant } = config;
-	const toTape = (): tapeItem => [`${type}`, `${shortNum(constant)}`];
+	const toTape = (): tapeItem => [
+		`${type}`,
+		`${shortNum(constant)}`,
+		getRandomUID()
+	];
 	const error = (): calcError => null;
 	const preVerify = (): boolean => true;
 	const act = (stack: stackItem[]): stackItem[] =>

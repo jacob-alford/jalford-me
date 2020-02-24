@@ -14,7 +14,8 @@ import { drEnum } from '../../RPN2';
 export enum reducerOpEnum {
 	push = 'push',
 	stash = 'stash',
-	pop = 'pop'
+	pop = 'pop',
+	clearStash = 'clearStash'
 }
 export type reducerOperation = {
 	type: reducerOpEnum;
@@ -94,6 +95,10 @@ const calcActions: Record<reducerOpEnum, reducerAction> = {
 			dropRight(stackStash),
 			dropRight(tapeStash)
 		);
+	},
+	[reducerOpEnum.clearStash]: (state: reducerState): reducerState => {
+		const { stackHistory, tapeHistory } = state;
+		return toState(stackHistory, tapeHistory, [], []);
 	}
 };
 

@@ -3,7 +3,7 @@ import calcReducer, {
 	reducerOpEnum,
 	reducerState
 } from './reducer';
-import { op, stackItem } from '../operators/_types';
+import { op, stackItem, tapeItem } from '../operators/_types';
 import { getRandomUID } from 'functions';
 
 const notify = jest.fn();
@@ -27,6 +27,12 @@ const mkStkItm = (number: number): stackItem => ({
 	number
 });
 
+const mkTpItm = (arr: [string, string]): tapeItem => [
+	arr[0],
+	arr[1],
+	expect.any(String)
+];
+
 describe('Calc-reducer properly manages state', () => {
 	it('Pushes an action to state', () => {
 		const testState: reducerState = {
@@ -39,7 +45,7 @@ describe('Calc-reducer properly manages state', () => {
 			calcReducer(testState, mkOp(reducerOpEnum.push, op.enter, 5))
 		).toMatchObject({
 			stackHistory: [[mkStkItm(5)]],
-			tapeHistory: [[['ENTER 5', '']]],
+			tapeHistory: [[mkTpItm(['ENTER 5', ''])]],
 			stackStash: [],
 			tapeStash: []
 		});
@@ -61,15 +67,12 @@ describe('Calc-reducer properly manages state', () => {
 				[mkStkItm(5), mkStkItm(10), mkStkItm(15)]
 			],
 			tapeHistory: [
-				[['ENTER 5', '']],
+				[mkTpItm(['ENTER 5', ''])],
+				[mkTpItm(['ENTER 5', '']), mkTpItm(['ENTER 10', ''])],
 				[
-					['ENTER 5', ''],
-					['ENTER 10', '']
-				],
-				[
-					['ENTER 5', ''],
-					['ENTER 10', ''],
-					['ENTER 15', '']
+					mkTpItm(['ENTER 5', '']),
+					mkTpItm(['ENTER 10', '']),
+					mkTpItm(['ENTER 15', ''])
 				]
 			],
 			stackStash: [],
@@ -79,7 +82,7 @@ describe('Calc-reducer properly manages state', () => {
 	it('Stashes a history action', () => {
 		const testState: reducerState = {
 			stackHistory: [[mkStkItm(5)]],
-			tapeHistory: [[['ENTER 5', '']]],
+			tapeHistory: [[mkTpItm(['ENTER 5', ''])]],
 			stackStash: [],
 			tapeStash: []
 		};
@@ -89,7 +92,7 @@ describe('Calc-reducer properly manages state', () => {
 			stackHistory: [],
 			tapeHistory: [],
 			stackStash: [[mkStkItm(5)]],
-			tapeStash: [[['ENTER 5', '']]]
+			tapeStash: [[mkTpItm(['ENTER 5', ''])]]
 		});
 	});
 	it('Stashes multiple actions', () => {
@@ -100,15 +103,12 @@ describe('Calc-reducer properly manages state', () => {
 				[mkStkItm(5), mkStkItm(10), mkStkItm(15)]
 			],
 			tapeHistory: [
-				[['ENTER 5', '']],
+				[mkTpItm(['ENTER 5', ''])],
+				[mkTpItm(['ENTER 5', '']), mkTpItm(['ENTER 10', ''])],
 				[
-					['ENTER 5', ''],
-					['ENTER 10', '']
-				],
-				[
-					['ENTER 5', ''],
-					['ENTER 10', ''],
-					['ENTER 15', '']
+					mkTpItm(['ENTER 5', '']),
+					mkTpItm(['ENTER 10', '']),
+					mkTpItm(['ENTER 15', ''])
 				]
 			],
 			stackStash: [],
@@ -118,21 +118,18 @@ describe('Calc-reducer properly manages state', () => {
 		testState = calcReducer(testState, mkOp(reducerOpEnum.stash, op.enter));
 		expect(testState).toMatchObject({
 			stackHistory: [[mkStkItm(5)]],
-			tapeHistory: [[['ENTER 5', '']]],
+			tapeHistory: [[mkTpItm(['ENTER 5', ''])]],
 			stackStash: [
 				[mkStkItm(5), mkStkItm(10), mkStkItm(15)],
 				[mkStkItm(5), mkStkItm(10)]
 			],
 			tapeStash: [
 				[
-					['ENTER 5', ''],
-					['ENTER 10', ''],
-					['ENTER 15', '']
+					mkTpItm(['ENTER 5', '']),
+					mkTpItm(['ENTER 10', '']),
+					mkTpItm(['ENTER 15', ''])
 				],
-				[
-					['ENTER 5', ''],
-					['ENTER 10', '']
-				]
+				[mkTpItm(['ENTER 5', '']), mkTpItm(['ENTER 10', ''])]
 			]
 		});
 	});
@@ -148,7 +145,7 @@ describe('Calc-reducer properly manages state', () => {
 		testState = calcReducer(testState, mkOp(reducerOpEnum.pop, op.enter));
 		expect(testState).toMatchObject({
 			stackHistory: [[mkStkItm(5)]],
-			tapeHistory: [[['ENTER 5', '']]],
+			tapeHistory: [[mkTpItm(['ENTER 5', ''])]],
 			stackStash: [],
 			tapeStash: []
 		});
@@ -169,11 +166,8 @@ describe('Calc-reducer properly manages state', () => {
 		expect(testState).toMatchObject({
 			stackHistory: [[mkStkItm(5)], [mkStkItm(5), mkStkItm(10)]],
 			tapeHistory: [
-				[['ENTER 5', '']],
-				[
-					['ENTER 5', ''],
-					['ENTER 10', '']
-				]
+				[mkTpItm(['ENTER 5', ''])],
+				[mkTpItm(['ENTER 5', '']), mkTpItm(['ENTER 10', ''])]
 			],
 			stackStash: [],
 			tapeStash: []

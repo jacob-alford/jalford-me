@@ -37,7 +37,7 @@ export enum op {
 	swap = 'swap'
 }
 
-export type tapeItem = [string, string];
+export type tapeItem = [string, string, string];
 export type calcError = null | string;
 
 export interface stackItem {

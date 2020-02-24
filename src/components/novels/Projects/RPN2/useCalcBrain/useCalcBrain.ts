@@ -9,6 +9,7 @@ import calcReducer, {
 	getLastTape
 } from './reducer/reducer';
 import { tapeItem, stackItem } from './operators/_types';
+import { getRandomUID } from 'functions';
 
 type almostOperation = {
 	type: reducerOpEnum;
@@ -19,26 +20,47 @@ type almostOperation = {
 	};
 };
 
-export default function useCalcBrain(): [stackItem[], tapeItem[], any] {
+export default function useCalcBrain(): [
+	stackItem[],
+	tapeItem[],
+	any,
+	boolean,
+	boolean
+] {
 	const [calcState, _mutateCalcHistory] = useReducer(calcReducer, defaultState);
 	const notify = useNotify({
 		alertType: 'error',
 		timeout: Infinity
 	});
 	const mutateCalcHistory = useCallback(
-		(operation: almostOperation): void =>
+		(operation: almostOperation): void => {
+			if (
+				operation.type === reducerOpEnum.push &&
+				calcState.stackStash.length > 0
+			)
+				_mutateCalcHistory({
+					type: reducerOpEnum.clearStash,
+					payload: {
+						type: op.enter,
+						UID: getRandomUID(),
+						notify
+					}
+				});
 			_mutateCalcHistory({
 				type: operation.type,
 				payload: {
 					...operation.payload,
 					notify
 				}
-			}),
+			});
+		},
 		[notify]
 	);
 	return [
 		getLastStack(calcState.stackHistory),
-		getLastTape(calcState.tapeHistory),
-		mutateCalcHistory
+		getLastTape(calcState.tapeHistory).reverse(),
+		mutateCalcHistory,
+		calcState.stackHistory.length > 0,
+		calcState.stackStash.length > 0
 	];
 }

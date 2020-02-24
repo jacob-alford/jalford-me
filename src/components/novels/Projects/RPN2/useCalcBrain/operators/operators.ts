@@ -49,7 +49,8 @@ const enter: operator = {
 	preVerify: (stack: stackItem[]): boolean => true,
 	toTape: (stack: stackItem[], payload?: number): tapeItem => [
 		`ENTER ${(payload && shortNum(payload)) || ''}`,
-		``
+		``,
+		getRandomUID()
 	],
 	error: (): calcError => null
 };
@@ -60,7 +61,8 @@ const enterLast: operator = {
 	preVerify: (stack: stackItem[]): boolean => stack.length > 0,
 	toTape: (stack: stackItem[], payload?: number): tapeItem => [
 		`ENTER ${shortNum(stack[stack.length - 1].number)}`,
-		``
+		``,
+		getRandomUID()
 	],
 	error: (): calcError => null
 };
@@ -70,7 +72,8 @@ const drop: operator = {
 	preVerify: (stack: stackItem[]): boolean => stack.length > 0,
 	toTape: (stack: stackItem[]): tapeItem => [
 		`DROP ${shortNum(getLast(stack).number)}`,
-		``
+		``,
+		getRandomUID()
 	],
 	error: (): calcError => null
 };
@@ -78,7 +81,7 @@ const clearAll: operator = {
 	type: op.clearAll,
 	act: (stack: stackItem[]): stackItem[] => [],
 	preVerify: (stack: stackItem[]): boolean => true,
-	toTape: (stack: stackItem[]): tapeItem => [`CLEAR ALL`, ``],
+	toTape: (stack: stackItem[]): tapeItem => [`CLEAR ALL`, ``, getRandomUID()],
 	error: (): calcError => null
 };
 const roll: operator = {
@@ -86,7 +89,7 @@ const roll: operator = {
 	act: (stack: stackItem[]): stackItem[] =>
 		concat(stack[stack.length - 1], dropRight(stack)),
 	preVerify: (stack: stackItem[]): boolean => stack.length > 1,
-	toTape: (stack: stackItem[]): tapeItem => [`ROLL`, ``],
+	toTape: (stack: stackItem[]): tapeItem => [`ROLL`, ``, getRandomUID()],
 	error: (): calcError => null
 };
 const swap: operator = {
@@ -98,7 +101,8 @@ const swap: operator = {
 		`SWAP`,
 		`${shortNum(getNextToLast(stack).number)}, ${shortNum(
 			getLast(stack).number
-		)}`
+		)}`,
+		getRandomUID()
 	],
 	error: (): calcError => null
 };
@@ -121,7 +125,8 @@ const operators: opsForm = {
 			`${shortNum(getNextToLast(stack).number)} + ${shortNum(
 				getLast(stack).number
 			)}`,
-			`${shortNum(getLast(stack).number + getNextToLast(stack).number)}`
+			`${shortNum(getLast(stack).number + getNextToLast(stack).number)}`,
+			getRandomUID()
 		]
 	}),
 	[op.sub]: makeDoubleOp({
@@ -131,7 +136,8 @@ const operators: opsForm = {
 			`${shortNum(getNextToLast(stack).number)} - ${shortNum(
 				getLast(stack).number
 			)}`,
-			`${shortNum(getNextToLast(stack).number - getLast(stack).number)}`
+			`${shortNum(getNextToLast(stack).number - getLast(stack).number)}`,
+			getRandomUID()
 		]
 	}),
 	[op.mul]: makeDoubleOp({
@@ -141,7 +147,8 @@ const operators: opsForm = {
 			`${shortNum(getNextToLast(stack).number)} * ${shortNum(
 				getLast(stack).number
 			)}`,
-			`${shortNum(getLast(stack).number * getNextToLast(stack).number)}`
+			`${shortNum(getLast(stack).number * getNextToLast(stack).number)}`,
+			getRandomUID()
 		]
 	}),
 	[op.div]: makeDoubleOp({
@@ -151,7 +158,8 @@ const operators: opsForm = {
 			`${shortNum(getNextToLast(stack).number)} / ${shortNum(
 				getLast(stack).number
 			)}`,
-			`${shortNum(getNextToLast(stack).number / getLast(stack).number)}`
+			`${shortNum(getNextToLast(stack).number / getLast(stack).number)}`,
+			getRandomUID()
 		],
 		error: (stack: stackItem[]): calcError =>
 			makeError(getLast(stack).number !== 0, 'Unable to divide by zero!')
@@ -310,7 +318,8 @@ const operators: opsForm = {
 			),
 		toTape: (stack: stackItem[]): tapeItem => [
 			`${shortNum(getLast(stack).number)}!`,
-			`${shortNum(factorial(getLast(stack).number))}`
+			`${shortNum(factorial(getLast(stack).number))}`,
+			getRandomUID()
 		]
 	})
 };

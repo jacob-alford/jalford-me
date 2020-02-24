@@ -43,6 +43,7 @@ export type SurfaceProps = {
 	children: ReactNode;
 	onClick?: (evt: any) => any;
 	flexGrow?: number;
+	disabled?: boolean;
 };
 
 type ButtonProps = {
@@ -52,6 +53,7 @@ type ButtonProps = {
 	borderColor: string;
 	color: string;
 	flexGrow?: number;
+	disabled?: boolean;
 };
 
 export default (props: ButtonProps) => {
@@ -61,14 +63,15 @@ export default (props: ButtonProps) => {
 		backgroundColor,
 		borderColor,
 		color,
-		flexGrow
+		flexGrow,
+		disabled
 	} = props;
 	return (
 		<Cont
 			backgroundColor={backgroundColor}
 			borderColor={borderColor}
 			flexGrow={flexGrow}>
-			<InnerButton onClick={onClick} colour={color}>
+			<InnerButton disabled={disabled} onClick={onClick} colour={color}>
 				{children}
 			</InnerButton>
 		</Cont>
