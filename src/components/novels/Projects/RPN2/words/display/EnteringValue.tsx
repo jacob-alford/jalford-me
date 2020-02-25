@@ -7,9 +7,10 @@ const EnteringValue = styled.div`
 	align-items: center;
 	font-size: 38px;
 	border-top: 2px solid white;
-	border-radius: 0px 0px 12px 12px;
-	color: white;
+	color: black;
 	height: ${C.h};
+	width: 100%;
+	background: ${C.orange(0)};
 	padding: 8px;
 	&:after {
 		font-size: 38px;

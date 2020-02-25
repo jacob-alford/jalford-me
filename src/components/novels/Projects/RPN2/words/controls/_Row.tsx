@@ -4,6 +4,7 @@ type propTypes = {
 	minHeight?: string;
 	flexGrow?: number;
 	maxHeight?: string;
+	height?: string;
 };
 
 const EntryRow = styled.div`
@@ -11,7 +12,7 @@ const EntryRow = styled.div`
 	flex-wrap: nowrap;
 	flex-direction: row;
 	justify-content: center;
-	height: 100%;
+	height: ${(props: propTypes) => props.height || `100%`};
 	width: 100%;
 	flex-grow: ${(props: propTypes) => props.flexGrow || '0'};
 	min-height: ${(props: propTypes) => props.minHeight || ''};

@@ -11,13 +11,13 @@ type ContProps = {
 };
 const Cont = styled.div`
 	background: ${(props: ContProps) => props.backgroundColor};
-	border: 4px solid ${(props: ContProps) => props.borderColor};
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	flex-grow: ${({ flexGrow = 1 }) => flexGrow};
 	text-align: center;
 	height: ${C.H};
+	border-bottom: 2px solid rgba(255, 255, 255, 0.8);
 `;
 
 type ButtProps = {
@@ -25,18 +25,12 @@ type ButtProps = {
 };
 const InnerButton = styled(Button)`
 	color: ${(props: ButtProps) => props.colour};
-	display: block;
 	text-transform: none;
 	font-size: 1.5rem;
 	width: 100%;
 	height: 100%;
 	border-radius: 16px;
-	@media (max-width: 300px) {
-		font-size: 1rem;
-	}
-	@media (max-height: 816px) {
-		font-size: 1rem;
-	}
+	line-height: 0px;
 `;
 
 export type SurfaceProps = {

@@ -97,7 +97,6 @@ const Wrapper = styled.div`
 	align-items: flex-start;
 	width: 100%;
 	height: 100%;
-	max-width: 750px;
 `;
 
 export default function RPN2() {
@@ -150,7 +149,7 @@ export default function RPN2() {
 	);
 	return (
 		<RPNContainer>
-			<Row flexGrow={2} minHeight='270px' maxHeight='32.5vh'>
+			<Row flexGrow={2}>
 				<TapeAndStack>
 					<Row>
 						<Stack>
@@ -184,10 +183,12 @@ export default function RPN2() {
 							)}
 						</Tape>
 					</Row>
-					<EnteringValue>{entry || '0'}</EnteringValue>
 				</TapeAndStack>
 			</Row>
 			<Row>
+				<EnteringValue>{entry || '0'}</EnteringValue>
+			</Row>
+			<Row height='50vh'>
 				<Wrapper>
 					<Group>
 						<Row>

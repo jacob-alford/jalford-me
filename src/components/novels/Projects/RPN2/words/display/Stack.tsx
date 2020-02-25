@@ -8,12 +8,9 @@ const Stack = styled.div`
 	justify-content: flex-end;
 	align-items: flex-end;
 	flex-wrap: nowrap;
-
 	border-radius: 12px 0px 0px 0px;
 	overflow: hidden;
 	width: 70%;
-	height: 100%;
-	flex-grow: 2;
 `;
 
 export default Stack;

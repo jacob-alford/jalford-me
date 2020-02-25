@@ -54,11 +54,11 @@ export default function useCalcBrain(): [
 				}
 			});
 		},
-		[notify]
+		[notify, calcState.stackStash.length]
 	);
 	return [
 		getLastStack(calcState.stackHistory),
-		getLastTape(calcState.tapeHistory).reverse(),
+		getLastTape(calcState.tapeHistory),
 		mutateCalcHistory,
 		calcState.stackHistory.length > 0,
 		calcState.stackStash.length > 0

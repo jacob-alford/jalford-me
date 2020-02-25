@@ -1,6 +1,6 @@
 const C = {
 	h: `${50 / 16}vh`,
-	H: `calc(${50 / 8}vh - 4px)`,
+	H: `calc(${50 / 8}vh - calc(calc(${50 / 16}vh + 34px) / 8))`,
 	blue: (index = 0) => {
 		const light = '#6ac0fd';
 		const med = '#2c1fe0';
