@@ -10,7 +10,7 @@ const StackOps = (props: SurfaceProps) => {
 			backgroundColor={C.blue(2)}
 			borderColor={C.blue(0)}
 			disabled={disabled}
-			color={C.blue(0)}>
+			color={C.cyan(0)}>
 			{children}
 		</Button>
 	);

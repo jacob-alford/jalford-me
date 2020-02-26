@@ -10,7 +10,7 @@ const EnteringValue = styled.div`
 	color: black;
 	height: ${C.h};
 	width: 100%;
-	background: ${C.orange(0)};
+	background: ${C.green(2)};
 	padding: 8px;
 	&:after {
 		font-size: 38px;

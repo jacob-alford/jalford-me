@@ -21,8 +21,8 @@ const ItemIndex = styled.div`
 const StackCard = styled.div`
 	text-align: right;
 	font-size: 30px;
-	color: ${C.blue(0)};
-	border: 4px solid ${C.blue(0)};
+	color: ${C.green(0)};
+	border: 4px solid ${C.green(0)};
 	background: black;
 	border-radius: 8px;
 	height: ${C.h};

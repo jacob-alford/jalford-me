@@ -1,14 +1,15 @@
 import React from 'react';
 import Button, { SurfaceProps } from '../Button';
+import C from '../constants';
 
 const Danger = (props: SurfaceProps) => {
 	const { onClick, children } = props;
 	return (
 		<Button
 			onClick={onClick}
-			backgroundColor='white'
+			backgroundColor={C.cyan(0)}
 			borderColor='white'
-			color='red'>
+			color={C.red(0)}>
 			{children}
 		</Button>
 	);

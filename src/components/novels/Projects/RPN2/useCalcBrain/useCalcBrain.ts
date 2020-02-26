@@ -52,7 +52,7 @@ export default function useCalcBrain(
 				}
 			});
 		},
-		[notify, calcState.stackStash.length]
+		[notify, calcState.stackStash.length, degOrRad]
 	);
 	return [
 		getLastStack(calcState.stackHistory),
