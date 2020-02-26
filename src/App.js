@@ -75,8 +75,10 @@ export default function App() {
 				<Switch>
 					<Route
 						exact
-						path='/projects/rpn'
-						render={props => <RPN headerIsOpen={headerIsOpen} {...props} />}
+						path='/rpn'
+						render={props => (
+							<RPN setHeaderIsOpen={setHeaderIsOpen} {...props} />
+						)}
 					/>
 					<Route exact path='/websites' component={Websites} />
 					<Route exact path='/admin/users'>

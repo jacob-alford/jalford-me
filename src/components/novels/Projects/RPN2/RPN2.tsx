@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useMemo } from 'react';
-import { useTransition, useTrail, animated as a } from 'react-spring';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import { useTransition, animated as a } from 'react-spring';
 import styled from 'styled-components';
 import toNumber from 'lodash/toNumber';
 
@@ -33,6 +33,7 @@ import { reducerOpEnum } from './useCalcBrain/reducer/reducer';
 import { op, stackItem } from './useCalcBrain/operators/_types';
 
 import useTyper from './useTyper/useTyper';
+import useScrollToTopOnload from 'components/bindings/hooks/useScrollToTopOnload/';
 import { npButt } from './useTyper/_types';
 
 import {
@@ -96,12 +97,14 @@ const Wrapper = styled.div`
 	justify-content: center;
 	align-items: flex-start;
 	width: 100%;
-	height: 100%;
 `;
 
-export default function RPN2() {
-	const [stack, tape, _operate, canUndo, canRedo] = useCalcBrain();
+export default function RPN2(props: {
+	setHeaderIsOpen: (val: boolean) => void;
+}) {
+	const { setHeaderIsOpen } = props;
 	const [degRad, setDegRad] = useState(drEnum.rad);
+	const [stack, tape, _operate, canUndo, canRedo] = useCalcBrain(degRad);
 	const [_entry, amendEntry] = useTyper();
 	const entry = useMemo(() => trimFrontZeros(_entry), [_entry]);
 	const stackItems = useTransition(stack, item => item.UID, {
@@ -142,11 +145,11 @@ export default function RPN2() {
 				_operate(perform(op.enterLast));
 				return;
 			}
-			console.log(operation);
 			_operate(operation);
 		},
 		[entry, _operate, amendEntry, stack.length]
 	);
+	useScrollToTopOnload(() => setHeaderIsOpen(false));
 	return (
 		<RPNContainer>
 			<Row flexGrow={2}>
@@ -188,7 +191,7 @@ export default function RPN2() {
 			<Row>
 				<EnteringValue>{entry || '0'}</EnteringValue>
 			</Row>
-			<Row height='50vh'>
+			<Row>
 				<Wrapper>
 					<Group>
 						<Row>

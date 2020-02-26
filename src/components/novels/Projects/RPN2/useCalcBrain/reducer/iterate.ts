@@ -25,7 +25,7 @@ const getNextStackAndTape = (
 	}
 	return [
 		act(stack, payload, UID, degOrRad),
-		concat(tape, [toTape(stack, payload, degOrRad)])
+		concat([toTape(stack, payload, degOrRad)], tape)
 	];
 };
 

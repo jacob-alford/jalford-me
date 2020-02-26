@@ -34,15 +34,15 @@ const StackCard = styled.div`
 	overflow: hidden;
 `;
 
-export const formatNumber = (num: number): number | string => {
-	return num;
-	const decimals = num.toString().split('.');
-	if (num.toString().length > 27) return num.toPrecision(21);
-	if (decimals.length < 2) return num.toLocaleString();
-	else
-		return num.toLocaleString(undefined, {
-			minimumFractionDigits: decimals[1].length
-		});
+const shouldExp = (num: number): boolean => {
+	const str = num.toString();
+	if (str.length > 14 || str.includes('e')) return true;
+	else return false;
+};
+
+export const formatNumber = (num: number): string => {
+	if (shouldExp(num)) return num.toExponential();
+	else return num.toLocaleString();
 };
 
 const StackItem = (props: {

@@ -10,6 +10,7 @@ import calcReducer, {
 } from './reducer/reducer';
 import { tapeItem, stackItem } from './operators/_types';
 import { getRandomUID } from 'functions';
+import { drEnum } from '../RPN2';
 
 type almostOperation = {
 	type: reducerOpEnum;
@@ -20,13 +21,9 @@ type almostOperation = {
 	};
 };
 
-export default function useCalcBrain(): [
-	stackItem[],
-	tapeItem[],
-	any,
-	boolean,
-	boolean
-] {
+export default function useCalcBrain(
+	degOrRad: drEnum
+): [stackItem[], tapeItem[], any, boolean, boolean] {
 	const [calcState, _mutateCalcHistory] = useReducer(calcReducer, defaultState);
 	const notify = useNotify({
 		alertType: 'error',
@@ -50,6 +47,7 @@ export default function useCalcBrain(): [
 				type: operation.type,
 				payload: {
 					...operation.payload,
+					degOrRad,
 					notify
 				}
 			});

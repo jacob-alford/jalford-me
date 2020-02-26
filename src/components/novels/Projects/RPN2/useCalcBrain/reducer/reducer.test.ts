@@ -68,11 +68,11 @@ describe('Calc-reducer properly manages state', () => {
 			],
 			tapeHistory: [
 				[mkTpItm(['ENTER 5', ''])],
-				[mkTpItm(['ENTER 5', '']), mkTpItm(['ENTER 10', ''])],
+				[mkTpItm(['ENTER 10', '']), mkTpItm(['ENTER 5', ''])],
 				[
-					mkTpItm(['ENTER 5', '']),
+					mkTpItm(['ENTER 15', '']),
 					mkTpItm(['ENTER 10', '']),
-					mkTpItm(['ENTER 15', ''])
+					mkTpItm(['ENTER 5', ''])
 				]
 			],
 			stackStash: [],
@@ -167,7 +167,7 @@ describe('Calc-reducer properly manages state', () => {
 			stackHistory: [[mkStkItm(5)], [mkStkItm(5), mkStkItm(10)]],
 			tapeHistory: [
 				[mkTpItm(['ENTER 5', ''])],
-				[mkTpItm(['ENTER 5', '']), mkTpItm(['ENTER 10', ''])]
+				[mkTpItm(['ENTER 10', '']), mkTpItm(['ENTER 5', ''])]
 			],
 			stackStash: [],
 			tapeStash: []

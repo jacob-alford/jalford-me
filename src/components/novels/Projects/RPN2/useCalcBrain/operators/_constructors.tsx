@@ -57,8 +57,17 @@ export const makeReducer = (config: {
 		error
 	};
 };
-export const shortNum = (num: number): string =>
-	num.toLocaleString(undefined, { maximumSignificantDigits: 3 });
+
+const shouldExp = (num: number): boolean => {
+	const str = num.toString();
+	if (str.length > 12 || str.includes('e')) return true;
+	else return false;
+};
+
+export const shortNum = (num: number): string => {
+	if (shouldExp(num)) return num.toExponential();
+	else return num.toLocaleString();
+};
 
 const condConvertTrig = (
 	requiresTrigConversion: boolean,
