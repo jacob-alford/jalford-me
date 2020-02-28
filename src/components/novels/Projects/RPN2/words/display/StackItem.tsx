@@ -19,6 +19,9 @@ const ItemIndex = styled.div`
 `;
 
 const StackCard = styled.div`
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
 	text-align: right;
 	font-size: 30px;
 	color: ${C.green(0)};
@@ -40,9 +43,17 @@ const shouldExp = (num: number): boolean => {
 	else return false;
 };
 
+const getDigits = (num: number): number => {
+	const strArr = num.toString().split('.');
+	if (!strArr[1]) return 0;
+	return strArr[1].length;
+};
 export const formatNumber = (num: number): string => {
 	if (shouldExp(num)) return num.toExponential();
-	else return num.toLocaleString();
+	else
+		return num.toLocaleString(undefined, {
+			minimumFractionDigits: getDigits(num)
+		});
 };
 
 const StackItem = (props: {

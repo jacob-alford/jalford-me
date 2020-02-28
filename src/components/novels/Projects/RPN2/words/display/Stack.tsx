@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import C from '../constants';
-
 const Stack = styled.div`
 	display: flex;
 	flex-direction: column;

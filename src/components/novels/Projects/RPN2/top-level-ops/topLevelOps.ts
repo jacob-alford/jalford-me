@@ -1,6 +1,6 @@
 import { reducerOpEnum } from '../useCalcBrain/reducer/reducer';
 import { drEnum } from '../RPN2';
-import { stackHistoryItem, op } from '../useCalcBrain/operators/_types';
+import { op } from '../useCalcBrain/operators/_types';
 import { npButt } from '../useTyper/_types';
 import { getRandomUID } from 'functions';
 

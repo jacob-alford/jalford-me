@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { useTransition, animated as a } from 'react-spring';
 import styled from 'styled-components';
 import toNumber from 'lodash/toNumber';
@@ -55,7 +55,7 @@ const toggleDegRad = (degRad: drEnum, setDegRad: (val: any) => void): void =>
 	degRad === drEnum.deg ? setDegRad(drEnum.rad) : setDegRad(drEnum.deg);
 
 const getIndex = (index: number, length: number): string | number =>
-	index === length - 1 ? 'x' : index === length - 2 ? 'y' : index + 1;
+	index === length - 1 ? 'x' : index === length - 2 ? 'y' : length - index - 2;
 
 const getEntry = (entry: string, stack: stackItem[]): number => {
 	const number = toNumber(entry);
