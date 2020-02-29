@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useTransition, animated as a } from 'react-spring';
 import styled from 'styled-components';
 import toNumber from 'lodash/toNumber';
@@ -113,7 +113,10 @@ export default function RPN2(props: {
 		leave: { transform: 'translate3d(0,40px,0)', opacity: 0 }
 	});
 	const tapeAnim = useTransition(tape, item => item[2], {
-		from: { transform: 'translate3d(40px, 0px, 0)', opacity: 0 },
+		from: {
+			transform: 'translate3d(40px, 0px, 0)',
+			opacity: 0
+		},
 		enter: { transform: 'translate3d(0,0px,0)', opacity: 1 },
 		leave: { transform: 'translate3d(-40px,0,0)', opacity: 0 }
 	});

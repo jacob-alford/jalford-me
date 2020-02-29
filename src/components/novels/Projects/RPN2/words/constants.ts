@@ -16,7 +16,7 @@ const C = {
 	gray: (index = 0) => {
 		const light = 'rgba(255,255,255,.69)';
 		const med = 'rgba(255,255,255,.42)';
-		const dark = 'rgba(0,0,0,.23)';
+		const dark = '#191e26';
 		return [light, med, dark][index];
 	},
 	red: (index = 0) => {

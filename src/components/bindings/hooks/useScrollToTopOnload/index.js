@@ -18,16 +18,16 @@ export default function useScrollToTopOnload(callback) {
 			from: {
 				y: startPosition.current
 			},
-			onRest: () => {
-				hasFinished.current = true;
-				if (callback) callback();
-			},
 			immediate: startPosition.current === 0 || isTouchDevice.current,
 			config: {
 				tension: 420,
 				friction: 69
 			},
 			onFrame: location => {
+				if (location.y === 0) {
+					hasFinished.current = true;
+					if (callback) callback();
+				}
 				if (!hasFinished.current) window.scroll(0, location.y);
 			}
 		};

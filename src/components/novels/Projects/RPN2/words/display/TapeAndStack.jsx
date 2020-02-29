@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import C from '../constants';
 
 const TapeAndStack = styled.div`
@@ -9,5 +10,4 @@ const TapeAndStack = styled.div`
 	flex-wrap: nowrap;
 	background: linear-gradient(${C.blue(2)}, ${C.pink(2)}, ${C.orange(1)});
 `;
-
 export default TapeAndStack;
