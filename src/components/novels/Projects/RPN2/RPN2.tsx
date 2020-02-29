@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useTransition, animated as a } from 'react-spring';
-import styled from 'styled-components';
 import toNumber from 'lodash/toNumber';
-
 import BackspaceIcon from '@material-ui/icons/Backspace';
 import FunctionsIcon from '@material-ui/icons/Functions';
 import AddIcon from '@material-ui/icons/Add';
@@ -18,7 +16,6 @@ import {
 	Entry,
 	Danger
 } from './words/controls';
-
 import {
 	Stack,
 	Tape,
@@ -29,12 +26,11 @@ import {
 } from './words/display';
 
 import useCalcBrain from './useCalcBrain/useCalcBrain';
-import { reducerOpEnum } from './useCalcBrain/reducer/reducer';
-import { op, stackItem } from './useCalcBrain/operators/_types';
-
 import useTyper from './useTyper/useTyper';
 import useScrollToTopOnload from 'components/bindings/hooks/useScrollToTopOnload/';
 import { npButt } from './useTyper/_types';
+import { reducerOpEnum } from './useCalcBrain/reducer/reducer';
+import { op } from './useCalcBrain/operators/_types';
 
 import {
 	enter,
@@ -45,65 +41,28 @@ import {
 	pop,
 	almostOp
 } from './top-level-ops/topLevelOps';
+import {
+	toggleDegRad,
+	getIndex,
+	getEntry,
+	typeHandlers,
+	drEnum,
+	trimFrontZeros
+} from './utils';
+import { RPNContainer, Wrapper } from './styles';
+export { drEnum };
 
-export enum drEnum {
-	deg = 'deg',
-	rad = 'rad'
-}
-
-const toggleDegRad = (degRad: drEnum, setDegRad: (val: any) => void): void =>
-	degRad === drEnum.deg ? setDegRad(drEnum.rad) : setDegRad(drEnum.deg);
-
-const getIndex = (index: number, length: number): string | number =>
-	index === length - 1 ? 'x' : index === length - 2 ? 'y' : length - index - 2;
-
-const getEntry = (entry: string, stack: stackItem[]): number => {
-	const number = toNumber(entry);
-	if (number === 0 || number) return number;
-	else {
-		const lastItem = stack[stack.length - 1];
-		if (lastItem) return lastItem.number;
-		else return 0;
-	}
-};
-
-const trimFrontZeros = (num: string): string => {
-	let outStr = '';
-	let hasEncounteredNonZero = false;
-	num.split('').forEach(char => {
-		if (char !== '0' && !hasEncounteredNonZero) hasEncounteredNonZero = true;
-		if (char === '.' && outStr.length === 0) {
-			outStr += '0.';
-			return;
-		}
-		if (hasEncounteredNonZero) outStr += char;
-	});
-	return outStr;
-};
-
-const RPNContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: space-evenly;
-	width: 100%;
-	height: max-content;
-	min-height: 100vh;
-`;
-
-const Wrapper = styled.div`
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: center;
-	align-items: flex-start;
-	width: 100%;
-`;
+const Pi = () => <div dangerouslySetInnerHTML={{ __html: '&pi;' }} />;
+const Mu = () => <div dangerouslySetInnerHTML={{ __html: '&mu;' }} />;
+const Product = () => <div dangerouslySetInnerHTML={{ __html: '&Pi;' }} />;
 
 export default function RPN2(props: {
 	setHeaderIsOpen: (val: boolean) => void;
 }) {
 	const { setHeaderIsOpen } = props;
 	const [degRad, setDegRad] = useState(drEnum.rad);
+	const [constOpen, setConstOpen] = useState(false);
+	const [funcOpen, setFuncOpen] = useState(false);
 	const [stack, tape, _operate, canUndo, canRedo] = useCalcBrain(degRad);
 	const [_entry, amendEntry] = useTyper();
 	const entry = useMemo(() => trimFrontZeros(_entry), [_entry]);
@@ -152,7 +111,28 @@ export default function RPN2(props: {
 		},
 		[entry, _operate, amendEntry, stack.length]
 	);
+	useEffect(() => {
+		const handleKeydown = (evt: any) => {
+			const { key } = evt;
+			if (typeHandlers[key]) {
+				typeHandlers[key](operate, amendEntry, entry, stack);
+				evt.preventDefault();
+			}
+		};
+		document.addEventListener('keydown', handleKeydown);
+		return () => document.removeEventListener('keydown', handleKeydown);
+	}, [amendEntry, entry, operate, stack]);
 	useScrollToTopOnload(() => setHeaderIsOpen(false));
+	const toggleConst = useCallback(() => {
+		if (funcOpen) setFuncOpen(false);
+		if (constOpen) setConstOpen(false);
+		else setConstOpen(true);
+	}, [setConstOpen, setFuncOpen, constOpen, funcOpen]);
+	const toggleFunc = useCallback(() => {
+		if (constOpen) setConstOpen(false);
+		if (funcOpen) setFuncOpen(false);
+		else setFuncOpen(true);
+	}, [setConstOpen, setFuncOpen, constOpen, funcOpen]);
 	return (
 		<RPNContainer>
 			<Row flexGrow={2}>
@@ -197,12 +177,34 @@ export default function RPN2(props: {
 			<Row>
 				<Wrapper>
 					<Group>
-						<Row>
-							<Danger onClick={() => operate(drop())}>Drop</Danger>
-							<Danger onClick={() => amendEntry(press(npButt.backspace))}>
-								<BackspaceIcon />
-							</Danger>
-						</Row>
+						{constOpen ? (
+							<Row>
+								<Operation1 onClick={() => operate(perform(op.speedOfLight))}>
+									c
+								</Operation1>
+								<Operation1 onClick={() => operate(perform(op.pi))}>
+									<Pi />
+								</Operation1>
+							</Row>
+						) : null}
+						{funcOpen ? (
+							<Row>
+								<Operation1 onClick={() => operate(perform(op.sum))}>
+									<FunctionsIcon fontSize='inherit' />
+								</Operation1>
+								<Operation1 onClick={() => operate(perform(op.product))}>
+									<Product />
+								</Operation1>
+							</Row>
+						) : null}
+						{!constOpen && !funcOpen ? (
+							<Row>
+								<Danger onClick={() => operate(drop())}>Drop</Danger>
+								<Danger onClick={() => amendEntry(press(npButt.backspace))}>
+									<BackspaceIcon fontSize='inherit' />
+								</Danger>
+							</Row>
+						) : null}
 						<Row>
 							<StackOp
 								disabled={!canUndo}
@@ -217,7 +219,6 @@ export default function RPN2(props: {
 								Redo
 							</StackOp>
 						</Row>
-
 						<Row>
 							<StackOp onClick={() => operate(perform(op.roll))}>Roll</StackOp>
 							<StackOp onClick={() => operate(perform(op.swap))}>Swap</StackOp>
@@ -227,7 +228,7 @@ export default function RPN2(props: {
 							<Entry onClick={() => amendEntry(press(npButt.eight))}>8</Entry>
 							<Entry onClick={() => amendEntry(press(npButt.nine))}>9</Entry>
 							<Operation2 onClick={() => operate(perform(op.add))}>
-								<AddIcon />
+								<AddIcon fontSize='inherit' />
 							</Operation2>
 						</Row>
 						<Row>
@@ -235,7 +236,7 @@ export default function RPN2(props: {
 							<Entry onClick={() => amendEntry(press(npButt.five))}>5</Entry>
 							<Entry onClick={() => amendEntry(press(npButt.six))}>6</Entry>
 							<Operation2 onClick={() => operate(perform(op.sub))}>
-								<SubtractIcon />
+								<SubtractIcon fontSize='inherit' />
 							</Operation2>
 						</Row>
 						<Row>
@@ -243,7 +244,7 @@ export default function RPN2(props: {
 							<Entry onClick={() => amendEntry(press(npButt.two))}>2</Entry>
 							<Entry onClick={() => amendEntry(press(npButt.three))}>3</Entry>
 							<Operation2 onClick={() => operate(perform(op.mul))}>
-								<MultiplyIcon />
+								<MultiplyIcon fontSize='inherit' />
 							</Operation2>
 						</Row>
 						<Row>
@@ -264,16 +265,37 @@ export default function RPN2(props: {
 							</StackOp>
 						</Row>
 					</Group>
-
 					<Group>
+						{constOpen ? (
+							<Row>
+								<Operation1 onClick={() => null}>empty</Operation1>
+								<Operation1 onClick={() => null}>empty</Operation1>
+							</Row>
+						) : null}
+						{funcOpen ? (
+							<Row>
+								<Operation1 onClick={() => operate(perform(op.mean))}>
+									<Mu />
+								</Operation1>
+								<Operation1 onClick={() => null}>empty</Operation1>
+							</Row>
+						) : null}
+						{!constOpen && !funcOpen ? (
+							<Row>
+								<Danger onClick={() => operate(perform(op.clearAll))}>
+									AC
+								</Danger>
+								<Danger onClick={() => amendEntry(press(npButt.clear))}>
+									C
+								</Danger>
+							</Row>
+						) : null}
 						<Row>
-							<Danger onClick={() => operate(perform(op.clearAll))}>AC</Danger>
-							<Danger onClick={() => amendEntry(press(npButt.clear))}>C</Danger>
-						</Row>
-						<Row>
-							<Entry onClick={() => null}>C</Entry>
-							<Entry onClick={() => null}>
-								<FunctionsIcon />
+							<Entry toggled={constOpen} onClick={toggleConst}>
+								C
+							</Entry>
+							<Entry toggled={funcOpen} onClick={toggleFunc}>
+								<FunctionsIcon fontSize='inherit' />
 							</Entry>
 							<Operation2 onClick={() => toggleDegRad(degRad, setDegRad)}>
 								{degRad}

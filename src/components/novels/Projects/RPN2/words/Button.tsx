@@ -8,9 +8,12 @@ type ContProps = {
 	backgroundColor: string;
 	borderColor: string;
 	flexGrow?: number;
+	toggled?: string;
 };
 const Cont = styled.div`
-	background: ${(props: ContProps) => props.backgroundColor};
+	background: ${(props: ContProps) =>
+		props.toggled ? props.toggled : props.backgroundColor};
+	transition: background 0.25s;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -31,6 +34,9 @@ const InnerButton = styled(Button)`
 	height: 100%;
 	border-radius: 16px;
 	line-height: 0px;
+	@media (max-height: 500px) {
+		font-size: 0.75rem;
+	}
 `;
 
 export type SurfaceProps = {
@@ -38,6 +44,7 @@ export type SurfaceProps = {
 	onClick?: (evt: any) => any;
 	flexGrow?: number;
 	disabled?: boolean;
+	toggled?: boolean;
 };
 
 type ButtonProps = {
@@ -48,6 +55,7 @@ type ButtonProps = {
 	color: string;
 	flexGrow?: number;
 	disabled?: boolean;
+	toggled?: string;
 };
 
 export default (props: ButtonProps) => {
@@ -58,13 +66,15 @@ export default (props: ButtonProps) => {
 		borderColor,
 		color,
 		flexGrow,
-		disabled
+		disabled,
+		toggled
 	} = props;
 	return (
 		<Cont
 			backgroundColor={backgroundColor}
 			borderColor={borderColor}
-			flexGrow={flexGrow}>
+			flexGrow={flexGrow}
+			toggled={toggled}>
 			<InnerButton disabled={disabled} onClick={onClick} colour={color}>
 				{children}
 			</InnerButton>

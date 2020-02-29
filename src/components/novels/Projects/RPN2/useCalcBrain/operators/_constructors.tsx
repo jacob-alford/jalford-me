@@ -187,7 +187,7 @@ export const makeConstant = (config: {
 	const error = (): calcError => null;
 	const preVerify = (): boolean => true;
 	const act = (stack: stackItem[]): stackItem[] =>
-		concat(toStackItem(constant, getLastUID(stack)), stack);
+		concat(stack, toStackItem(constant, getRandomUID()));
 	return {
 		type,
 		act,
