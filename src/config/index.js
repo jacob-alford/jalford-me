@@ -11,10 +11,11 @@ export const socialMedia = {
 
 export const navItems = [
 	{ text: 'Home', url: '/' },
-	{ text: 'About/Contact', url: '/about' },
-	{ text: 'Puzzles', url: '/puzzles' },
+	{ text: 'About', url: '/about' },
+	{ text: 'RPN', url: '/rpn' },
 	{ text: 'Websites', url: '/websites' },
 	{ text: 'Posts', url: '/posts' },
+	{ text: 'Puzzles', url: '/puzzles' },
 	{ text: 'Resume', url: 'https://www.visualcv.com/jacob-alford' }
 ];
 
