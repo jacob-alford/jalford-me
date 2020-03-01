@@ -32,6 +32,7 @@ const InnerButton = styled(Button)`
 	font-size: 1.5rem;
 	width: 100%;
 	height: 100%;
+	display: block;
 	border-radius: 16px;
 	line-height: 0px;
 	@media (max-height: 500px) {
@@ -45,6 +46,8 @@ export type SurfaceProps = {
 	flexGrow?: number;
 	disabled?: boolean;
 	toggled?: boolean;
+	backgroundColor?: string;
+	color?: string;
 };
 
 type ButtonProps = {

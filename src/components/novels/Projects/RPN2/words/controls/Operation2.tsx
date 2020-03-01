@@ -7,9 +7,9 @@ const Operation2 = (props: SurfaceProps) => {
 	return (
 		<Button
 			onClick={onClick}
-			backgroundColor={C.red(1)}
+			backgroundColor={C.orange(0)}
 			borderColor={C.blue(0)}
-			color={C.cyan(0)}>
+			color={C.blue(2)}>
 			{children}
 		</Button>
 	);

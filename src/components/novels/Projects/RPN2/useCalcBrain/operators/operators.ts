@@ -182,6 +182,7 @@ const operators: opsForm = {
 	[op.asin]: makeSingleOp({
 		type: op.asin,
 		fn: Math.asin,
+		requiresInverseTrigConversion: true,
 		error: (stack: stackItem[]): calcError =>
 			makeError(
 				getLast(stack).number >= 0 && getLast(stack).number <= 1,
@@ -191,6 +192,7 @@ const operators: opsForm = {
 	[op.acos]: makeSingleOp({
 		type: op.acos,
 		fn: Math.acos,
+		requiresInverseTrigConversion: true,
 		error: (stack: stackItem[]): calcError =>
 			makeError(
 				getLast(stack).number >= 0 && getLast(stack).number <= 1,
@@ -199,7 +201,8 @@ const operators: opsForm = {
 	}),
 	[op.atan]: makeSingleOp({
 		type: op.atan,
-		fn: Math.atan
+		fn: Math.atan,
+		requiresInverseTrigConversion: true
 	}),
 	[op.pi]: makeConstant({
 		constant: Math.PI,
@@ -208,6 +211,14 @@ const operators: opsForm = {
 	[op.speedOfLight]: makeConstant({
 		constant: 299792458,
 		type: op.speedOfLight
+	}),
+	[op.sqrt2]: makeConstant({
+		constant: Math.sqrt(2),
+		type: op.sqrt2
+	}),
+	[op.gldnRatio]: makeConstant({
+		constant: (1 + Math.sqrt(5)) / 2,
+		type: op.gldnRatio
 	}),
 	[op.sum]: makeReducer({
 		type: op.sum,
@@ -231,6 +242,23 @@ const operators: opsForm = {
 			(1 / stack.length) *
 				reduce(stack, (sum: number, next: number): number => sum + next, 0)
 		]
+	}),
+	[op.var]: makeReducer({
+		type: op.var,
+		fn: (stack: number[]): number[] => {
+			const mean =
+				(1 / stack.length) *
+				reduce(stack, (sum: number, next: number): number => sum + next, 0);
+			return [
+				(1 / stack.length) *
+					reduce(
+						stack,
+						(sum: number, next: number): number =>
+							sum + Math.pow(next - mean, 2),
+						0
+					)
+			];
+		}
 	}),
 	[op.ln]: makeSingleOp({
 		type: op.ln,

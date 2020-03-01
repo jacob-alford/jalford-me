@@ -8,27 +8,67 @@ import { operator, op, tapeItem, calcError, stackItem } from './_types';
 
 import { drEnum } from '../../RPN2';
 
+const shouldExp = (num: number): boolean => {
+	const str = num.toString();
+	const isTenOne = (str.split('.')[0] || '').length === 1;
+	if ((!isTenOne && str.length > 12) || str.includes('e')) return true;
+	else return false;
+};
+
+export const shortNum = (num: number): string => {
+	if (shouldExp(num)) return num.toExponential();
+	else return num.toLocaleString();
+};
+
 const toNumbers = (stack: stackItem[]): number[] =>
 	stack.map(({ number }) => number);
+
 const toStackItem = (number: number, UID: string): stackItem => ({
 	number,
 	UID
 });
+
 const toStack = (numbers: number[], UID: string): stackItem[] =>
 	numbers.map(number => toStackItem(number, UID));
+
 export const getLast = (stack: stackItem[]): number =>
 	stack[stack.length - 1].number;
+
 export const getNextToLast = (stack: stackItem[]): number =>
 	stack[stack.length - 2].number;
+
 const getLastUID = (stack: stackItem[]): string =>
 	(stack[stack.length - 1] || { UID: getRandomUID() }).UID;
 
 export const formatList = (arr: number[]): string => {
-	return `${slice(arr, 0, 3).join(',')}${(arr.length > 3 && ', ...') || ''}`;
+	return `${slice(arr, 0, 3)
+		.map(num => shortNum(num))
+		.join(',')}${(arr.length > 3 && ', ...') || ''}`;
 };
 
 export const makeError = (bool: boolean, str: string): calcError =>
 	(!bool && str) || null;
+
+const condConvertTrig = (
+	requiresTrigConversion: boolean,
+	degOrRad: drEnum,
+	value: number
+): number =>
+	requiresTrigConversion
+		? degOrRad === drEnum.deg
+			? (Math.PI / 180) * value
+			: value
+		: value;
+const condConvertBack = (
+	requiresTrigConversion: boolean,
+	degOrRad: drEnum,
+	value: number
+): number =>
+	requiresTrigConversion
+		? degOrRad === drEnum.deg
+			? (180 / Math.PI) * value
+			: value
+		: value;
 
 export const makeReducer = (config: {
 	type: op;
@@ -42,7 +82,7 @@ export const makeReducer = (config: {
 		error = (): calcError => null,
 		toTape = (stack: stackItem[]): tapeItem => [
 			`${type}(${formatList(toNumbers(stack))})`,
-			`${fn(toNumbers(stack))}`,
+			`${shortNum(fn(toNumbers(stack))[0])}`,
 			getRandomUID()
 		]
 	} = config;
@@ -58,39 +98,19 @@ export const makeReducer = (config: {
 	};
 };
 
-const shouldExp = (num: number): boolean => {
-	const str = num.toString();
-	if (str.length > 12 || str.includes('e')) return true;
-	else return false;
-};
-
-export const shortNum = (num: number): string => {
-	if (shouldExp(num)) return num.toExponential();
-	else return num.toLocaleString();
-};
-
-const condConvertTrig = (
-	requiresTrigConversion: boolean,
-	degOrRad: drEnum,
-	value: number
-): number =>
-	requiresTrigConversion
-		? degOrRad === drEnum.deg
-			? (Math.PI / 180) * value
-			: value
-		: value;
-
 export const makeSingleOp = (config: {
 	type: op;
 	toTape?: (stack: stackItem[]) => tapeItem;
 	fn: (input: number) => number;
 	error?: (stack: stackItem[]) => calcError;
 	requiresTrigConversion?: boolean;
+	requiresInverseTrigConversion?: boolean;
 }): operator => {
 	const {
 		type,
 		fn,
 		requiresTrigConversion,
+		requiresInverseTrigConversion,
 		error = (): calcError => null,
 		toTape = (
 			stack: stackItem[],
@@ -99,11 +119,15 @@ export const makeSingleOp = (config: {
 		): tapeItem => [
 			`${type}(${shortNum(getLast(stack))})`,
 			`${shortNum(
-				fn(
-					condConvertTrig(
-						Boolean(requiresTrigConversion),
-						degOrRad || drEnum.rad,
-						getLast(stack)
+				condConvertBack(
+					Boolean(requiresInverseTrigConversion),
+					degOrRad || drEnum.rad,
+					fn(
+						condConvertTrig(
+							Boolean(requiresTrigConversion),
+							degOrRad || drEnum.rad,
+							getLast(stack)
+						)
 					)
 				)
 			)}`,
@@ -120,11 +144,15 @@ export const makeSingleOp = (config: {
 		concat(
 			dropRight(stack),
 			toStackItem(
-				fn(
-					condConvertTrig(
-						Boolean(requiresTrigConversion),
-						degOrRad || drEnum.rad,
-						getLast(stack)
+				condConvertBack(
+					Boolean(requiresInverseTrigConversion),
+					degOrRad || drEnum.rad,
+					fn(
+						condConvertTrig(
+							Boolean(requiresTrigConversion),
+							degOrRad || drEnum.rad,
+							getLast(stack)
+						)
 					)
 				),
 				getLastUID(stack)

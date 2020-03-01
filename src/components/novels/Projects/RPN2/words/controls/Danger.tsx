@@ -3,13 +3,18 @@ import Button, { SurfaceProps } from '../Button';
 import C from '../constants';
 
 const Danger = (props: SurfaceProps) => {
-	const { onClick, children } = props;
+	const {
+		onClick,
+		children,
+		backgroundColor = C.blue(2),
+		color = C.red(0)
+	} = props;
 	return (
 		<Button
 			onClick={onClick}
-			backgroundColor={C.cyan(0)}
+			backgroundColor={backgroundColor}
 			borderColor='white'
-			color={C.red(0)}>
+			color={color}>
 			{children}
 		</Button>
 	);

@@ -7,11 +7,11 @@ const Entry = (props: SurfaceProps) => {
 	return (
 		<Button
 			onClick={onClick}
-			backgroundColor={C.red(2)}
+			backgroundColor={C.cyan(0)}
 			borderColor={C.orange(0)}
 			flexGrow={flexGrow}
 			toggled={toggled ? C.red(1) : undefined}
-			color={C.cyan(0)}>
+			color={C.blue(2)}>
 			{children}
 		</Button>
 	);

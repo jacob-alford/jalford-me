@@ -95,7 +95,7 @@ describe('Successive calculator states derive successfully.', () => {
 		).toStrictEqual([
 			[mkSkItm(69 / 420)],
 			[
-				mkTpItm(['69 / 420', '1.6428571428571428e-1']),
+				mkTpItm(['69 / 420', '0.164']),
 				mkTpItm(['ENTER 69', '']),
 				mkTpItm(['ENTER 420', ''])
 			]
@@ -204,10 +204,7 @@ describe('Successive calculator states derive successfully.', () => {
 			)
 		).toStrictEqual([
 			[mkSkItm(1)],
-			[
-				mkTpItm(['sin(1.5707963267948966e+0)', '1']),
-				mkTpItm(['ENTER 1.57', ''])
-			]
+			[mkTpItm(['sin(1.571)', '1']), mkTpItm(['ENTER 1.57', ''])]
 		]);
 	});
 	it('Performs Safe-Single Operations', () => {
@@ -221,7 +218,7 @@ describe('Successive calculator states derive successfully.', () => {
 			getSAndT(mkOp(op.eX), [mkSkItm(1)], [mkTpItm(['ENTER 1', ''])])
 		).toStrictEqual([
 			[mkSkItm(Math.E)],
-			[mkTpItm(['eX(1)', '2.718281828459045e+0']), mkTpItm(['ENTER 1', ''])]
+			[mkTpItm(['eX(1)', '2.718']), mkTpItm(['ENTER 1', ''])]
 		]);
 		expect(
 			getSAndT(mkOp(op.twoX), [mkSkItm(-1)], [mkTpItm(['ENTER -1', ''])])

@@ -9,9 +9,12 @@ export enum op {
 	atan = 'atan',
 	pi = 'pi',
 	speedOfLight = 'speedOfLight',
+	sqrt2 = 'sqrt2',
+	gldnRatio = 'gldnRatio',
 	sum = 'sum',
 	product = 'product',
 	mean = 'mean',
+	var = 'var',
 	ln = 'ln',
 	log10 = 'log10',
 	log2 = 'log2',
@@ -53,6 +56,7 @@ export type tapeHistory = tapeHistoryItem[];
 
 export interface operator {
 	requiresTrigConversion?: boolean;
+	requiresInverseTrigConversion?: boolean;
 	type: op;
 	act: (
 		stack: stackItem[],

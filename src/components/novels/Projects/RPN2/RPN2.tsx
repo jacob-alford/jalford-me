@@ -31,6 +31,7 @@ import useScrollToTopOnload from 'components/bindings/hooks/useScrollToTopOnload
 import { npButt } from './useTyper/_types';
 import { reducerOpEnum } from './useCalcBrain/reducer/reducer';
 import { op } from './useCalcBrain/operators/_types';
+import C from './words/constants';
 
 import {
 	enter,
@@ -52,9 +53,11 @@ import {
 import { RPNContainer, Wrapper } from './styles';
 export { drEnum };
 
-const Pi = () => <div dangerouslySetInnerHTML={{ __html: '&pi;' }} />;
-const Mu = () => <div dangerouslySetInnerHTML={{ __html: '&mu;' }} />;
-const Product = () => <div dangerouslySetInnerHTML={{ __html: '&Pi;' }} />;
+const Pi = () => <span dangerouslySetInnerHTML={{ __html: '&pi;' }} />;
+const Mu = () => <span dangerouslySetInnerHTML={{ __html: '&mu;' }} />;
+const Phi = () => <span dangerouslySetInnerHTML={{ __html: '&phi;' }} />;
+const Sigma = () => <span dangerouslySetInnerHTML={{ __html: '&sigma;' }} />;
+const Product = () => <span dangerouslySetInnerHTML={{ __html: '&Pi;' }} />;
 
 export default function RPN2(props: {
 	setHeaderIsOpen: (val: boolean) => void;
@@ -191,37 +194,45 @@ export default function RPN2(props: {
 							<Row>
 								<Operation1 onClick={() => operate(perform(op.sum))}>
 									<FunctionsIcon fontSize='inherit' />
+									(...)
 								</Operation1>
 								<Operation1 onClick={() => operate(perform(op.product))}>
 									<Product />
+									(...)
 								</Operation1>
 							</Row>
 						) : null}
 						{!constOpen && !funcOpen ? (
 							<Row>
-								<Danger onClick={() => operate(drop())}>Drop</Danger>
-								<Danger onClick={() => amendEntry(press(npButt.backspace))}>
-									<BackspaceIcon fontSize='inherit' />
-								</Danger>
+								<StackOp onClick={() => operate(perform(op.roll))}>
+									Roll
+								</StackOp>
+								<StackOp onClick={() => operate(perform(op.swap))}>
+									Swap
+								</StackOp>
 							</Row>
 						) : null}
 						<Row>
-							<StackOp
-								disabled={!canUndo}
-								onClick={() => operate(stash())}
-								flexGrow={0}>
-								Undo
-							</StackOp>
-							<StackOp
-								disabled={!canRedo}
-								onClick={() => operate(pop())}
-								flexGrow={0}>
-								Redo
-							</StackOp>
+							<Danger onClick={() => operate(perform(op.clearAll))}>AC</Danger>
+							<Danger
+								backgroundColor={C.blue(2)}
+								onClick={() => operate(drop())}>
+								Drop
+							</Danger>
 						</Row>
 						<Row>
-							<StackOp onClick={() => operate(perform(op.roll))}>Roll</StackOp>
-							<StackOp onClick={() => operate(perform(op.swap))}>Swap</StackOp>
+							<Danger
+								backgroundColor={C.blue(1)}
+								color='white'
+								onClick={() => amendEntry(press(npButt.clear))}>
+								C
+							</Danger>
+							<Danger
+								backgroundColor={C.blue(1)}
+								color='white'
+								onClick={() => amendEntry(press(npButt.backspace))}>
+								<BackspaceIcon fontSize='inherit' />
+							</Danger>
 						</Row>
 						<Row>
 							<Entry onClick={() => amendEntry(press(npButt.seven))}>7</Entry>
@@ -268,34 +279,48 @@ export default function RPN2(props: {
 					<Group>
 						{constOpen ? (
 							<Row>
-								<Operation1 onClick={() => null}>empty</Operation1>
-								<Operation1 onClick={() => null}>empty</Operation1>
+								<Operation1 onClick={() => operate(perform(op.gldnRatio))}>
+									<Phi />
+								</Operation1>
+								<Operation1 onClick={() => operate(perform(op.sqrt2))}>
+									2<sup>½</sup>
+								</Operation1>
 							</Row>
 						) : null}
 						{funcOpen ? (
 							<Row>
 								<Operation1 onClick={() => operate(perform(op.mean))}>
 									<Mu />
+									(...)
 								</Operation1>
-								<Operation1 onClick={() => null}>empty</Operation1>
+								<Operation1 onClick={() => operate(perform(op.var))}>
+									<Sigma />
+									<sup>2</sup>(...)
+								</Operation1>
 							</Row>
 						) : null}
 						{!constOpen && !funcOpen ? (
 							<Row>
-								<Danger onClick={() => operate(perform(op.clearAll))}>
-									AC
-								</Danger>
-								<Danger onClick={() => amendEntry(press(npButt.clear))}>
-									C
-								</Danger>
+								<StackOp
+									disabled={!canUndo}
+									onClick={() => operate(stash())}
+									flexGrow={0}>
+									Undo
+								</StackOp>
+								<StackOp
+									disabled={!canRedo}
+									onClick={() => operate(pop())}
+									flexGrow={0}>
+									Redo
+								</StackOp>
 							</Row>
 						) : null}
 						<Row>
 							<Entry toggled={constOpen} onClick={toggleConst}>
-								C
+								const
 							</Entry>
 							<Entry toggled={funcOpen} onClick={toggleFunc}>
-								<FunctionsIcon fontSize='inherit' />
+								func
 							</Entry>
 							<Operation2 onClick={() => toggleDegRad(degRad, setDegRad)}>
 								{degRad}
@@ -303,29 +328,29 @@ export default function RPN2(props: {
 						</Row>
 						<Row>
 							<Operation1 onClick={() => operate(perform(op.sin))}>
-								sin
+								sin(x)
 							</Operation1>
 							<Operation1 onClick={() => operate(perform(op.cos))}>
-								cos
+								cos(x)
 							</Operation1>
 							<Operation1 onClick={() => operate(perform(op.tan))}>
-								tan
+								tan(x)
 							</Operation1>
 						</Row>
 						<Row>
 							<Operation1 onClick={() => operate(perform(op.asin))}>
-								asin
+								asin(x)
 							</Operation1>
 							<Operation1 onClick={() => operate(perform(op.acos))}>
-								acos
+								acos(x)
 							</Operation1>
 							<Operation1 onClick={() => operate(perform(op.atan))}>
-								atan
+								atan(x)
 							</Operation1>
 						</Row>
 						<Row>
 							<Operation1 onClick={() => operate(perform(op.xInv))}>
-								x<sup>-1</sup>
+								<sup>1</sup>/<sub>x</sub>
 							</Operation1>
 							<Operation1 onClick={() => operate(perform(op.sqrt))}>
 								x<sup>½</sup>
