@@ -34,7 +34,8 @@ const StackCard = styled.div`
 	max-width: 100%;
 	text-overflow: ellipse;
 	white-space: nowrap;
-	overflow: hidden;
+	overflow: auto;
+	overflow-y: hidden;
 `;
 
 const shouldExp = (num: number): boolean => {

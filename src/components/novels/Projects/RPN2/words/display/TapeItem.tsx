@@ -7,6 +7,8 @@ const TapeItem = styled.div`
 		props.value ? 'right' : 'left'};
 	color: ${(props: { index: number }) =>
 		props.index % 2 === 0 ? C.pink(0) : C.blue(0)};
+	overflow: auto;
+	overflow-y: hidden;
 `;
 
 export default TapeItem;
