@@ -40,7 +40,7 @@ const StackCard = styled.div`
 
 const shouldExp = (num: number): boolean => {
 	const str = num.toString();
-	const isTenOne = (str.split('.')[0] || '').length === 1;
+	const isTenOne = (str.split('.')[0] || '').length <= 4;
 	if ((!isTenOne && str.length > 17) || str.includes('e')) return true;
 	else return false;
 };
