@@ -15,7 +15,7 @@ const Home = (props: homeProps) => {
 		};
 		window.addEventListener('scroll', scrollSpy);
 		return () => window.removeEventListener('scroll', scrollSpy);
-	});
+	}, []);
 	useEffect(() => {
 		if (canvas.current) {
 			const context = canvas.current.getContext('2d');
