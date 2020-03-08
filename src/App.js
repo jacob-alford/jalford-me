@@ -24,6 +24,7 @@ const Puzzles = React.lazy(() => import('./components/novels/Puzzles'));
 const About = React.lazy(() => import('./components/novels/About'));
 const Blog = React.lazy(() => import('./components/novels/Blog'));
 const Home = React.lazy(() => import('./components/novels/Home'));
+const Home2 = React.lazy(() => import('./components/paragraphs/Home2/Home2'));
 const RPN = React.lazy(() => import('./components/novels/Projects/RPN2/RPN2'));
 
 /* Puzzles */
@@ -78,6 +79,13 @@ export default function App() {
 						path='/rpn'
 						render={props => (
 							<RPN setHeaderIsOpen={setHeaderIsOpen} {...props} />
+						)}
+					/>
+					<Route
+						exact
+						path='/home2'
+						render={props => (
+							<Home2 setHeaderIsOpen={setHeaderIsOpen} {...props} />
 						)}
 					/>
 					<Route exact path='/websites' component={Websites} />
