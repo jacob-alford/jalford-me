@@ -1,17 +1,17 @@
 import React, { useEffect, useRef } from 'react';
 
-import { homeProps, House } from './st';
+import { homeProps, House, Landscape } from './st';
 
 const Home = (props: homeProps) => {
 	const { setHeaderIsOpen } = props;
 	const canvas = useRef<HTMLCanvasElement>(null);
-	const horizonPerc = useRef(0.45);
+	const horizonPerc = useRef(0.75);
 	useEffect(() => {
 		setHeaderIsOpen(false);
 	}, [setHeaderIsOpen]);
 	useEffect(() => {
 		const scrollSpy = (evt: Event) => {
-			horizonPerc.current = window.scrollY / window.innerHeight + 0.45;
+			horizonPerc.current = 0.75 - window.scrollY / window.innerHeight;
 		};
 		window.addEventListener('scroll', scrollSpy);
 		return () => window.removeEventListener('scroll', scrollSpy);
@@ -98,7 +98,11 @@ const Home = (props: homeProps) => {
 			}
 		}
 	}, []);
-	return <House ref={canvas}></House>;
+	return (
+		<Landscape>
+			<House ref={canvas}></House>
+		</Landscape>
+	);
 };
 
 export default Home;
