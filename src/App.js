@@ -1,12 +1,9 @@
 import React, { useState, Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { Spring } from 'react-spring/renderprops';
-
-import IconButton from '@material-ui/core/IconButton';
-import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
 
 import NotificationsHolder from './components/sentences/NotificationsHolder';
-import Heading from './components/novels/Heading';
+import Background from './components/paragraphs/Background/Background';
+import Header from './components/paragraphs/Header/Header';
 import Footing from './components/novels/Footer';
 import BlogBar from './components/paragraphs/BlogBar';
 import NoMatch from 'components/novels/NotFound';
@@ -24,7 +21,6 @@ const Puzzles = React.lazy(() => import('./components/novels/Puzzles'));
 const About = React.lazy(() => import('./components/novels/About'));
 const Blog = React.lazy(() => import('./components/novels/Blog'));
 const Home = React.lazy(() => import('./components/novels/Home'));
-const Home2 = React.lazy(() => import('./components/paragraphs/Home2/Home2'));
 const RPN = React.lazy(() => import('./components/novels/Projects/RPN2/RPN2'));
 
 /* Puzzles */
@@ -38,40 +34,13 @@ const Puzzle3 = React.lazy(() =>
 	import('./components/novels/Puzzles/PuzzlePages/Puzzle3')
 );
 
-const styles = {
-	button: {
-		color: 'rgba(255,255,255,1)',
-		position: 'absolute',
-		left: 'calc(50% - 24px)',
-		top: '6px',
-		zIndex: 1
-	}
-};
-
 export default function App() {
 	const [headerIsOpen, setHeaderIsOpen] = useState(true);
-	const toggleHeader = () => setHeaderIsOpen(!headerIsOpen);
 	return (
 		<Router>
 			<NotificationsHolder />
-			<Heading headerIsOpen={headerIsOpen} />
-			<Spring
-				to={{
-					transform: `rotateZ(${headerIsOpen ? 0 : 180}deg)`,
-					color: headerIsOpen ? '#000000' : '#5433FF'
-				}}>
-				{newStyles => (
-					<IconButton
-						onClick={toggleHeader}
-						style={styles.button}
-						aria-expanded={headerIsOpen}
-						aria-label='Toggle Header'>
-						<KeyboardArrowUp
-							style={{ transform: newStyles.transform, color: newStyles.color }}
-						/>
-					</IconButton>
-				)}
-			</Spring>
+			<Header headerIsOpen={headerIsOpen} setHeaderIsOpen={setHeaderIsOpen} />
+			<Background />
 			<Suspense fallback={<Loader />}>
 				<Switch>
 					<Route
@@ -79,13 +48,6 @@ export default function App() {
 						path='/rpn'
 						render={props => (
 							<RPN setHeaderIsOpen={setHeaderIsOpen} {...props} />
-						)}
-					/>
-					<Route
-						exact
-						path='/home2'
-						render={props => (
-							<Home2 setHeaderIsOpen={setHeaderIsOpen} {...props} />
 						)}
 					/>
 					<Route exact path='/websites' component={Websites} />

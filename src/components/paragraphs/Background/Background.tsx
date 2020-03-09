@@ -2,13 +2,9 @@ import React, { useEffect, useRef } from 'react';
 
 import { homeProps, House, Landscape } from './st';
 
-const Home = (props: homeProps) => {
-	const { setHeaderIsOpen } = props;
+const Home = () => {
 	const canvas = useRef<HTMLCanvasElement>(null);
 	const horizonPerc = useRef(0.75);
-	useEffect(() => {
-		setHeaderIsOpen(false);
-	}, [setHeaderIsOpen]);
 	useEffect(() => {
 		const scrollSpy = (evt: Event) => {
 			horizonPerc.current = 0.75 - window.scrollY / window.innerHeight;

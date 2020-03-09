@@ -83,7 +83,6 @@ const useClasses = themeHook(
 		holder: {
 			color: ({ tldState }) =>
 				tldState === 'light' ? 'rgba(0,0,0,.87)' : 'rgba(255,255,255,1)',
-			background: ({ tldState }) => (tldState === 'light' ? '#fff' : '#232323'),
 			paddingTop: minorSpacing,
 			paddingBottom: majorSpacing,
 			marginBottom: minorSpacing,
