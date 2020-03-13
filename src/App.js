@@ -17,6 +17,7 @@ const UserPosts = React.lazy(() => import('./components/novels/UserPosts'));
 const BlogEdit = React.lazy(() => import('./components/novels/BlogEdit'));
 const BlogView = React.lazy(() => import('./components/novels/BlogView'));
 const Websites = React.lazy(() => import('./components/novels/Websites'));
+const Home2 = React.lazy(() => import('./components/novels/Home2/Home2'));
 const Puzzles = React.lazy(() => import('./components/novels/Puzzles'));
 const About = React.lazy(() => import('./components/novels/About'));
 const Blog = React.lazy(() => import('./components/novels/Blog'));
@@ -136,7 +137,8 @@ export default function App() {
 						<Blog headerIsOpen={headerIsOpen} />
 						<BlogBar breadcrumb={{ link: '/posts', label: 'Posts' }} />
 					</Route>
-					<Route exact path='/' component={Home} />
+					<Route exact path='/oldHome' component={Home} />
+					<Route exact path='/' component={Home2} />
 					<Route path='*' component={NoMatch} />
 				</Switch>
 			</Suspense>
