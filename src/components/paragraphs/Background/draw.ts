@@ -19,6 +19,7 @@ export type store = {
 	drawSky?: (skylineH: number) => void;
 	drawGrid?: (skylineH: number, skylinePos: number) => void;
 	drawGround?: (skylineH: number) => void;
+	horizonPerc: number;
 };
 
 export const init = (params: {
@@ -58,8 +59,8 @@ export const init = (params: {
 	};
 	store.drawGround = (skylineH: number) => {
 		const grad = context.createLinearGradient(0, skylineH, 0, height);
-		grad.addColorStop(0, '#5C002F');
-		grad.addColorStop(1, '#091E2B');
+		grad.addColorStop(0, 'RGBA(92, 0, 47, .89)');
+		grad.addColorStop(1, 'RGBA(9, 30, 43, .89)');
 		context.fillStyle = grad;
 		context.fillRect(0, skylineH, width, height);
 	};
@@ -70,14 +71,14 @@ export const init = (params: {
 	};
 };
 
-export const draw = (horizonPerc: number) => (params: {
+export const draw = (params: {
 	height: number;
 	width: number;
 	context: CanvasRenderingContext2D;
 	store: store;
 }): void => {
 	const { height, store } = params;
-	const { drawSky, drawGround, drawGrid } = store || {};
+	const { drawSky, drawGround, drawGrid, horizonPerc } = store || {};
 	const skylinePos = horizonPerc;
 	const skylineH =
 		getHeight(14) * height * skylinePos + (1 - skylinePos) * height;
