@@ -5,7 +5,7 @@ import { draw, store, init } from './draw';
 import { Splash, Orbital } from './style';
 
 const Home = () => {
-	const orbitCnv = useCanvas<store>(draw, null, init);
+	const orbitCnv = useCanvas<store>(draw, { rainParticles: [] }, init);
 	return (
 		<Splash>
 			<Orbital ref={orbitCnv} />

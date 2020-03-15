@@ -5,7 +5,7 @@ import { homeProps, House, Landscape } from './st';
 import { draw, init, store } from './draw';
 
 const Background = () => {
-	const horizonPerc = useRef(0.75);
+	const horizonPerc = useRef(0.6);
 	const canvas = useCanvas<store>(
 		params => {
 			const { store } = params;
@@ -17,7 +17,7 @@ const Background = () => {
 	);
 	useEffect(() => {
 		const scrollSpy = (evt: Event) => {
-			horizonPerc.current = 0.75 - window.scrollY / window.innerHeight;
+			horizonPerc.current = 0.6 - window.scrollY / window.innerHeight;
 		};
 		window.addEventListener('scroll', scrollSpy);
 		return () => window.removeEventListener('scroll', scrollSpy);

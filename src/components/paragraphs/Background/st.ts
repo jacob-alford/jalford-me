@@ -6,10 +6,8 @@ export type homeProps = {
 
 export const Landscape = styled.div`
 	position: absolute;
-	top: 0;
-	bottom: -500px;
-	left: 0;
-	right: 0;
+	width: 100%;
+	height: 125vh;
 	z-index: -1;
 `;
 
