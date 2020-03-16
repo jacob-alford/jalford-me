@@ -8,9 +8,8 @@ import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
 
 import { themeSelect } from 'theme';
 
-const [cardPadding, majorSpacing, borderRadius] = themeSelect([
+const [cardPadding, borderRadius] = themeSelect([
 	'getCardPadding',
-	'getMajorSpacing',
 	'getBorderRadius'
 ]);
 
@@ -63,11 +62,14 @@ type navItemsProps = {
 };
 const temp = a(Typography);
 export const NavItem = styled(temp)`
-	color: red;
-	background: white;
+	color: #69beef;
+	backdrop-filter: saturate(0.3) blur(0.25rem);
 	margin: 2px !important;
 	padding: 2px !important;
+	padding-left: 7px !important;
+	padding-right: 7px !important;
 	border-radius: ${borderRadius};
+	border: 1px solid #69beef;
 	filter: ${(props: navItemsProps) =>
 		props.active ? 'grayscale(0%)' : 'grayscale(100%)'};
 	cursor: ${(props: navItemsProps) => (props.active ? 'default' : 'pointer')};

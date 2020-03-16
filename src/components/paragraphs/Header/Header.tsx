@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router';
-import { useTrail, useSpring } from 'react-spring';
+import { useTrail } from 'react-spring';
 
 import { navItems } from 'config';
 import { getActiveNavItem } from 'functions';

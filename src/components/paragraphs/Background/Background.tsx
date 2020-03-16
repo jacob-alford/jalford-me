@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 
 import useCanvas from 'components/bindings/hooks/useCanvas/useCanvas';
-import { homeProps, House, Landscape } from './st';
+import { House, Landscape } from './st';
 import { draw, init, store } from './draw';
 
 const Background = () => {
-	const horizonPerc = useRef(0.6);
+	const horizonPerc = useRef(0.613);
 	const canvas = useCanvas<store>(
 		params => {
 			const { store } = params;
@@ -17,7 +17,7 @@ const Background = () => {
 	);
 	useEffect(() => {
 		const scrollSpy = (evt: Event) => {
-			horizonPerc.current = 0.6 - window.scrollY / window.innerHeight;
+			horizonPerc.current = 0.613 - window.scrollY / window.innerHeight;
 		};
 		window.addEventListener('scroll', scrollSpy);
 		return () => window.removeEventListener('scroll', scrollSpy);
