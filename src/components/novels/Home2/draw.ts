@@ -139,7 +139,7 @@ export const init = (params: {
 	store.orange = 0.5 - alpha / 2;
 
 	context.lineWidth = 10;
-	store.rainParticles = new Array(15)
+	store.rainParticles = new Array([7, 31, 69, 420][(Math.random() * 4) | 0])
 		.fill(null)
 		.map(() => rainParticle(width, height));
 	context.beginPath();
