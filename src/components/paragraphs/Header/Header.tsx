@@ -19,11 +19,11 @@ const Header = (props: HeaderProps) => {
 	const navItemStyles = useTrail(navItems.length, {
 		opacity: headerIsOpen ? 1 : 0,
 		transform: headerIsOpen
-			? `translate3d(0px, 0, 0px)`
-			: `translate3d(-15px, 0px, 0px)`,
+			? `translate3d(0px, 0, 0px) scale3d(1,1,1)`
+			: `translate3d(-15px, 0px, 0px) scale3d(0,0,0)`,
 		from: {
 			opacity: 0,
-			transform: `translate3d(-15px, 0px, 0px)`
+			transform: `translate3d(-15px, 0px, 0px) scale3d(0,0,0)`
 		},
 		config: {
 			tension: 420,

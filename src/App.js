@@ -19,8 +19,7 @@ const BlogView = React.lazy(() => import('./components/novels/BlogView'));
 const Websites = React.lazy(() => import('./components/novels/Websites'));
 const Home2 = React.lazy(() => import('./components/novels/Home2/Home2'));
 const Puzzles = React.lazy(() => import('./components/novels/Puzzles'));
-const About2 = React.lazy(() => import('./components/novels/About2/About2'));
-const About = React.lazy(() => import('./components/novels/About'));
+const About = React.lazy(() => import('./components/novels/About/About'));
 const Blog = React.lazy(() => import('./components/novels/Blog'));
 const Home = React.lazy(() => import('./components/novels/Home'));
 const RPN = React.lazy(() => import('./components/novels/Projects/RPN2/RPN2'));
@@ -99,7 +98,6 @@ export default function App() {
 							breadcrumb={{ link: '/puzzles', label: 'Puzzles' }}
 						/>
 					</Route>
-					<Route exact path='/about2' component={About2} />
 					<Route exact path='/about' component={About} />
 					<Route
 						exact
