@@ -76,16 +76,16 @@ const totalLength = blocks.reduce((acc, block) => {
 
 const About2 = () => {
 	const animBlocks = useTransition(blocks, block => block.key, {
-		initial: { transform: 'translate3d(0,-100vh,0)' },
-		from: { transform: 'translate3d(0,-100vh,0)' },
-		enter: { transform: 'translate3d(0,0vh,0)' },
-		leave: { transform: 'translate3d(0,-100vh,0)' },
+		initial: { transform: `translate3d(0px,-100vh,0)` },
+		from: { transform: `translate3d(0px,-100vh,0)` },
+		enter: { transform: `translate3d(${Math.random() * 50}px,0vh,0)` },
+		leave: { transform: `translate3d(0px,-100vh,0)` },
 		trail: 100
 	});
 	const blockItems = useTrail(totalLength, {
-		transform: `translate3d(0, 0px, 0px)`,
+		transform: `translate3d(0px, 0px, 0px)`,
 		from: {
-			transform: `translate3d(0, -50px, 0px)`
+			transform: `translate3d(0px, -50px, 0px)`
 		}
 	});
 	return (

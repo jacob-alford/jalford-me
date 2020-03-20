@@ -31,6 +31,8 @@ export const Stack = styled.div`
 
 export const Block = styled(a.div)`
 	backdrop-filter: saturate(0.3) blur(0.25rem);
+	border: 1px solid #69beef;
+	border-radius: ${radius};
 	display: flex;
 	flex-flow: row wrap;
 `;
