@@ -9,29 +9,34 @@ import { themeSelect } from 'theme';
 
 const [radius, padding] = themeSelect(['getBorderRadius', 'getPaperPadding']);
 
-export const AboutMe = styled(Container)`
+export const Centerer = styled.div`
 	display: flex;
-	flex-flow: column wrap;
 	justify-content: center;
 	align-items: center;
+	padding: 16px;
+	padding-top: 128px;
+`;
+export const AboutMe = styled.div`
+	display: grid;
+	grid-template-columns: minmax(min-content, 100%);
+	grid-template-rows: auto auto;
+	align-items: center;
+	justify-items: center;
 `;
 
 export const Me = styled(a(Avatar))`
-	height: 200px !important;
-	width: 200px !important;
-	margin-top: 100px;
-	margin-bottom: 100px;
 	cursor: pointer;
+	width: 300px !important;
+	height: 300px !important;
 `;
 
 export const Stack = styled.div`
-	display: grid;
-	grid-template-columns: 1fr;
-	grid-auto-rows: auto;
+	display: flex;
+	flex-flow: column wrap;
 `;
 
 export const Block = styled(a.div)`
-	backdrop-filter: saturate(0.3) blur(0.25rem);
+	backdrop-filter: saturate(0);
 	border: 1px solid
 		${(props: { color?: string }): string => props.color ?? '#69beef'};
 	border-radius: ${radius};
@@ -44,7 +49,6 @@ export const Block = styled(a.div)`
 export const IconList = styled.div`
 	display: flex;
 	flex-flow: row wrap;
-	width: 100%;
 	justify-content: center;
 	align-items: center;
 `;
@@ -55,10 +59,11 @@ export const Header = styled.div`
 	width: 100%;
 	text-align: center;
 	font-size: 3rem;
+	letter-spacing: 12px;
+	color: ${(props: { color?: string }): string => props.color ?? '#69beef'};
 `;
 
 const Img = styled(a.img)`
-	width: 75px;
 	height: 75px;
 `;
 
