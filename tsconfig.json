@@ -1,15 +1,15 @@
 {
 	"compilerOptions": {
 		"baseUrl": "src",
-		"target": "es2017",
-		"lib": ["dom", "dom.iterable", "esnext"],
+		"target": "ES6",
+		"lib": ["dom", "dom.iterable", "ESNext"],
 		"allowJs": true,
 		"skipLibCheck": true,
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
 		"strict": true,
 		"forceConsistentCasingInFileNames": true,
-		"module": "esnext",
+		"module": "CommonJS",
 		"moduleResolution": "node",
 		"resolveJsonModule": true,
 		"noEmit": true,
