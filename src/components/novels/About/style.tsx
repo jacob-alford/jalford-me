@@ -33,17 +33,22 @@ export const Me = styled(a(Avatar))`
 export const Stack = styled.div`
 	display: flex;
 	flex-flow: column wrap;
+	justify-content: center;
+	align-items: center;
 `;
 
 export const Block = styled(a.div)`
 	backdrop-filter: saturate(0);
 	border: 1px solid
 		${(props: { color?: string }): string => props.color ?? '#69beef'};
-	border-radius: ${radius};
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	padding: 12px;
+	margin-top: 2px;
+	width: max-content;
+	max-width: 85vw;
+	filter: drop-shadow(0 0 0.2rem rgba(0, 0, 0, 0.23));
 `;
 
 export const IconList = styled.div`
@@ -60,11 +65,14 @@ export const Header = styled.div`
 	text-align: center;
 	font-size: 3rem;
 	letter-spacing: 12px;
+	border-bottom: 1px solid
+		${(props: { color?: string }): string => props.color ?? '#69beef'};
 	color: ${(props: { color?: string }): string => props.color ?? '#69beef'};
 `;
 
 const Img = styled(a.img)`
 	height: 75px;
+	filter: drop-shadow(0 0 0.2rem rgba(0, 0, 0, 0.23)) !important;
 `;
 
 const ImgHolder = styled(a.div)`
