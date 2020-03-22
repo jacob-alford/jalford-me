@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTrail, useSpring } from 'react-spring';
+import Katex from 'components/words/Katex/Katex';
 import useDropSlide from './useDropSlide';
 import {
 	AboutMe,
@@ -9,21 +10,20 @@ import {
 	Header,
 	Image,
 	IconList,
-	Centerer
+	Centerer,
+	Design,
+	HTML
 } from './style';
 import meImg from 'assets/me/CUMP_jalford-me.jpg';
-import {
-	reactLogo,
-	tsLogo,
-	reduxLogo,
-	jestLogo,
-	webglLogo,
-	muiLogo
-} from './logos';
+import Logos from './logos';
+
+const {
+	FrontEnd: { reactLogo, tsLogo, reduxLogo, jestLogo, webglLogo, muiLogo },
+	BackEnd: { awsLogo, firebaseLogo, nodeLogo }
+} = Logos;
 
 const About2 = () => {
 	const [straight, setStraight] = useState(false);
-	const [imgLoaded, setImgLoaded] = useState(false);
 
 	const [meImgStyles, setMeImgStyles] = useSpring(() => ({
 		opacity: 0,
@@ -38,14 +38,34 @@ const About2 = () => {
 			precision: 0.00001
 		}
 	}));
-
+	const [[aUx, aBook, aCamera], setCreativeIcons] = useTrail(3, () => ({
+		from: {
+			opacity: 0
+		}
+	}));
+	const [[aLinAlg, aPhys, aPhil, aPsy, aTechWr], setScienceIcons] = useTrail(
+		5,
+		() => ({
+			from: {
+				opacity: 0
+			},
+			onRest: () => setCreativeIcons({ opacity: 1 })
+		})
+	);
+	const [[aAws, aFirebase, aNode], setBackEndIcons] = useTrail(3, () => ({
+		from: {
+			opacity: 0
+		},
+		onRest: () => setScienceIcons({ opacity: 1 })
+	}));
 	const [
 		[aReact, aRedux, aTs, aJest, aWebgl, aMui],
 		setFrontEndIcons
 	] = useTrail(6, () => ({
 		from: {
 			opacity: 0
-		}
+		},
+		onRest: () => setBackEndIcons({ opacity: 1 })
 	}));
 
 	const frontEndFall = useDropSlide(999, straight, () => {
@@ -58,15 +78,14 @@ const About2 = () => {
 		});
 	});
 	const backEndFall = useDropSlide(666, straight);
-	const itFall = useDropSlide(333, straight);
-	const mathFall = useDropSlide(0, straight);
+	const mathFall = useDropSlide(333, straight);
+	const creativeFall = useDropSlide(0, straight);
 
 	return (
 		<Centerer>
 			<AboutMe>
 				<Me
 					style={meImgStyles}
-					onLoad={() => setImgLoaded(true)}
 					onDragStart={evt => evt.preventDefault()}
 					src={meImg}
 					onClick={() => setStraight(!straight)}
@@ -115,15 +134,144 @@ const About2 = () => {
 					</Block>
 					<Block style={backEndFall} color='#55CBD9'>
 						<Header color='#55CBD9'>Back End</Header>
-						<IconList></IconList>
-					</Block>
-					<Block style={itFall} color='#6171F8'>
-						<Header color='#6171F8'>IT</Header>
-						<IconList></IconList>
+						<IconList>
+							<Image
+								url='https://aws.amazon.com/'
+								style={aAws}
+								title='Amazon Web Services'
+								src={awsLogo}
+							/>
+							<Image
+								url='https://firebase.google.com/'
+								style={aFirebase}
+								title='Firebase'
+								src={firebaseLogo}
+							/>
+							<Image
+								url='https://nodejs.org/en/'
+								style={aNode}
+								title='Node.js'
+								src={nodeLogo}
+							/>
+						</IconList>
 					</Block>
 					<Block style={mathFall} color='#69beef'>
 						<Header color='#69beef'>Science</Header>
-						<IconList></IconList>
+						<IconList>
+							<Image
+								url='https://en.wikipedia.org/wiki/Numerical_linear_algebra'
+								style={aLinAlg}
+								title='Numerical Mathematics'
+								Render={() => (
+									<Katex
+										str={String.raw`\bold{A} = \bold{Q}\bold{\Lambda}\bold{Q}^{-1}`}
+										inline
+										style={{
+											color: 'white',
+											fontSize: '2rem',
+											border: '1px solid rgba(255,255,255,.5)',
+											borderRadius: '12px',
+											padding: '8px'
+										}}
+									/>
+								)}
+							/>
+							<Image
+								url='https://en.wikipedia.org/wiki/Physics'
+								style={aPhys}
+								title='Physics'
+								Render={() => (
+									<Katex
+										str={String.raw`\frac{\partial^2 u}{\partial t^2}=k \bold{\nabla^2}u`}
+										inline
+										style={{
+											color: 'white',
+											fontSize: '2rem',
+											border: '1px solid rgba(255,255,255,.5)',
+											borderRadius: '12px',
+											padding: '8px'
+										}}
+									/>
+								)}
+							/>
+							<Image
+								url='https://en.wikipedia.org/wiki/Philosophy'
+								style={aPhil}
+								title='Philosophy'
+								Render={() => (
+									<Katex
+										str={String.raw`\Phi`}
+										inline
+										style={{
+											color: 'white',
+											fontSize: '2rem',
+											border: '1px solid rgba(255,255,255,.5)',
+											borderRadius: '12px',
+											padding: '8px'
+										}}
+									/>
+								)}
+							/>
+							<Image
+								url='https://en.wikipedia.org/wiki/Psychology'
+								style={aPsy}
+								title='Psychology'
+								Render={() => (
+									<Katex
+										str={String.raw`\Psi`}
+										inline
+										style={{
+											color: 'white',
+											fontSize: '2rem',
+											border: '1px solid rgba(255,255,255,.5)',
+											borderRadius: '12px',
+											padding: '8px'
+										}}
+									/>
+								)}
+							/>
+							<Image
+								url='https://en.wikipedia.org/wiki/Technical_writing'
+								style={aTechWr}
+								title='Technical Writing'
+								Render={() => (
+									<Katex
+										str={String.raw`\text{click my face}`}
+										inline
+										style={{
+											color: 'white',
+											fontSize: '2rem',
+											border: '1px solid rgba(255,255,255,.5)',
+											borderRadius: '12px',
+											padding: '8px'
+										}}
+									/>
+								)}
+							/>
+						</IconList>
+					</Block>
+					<Block style={creativeFall} color='#6171F8'>
+						<Header color='#6171F8'>Creative</Header>
+						<IconList>
+							<Image
+								url='https://developer.apple.com/design/human-interface-guidelines/'
+								style={aUx}
+								title='design'
+								Render={() => <Design color='rgba(0,0,0,0)'>UX</Design>}
+							/>
+							<Image
+								url='/posts'
+								style={aBook}
+								title='creative writing'
+								Render={() => <Design color='black'>📚</Design>}
+							/>
+							<Image
+								url='https://northrup.photo/product/stunning-digital-photography/'
+								style={aCamera}
+								title='photography'
+								Render={() => <Design color='black'>📷</Design>}
+							/>
+						</IconList>
 					</Block>
 				</Stack>
 			</AboutMe>

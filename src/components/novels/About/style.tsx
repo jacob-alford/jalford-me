@@ -46,8 +46,7 @@ export const Block = styled(a.div)`
 	justify-content: center;
 	padding: 12px;
 	margin-top: 2px;
-	width: max-content;
-	max-width: 85vw;
+	width: 85vw;
 	filter: drop-shadow(0 0 0.2rem rgba(0, 0, 0, 0.23));
 `;
 
@@ -89,18 +88,44 @@ const ImgTitle = styled.h3`
 	padding: 5px;
 `;
 
-export const Image = (props: {
-	src: string;
+type ImageProps = {
+	src?: string;
+	Render?: React.FunctionComponent;
+	url: string;
 	title: string;
 	style: any;
-	url: string;
-}) => {
-	const { src, title, style, url } = props;
-	const handleClick = useRedirect(url);
-	return (
-		<ImgHolder onClick={handleClick} style={style}>
-			<Img onDragStart={evt => evt.preventDefault()} src={src} alt={title} />
-			<ImgTitle>{title}</ImgTitle>
-		</ImgHolder>
-	);
 };
+export const HTML = (props: { str: string }) => (
+	<span dangerouslySetInnerHTML={{ __html: props.str }} />
+);
+export const Image = (props: ImageProps) => {
+	const { src, Render, title, style, url } = props;
+	const handleClick = useRedirect(url);
+	if (src)
+		return (
+			<ImgHolder onClick={handleClick} style={style}>
+				<Img onDragStart={evt => evt.preventDefault()} src={src} alt={title} />
+				<ImgTitle>{title}</ImgTitle>
+			</ImgHolder>
+		);
+	if (Render)
+		return (
+			<ImgHolder onClick={handleClick} style={style}>
+				<Render />
+				<ImgTitle>{title}</ImgTitle>
+			</ImgHolder>
+		);
+	return null;
+};
+
+export const Design = styled.div`
+	font-size: 2rem;
+	background: linear-gradient(#c70066, #c74f06);
+	background-clip: text;
+	-webkit-background-clip: text;
+	font-weight: bold;
+	border: 1px dashed rgba(255, 255, 255, 0.35);
+	border-radius: ${radius};
+	padding: 8px;
+	color: ${(props: { color: string }) => props.color};
+`;
