@@ -24,10 +24,24 @@ export const AboutMe = styled.div`
 	justify-items: center;
 `;
 
+export const MeHolder = styled.div`
+	height: max-content;
+	display: flex;
+	flex-flow: row wrap-reverse;
+	align-items: center;
+	justify-content: flex-start;
+	width: 100%;
+`;
 export const Me = styled(a(Avatar))`
 	cursor: pointer;
 	width: 300px !important;
 	height: 300px !important;
+`;
+export const MeText = styled(a.div)`
+	color: white;
+	width: 50vw;
+	font-size: 2rem;
+	flex-grow: 2;
 `;
 
 export const Stack = styled.div`
@@ -38,7 +52,7 @@ export const Stack = styled.div`
 `;
 
 export const Block = styled(a.div)`
-	backdrop-filter: saturate(0);
+	background: black;
 	border: 1px solid
 		${(props: { color?: string }): string => props.color ?? '#69beef'};
 	display: flex;

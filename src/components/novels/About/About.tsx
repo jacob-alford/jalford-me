@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { useTrail, useSpring } from 'react-spring';
 import Katex from 'components/words/Katex/Katex';
+import Typed from 'components/sentences/Typed';
 import useDropSlide from './useDropSlide';
 import {
 	AboutMe,
 	Stack,
 	Me,
+	MeText,
+	MeHolder,
 	Block,
 	Header,
 	Image,
@@ -22,8 +25,14 @@ const {
 	BackEnd: { awsLogo, firebaseLogo, nodeLogo }
 } = Logos;
 
+const descriptionStrings = [
+	'A philosophy focused mathematician who likes^333',
+	'A philosophy focused mathematician who loves web stuff.'
+];
+
 const About2 = () => {
 	const [straight, setStraight] = useState(false);
+	const [shouldType, setShouldType] = useState(false);
 
 	const [meImgStyles, setMeImgStyles] = useSpring(() => ({
 		opacity: 0,
@@ -67,6 +76,10 @@ const About2 = () => {
 		},
 		onRest: () => setBackEndIcons({ opacity: 1 })
 	}));
+	const [textFade, setTextFade] = useSpring(() => ({
+		opacity: 0,
+		from: { opacity: 0 }
+	}));
 
 	const frontEndFall = useDropSlide(999, straight, () => {
 		setMeImgStyles({
@@ -76,6 +89,8 @@ const About2 = () => {
 		setFrontEndIcons({
 			opacity: 1
 		});
+		setTextFade({ opacity: 1 });
+		setShouldType(true);
 	});
 	const backEndFall = useDropSlide(666, straight);
 	const mathFall = useDropSlide(333, straight);
@@ -84,12 +99,23 @@ const About2 = () => {
 	return (
 		<Centerer>
 			<AboutMe>
-				<Me
-					style={meImgStyles}
-					onDragStart={evt => evt.preventDefault()}
-					src={meImg}
-					onClick={() => setStraight(!straight)}
-				/>
+				<MeHolder>
+					<Me
+						style={meImgStyles}
+						onDragStart={evt => evt.preventDefault()}
+						src={meImg}
+						onClick={() => setStraight(!straight)}
+					/>
+					<MeText style={textFade}>
+						<HTML str='&#8220;' />
+						<Typed
+							shouldStart={shouldType}
+							strings={descriptionStrings}
+							backDelay={0}
+						/>
+						<HTML str='&#8221;' />
+					</MeText>
+				</MeHolder>
 				<Stack>
 					<Block style={frontEndFall} color='#62F8De'>
 						<Header color='#62F8De'>Front End</Header>
@@ -263,13 +289,25 @@ const About2 = () => {
 								url='/posts'
 								style={aBook}
 								title='creative writing'
-								Render={() => <Design color='black'>📚</Design>}
+								Render={() => (
+									<Design color='black'>
+										<span aria-label='books' role='img'>
+											📚
+										</span>
+									</Design>
+								)}
 							/>
 							<Image
 								url='https://northrup.photo/product/stunning-digital-photography/'
 								style={aCamera}
 								title='photography'
-								Render={() => <Design color='black'>📷</Design>}
+								Render={() => (
+									<Design color='black'>
+										<span aria-label='camera' role='img'>
+											📷
+										</span>
+									</Design>
+								)}
 							/>
 						</IconList>
 					</Block>
