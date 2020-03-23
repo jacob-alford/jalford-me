@@ -28,7 +28,7 @@ function Puzzles() {
 		}
 	);
 	return (
-		<Holder direction='row'>
+		<Holder direction='row' style={{ paddingTop: '128px' }}>
 			{puzzleAnim.map(
 				({ item: { emoji, difficulty, link, uid }, props: newStyles }) => (
 					<a.div style={newStyles} key={uid}>

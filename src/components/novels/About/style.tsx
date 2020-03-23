@@ -1,13 +1,12 @@
 import React from 'react';
 import { animated as a } from 'react-spring';
 import styled from 'styled-components';
-import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
 
 import useRedirect from 'components/bindings/hooks/useRedirect';
 import { themeSelect } from 'theme';
 
-const [radius, padding] = themeSelect(['getBorderRadius', 'getPaperPadding']);
+const [radius] = themeSelect(['getBorderRadius']);
 
 export const Centerer = styled.div`
 	display: flex;
@@ -36,12 +35,15 @@ export const Me = styled(a(Avatar))`
 	cursor: pointer;
 	width: 300px !important;
 	height: 300px !important;
+	filter: drop-shadow(0 0 1rem rgba(0, 0, 0, 0.23)) !important;
 `;
 export const MeText = styled(a.div)`
 	color: white;
 	width: 50vw;
 	font-size: 2rem;
 	flex-grow: 2;
+	padding: 12px;
+	filter: drop-shadow(0 0 1rem rgba(0, 0, 0, 0.23)) !important;
 `;
 
 export const Stack = styled.div`
@@ -59,9 +61,8 @@ export const Block = styled(a.div)`
 	flex-direction: column;
 	justify-content: center;
 	padding: 12px;
-	margin-top: 2px;
 	width: 85vw;
-	filter: drop-shadow(0 0 0.2rem rgba(0, 0, 0, 0.23));
+	filter: drop-shadow(0 0 1rem rgba(0, 0, 0, 0.23));
 `;
 
 export const IconList = styled.div`
@@ -85,7 +86,6 @@ export const Header = styled.div`
 
 const Img = styled(a.img)`
 	height: 75px;
-	filter: drop-shadow(0 0 0.2rem rgba(0, 0, 0, 0.23)) !important;
 `;
 
 const ImgHolder = styled(a.div)`
@@ -134,6 +134,7 @@ export const Image = (props: ImageProps) => {
 
 export const Design = styled.div`
 	font-size: 2rem;
+	height: max-content;
 	background: linear-gradient(#c70066, #c74f06);
 	background-clip: text;
 	-webkit-background-clip: text;

@@ -1,5 +1,4 @@
 import React from 'react';
-import { animated as a } from 'react-spring';
 
 import { MUITitle, DB, Blue, Gray } from './style';
 

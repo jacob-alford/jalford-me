@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSpring } from 'react-spring';
-import Background from 'components/paragraphs/Background/Background';
 import useCanvas from 'components/bindings/hooks/useCanvas/useCanvas';
 import { draw, store, init } from './draw';
 import { Splash, Orbital } from './style';
@@ -39,7 +38,6 @@ const Home = () => {
 			transform: `scale3d(0,0,0)`,
 			opacity: 0
 		},
-		delay: 1000,
 		config: {
 			tension: 69,
 			friction: 23,

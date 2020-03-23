@@ -44,13 +44,7 @@ export default function App() {
 				<Header headerIsOpen={headerIsOpen} setHeaderIsOpen={setHeaderIsOpen} />
 				<Suspense fallback={<Loader />}>
 					<Switch>
-						<Route
-							exact
-							path='/rpn'
-							render={props => (
-								<RPN setHeaderIsOpen={setHeaderIsOpen} {...props} />
-							)}
-						/>
+						<Route exact path='/rpn' render={props => <RPN {...props} />} />
 						<Route exact path='/websites' component={Websites} />
 						<Route exact path='/admin/users'>
 							<UsersTable />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
 
@@ -11,7 +11,7 @@ type katexProps = {
 const Katex = (props: katexProps) => {
 	const { str, inline = false, style } = props;
 	const [html, setHtml] = useState('');
-	useEffect(
+	useLayoutEffect(
 		() =>
 			setHtml(
 				katex.renderToString(str, {
