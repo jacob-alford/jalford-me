@@ -86,7 +86,7 @@ export default function DuncanStrauss(props) {
 		context.lineCap = 'round';
 
 		const particles = [];
-		for (let i = 0; i < 250; i++)
+		for (let i = 0; i < 222; i++)
 			particles.push({
 				x: Math.random() * width,
 				y: Math.random() * height,

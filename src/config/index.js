@@ -10,13 +10,14 @@ export const socialMedia = {
 };
 
 export const navItems = [
-	{ text: 'Home', url: '/' },
-	{ text: 'About', url: '/about' },
-	{ text: 'RPN', url: '/rpn' },
-	{ text: 'Websites', url: '/websites' },
-	{ text: 'Posts', url: '/posts' },
-	{ text: 'Puzzles', url: '/puzzles' },
-	{ text: 'Resume', url: 'https://www.visualcv.com/jacob-alford' }
+	{ text: 'home', url: '/' },
+	{ text: 'about', url: '/about' },
+	{ text: 'rpn', url: '/rpn' },
+	{ text: 'websites', url: '/websites' },
+	{ text: 'posts', url: '/posts' },
+	{ text: 'puzzles', url: '/puzzles' },
+	{ text: 'github', url: 'https://github.com/jacob-alford' },
+	{ text: 'resume', url: 'https://www.visualcv.com/jacob-alford' }
 ];
 
 export const homePageImage = {

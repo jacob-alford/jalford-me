@@ -1,26 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import katex from 'katex';
+import 'katex/dist/katex.min.css';
 
 type katexProps = {
-	children: string;
-	type?: string;
+	str: string;
+	inline?: boolean;
+	style?: React.CSSProperties;
 };
 
 const Katex = (props: katexProps) => {
-	const { children, type } = props;
+	const { str, inline = false, style } = props;
 	const [html, setHtml] = useState('');
-	useEffect(
+	useLayoutEffect(
 		() =>
 			setHtml(
-				katex.renderToString(children, {
+				katex.renderToString(str, {
 					throwOnError: false,
-					displayMode: true
+					displayMode: !inline
 				})
 			),
-
-		[children, type]
+		[str, inline]
 	);
-	return <span dangerouslySetInnerHTML={{ __html: html }} />;
+	if (inline)
+		return <span style={style} dangerouslySetInnerHTML={{ __html: html }} />;
+	return <div style={style} dangerouslySetInnerHTML={{ __html: html }} />;
 };
 
 export default Katex;

@@ -1,19 +1,21 @@
 import styled from 'styled-components';
-
+import { animated as a } from 'react-spring';
 export type homeProps = {
 	setHeaderIsOpen: (val: boolean) => void;
 };
 
-export const Landscape = styled.div`
+export const Landscape = styled(a.div)`
 	position: absolute;
-	top: 0;
-	bottom: -500px;
-	left: 0;
-	right: 0;
-	z-index: -1;
+	width: 100%;
+	min-height: 125vh;
+	height: max-content;
 `;
 
 export const House = styled.canvas`
+	position: absolute;
+	z-index: -1;
+	top: 0px;
+	left: 0px;
 	width: 100%;
 	height: 100%;
 `;

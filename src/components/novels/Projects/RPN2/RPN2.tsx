@@ -6,6 +6,7 @@ import FunctionsIcon from '@material-ui/icons/Functions';
 import AddIcon from '@material-ui/icons/Add';
 import SubtractIcon from '@material-ui/icons/Remove';
 import MultiplyIcon from '@material-ui/icons/Clear';
+import withPageFade from 'components/bindings/wrappers/withPageFade';
 
 import {
 	Group,
@@ -59,10 +60,7 @@ const Phi = () => <span dangerouslySetInnerHTML={{ __html: '&phi;' }} />;
 const Sigma = () => <span dangerouslySetInnerHTML={{ __html: '&sigma;' }} />;
 const Product = () => <span dangerouslySetInnerHTML={{ __html: '&Pi;' }} />;
 
-export default function RPN2(props: {
-	setHeaderIsOpen: (val: boolean) => void;
-}) {
-	const { setHeaderIsOpen } = props;
+const RPN2 = () => {
 	const [degRad, setDegRad] = useState(drEnum.rad);
 	const [constOpen, setConstOpen] = useState(false);
 	const [funcOpen, setFuncOpen] = useState(false);
@@ -125,7 +123,7 @@ export default function RPN2(props: {
 		document.addEventListener('keydown', handleKeydown);
 		return () => document.removeEventListener('keydown', handleKeydown);
 	}, [amendEntry, entry, operate, stack]);
-	useScrollToTopOnload(() => setHeaderIsOpen(false));
+	useScrollToTopOnload();
 	const toggleConst = useCallback(() => {
 		if (funcOpen) setFuncOpen(false);
 		if (constOpen) setConstOpen(false);
@@ -397,4 +395,6 @@ export default function RPN2(props: {
 			</Row>
 		</RPNContainer>
 	);
-}
+};
+
+export default withPageFade(RPN2);

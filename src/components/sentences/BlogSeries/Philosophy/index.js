@@ -133,7 +133,7 @@ const useClasses = themeHook({
 	}
 });
 
-export default function Philosophy(props) {
+export default function Philosophy() {
 	const data = useSeriesConnect('Philosophy');
 	const screenTooSmall = useMediaQuery('(max-width:400px)');
 	const [selectedPhi, setSelectedPhi] = useState(0);

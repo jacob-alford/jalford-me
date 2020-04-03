@@ -27,16 +27,16 @@ type ButtProps = {
 	colour: string;
 };
 const InnerButton = styled(Button)`
-	color: ${(props: ButtProps) => props.colour};
-	text-transform: none;
-	font-size: 1.5rem;
+	color: ${(props: ButtProps) => props.colour} !important;
+	text-transform: none !important;
+	font-size: 1.5rem !important;
 	width: 100%;
 	height: 100%;
 	display: block;
 	border-radius: 16px;
 	line-height: 0px;
 	@media (max-height: 500px) {
-		font-size: 0.75rem;
+		font-size: 0.75rem !important;
 	}
 `;
 
