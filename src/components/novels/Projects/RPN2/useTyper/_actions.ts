@@ -32,8 +32,7 @@ const typeActions: typeForm = {
 		state[0] === '-'
 			? drop(state.split('')).join('')
 			: concat(['-'], state.split('')).join(''),
-	[npButt.backspace]: (state: string): string =>
-		dropRight(state.split('')).join(''),
+	[npButt.backspace]: (state: string): string => dropRight(state.split('')).join(''),
 	[npButt.clear]: (): string => ''
 };
 

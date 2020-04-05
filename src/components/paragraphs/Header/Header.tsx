@@ -33,10 +33,7 @@ const Header = (props: HeaderProps) => {
 	});
 	return (
 		<NavItems>
-			<ToggleArrow
-				headerIsOpen={headerIsOpen}
-				setHeaderIsOpen={setHeaderIsOpen}
-			/>
+			<ToggleArrow headerIsOpen={headerIsOpen} setHeaderIsOpen={setHeaderIsOpen} />
 			{navItemStyles.map((animStyles, index) => (
 				<NavItem
 					active={getActiveNavItem(location.pathname) === index ? 1 : 0}

@@ -35,8 +35,7 @@ const useClasses = themeHook(['getPaperPadding'], ([paperPadding]) => ({
 		minHeight: '175px',
 		margin: paperPadding,
 		borderRadius: '8px',
-		border: ({ difficulty = 'easy' }) =>
-			`solid 4px ${getDifficulty(difficulty) || ''}`,
+		border: ({ difficulty = 'easy' }) => `solid 4px ${getDifficulty(difficulty) || ''}`,
 		filter: 'drop-shadow(0 0 1rem rgba(0, 0, 0, 0.23))'
 	},
 	icon: {

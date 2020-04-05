@@ -17,10 +17,20 @@ import Visibility from '@material-ui/icons/Visibility';
 import Edit from '@material-ui/icons/Edit';
 
 export {
-  Container, Typography , Paper,
-  CircularProgress, Grid, InputBase,
-  Button, IconButton, Chip,
-  TextField, Switch, FormControlLabel,
-  Divider, Slider,
-  Visibility , Edit
+	Container,
+	Typography,
+	Paper,
+	CircularProgress,
+	Grid,
+	InputBase,
+	Button,
+	IconButton,
+	Chip,
+	TextField,
+	Switch,
+	FormControlLabel,
+	Divider,
+	Slider,
+	Visibility,
+	Edit
 };

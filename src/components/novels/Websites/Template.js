@@ -17,70 +17,62 @@ import useTLD from 'components/bindings/hooks/useTLD';
 const getLightModeColor = featured => (featured ? '#fff' : '#223');
 const getDarkModeColor = featured => (featured ? '#fff' : '#eee');
 const getColor = (featured, tldState) =>
-	tldState === 'light'
-		? getLightModeColor(featured)
-		: getDarkModeColor(featured);
+	tldState === 'light' ? getLightModeColor(featured) : getDarkModeColor(featured);
 const getLightModeBgColor = featured => (featured ? '#232323' : '#fefeff');
 const getDarkModeBgColor = featured => (featured ? '#494949' : '#232323');
 const getBgColor = (featured, tldState) =>
-	tldState === 'light'
-		? getLightModeBgColor(featured)
-		: getDarkModeBgColor(featured);
+	tldState === 'light' ? getLightModeBgColor(featured) : getDarkModeBgColor(featured);
 
-const useClasses = themeHook(
-	['getGutter', 'getMajorSpacing'],
-	([gutter, spacing]) => ({
-		title: {
-			textAlign: 'center',
-			color: ({ featured, tldState }) => getColor(featured, tldState),
-			fontWeight: 'bold',
-			marginTop: spacing,
-			transition: 'color .5s'
-		},
-		subtitle: {
-			textAlign: 'center',
-			color: ({ featured, tldState }) => getColor(featured, tldState),
-			transition: 'color .5s'
-		},
-		superContainer: {
-			width: '100%',
-			minHeight: '100vh',
-			backgroundColor: ({ featured, tldState }) =>
-				getBgColor(featured, tldState),
-			transition: 'background .5s'
-		},
-		image: {
-			width: '85vw',
-			maxWidth: '752px',
-			cursor: 'pointer'
-		},
-		imageHolder: {
-			overflowY: 'hidden',
-			marginTop: '96px',
-			boxShadow: '0px 0px 77px -32px rgba(0,0,0,.75)'
-		},
-		itemContainer: {
-			padding: '14px',
-			borderRadius: '5px',
-			backgroundColor: 'black'
-		},
-		button: {
-			marginBottom: gutter,
-			fontSize: '1.25rem',
-			color: '#3af'
-		},
-		date: {
-			fontWeight: 'lighter',
-			color: ({ featured, tldState }) => getColor(featured, tldState),
-			marginTop: gutter,
-			marginBottom: gutter,
-			transition: 'color .5s'
-		},
-		togglerHolder: {
-			width: '100%'
-		}
-	})
-);
+const useClasses = themeHook(['getGutter', 'getMajorSpacing'], ([gutter, spacing]) => ({
+	title: {
+		textAlign: 'center',
+		color: ({ featured, tldState }) => getColor(featured, tldState),
+		fontWeight: 'bold',
+		marginTop: spacing,
+		transition: 'color .5s'
+	},
+	subtitle: {
+		textAlign: 'center',
+		color: ({ featured, tldState }) => getColor(featured, tldState),
+		transition: 'color .5s'
+	},
+	superContainer: {
+		width: '100%',
+		minHeight: '100vh',
+		backgroundColor: ({ featured, tldState }) => getBgColor(featured, tldState),
+		transition: 'background .5s'
+	},
+	image: {
+		width: '85vw',
+		maxWidth: '752px',
+		cursor: 'pointer'
+	},
+	imageHolder: {
+		overflowY: 'hidden',
+		marginTop: '96px',
+		boxShadow: '0px 0px 77px -32px rgba(0,0,0,.75)'
+	},
+	itemContainer: {
+		padding: '14px',
+		borderRadius: '5px',
+		backgroundColor: 'black'
+	},
+	button: {
+		marginBottom: gutter,
+		fontSize: '1.25rem',
+		color: '#3af'
+	},
+	date: {
+		fontWeight: 'lighter',
+		color: ({ featured, tldState }) => getColor(featured, tldState),
+		marginTop: gutter,
+		marginBottom: gutter,
+		transition: 'color .5s'
+	},
+	togglerHolder: {
+		width: '100%'
+	}
+}));
 
 const resolveDirection = tooSmall => (tooSmall ? 'col' : 'row');
 
@@ -93,10 +85,7 @@ export default function TemplateWebsite(props) {
 	const classes = useClasses({ ...props, tldState });
 	const history = useHistory();
 	const handleImgRedirect = useCallback(() => {
-		if (
-			(image && image.href.includes('http')) ||
-			(video && video.href.includes('http'))
-		)
+		if ((image && image.href.includes('http')) || (video && video.href.includes('http')))
 			window.location.href = image.href;
 		else history.push((image && image.href) || (video && video.href));
 	}, [image, video, history]);
@@ -107,10 +96,7 @@ export default function TemplateWebsite(props) {
 				className={classes.superContainer}
 				wrap='noWrap'
 				justifyContent={tooSmall4Img ? 'space-around' : 'center'}>
-				<Container
-					className={classes.togglerHolder}
-					justify='flex-end'
-					direction='row'>
+				<Container className={classes.togglerHolder} justify='flex-end' direction='row'>
 					<LightDarkToggler mode={tldState} toggle={toggleTld} />
 				</Container>
 				<Container direction='col'>
@@ -131,10 +117,7 @@ export default function TemplateWebsite(props) {
 						</Typography>
 					</Container>
 					{!action.disabled ? (
-						<Container
-							direction='row'
-							justify='space-around'
-							className={classes.button}>
+						<Container direction='row' justify='space-around' className={classes.button}>
 							<LiveDemo text={action.text} href={action.href} />
 						</Container>
 					) : null}

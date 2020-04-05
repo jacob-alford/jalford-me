@@ -35,15 +35,12 @@ const colorList = [
 	'#FC6B68'
 ];
 const neonColors = [...toRGB(...colorList)];
-const randomColor = () =>
-	neonColors[Math.floor(Math.random() * neonColors.length)];
-const colorString = (arr, alpha) =>
-	`rgba(${arr[0]},${arr[1]},${arr[2]},${alpha})`;
+const randomColor = () => neonColors[Math.floor(Math.random() * neonColors.length)];
+const colorString = (arr, alpha) => `rgba(${arr[0]},${arr[1]},${arr[2]},${alpha})`;
 class randomBokehBall {
 	constructor(width, height, index) {
 		this.index = index;
-		this.radius =
-			Math.random() * (Math.min(width, 1000) / 15) + Math.min(width, 1000) / 20;
+		this.radius = Math.random() * (Math.min(width, 1000) / 15) + Math.min(width, 1000) / 20;
 		this.x = Math.random() * width * 0.5;
 		this.y = (Math.random() * height) / 2 + height / 4;
 		this.fadeRate = 0.01;
@@ -58,10 +55,7 @@ class randomBokehBall {
 		this.doesGrow = Math.random() < 0.009 ? 0 : 1;
 		this.doesMove = Math.random() < 0.009 ? 0 : 1;
 		this.moveRate =
-			(Math.random() * 0.35 + 0.35) *
-			this.direction *
-			this.doesMove *
-			this.doesGrow;
+			(Math.random() * 0.35 + 0.35) * this.direction * this.doesMove * this.doesGrow;
 		this.growRate = 0.00045 * this.direction * this.doesMove * this.doesGrow;
 		this.currentGrow = 1;
 	}
@@ -80,10 +74,7 @@ const progressBall = (ball, bokeh) => {
 		ball = null;
 	} else {
 		/* Fade / Grow In */
-		if (
-			ball.currentFade < ball.maxOpacity &&
-			ball.currentLinger < ball.lingerDuration
-		) {
+		if (ball.currentFade < ball.maxOpacity && ball.currentLinger < ball.lingerDuration) {
 			if (ball.currentFade + ball.fadeRate < ball.maxOpacity)
 				ball.currentFade += ball.fadeRate;
 			else ball.currentFade = ball.maxOpacity;
@@ -93,8 +84,7 @@ const progressBall = (ball, bokeh) => {
 				ball.currentLinger++;
 				/* Fade Out */
 			} else {
-				if (ball.currentFade - ball.fadeRate > 0)
-					ball.currentFade -= ball.fadeRate;
+				if (ball.currentFade - ball.fadeRate > 0) ball.currentFade -= ball.fadeRate;
 				else ball.currentFade = 0;
 			}
 		}
@@ -144,9 +134,7 @@ export default function Philosophy() {
 	};
 	const navLeft = () => {
 		if (data.postData && data.postData.length > 0)
-			setSelectedPhi(
-				selectedPhi - 1 >= 0 ? selectedPhi - 1 : data.postData.length - 1
-			);
+			setSelectedPhi(selectedPhi - 1 >= 0 ? selectedPhi - 1 : data.postData.length - 1);
 	};
 
 	const bgCanvas = React.useRef();
@@ -163,10 +151,8 @@ export default function Philosophy() {
 		bgCanvas.current.height = Math.max(1000, window.innerHeight);
 		let width = bgCanvas.current.width;
 		let height = bgCanvas.current.height;
-		let w2h =
-			height > width ? height / width : height === width ? 1 : width / height;
-		let h2w =
-			width > height ? width / height : height === width ? 1 : height / width;
+		let w2h = height > width ? height / width : height === width ? 1 : width / height;
+		let h2w = width > height ? width / height : height === width ? 1 : height / width;
 		const updateWidthHeight = () => {
 			if (
 				bgCanvas.current.width !== window.innerWidth ||
@@ -176,18 +162,8 @@ export default function Philosophy() {
 				bgCanvas.current.height = Math.max(1000, window.innerHeight);
 				width = bgCanvas.current.width;
 				height = bgCanvas.current.height;
-				w2h =
-					height > width
-						? height / width
-						: height === width
-						? 1
-						: width / height;
-				h2w =
-					width > height
-						? width / height
-						: height === width
-						? 1
-						: height / width;
+				w2h = height > width ? height / width : height === width ? 1 : width / height;
+				h2w = width > height ? width / height : height === width ? 1 : height / width;
 			}
 		};
 
@@ -245,11 +221,7 @@ export default function Philosophy() {
 					</Typography>
 				</Grid>
 				<Grid item>
-					<Grid
-						container
-						direction='row'
-						justify='space-around'
-						alignItems='center'>
+					<Grid container direction='row' justify='space-around' alignItems='center'>
 						{!screenTooSmall && data.postData && data.postData.length > 1 ? (
 							<Grid item>
 								<IconButton onClick={navLeft}>

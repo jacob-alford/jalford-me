@@ -1,12 +1,6 @@
 import toNumber from 'lodash/toNumber';
 import { op, stackItem } from './useCalcBrain/operators/_types';
-import {
-	enter,
-	drop,
-	press,
-	perform,
-	almostOp
-} from './top-level-ops/topLevelOps';
+import { enter, drop, press, perform, almostOp } from './top-level-ops/topLevelOps';
 import { npButt } from './useTyper/_types';
 
 export enum drEnum {
@@ -14,10 +8,7 @@ export enum drEnum {
 	rad = 'rad'
 }
 
-export const toggleDegRad = (
-	degRad: drEnum,
-	setDegRad: (val: any) => void
-): void =>
+export const toggleDegRad = (degRad: drEnum, setDegRad: (val: any) => void): void =>
 	degRad === drEnum.deg ? setDegRad(drEnum.rad) : setDegRad(drEnum.deg);
 
 export const getIndex = (index: number, length: number): string | number =>

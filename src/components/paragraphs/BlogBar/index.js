@@ -84,14 +84,14 @@ export default function BlogBar(props) {
 		firebase
 			.auth()
 			.signOut()
-			.then(function() {
+			.then(function () {
 				setUserMenuAnchor(null);
 				notify({
 					body: 'Successfully signed out!',
 					alertType: 'info'
 				});
 			})
-			.catch(function(error) {
+			.catch(function (error) {
 				console.error(error);
 				notify({
 					body: error.toString(),
@@ -113,9 +113,7 @@ export default function BlogBar(props) {
 						<Grid container alignItems='center' justify='space-between'>
 							<Grid item>
 								<Button onClick={() => handleLinkRedirect(breadcrumb.link)}>
-									<Typography
-										variant='h6'
-										style={{ color: textColor, flexGrow: '1' }}>
+									<Typography variant='h6' style={{ color: textColor, flexGrow: '1' }}>
 										{breadcrumb.label}
 									</Typography>
 								</Button>
@@ -137,16 +135,13 @@ export default function BlogBar(props) {
 											<Grid container direction='row' alignItems='center'>
 												{!screenTooSmall ? (
 													<Grid item>
-														<Typography
-															variant='body2'
-															style={{ color: textColor }}>
+														<Typography variant='body2' style={{ color: textColor }}>
 															Welcome, {user.activeUser.username}
 														</Typography>
 													</Grid>
 												) : null}
 												<Grid item>
-													<IconButton
-														onClick={anchorHandlerCreator(setUserMenuAnchor)}>
+													<IconButton onClick={anchorHandlerCreator(setUserMenuAnchor)}>
 														<AccountCircle style={{ color: textColor }} />
 													</IconButton>
 												</Grid>
@@ -186,9 +181,7 @@ export default function BlogBar(props) {
 							<ListAlt />
 						</ListItemIcon>
 						<ListItemText
-							primary={`Manage${
-								[8, 9].includes(getUserPermissions(user)) ? ' My ' : ' '
-							}Posts`}
+							primary={`Manage${[8, 9].includes(getUserPermissions(user)) ? ' My ' : ' '}Posts`}
 						/>
 					</MenuItem>
 				) : null}
@@ -213,14 +206,8 @@ export default function BlogBar(props) {
 				createPostIsOpen={createPostIsOpen}
 				setCreatePostIsOpen={setCreatePostIsOpen}
 			/>
-			<LoginDialogue
-				signInIsOpen={signInIsOpen}
-				setSignInIsOpen={setSignInIsOpen}
-			/>
-			<SignupDialogue
-				signUpIsOpen={signUpIsOpen}
-				setSignUpIsOpen={setSignUpIsOpen}
-			/>
+			<LoginDialogue signInIsOpen={signInIsOpen} setSignInIsOpen={setSignInIsOpen} />
+			<SignupDialogue signUpIsOpen={signUpIsOpen} setSignUpIsOpen={setSignUpIsOpen} />
 		</React.Fragment>
 	);
 }

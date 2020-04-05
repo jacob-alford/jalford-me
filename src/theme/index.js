@@ -81,9 +81,7 @@ const getters = {
 const themeConstruct = (grabbers, styleCreator) => {
 	const mappedGrabbers = grabbers.map(grabber => {
 		if (!getters[grabber.type || grabber])
-			throw new Error(
-				`Unrecognized theme selector ${grabber.type || grabber}!`
-			);
+			throw new Error(`Unrecognized theme selector ${grabber.type || grabber}!`);
 		else if (grabber.type && grabber.transform)
 			return grabber.transform(getters[grabber.type]());
 		else return getters[grabber.type || grabber]();
@@ -94,9 +92,7 @@ const themeConstruct = (grabbers, styleCreator) => {
 const themeSelect = grabbers => {
 	return grabbers.map(grabber => {
 		if (!getters[grabber.type || grabber])
-			throw new Error(
-				`Unrecognized theme selector ${grabber.type || grabber}!`
-			);
+			throw new Error(`Unrecognized theme selector ${grabber.type || grabber}!`);
 		else if (grabber.type && grabber.transform)
 			return grabber.transform(getters[grabber.type]());
 		else return getters[grabber.type || grabber]();

@@ -31,10 +31,7 @@ export default function useCalcBrain(
 	});
 	const mutateCalcHistory = useCallback(
 		(operation: almostOperation): void => {
-			if (
-				operation.type === reducerOpEnum.push &&
-				calcState.stackStash.length > 0
-			)
+			if (operation.type === reducerOpEnum.push && calcState.stackStash.length > 0)
 				_mutateCalcHistory({
 					type: reducerOpEnum.clearStash,
 					payload: {

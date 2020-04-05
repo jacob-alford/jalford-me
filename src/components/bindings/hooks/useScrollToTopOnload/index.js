@@ -9,9 +9,7 @@ export default function useScrollToTopOnload(callback) {
 	const hasFinished = useRef(false);
 	const startPosition = useRef(window.scrollY);
 	const isTouchDevice = useRef(detectMobile());
-	const prefersReducedMotion = useMediaQuery(
-		'(prefers-reduced-motion: reduce)'
-	);
+	const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
 	const [, , stopInter] = useSpring(() => {
 		return {
 			y: 0,

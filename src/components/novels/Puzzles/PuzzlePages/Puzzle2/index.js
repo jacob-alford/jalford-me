@@ -1,10 +1,4 @@
-import React, {
-	useState,
-	useRef,
-	useEffect,
-	useReducer,
-	useCallback
-} from 'react';
+import React, { useState, useRef, useEffect, useReducer, useCallback } from 'react';
 import OpenSeadragon from 'openseadragon';
 
 import Typography from '@material-ui/core/Typography';
@@ -78,12 +72,7 @@ const getH4Hash = data => data && data.hint4.hash;
 
 const getPuzzleCipher = data => data && data.solution.cipher;
 const getHintCiphers = data =>
-	data && [
-		data.hint1.cipher,
-		data.hint2.cipher,
-		data.hint3.cipher,
-		data.hint4.cipher
-	];
+	data && [data.hint1.cipher, data.hint2.cipher, data.hint3.cipher, data.hint4.cipher];
 
 function Puzzle2(props) {
 	const [isLoading, setIsLoading] = useState(true);
@@ -202,32 +191,19 @@ function Puzzle2(props) {
 				style={{ display: isLoading ? 'none' : null }}></div>
 			{!isLoading ? (
 				<React.Fragment>
-					<Holder
-						className={classes.toolBarHolder}
-						justify='flex-end'
-						direction='row'>
+					<Holder className={classes.toolBarHolder} justify='flex-end' direction='row'>
 						{!isMobile.current ? (
-							<IconButton
-								onClick={() =>
-									viewer.current && viewer.current.setFullScreen(true)
-								}>
+							<IconButton onClick={() => viewer.current && viewer.current.setFullScreen(true)}>
 								<Fullscreen />
 							</IconButton>
 						) : null}
 					</Holder>
 					<Holder style={{ maxWidth: '75vw' }}>
-						<Typography
-							variant='h1'
-							className={classes.title}
-							style={{ fontSize: titleSize }}>
+						<Typography variant='h1' className={classes.title} style={{ fontSize: titleSize }}>
 							{heading[0] === '*' ? (
-								<span className={classes.sucessSpan}>
-									{heading.substring(1)}
-								</span>
+								<span className={classes.sucessSpan}>{heading.substring(1)}</span>
 							) : heading[0] === '#' ? (
-								<span className={classes.problemSpan}>
-									{heading.substring(1)}
-								</span>
+								<span className={classes.problemSpan}>{heading.substring(1)}</span>
 							) : (
 								<span>{heading}</span>
 							)}
@@ -274,25 +250,19 @@ function Puzzle2(props) {
 								</Holder>
 								<Holder
 									key={`incDec${index}`}
-									className={`${classes.operatorHolder} ${
-										classes[`bg${index + 1}`]
-									}`}
+									className={`${classes.operatorHolder} ${classes[`bg${index + 1}`]}`}
 									style={{ margin: screenTooSmall ? '0px' : null }}>
 									<Button
 										style={{ color: 'rgba(255,255,255,1)' }}
 										className={classes.btnOperator}
-										onClick={() =>
-											actOnPuzzleState({ type: 'increment', index: index })
-										}>
+										onClick={() => actOnPuzzleState({ type: 'increment', index: index })}>
 										+
 									</Button>
 									<div className={classes.divider} />
 									<Button
 										style={{ color: 'rgba(255,255,255,1)' }}
 										className={classes.btnOperator}
-										onClick={() =>
-											actOnPuzzleState({ type: 'decrement', index: index })
-										}>
+										onClick={() => actOnPuzzleState({ type: 'decrement', index: index })}>
 										-
 									</Button>
 								</Holder>
@@ -300,10 +270,7 @@ function Puzzle2(props) {
 						))}
 					</Holder>
 					<Holder>
-						<Button
-							variant='outlined'
-							onClick={checkCombo}
-							className={classes.checkButton}>
+						<Button variant='outlined' onClick={checkCombo} className={classes.checkButton}>
 							Check
 						</Button>
 					</Holder>
@@ -314,12 +281,7 @@ function Puzzle2(props) {
 								variant='h2'
 								className={classes.fieldTitle}
 								style={{
-									color:
-										hint1Valid === true
-											? '#357e37'
-											: hint1Valid === false
-											? '#d32f2f'
-											: null
+									color: hint1Valid === true ? '#357e37' : hint1Valid === false ? '#d32f2f' : null
 								}}>
 								1
 							</Typography>
@@ -331,11 +293,7 @@ function Puzzle2(props) {
 							/>
 							<Button
 								variant='outlined'
-								onClick={setSuccessHeader(
-									hint1,
-									getH1Hash(puzzleData),
-									setHint1Valid
-								)}>
+								onClick={setSuccessHeader(hint1, getH1Hash(puzzleData), setHint1Valid)}>
 								Check
 							</Button>
 						</Holder>
@@ -344,12 +302,7 @@ function Puzzle2(props) {
 								variant='h2'
 								className={classes.fieldTitle}
 								style={{
-									color:
-										hint2Valid === true
-											? '#357e37'
-											: hint2Valid === false
-											? '#d32f2f'
-											: null
+									color: hint2Valid === true ? '#357e37' : hint2Valid === false ? '#d32f2f' : null
 								}}>
 								2
 							</Typography>
@@ -361,11 +314,7 @@ function Puzzle2(props) {
 							/>
 							<Button
 								variant='outlined'
-								onClick={setSuccessHeader(
-									hint2,
-									getH2Hash(puzzleData),
-									setHint2Valid
-								)}>
+								onClick={setSuccessHeader(hint2, getH2Hash(puzzleData), setHint2Valid)}>
 								Check
 							</Button>
 						</Holder>
@@ -374,12 +323,7 @@ function Puzzle2(props) {
 								variant='h2'
 								className={classes.fieldTitle}
 								style={{
-									color:
-										hint3Valid === true
-											? '#357e37'
-											: hint3Valid === false
-											? '#d32f2f'
-											: null
+									color: hint3Valid === true ? '#357e37' : hint3Valid === false ? '#d32f2f' : null
 								}}>
 								3
 							</Typography>
@@ -391,11 +335,7 @@ function Puzzle2(props) {
 							/>
 							<Button
 								variant='outlined'
-								onClick={setSuccessHeader(
-									hint3,
-									getH3Hash(puzzleData),
-									setHint3Valid
-								)}>
+								onClick={setSuccessHeader(hint3, getH3Hash(puzzleData), setHint3Valid)}>
 								Check
 							</Button>
 						</Holder>
@@ -404,12 +344,7 @@ function Puzzle2(props) {
 								variant='h2'
 								className={classes.fieldTitle}
 								style={{
-									color:
-										hint4Valid === true
-											? '#357e37'
-											: hint4Valid === false
-											? '#d32f2f'
-											: null
+									color: hint4Valid === true ? '#357e37' : hint4Valid === false ? '#d32f2f' : null
 								}}>
 								4
 							</Typography>
@@ -421,11 +356,7 @@ function Puzzle2(props) {
 							/>
 							<Button
 								variant='outlined'
-								onClick={setSuccessHeader(
-									hint4,
-									getH4Hash(puzzleData),
-									setHint4Valid
-								)}>
+								onClick={setSuccessHeader(hint4, getH4Hash(puzzleData), setHint4Valid)}>
 								Check
 							</Button>
 						</Holder>

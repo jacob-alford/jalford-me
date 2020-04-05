@@ -3,15 +3,6 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
-		"@material-ui/core": "4.8.3",
-		"@material-ui/icons": "4.5.1",
-		"@types/jest": "^25.1.2",
-		"@types/katex": "^0.11.0",
-		"@types/node": "^13.7.1",
-		"@types/react": "^16.9.19",
-		"@types/react-dom": "^16.9.5",
-		"@types/react-router": "^5.1.4",
-		"@types/styled-components": "^4.4.3",
 		"crypto-js": "3.1.9-1",
 		"katex": "0.11.1",
 		"lodash": "^4.17.15",
@@ -31,7 +22,6 @@
 		"styled-components": "5.0.0",
 		"typed.js": "2.0.11",
 		"typeface-roboto": "0.0.75",
-		"typescript": "^3.7.5",
 		"zxcvbn": "4.4.2"
 	},
 	"scripts": {
@@ -54,7 +44,18 @@
 		]
 	},
 	"devDependencies": {
+		"firebase": "^7.7.0",
+		"prettier": "^2.0.2",
+		"typescript": "^3.7.5",
+		"@material-ui/core": "4.8.3",
+		"@material-ui/icons": "4.5.1",
 		"@types/lodash": "^4.14.149",
-		"firebase": "^7.7.0"
+		"@types/jest": "^25.1.2",
+		"@types/katex": "^0.11.0",
+		"@types/node": "^13.7.1",
+		"@types/react": "^16.9.19",
+		"@types/react-dom": "^16.9.5",
+		"@types/react-router": "^5.1.4",
+		"@types/styled-components": "^4.4.3"
 	}
 }

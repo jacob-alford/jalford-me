@@ -1,9 +1,6 @@
 import { navItems } from 'config';
 
-export const getRandomUID = () =>
-	Math.random()
-		.toString(35)
-		.substr(2);
+export const getRandomUID = () => Math.random().toString(35).substr(2);
 
 export const getActiveNavItem = path => {
 	let returnValue = false;
@@ -60,10 +57,7 @@ export const getLightness = hex => {
 		else return Math.pow((color + 0.055) / 1.055, 2.4);
 	});
 	const constants = [0.2126, 0.7152, 0.0722];
-	return wrkArr.reduce(
-		(acc, current, index) => (acc += constants[index] * current),
-		0
-	);
+	return wrkArr.reduce((acc, current, index) => (acc += constants[index] * current), 0);
 };
 
 export const getTextColorBasedOnBg = bgHex => {
@@ -84,8 +78,7 @@ export const pipe = (...funcArr) => {
 export const detectMobile = () => {
 	// --- Gotten from the mozillas ---
 	let hasTouchScreen = false;
-	if ('maxTouchPoints' in navigator)
-		hasTouchScreen = navigator.maxTouchPoints > 0;
+	if ('maxTouchPoints' in navigator) hasTouchScreen = navigator.maxTouchPoints > 0;
 	else if ('msMaxTouchPoints' in navigator)
 		hasTouchScreen = navigator.msMaxTouchPoints > 0;
 	else {

@@ -10,11 +10,7 @@ const mkSkItm = (number: number) => ({
 	UID: expect.any(String),
 	number
 });
-const mkTpItm = (arr: [string, string]): tapeItem => [
-	arr[0],
-	arr[1],
-	expect.any(String)
-];
+const mkTpItm = (arr: [string, string]): tapeItem => [arr[0], arr[1], expect.any(String)];
 const mkOp = (item: op): reducerOperation => ({
 	type: reducerOpEnum.push,
 	payload: {
@@ -52,11 +48,7 @@ describe('Successive calculator states derive successfully.', () => {
 			)
 		).toStrictEqual([
 			[mkSkItm(489)],
-			[
-				mkTpItm(['69 + 420', '489']),
-				mkTpItm(['ENTER 69', '']),
-				mkTpItm(['ENTER 420', ''])
-			]
+			[mkTpItm(['69 + 420', '489']), mkTpItm(['ENTER 69', '']), mkTpItm(['ENTER 420', ''])]
 		]);
 		expect(
 			getSAndT(
@@ -66,11 +58,7 @@ describe('Successive calculator states derive successfully.', () => {
 			)
 		).toStrictEqual([
 			[mkSkItm(-351)],
-			[
-				mkTpItm(['69 - 420', '-351']),
-				mkTpItm(['ENTER 69', '']),
-				mkTpItm(['ENTER 420', ''])
-			]
+			[mkTpItm(['69 - 420', '-351']), mkTpItm(['ENTER 69', '']), mkTpItm(['ENTER 420', ''])]
 		]);
 		expect(
 			getSAndT(
@@ -94,11 +82,7 @@ describe('Successive calculator states derive successfully.', () => {
 			)
 		).toStrictEqual([
 			[mkSkItm(69 / 420)],
-			[
-				mkTpItm(['69 / 420', '0.164']),
-				mkTpItm(['ENTER 69', '']),
-				mkTpItm(['ENTER 420', ''])
-			]
+			[mkTpItm(['69 / 420', '0.164']), mkTpItm(['ENTER 69', '']), mkTpItm(['ENTER 420', ''])]
 		]);
 		expect(
 			getSAndT(
@@ -108,11 +92,7 @@ describe('Successive calculator states derive successfully.', () => {
 			)
 		).toStrictEqual([
 			[mkSkItm(1)],
-			[
-				mkTpItm(['mod(21, 5)', '1']),
-				mkTpItm(['ENTER 5', '']),
-				mkTpItm(['ENTER 21', ''])
-			]
+			[mkTpItm(['mod(21, 5)', '1']), mkTpItm(['ENTER 5', '']), mkTpItm(['ENTER 21', ''])]
 		]);
 	});
 	it('Manipulates the stack', () => {
@@ -124,16 +104,10 @@ describe('Successive calculator states derive successfully.', () => {
 		]);
 		expect(
 			getSAndT(mkOp(op.drop), [mkSkItm(69)], [mkTpItm(['ENTER 69', ''])])
-		).toStrictEqual([
-			[],
-			[mkTpItm(['DROP 69', '']), mkTpItm(['ENTER 69', ''])]
-		]);
+		).toStrictEqual([[], [mkTpItm(['DROP 69', '']), mkTpItm(['ENTER 69', ''])]]);
 		expect(
 			getSAndT(mkOp(op.clearAll), [mkSkItm(69)], [mkTpItm(['ENTER 69', ''])])
-		).toStrictEqual([
-			[],
-			[mkTpItm(['CLEAR ALL', '']), mkTpItm(['ENTER 69', ''])]
-		]);
+		).toStrictEqual([[], [mkTpItm(['CLEAR ALL', '']), mkTpItm(['ENTER 69', ''])]]);
 		expect(
 			getSAndT(
 				mkOp(op.swap),
@@ -142,21 +116,13 @@ describe('Successive calculator states derive successfully.', () => {
 			)
 		).toStrictEqual([
 			[mkSkItm(420), mkSkItm(69)],
-			[
-				mkTpItm(['SWAP', '69, 420']),
-				mkTpItm(['ENTER 69', '']),
-				mkTpItm(['ENTER 420', ''])
-			]
+			[mkTpItm(['SWAP', '69, 420']), mkTpItm(['ENTER 69', '']), mkTpItm(['ENTER 420', ''])]
 		]);
 		expect(
 			getSAndT(
 				mkOp(op.roll),
 				[mkSkItm(69), mkSkItm(420), mkSkItm(91395)],
-				[
-					mkTpItm(['ENTER 91395', '']),
-					mkTpItm(['ENTER 69', '']),
-					mkTpItm(['ENTER 420', ''])
-				]
+				[mkTpItm(['ENTER 91395', '']), mkTpItm(['ENTER 69', '']), mkTpItm(['ENTER 420', ''])]
 			)
 		).toStrictEqual([
 			[mkSkItm(91395), mkSkItm(69), mkSkItm(420)],
@@ -184,10 +150,7 @@ describe('Successive calculator states derive successfully.', () => {
 				[mkSkItm(90)],
 				[mkTpItm(['ENTER 90', ''])]
 			)
-		).toStrictEqual([
-			[mkSkItm(1)],
-			[mkTpItm(['sin(90)', '1']), mkTpItm(['ENTER 90', ''])]
-		]);
+		).toStrictEqual([[mkSkItm(1)], [mkTpItm(['sin(90)', '1']), mkTpItm(['ENTER 90', ''])]]);
 		expect(
 			getSAndT(
 				{
@@ -208,15 +171,11 @@ describe('Successive calculator states derive successfully.', () => {
 		]);
 	});
 	it('Performs Safe-Single Operations', () => {
-		expect(
-			getSAndT(mkOp(op.x2), [mkSkItm(9)], [mkTpItm(['ENTER 9', ''])])
-		).toStrictEqual([
+		expect(getSAndT(mkOp(op.x2), [mkSkItm(9)], [mkTpItm(['ENTER 9', ''])])).toStrictEqual([
 			[mkSkItm(81)],
 			[mkTpItm(['x2(9)', '81']), mkTpItm(['ENTER 9', ''])]
 		]);
-		expect(
-			getSAndT(mkOp(op.eX), [mkSkItm(1)], [mkTpItm(['ENTER 1', ''])])
-		).toStrictEqual([
+		expect(getSAndT(mkOp(op.eX), [mkSkItm(1)], [mkTpItm(['ENTER 1', ''])])).toStrictEqual([
 			[mkSkItm(Math.E)],
 			[mkTpItm(['eX(1)', '2.718']), mkTpItm(['ENTER 1', ''])]
 		]);
@@ -369,10 +328,7 @@ describe('Successive calculator states derive successfully.', () => {
 	it('Calculates factorial', () => {
 		expect(
 			getSAndT(mkOp(op.xFact), [mkSkItm(5)], [mkTpItm(['ENTER 5', ''])])
-		).toStrictEqual([
-			[mkSkItm(120)],
-			[mkTpItm(['5!', '120']), mkTpItm(['ENTER 5', ''])]
-		]);
+		).toStrictEqual([[mkSkItm(120)], [mkTpItm(['5!', '120']), mkTpItm(['ENTER 5', ''])]]);
 	});
 	it('Refuses factorial', () => {
 		const testNotify = jest.fn();
@@ -398,11 +354,7 @@ describe('Successive calculator states derive successfully.', () => {
 			getSAndT(
 				mkOp(op.sum),
 				[mkSkItm(1), mkSkItm(2), mkSkItm(3)],
-				[
-					mkTpItm(['ENTER 1', '']),
-					mkTpItm(['ENTER 2', '']),
-					mkTpItm(['ENTER 3', ''])
-				]
+				[mkTpItm(['ENTER 1', '']), mkTpItm(['ENTER 2', '']), mkTpItm(['ENTER 3', ''])]
 			)
 		).toStrictEqual([
 			[mkSkItm(6)],
@@ -417,11 +369,7 @@ describe('Successive calculator states derive successfully.', () => {
 			getSAndT(
 				mkOp(op.product),
 				[mkSkItm(1), mkSkItm(4), mkSkItm(3)],
-				[
-					mkTpItm(['ENTER 1', '']),
-					mkTpItm(['ENTER 4', '']),
-					mkTpItm(['ENTER 3', ''])
-				]
+				[mkTpItm(['ENTER 1', '']), mkTpItm(['ENTER 4', '']), mkTpItm(['ENTER 3', ''])]
 			)
 		).toStrictEqual([
 			[mkSkItm(12)],
@@ -436,11 +384,7 @@ describe('Successive calculator states derive successfully.', () => {
 			getSAndT(
 				mkOp(op.mean),
 				[mkSkItm(5), mkSkItm(11), mkSkItm(20)],
-				[
-					mkTpItm(['ENTER 5', '']),
-					mkTpItm(['ENTER 11', '']),
-					mkTpItm(['ENTER 20', ''])
-				]
+				[mkTpItm(['ENTER 5', '']), mkTpItm(['ENTER 11', '']), mkTpItm(['ENTER 20', ''])]
 			)
 		).toStrictEqual([
 			[mkSkItm(12)],

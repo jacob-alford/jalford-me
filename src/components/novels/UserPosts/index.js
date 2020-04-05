@@ -105,9 +105,7 @@ const fields = [
 	},
 	{
 		field: 'uid',
-		icon: color => (
-			<LocationCity style={{ ...styles.chipIcon, color: color }} />
-		),
+		icon: color => <LocationCity style={{ ...styles.chipIcon, color: color }} />,
 		label: 'Slug'
 	},
 	{
@@ -149,11 +147,7 @@ function UserPosts(props) {
 	});
 	const [currentDelete, setCurrentDelete] = useState(null);
 	const [currentPublic, setCurrentPublic] = useState(null);
-	const [selectedFields, setSelectedFields] = useState([
-		'Title',
-		'Date',
-		'Public'
-	]);
+	const [selectedFields, setSelectedFields] = useState(['Title', 'Date', 'Public']);
 	const { h1: title } = useTitleSize();
 	const handleDelete = uid => {
 		if (currentDelete === uid) {
@@ -226,11 +220,7 @@ function UserPosts(props) {
 			ref: ['uid', 'isPublic'],
 			sortable: false,
 			transform: (ref, ref2) => (
-				<Grid
-					container
-					justify='center'
-					alignItems='center'
-					style={styles.actionBar}>
+				<Grid container justify='center' alignItems='center' style={styles.actionBar}>
 					<Grid item>
 						<IconButton onClick={() => handleView(ref)}>
 							<Pageview />
@@ -309,9 +299,7 @@ function UserPosts(props) {
 											? styles.chipSelected
 											: styles.chipDeselected
 									}
-									icon={field.icon(
-										selectedFields.includes(field.label) ? 'black' : 'white'
-									)}
+									icon={field.icon(selectedFields.includes(field.label) ? 'black' : 'white')}
 									label={field.label}
 									onClick={createFieldToggler(field.label)}
 								/>

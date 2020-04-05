@@ -30,8 +30,7 @@ import Image from 'components/words/Image';
 import useRedirect from 'components/bindings/hooks/useRedirect';
 
 const getInnermostProps = props => {
-	if (typeof props.children === 'string' || typeof props.value === 'string')
-		return props;
+	if (typeof props.children === 'string' || typeof props.value === 'string') return props;
 	else
 		return props.children && props.children[0] && props.children[0].props
 			? props.children.map(child => getInnermostProps(child.props))
@@ -42,17 +41,14 @@ const getDepthIcon = depth => {
 	return {
 		__html:
 			typeof depth === 'number' && !Number.isNaN(depth)
-				? ['&#9823;', '&#9822;', '&#9821;', '&#9820;', '&#9819;'][
-						depth <= 4 ? depth : 4
-				  ]
+				? ['&#9823;', '&#9822;', '&#9821;', '&#9820;', '&#9819;'][depth <= 4 ? depth : 4]
 				: null
 	};
 };
 
 const getDeepQuote = child => {
 	if (typeof child.value === 'string') return child.value;
-	else if (Array.isArray(child))
-		return child.map(subChild => getDeepQuote(subChild));
+	else if (Array.isArray(child)) return child.map(subChild => getDeepQuote(subChild));
 	else return null;
 };
 
@@ -62,8 +58,7 @@ const inSplice = (arr, ...options) => {
 	return copy;
 };
 
-const getKatexType = str =>
-	str === '@' ? 'inline' : str === '#' ? 'block' : false;
+const getKatexType = str => (str === '@' ? 'inline' : str === '#' ? 'block' : false);
 
 const getKatex = object => {
 	const deepArr = getDeepQuote(getInnermostProps(object));
@@ -184,8 +179,7 @@ const Blockquote = props => {
 		<React.Fragment>
 			{Array.isArray(quoteArr)
 				? quoteArr.map((quote, index) => (
-						<span
-							key={`blockQuote${index}-${parseInt(Math.random() * 255, 16)}`}>
+						<span key={`blockQuote${index}-${parseInt(Math.random() * 255, 16)}`}>
 							{quote} <br />
 						</span>
 				  ))

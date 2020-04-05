@@ -216,11 +216,7 @@ function UserSettings(props) {
 				<Grid item>
 					<Fade in={!isLoading} timeout={1000}>
 						<Paper style={styles.paper}>
-							<Grid
-								direction='column'
-								container
-								alignItems='center'
-								justify='space-evenly'>
+							<Grid direction='column' container alignItems='center' justify='space-evenly'>
 								<Grid item>
 									<List>
 										<ListItem>
@@ -239,9 +235,7 @@ function UserSettings(props) {
 															backgroundColor: getUser(user).color,
 															color: getTextColorBasedOnBg(getUser(user).color)
 														}}>
-														{(getUser(user).username &&
-															getUser(user).username[0]) ||
-															'J'}
+														{(getUser(user).username && getUser(user).username[0]) || 'J'}
 													</Avatar>
 												</ListItemAvatar>
 											)}
@@ -257,18 +251,13 @@ function UserSettings(props) {
 												}
 											/>
 											<IconButton
-												onClick={handleAnchorUpdateConstructor(
-													nameEditAnchor,
-													setNameEditAnchor
-												)}>
+												onClick={handleAnchorUpdateConstructor(nameEditAnchor, setNameEditAnchor)}>
 												<Edit />
 											</IconButton>
 										</ListItem>
 										<ListItem>
 											<ListItemIcon>
-												<ColorLens
-													style={{ color: getUser(user).color, ...styles.icon }}
-												/>
+												<ColorLens style={{ color: getUser(user).color, ...styles.icon }} />
 											</ListItemIcon>
 											<ListItemText
 												style={styles.text}
@@ -282,10 +271,7 @@ function UserSettings(props) {
 												}
 											/>
 											<IconButton
-												onClick={handleAnchorUpdateConstructor(
-													colorEditAnchor,
-													setColorEditAnchor
-												)}>
+												onClick={handleAnchorUpdateConstructor(colorEditAnchor, setColorEditAnchor)}>
 												<Edit />
 											</IconButton>
 										</ListItem>
@@ -329,10 +315,7 @@ function UserSettings(props) {
 							<Grow in={willDelete && mightDelete} mountOnEnter unmountOnExit>
 								<React.Fragment>
 									<Grid item style={{ textAlign: 'center', marginTop: '15px' }}>
-										<Button
-											onClick={handleUserDelete}
-											variant='outlined'
-											style={styles.deleteText}>
+										<Button onClick={handleUserDelete} variant='outlined' style={styles.deleteText}>
 											Yes, Delete My Account
 										</Button>
 									</Grid>

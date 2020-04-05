@@ -15,10 +15,18 @@ import Check from '@material-ui/icons/Check';
 import KeyboardBackspace from '@material-ui/icons/KeyboardBackspace';
 
 export {
-  Container, Typography,
-  Paper, CircularProgress,
-  IconButton, Grid, Chip,
-  InputBase,
-  Edit, Person, AssignmentInd,
-  ColorLens, Check, KeyboardBackspace
+	Container,
+	Typography,
+	Paper,
+	CircularProgress,
+	IconButton,
+	Grid,
+	Chip,
+	InputBase,
+	Edit,
+	Person,
+	AssignmentInd,
+	ColorLens,
+	Check,
+	KeyboardBackspace
 };

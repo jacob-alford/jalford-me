@@ -143,10 +143,7 @@ function Puzzle1() {
 	return (
 		<Holder className={classes.superHolder}>
 			<Holder>
-				<Typography
-					variant='h1'
-					className={classes.title}
-					style={{ fontSize: titleSize }}>
+				<Typography variant='h1' className={classes.title} style={{ fontSize: titleSize }}>
 					{heading[0] === '*' ? (
 						<span className={classes.sucessSpan}>{heading.substring(1)}</span>
 					) : heading[0] === '#' ? (
@@ -205,12 +202,7 @@ function Puzzle1() {
 						variant='h2'
 						className={classes.fieldTitle}
 						style={{
-							color:
-								hint1Valid === true
-									? '#357e37'
-									: hint1Valid === false
-									? '#d32f2f'
-									: null
+							color: hint1Valid === true ? '#357e37' : hint1Valid === false ? '#d32f2f' : null
 						}}>
 						οζι
 					</Typography>
@@ -222,11 +214,7 @@ function Puzzle1() {
 					/>
 					<Button
 						variant='outlined'
-						onClick={setSuccessHeader(
-							hint1,
-							getH1Hash(puzzleData),
-							setHint1Valid
-						)}>
+						onClick={setSuccessHeader(hint1, getH1Hash(puzzleData), setHint1Valid)}>
 						Check
 					</Button>
 				</Holder>
@@ -235,12 +223,7 @@ function Puzzle1() {
 						variant='h2'
 						className={classes.fieldTitle}
 						style={{
-							color:
-								hint2Valid === true
-									? '#357e37'
-									: hint2Valid === false
-									? '#d32f2f'
-									: null
+							color: hint2Valid === true ? '#357e37' : hint2Valid === false ? '#d32f2f' : null
 						}}>
 						βφκ
 					</Typography>
@@ -252,11 +235,7 @@ function Puzzle1() {
 					/>
 					<Button
 						variant='outlined'
-						onClick={setSuccessHeader(
-							hint2,
-							getH2Hash(puzzleData),
-							setHint2Valid
-						)}>
+						onClick={setSuccessHeader(hint2, getH2Hash(puzzleData), setHint2Valid)}>
 						Check
 					</Button>
 				</Holder>
@@ -265,12 +244,7 @@ function Puzzle1() {
 						variant='h2'
 						className={classes.fieldTitle}
 						style={{
-							color:
-								hint3Valid === true
-									? '#357e37'
-									: hint3Valid === false
-									? '#d32f2f'
-									: null
+							color: hint3Valid === true ? '#357e37' : hint3Valid === false ? '#d32f2f' : null
 						}}>
 						πυυ
 					</Typography>
@@ -282,11 +256,7 @@ function Puzzle1() {
 					/>
 					<Button
 						variant='outlined'
-						onClick={setSuccessHeader(
-							hint3,
-							getH3Hash(puzzleData),
-							setHint3Valid
-						)}>
+						onClick={setSuccessHeader(hint3, getH3Hash(puzzleData), setHint3Valid)}>
 						Check
 					</Button>
 				</Holder>

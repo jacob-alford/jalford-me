@@ -1,4 +1,4 @@
-import React , { useEffect , useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
@@ -18,53 +18,53 @@ import 'firebase/storage';
 // --- Firebase ---
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-const usersDb = db.collection("users");
+const usersDb = db.collection('users');
 
 const Root = () => {
-  const [setLoggedIn,setLoggedOut] = useDispatch(['login','logout'],'user');
-  const unsubscribe = useRef(null);
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged(user => {
-      if(user){
-        if(unsubscribe.current) unsubscribe.current();
-        unsubscribe.current = usersDb.doc(user.uid).onSnapshot(databaseUser => {
-          if(databaseUser.exists){
-            const userData = databaseUser.data();
-            setLoggedIn({
-              user:{
-                uid:user.uid,
-                color:userData.color,
-                icon:userData.icon,
-                image:userData.image,
-                likes:userData.likes,
-                permissions:userData.permissions,
-                username:userData.username,
-                puzzles:userData.puzzles
-              }
-            });
-          }else{
-            setLoggedOut();
-          }
-        });
-      }else{
-        if(unsubscribe.current) unsubscribe.current();
-        setLoggedOut();
-      }
-    });
-  });
-  return (
-    <ParallaxProvider>
-      <App />
-    </ParallaxProvider>
-  );
-}
+	const [setLoggedIn, setLoggedOut] = useDispatch(['login', 'logout'], 'user');
+	const unsubscribe = useRef(null);
+	useEffect(() => {
+		firebase.auth().onAuthStateChanged(user => {
+			if (user) {
+				if (unsubscribe.current) unsubscribe.current();
+				unsubscribe.current = usersDb.doc(user.uid).onSnapshot(databaseUser => {
+					if (databaseUser.exists) {
+						const userData = databaseUser.data();
+						setLoggedIn({
+							user: {
+								uid: user.uid,
+								color: userData.color,
+								icon: userData.icon,
+								image: userData.image,
+								likes: userData.likes,
+								permissions: userData.permissions,
+								username: userData.username,
+								puzzles: userData.puzzles
+							}
+						});
+					} else {
+						setLoggedOut();
+					}
+				});
+			} else {
+				if (unsubscribe.current) unsubscribe.current();
+				setLoggedOut();
+			}
+		});
+	});
+	return (
+		<ParallaxProvider>
+			<App />
+		</ParallaxProvider>
+	);
+};
 
 // --- Root Render ---
 ReactDOM.render(
-  <GlobalStateProvider>
-    <Root />
-  </GlobalStateProvider>,
-  document.getElementById('root')
+	<GlobalStateProvider>
+		<Root />
+	</GlobalStateProvider>,
+	document.getElementById('root')
 );
 
 export { firebase };

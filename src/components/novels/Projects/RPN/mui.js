@@ -18,11 +18,21 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Reorder from '@material-ui/icons/Reorder';
 
 export {
-  Grid , Typography,
-  Table , TableBody, TableCell,
-  TableRow, Drawer,
-  Hidden, Dialog, DialogActions,
-  DialogContent, DialogContentText,
-  DialogTitle, Button, IconButton, ButtonBase,
-  Reorder
+	Grid,
+	Typography,
+	Table,
+	TableBody,
+	TableCell,
+	TableRow,
+	Drawer,
+	Hidden,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
+	Button,
+	IconButton,
+	ButtonBase,
+	Reorder
 };

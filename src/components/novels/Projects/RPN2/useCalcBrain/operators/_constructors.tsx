@@ -20,8 +20,7 @@ export const shortNum = (num: number): string => {
 	else return num.toLocaleString();
 };
 
-const toNumbers = (stack: stackItem[]): number[] =>
-	stack.map(({ number }) => number);
+const toNumbers = (stack: stackItem[]): number[] => stack.map(({ number }) => number);
 
 const toStackItem = (number: number, UID: string): stackItem => ({
 	number,
@@ -31,8 +30,7 @@ const toStackItem = (number: number, UID: string): stackItem => ({
 const toStack = (numbers: number[], UID: string): stackItem[] =>
 	numbers.map(number => toStackItem(number, UID));
 
-export const getLast = (stack: stackItem[]): number =>
-	stack[stack.length - 1].number;
+export const getLast = (stack: stackItem[]): number => stack[stack.length - 1].number;
 
 export const getNextToLast = (stack: stackItem[]): number =>
 	stack[stack.length - 2].number;
@@ -112,11 +110,7 @@ export const makeSingleOp = (config: {
 		requiresTrigConversion,
 		requiresInverseTrigConversion,
 		error = (): calcError => null,
-		toTape = (
-			stack: stackItem[],
-			payload?: number,
-			degOrRad?: drEnum
-		): tapeItem => [
+		toTape = (stack: stackItem[], payload?: number, degOrRad?: drEnum): tapeItem => [
 			`${type}(${shortNum(getLast(stack))})`,
 			`${shortNum(
 				condConvertBack(
@@ -202,16 +196,9 @@ export const makeDoubleOp = (config: {
 	};
 };
 
-export const makeConstant = (config: {
-	type: op;
-	constant: number;
-}): operator => {
+export const makeConstant = (config: { type: op; constant: number }): operator => {
 	const { type, constant } = config;
-	const toTape = (): tapeItem => [
-		`${type}`,
-		`${shortNum(constant)}`,
-		getRandomUID()
-	];
+	const toTape = (): tapeItem => [`${type}`, `${shortNum(constant)}`, getRandomUID()];
 	const error = (): calcError => null;
 	const preVerify = (): boolean => true;
 	const act = (stack: stackItem[]): stackItem[] =>

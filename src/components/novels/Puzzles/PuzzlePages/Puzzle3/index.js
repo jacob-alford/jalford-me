@@ -30,8 +30,7 @@ const getPuzzleCipher = data => data && data.solutionCipher;
 
 const createSetter = (actor, index) => evt =>
 	actor({ type: 'setVal', val: evt.target.value, index });
-const isComplete = state =>
-	state.reduce((acc, newst) => acc && Boolean(newst), true);
+const isComplete = state => state.reduce((acc, newst) => acc && Boolean(newst), true);
 
 const sha3Check = (test, hash) => SHA3(test).toString() === hash;
 const setSuccessHeader = (test, hash, setter) => () => {
@@ -73,10 +72,7 @@ function Puzzle3() {
 		if (isComplete(puzzleState.success) && !notifyLocked) {
 			try {
 				const password = puzzleState.values.join('');
-				const solution = AES.decrypt(
-					getPuzzleCipher(puzzleData),
-					password
-				).toString(UTF8Enc);
+				const solution = AES.decrypt(getPuzzleCipher(puzzleData), password).toString(UTF8Enc);
 				if (Boolean(solution)) {
 					lockNotifications();
 					notify({
@@ -101,10 +97,7 @@ function Puzzle3() {
 	return (
 		<Holder className={classes.puzzleHolder}>
 			<Holder style={{ maxWidth: '75vw' }}>
-				<Typography
-					variant='h1'
-					className={classes.title}
-					style={{ fontSize: titleSize }}>
+				<Typography variant='h1' className={classes.title} style={{ fontSize: titleSize }}>
 					A Jaunt About the Track
 				</Typography>
 			</Holder>

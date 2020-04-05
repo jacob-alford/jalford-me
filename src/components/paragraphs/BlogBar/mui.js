@@ -20,8 +20,21 @@ import ListAlt from '@material-ui/icons/ListAlt';
 import Eject from '@material-ui/icons/Eject';
 
 export {
-  AppBar, Toolbar, Typography,
-  Button, Grid, IconButton, Menu, MenuItem,
-  ListItemText, ListItemIcon, Fade, Slide,
-  AccountCircle, Group, Lock, ListAlt, Eject
+	AppBar,
+	Toolbar,
+	Typography,
+	Button,
+	Grid,
+	IconButton,
+	Menu,
+	MenuItem,
+	ListItemText,
+	ListItemIcon,
+	Fade,
+	Slide,
+	AccountCircle,
+	Group,
+	Lock,
+	ListAlt,
+	Eject
 };

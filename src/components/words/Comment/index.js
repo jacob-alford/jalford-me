@@ -22,67 +22,64 @@ import useTLD from 'components/bindings/hooks/useTLD';
 
 import { themeHook } from 'theme';
 
-const useClasses = themeHook(
-	['getGrayText', 'getDarkText'],
-	([grayText, darkText]) => ({
-		card: {
-			marginTop: '8px',
-			flexGrow: 1,
-			color: ({ tldState }) =>
-				tldState === 'light' ? 'rgba(0,0,0,.87)' : 'rgba(255,255,255,1)',
-			background: ({ tldState }) => (tldState === 'light' ? '#fff' : '#232323')
-		},
-		user: {
-			color: ({ tldState }) =>
-				tldState === 'light' ? 'rgba(0,0,0,1)' : 'rgba(255,255,255,1)',
-			fontSize: '24px',
-			paddingLeft: '8px'
-		},
-		avatar: {
-			width: '25px',
-			height: '25px'
-		},
-		bodyHolder: {
-			padding: '14px'
-		},
-		depthMeter: {
-			width: '2px',
-			minWidth: '2px',
-			top: 0,
-			bottom: 0,
-			marginLeft: '15px',
-			marginRight: '15px',
-			backgroundColor: 'white'
-		},
-		holderHolder: {
-			display: 'flex',
-			flexDirection: 'row',
-			alignItems: 'stretch'
-		},
-		commyMarkdown: {
-			width: '100%'
-		},
-		newCommentHolder: {
-			display: 'flex',
-			alignItems: 'center',
-			justifyContent: 'center'
-		},
-		date: {
-			fontSize: '.75rem',
-			color: ({ tldState }) =>
-				tldState === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,.85)',
-			marginTop: '5px'
-		},
-		button: {
-			color: ({ tldState }) =>
-				tldState === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,.85)'
-		},
-		textEdit: {
-			color: ({ tldState }) =>
-				tldState === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,.85)'
-		}
-	})
-);
+const useClasses = themeHook(['getGrayText', 'getDarkText'], ([grayText, darkText]) => ({
+	card: {
+		marginTop: '8px',
+		flexGrow: 1,
+		color: ({ tldState }) =>
+			tldState === 'light' ? 'rgba(0,0,0,.87)' : 'rgba(255,255,255,1)',
+		background: ({ tldState }) => (tldState === 'light' ? '#fff' : '#232323')
+	},
+	user: {
+		color: ({ tldState }) =>
+			tldState === 'light' ? 'rgba(0,0,0,1)' : 'rgba(255,255,255,1)',
+		fontSize: '24px',
+		paddingLeft: '8px'
+	},
+	avatar: {
+		width: '25px',
+		height: '25px'
+	},
+	bodyHolder: {
+		padding: '14px'
+	},
+	depthMeter: {
+		width: '2px',
+		minWidth: '2px',
+		top: 0,
+		bottom: 0,
+		marginLeft: '15px',
+		marginRight: '15px',
+		backgroundColor: 'white'
+	},
+	holderHolder: {
+		display: 'flex',
+		flexDirection: 'row',
+		alignItems: 'stretch'
+	},
+	commyMarkdown: {
+		width: '100%'
+	},
+	newCommentHolder: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	date: {
+		fontSize: '.75rem',
+		color: ({ tldState }) =>
+			tldState === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,.85)',
+		marginTop: '5px'
+	},
+	button: {
+		color: ({ tldState }) =>
+			tldState === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,.85)'
+	},
+	textEdit: {
+		color: ({ tldState }) =>
+			tldState === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,.85)'
+	}
+}));
 
 const isAdmin = user =>
 	user &&
@@ -208,10 +205,7 @@ export default function Comment(props) {
 					</CardContent>
 					<CardActions>
 						{depth < 6 && !isEditing && loggedUser.loggedIn && !deleted ? (
-							<Button
-								size='small'
-								onClick={handleDoReply}
-								className={classes.button}>
+							<Button size='small' onClick={handleDoReply} className={classes.button}>
 								Reply
 							</Button>
 						) : null}
@@ -220,10 +214,7 @@ export default function Comment(props) {
 								<Button size='small' color='primary' onClick={handleSave}>
 									Save
 								</Button>
-								<Button
-									size='small'
-									onClick={handleRevert}
-									className={classes.button}>
+								<Button size='small' onClick={handleRevert} className={classes.button}>
 									Cancel
 								</Button>
 							</React.Fragment>

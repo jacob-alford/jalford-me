@@ -111,8 +111,7 @@ export default function RPNFeatured(props) {
 							RPN
 						</Typography>
 						<Typography variant='body1' paragraph>
-							An incredibly fluid number crunching experience. Add to the stack,
-							and reduce!
+							An incredibly fluid number crunching experience. Add to the stack, and reduce!
 						</Typography>
 					</div>
 					<div>
@@ -120,9 +119,7 @@ export default function RPNFeatured(props) {
 							variant='outlined'
 							onClick={handleOnClick}
 							className={
-								buttonHover
-									? `${classes.button} ${classes.buttonHover}`
-									: classes.button
+								buttonHover ? `${classes.button} ${classes.buttonHover}` : classes.button
 							}
 							onMouseOver={constructOnOver(setButtonHover)}
 							onMouseOut={constructOnOut(setButtonHover)}>

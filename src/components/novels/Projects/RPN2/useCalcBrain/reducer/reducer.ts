@@ -33,10 +33,7 @@ export type reducerState = {
 	stackStash: stackHistory;
 	tapeStash: tapeHistory;
 };
-type reducerAction = (
-	state: reducerState,
-	operation: reducerOperation
-) => reducerState;
+type reducerAction = (state: reducerState, operation: reducerOperation) => reducerState;
 
 const toState = (
 	stackHistory: stackHistory,
@@ -46,8 +43,7 @@ const toState = (
 	stackItem?: stackHistoryItem,
 	tapeItem?: tapeHistoryItem
 ): reducerState => ({
-	stackHistory:
-		(stackItem && concat(stackHistory, [stackItem])) || stackHistory,
+	stackHistory: (stackItem && concat(stackHistory, [stackItem])) || stackHistory,
 	tapeHistory: (tapeItem && concat(tapeHistory, [tapeItem])) || tapeHistory,
 	stackStash,
 	tapeStash
@@ -109,10 +105,7 @@ export const defaultState: reducerState = {
 	tapeStash: []
 };
 
-const calcReducer = (
-	state: reducerState,
-	operation: reducerOperation
-): reducerState => {
+const calcReducer = (state: reducerState, operation: reducerOperation): reducerState => {
 	const { type } = operation;
 	if (!calcActions[type]) throw new Error(`Unknown reducer action, ${type}!`);
 	return calcActions[type](state, operation);

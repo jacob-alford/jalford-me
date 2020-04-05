@@ -34,14 +34,7 @@ const getLetters = (
 	blue: number,
 	orange: number
 ): [
-	[
-		coordVector,
-		coordVector,
-		coordVector,
-		coordVector,
-		coordVector,
-		coordVector
-	],
+	[coordVector, coordVector, coordVector, coordVector, coordVector, coordVector],
 	[coordVector, coordVector, coordVector, coordVector, coordVector, coordVector]
 ] => {
 	const a: coordVector = [0.5, magenta];

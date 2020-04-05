@@ -100,11 +100,7 @@ const RPN2 = () => {
 				amendEntry(press(npButt.clear));
 				return;
 			}
-			if (
-				operation.payload.type === op.enter &&
-				!Boolean(entry) &&
-				stack.length > 0
-			) {
+			if (operation.payload.type === op.enter && !Boolean(entry) && stack.length > 0) {
 				_operate(perform(op.enterLast));
 				return;
 			}
@@ -140,24 +136,19 @@ const RPN2 = () => {
 				<TapeAndStack>
 					<Row>
 						<Stack>
-							{stackItems.map(
-								({ item: { number, UID }, props: animatedStyles }, index) => (
-									<StackItem
-										key={UID}
-										UID={UID}
-										num={number}
-										index={getIndex(index, stackItems.length)}
-										animatedStyles={animatedStyles}
-									/>
-								)
-							)}
+							{stackItems.map(({ item: { number, UID }, props: animatedStyles }, index) => (
+								<StackItem
+									key={UID}
+									UID={UID}
+									num={number}
+									index={getIndex(index, stackItems.length)}
+									animatedStyles={animatedStyles}
+								/>
+							))}
 						</Stack>
 						<Tape>
 							{tapeAnim.map(
-								(
-									{ item: [operation, value, UID], props: animatedStyles },
-									index
-								) => {
+								({ item: [operation, value, UID], props: animatedStyles }, index) => {
 									return (
 										<a.div style={animatedStyles} key={UID}>
 											<TapeItem index={index}>{operation}</TapeItem>
@@ -180,9 +171,7 @@ const RPN2 = () => {
 					<Group>
 						{constOpen ? (
 							<Row>
-								<Operation1 onClick={() => operate(perform(op.speedOfLight))}>
-									c
-								</Operation1>
+								<Operation1 onClick={() => operate(perform(op.speedOfLight))}>c</Operation1>
 								<Operation1 onClick={() => operate(perform(op.pi))}>
 									<Pi />
 								</Operation1>
@@ -202,19 +191,13 @@ const RPN2 = () => {
 						) : null}
 						{!constOpen && !funcOpen ? (
 							<Row>
-								<StackOp onClick={() => operate(perform(op.roll))}>
-									Roll
-								</StackOp>
-								<StackOp onClick={() => operate(perform(op.swap))}>
-									Swap
-								</StackOp>
+								<StackOp onClick={() => operate(perform(op.roll))}>Roll</StackOp>
+								<StackOp onClick={() => operate(perform(op.swap))}>Swap</StackOp>
 							</Row>
 						) : null}
 						<Row>
 							<Danger onClick={() => operate(perform(op.clearAll))}>AC</Danger>
-							<Danger
-								backgroundColor={C.blue(2)}
-								onClick={() => operate(drop())}>
+							<Danger backgroundColor={C.blue(2)} onClick={() => operate(drop())}>
 								Drop
 							</Danger>
 						</Row>
@@ -260,9 +243,7 @@ const RPN2 = () => {
 							<Entry onClick={() => amendEntry(press(npButt.dot))}>.</Entry>
 							<Entry onClick={() => amendEntry(press(npButt.zero))}>0</Entry>
 							<Entry onClick={() => amendEntry(press(npButt.pm))}>±</Entry>
-							<Operation2 onClick={() => operate(perform(op.div))}>
-								/
-							</Operation2>
+							<Operation2 onClick={() => operate(perform(op.div))}>/</Operation2>
 						</Row>
 						<Row>
 							<StackOp
@@ -299,16 +280,10 @@ const RPN2 = () => {
 						) : null}
 						{!constOpen && !funcOpen ? (
 							<Row>
-								<StackOp
-									disabled={!canUndo}
-									onClick={() => operate(stash())}
-									flexGrow={0}>
+								<StackOp disabled={!canUndo} onClick={() => operate(stash())} flexGrow={0}>
 									Undo
 								</StackOp>
-								<StackOp
-									disabled={!canRedo}
-									onClick={() => operate(pop())}
-									flexGrow={0}>
+								<StackOp disabled={!canRedo} onClick={() => operate(pop())} flexGrow={0}>
 									Redo
 								</StackOp>
 							</Row>
@@ -320,31 +295,17 @@ const RPN2 = () => {
 							<Entry toggled={funcOpen} onClick={toggleFunc}>
 								func
 							</Entry>
-							<Operation2 onClick={() => toggleDegRad(degRad, setDegRad)}>
-								{degRad}
-							</Operation2>
+							<Operation2 onClick={() => toggleDegRad(degRad, setDegRad)}>{degRad}</Operation2>
 						</Row>
 						<Row>
-							<Operation1 onClick={() => operate(perform(op.sin))}>
-								sin(x)
-							</Operation1>
-							<Operation1 onClick={() => operate(perform(op.cos))}>
-								cos(x)
-							</Operation1>
-							<Operation1 onClick={() => operate(perform(op.tan))}>
-								tan(x)
-							</Operation1>
+							<Operation1 onClick={() => operate(perform(op.sin))}>sin(x)</Operation1>
+							<Operation1 onClick={() => operate(perform(op.cos))}>cos(x)</Operation1>
+							<Operation1 onClick={() => operate(perform(op.tan))}>tan(x)</Operation1>
 						</Row>
 						<Row>
-							<Operation1 onClick={() => operate(perform(op.asin))}>
-								asin(x)
-							</Operation1>
-							<Operation1 onClick={() => operate(perform(op.acos))}>
-								acos(x)
-							</Operation1>
-							<Operation1 onClick={() => operate(perform(op.atan))}>
-								atan(x)
-							</Operation1>
+							<Operation1 onClick={() => operate(perform(op.asin))}>asin(x)</Operation1>
+							<Operation1 onClick={() => operate(perform(op.acos))}>acos(x)</Operation1>
+							<Operation1 onClick={() => operate(perform(op.atan))}>atan(x)</Operation1>
 						</Row>
 						<Row>
 							<Operation1 onClick={() => operate(perform(op.xInv))}>
@@ -356,9 +317,7 @@ const RPN2 = () => {
 							<Operation1 onClick={() => operate(perform(op.x2))}>
 								x<sup>2</sup>
 							</Operation1>
-							<Operation1 onClick={() => operate(perform(op.xFact))}>
-								x!
-							</Operation1>
+							<Operation1 onClick={() => operate(perform(op.xFact))}>x!</Operation1>
 						</Row>
 						<Row>
 							<Operation1 onClick={() => operate(perform(op.tenX))}>
@@ -386,9 +345,7 @@ const RPN2 = () => {
 							<Operation1 onClick={() => operate(perform(op.log2))}>
 								log<sub>2</sub>
 							</Operation1>
-							<Operation1 onClick={() => operate(perform(op.ln))}>
-								ln
-							</Operation1>
+							<Operation1 onClick={() => operate(perform(op.ln))}>ln</Operation1>
 						</Row>
 					</Group>
 				</Wrapper>

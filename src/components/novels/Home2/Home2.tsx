@@ -43,8 +43,7 @@ const Home = () => {
 			friction: 23,
 			precision: 0.0001
 		},
-		onRest: () =>
-			setTitleFade({ transform: `translate3d(0,0px,0)`, opacity: 1 })
+		onRest: () => setTitleFade({ transform: `translate3d(0,0px,0)`, opacity: 1 })
 	});
 
 	return (

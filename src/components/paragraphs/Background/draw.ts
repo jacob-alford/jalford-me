@@ -80,8 +80,7 @@ export const draw = (params: {
 	const { height, store } = params;
 	const { drawSky, drawGround, drawGrid, horizonPerc } = store || {};
 	const skylinePos = horizonPerc;
-	const skylineH =
-		getHeight(14) * height * skylinePos + (1 - skylinePos) * height;
+	const skylineH = getHeight(14) * height * skylinePos + (1 - skylinePos) * height;
 	if (drawSky) drawSky(skylineH);
 	if (drawGround) drawGround(skylineH);
 	if (drawGrid) drawGrid(skylineH, skylinePos);

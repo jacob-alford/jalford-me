@@ -21,8 +21,7 @@ const Katex = (props: katexProps) => {
 			),
 		[str, inline]
 	);
-	if (inline)
-		return <span style={style} dangerouslySetInnerHTML={{ __html: html }} />;
+	if (inline) return <span style={style} dangerouslySetInnerHTML={{ __html: html }} />;
 	return <div style={style} dangerouslySetInnerHTML={{ __html: html }} />;
 };
 

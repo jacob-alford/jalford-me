@@ -9,9 +9,7 @@ import BlogBar from './components/paragraphs/BlogBar';
 import NoMatch from 'components/novels/NotFound';
 import Loader from 'components/words/Loader';
 
-const UserSettings = React.lazy(() =>
-	import('./components/novels/UserSettings')
-);
+const UserSettings = React.lazy(() => import('./components/novels/UserSettings'));
 const UsersTable = React.lazy(() => import('./components/novels/UsersTable'));
 const UserPosts = React.lazy(() => import('./components/novels/UserPosts'));
 const BlogEdit = React.lazy(() => import('./components/novels/BlogEdit'));
@@ -52,45 +50,27 @@ export default function App() {
 						</Route>
 						<Route exact path='/user/posts'>
 							<UserPosts />
-							<BlogBar
-								context='inBlog'
-								breadcrumb={{ link: '/user/posts', label: 'Posts' }}
-							/>
+							<BlogBar context='inBlog' breadcrumb={{ link: '/user/posts', label: 'Posts' }} />
 						</Route>
 						<Route exact path='/user'>
 							<UserSettings />
-							<BlogBar
-								context='inUser'
-								breadcrumb={{ link: '/user', label: 'User' }}
-							/>
+							<BlogBar context='inUser' breadcrumb={{ link: '/user', label: 'User' }} />
 						</Route>
 						<Route exact path='/puzzles/19-2-22'>
 							<Puzzle1 />
-							<BlogBar
-								context='inPuzzles'
-								breadcrumb={{ link: '/puzzles', label: 'Puzzle' }}
-							/>
+							<BlogBar context='inPuzzles' breadcrumb={{ link: '/puzzles', label: 'Puzzle' }} />
 						</Route>
 						<Route exact path='/puzzles/19-2-26'>
 							<Puzzle2 headerIsOpen={headerIsOpen} />
-							<BlogBar
-								context='inPuzzles'
-								breadcrumb={{ link: '/puzzles', label: 'Puzzle' }}
-							/>
+							<BlogBar context='inPuzzles' breadcrumb={{ link: '/puzzles', label: 'Puzzle' }} />
 						</Route>
 						<Route exact path='/puzzles/19-3-3'>
 							<Puzzle3 />
-							<BlogBar
-								context='inPuzzles'
-								breadcrumb={{ link: '/puzzles', label: 'Puzzle' }}
-							/>
+							<BlogBar context='inPuzzles' breadcrumb={{ link: '/puzzles', label: 'Puzzle' }} />
 						</Route>
 						<Route exact path='/puzzles'>
 							<Puzzles />
-							<BlogBar
-								context='inPuzzles'
-								breadcrumb={{ link: '/puzzles', label: 'Puzzles' }}
-							/>
+							<BlogBar context='inPuzzles' breadcrumb={{ link: '/puzzles', label: 'Puzzles' }} />
 						</Route>
 						<Route exact path='/about' component={About} />
 						<Route
@@ -119,10 +99,7 @@ export default function App() {
 								return (
 									<React.Fragment>
 										<BlogEdit match={match} {...props} />
-										<BlogBar
-											context='inPostEdit'
-											breadcrumb={{ link: '/posts', label: 'Posts' }}
-										/>
+										<BlogBar context='inPostEdit' breadcrumb={{ link: '/posts', label: 'Posts' }} />
 									</React.Fragment>
 								);
 							}}

@@ -1,8 +1,4 @@
-import calcReducer, {
-	reducerOperation,
-	reducerOpEnum,
-	reducerState
-} from './reducer';
+import calcReducer, { reducerOperation, reducerOpEnum, reducerState } from './reducer';
 import { op, stackItem, tapeItem } from '../operators/_types';
 import { getRandomUID } from 'functions';
 
@@ -27,11 +23,7 @@ const mkStkItm = (number: number): stackItem => ({
 	number
 });
 
-const mkTpItm = (arr: [string, string]): tapeItem => [
-	arr[0],
-	arr[1],
-	expect.any(String)
-];
+const mkTpItm = (arr: [string, string]): tapeItem => [arr[0], arr[1], expect.any(String)];
 
 describe('Calc-reducer properly manages state', () => {
 	it('Pushes an action to state', () => {
@@ -41,9 +33,7 @@ describe('Calc-reducer properly manages state', () => {
 			stackStash: [],
 			tapeStash: []
 		};
-		expect(
-			calcReducer(testState, mkOp(reducerOpEnum.push, op.enter, 5))
-		).toMatchObject({
+		expect(calcReducer(testState, mkOp(reducerOpEnum.push, op.enter, 5))).toMatchObject({
 			stackHistory: [[mkStkItm(5)]],
 			tapeHistory: [[mkTpItm(['ENTER 5', ''])]],
 			stackStash: [],
@@ -69,11 +59,7 @@ describe('Calc-reducer properly manages state', () => {
 			tapeHistory: [
 				[mkTpItm(['ENTER 5', ''])],
 				[mkTpItm(['ENTER 10', '']), mkTpItm(['ENTER 5', ''])],
-				[
-					mkTpItm(['ENTER 15', '']),
-					mkTpItm(['ENTER 10', '']),
-					mkTpItm(['ENTER 5', ''])
-				]
+				[mkTpItm(['ENTER 15', '']), mkTpItm(['ENTER 10', '']), mkTpItm(['ENTER 5', ''])]
 			],
 			stackStash: [],
 			tapeStash: []
@@ -86,9 +72,7 @@ describe('Calc-reducer properly manages state', () => {
 			stackStash: [],
 			tapeStash: []
 		};
-		expect(
-			calcReducer(testState, mkOp(reducerOpEnum.stash, op.enter))
-		).toMatchObject({
+		expect(calcReducer(testState, mkOp(reducerOpEnum.stash, op.enter))).toMatchObject({
 			stackHistory: [],
 			tapeHistory: [],
 			stackStash: [[mkStkItm(5)]],
@@ -105,11 +89,7 @@ describe('Calc-reducer properly manages state', () => {
 			tapeHistory: [
 				[mkTpItm(['ENTER 5', ''])],
 				[mkTpItm(['ENTER 5', '']), mkTpItm(['ENTER 10', ''])],
-				[
-					mkTpItm(['ENTER 5', '']),
-					mkTpItm(['ENTER 10', '']),
-					mkTpItm(['ENTER 15', ''])
-				]
+				[mkTpItm(['ENTER 5', '']), mkTpItm(['ENTER 10', '']), mkTpItm(['ENTER 15', ''])]
 			],
 			stackStash: [],
 			tapeStash: []
@@ -124,11 +104,7 @@ describe('Calc-reducer properly manages state', () => {
 				[mkStkItm(5), mkStkItm(10)]
 			],
 			tapeStash: [
-				[
-					mkTpItm(['ENTER 5', '']),
-					mkTpItm(['ENTER 10', '']),
-					mkTpItm(['ENTER 15', ''])
-				],
+				[mkTpItm(['ENTER 5', '']), mkTpItm(['ENTER 10', '']), mkTpItm(['ENTER 15', ''])],
 				[mkTpItm(['ENTER 5', '']), mkTpItm(['ENTER 10', ''])]
 			]
 		});

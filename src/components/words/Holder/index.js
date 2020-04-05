@@ -2,8 +2,7 @@ import React from 'react';
 
 import { themeHook } from 'theme';
 
-const resolveDir = dir =>
-	dir === 'col' || dir === 'column' ? 'column' : 'row';
+const resolveDir = dir => (dir === 'col' || dir === 'column' ? 'column' : 'row');
 const resolveWrap = wrap =>
 	wrap ? (typeof wrap === 'string' ? wrap : 'wrap') : 'nowrap';
 
@@ -23,10 +22,7 @@ export default function Holder(props) {
 	const { style, className, onClick } = props;
 	const classes = useClasses(props);
 	return (
-		<div
-			className={cat(className, classes.container)}
-			style={style}
-			onClick={onClick}>
+		<div className={cat(className, classes.container)} style={style} onClick={onClick}>
 			{props.children}
 		</div>
 	);

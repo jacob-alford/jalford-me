@@ -13,21 +13,21 @@ import WordPressMe from './WordPressMe';
 
 import withPageFade from 'components/bindings/wrappers/withPageFade';
 
-function Websites(){
-  return (
-    <React.Fragment>
-      <Jalfordme />
-      <HaloLink featured />
-      <SurfShackPizza />
-      <OldWebsite />
-      <LaBellaVita />
-      <StuderDreams />
-      <WordPressMe />
-      <IceCaves featured />
-      <Jalfordco />
-      <OldJalfordMe />
-    </React.Fragment>
-  );
+function Websites() {
+	return (
+		<React.Fragment>
+			<Jalfordme />
+			<HaloLink featured />
+			<SurfShackPizza />
+			<OldWebsite />
+			<LaBellaVita />
+			<StuderDreams />
+			<WordPressMe />
+			<IceCaves featured />
+			<Jalfordco />
+			<OldJalfordMe />
+		</React.Fragment>
+	);
 }
 
 export default withPageFade(Websites);

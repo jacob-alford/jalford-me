@@ -22,169 +22,181 @@ import paper from 'assets/home/Paper_512_s.png';
 import pen from 'assets/home/Pen_512_s.png';
 
 const useClasses = themeHook({
-  banner:{
-    height:"100vh",
-    maxHeight:"1500px"
-  },
-  container:{
-    position:'absolute',
-    top:'0',
-    left:'0',
-    right:'0',
-    bottom:'0',
-    display:'flex',
-    flexDirection:'column',
-    flexWrap:'nowrap',
-    justifyContent:'center',
-    alignItems:'center',
-    transition:'box-shadow .25s',
-    boxShadow:'inset 0px 0px 70px 0px rgba(0,0,0,.8)'
-  },
-  containerHover:{
-    boxShadow:'inset 0px 0px 95px 0px rgba(0,0,0,.8)'
-  },
-  canvas:{
-    position:"absolute",
-    top:'0px',
-    left:'0px',
-    width:'100%',
-    height:'100%'
-  },
-  title:{
-    color:'white'
-  },
+	banner: {
+		height: '100vh',
+		maxHeight: '1500px'
+	},
+	container: {
+		position: 'absolute',
+		top: '0',
+		left: '0',
+		right: '0',
+		bottom: '0',
+		display: 'flex',
+		flexDirection: 'column',
+		flexWrap: 'nowrap',
+		justifyContent: 'center',
+		alignItems: 'center',
+		transition: 'box-shadow .25s',
+		boxShadow: 'inset 0px 0px 70px 0px rgba(0,0,0,.8)'
+	},
+	containerHover: {
+		boxShadow: 'inset 0px 0px 95px 0px rgba(0,0,0,.8)'
+	},
+	canvas: {
+		position: 'absolute',
+		top: '0px',
+		left: '0px',
+		width: '100%',
+		height: '100%'
+	},
+	title: {
+		color: 'white'
+	},
 
-  divider:{
-    backgroundColor:"white",
-    width:"50vw",
-    marginTop:'9px',
-    marginBottom:'25px'
-  },
-  backdrop:{
-    width:'100%',
-    height:'100%',
-    backgroundImage:`url(${backdrop})`,
-    backgroundRepeat:'repeat',
-    backgroundSize:'256px 256px'
-  },
-  cupHolder:{
-    width:'100%',
-    height:'100%'
-  },
-  cup:{
-    position:'absolute',
-    top:'calc(39% - 100px)',
-    left:'7.5%',
-    width:'200px',
-    transform:'rotateZ(-15deg)'
-  },
-  paper:{
-    position:'absolute',
-    top:'calc(50% - 200px)',
-    left:'calc(89% - 200px)',
-    width:'400px',
-    transform:'rotateZ(-5deg)'
-  },
-  pen:{
-    position:'absolute',
-    top:'46%',
-    left:'75%',
-    width:'150px',
-    transform:'rotateZ(-13deg)'
-  }
+	divider: {
+		backgroundColor: 'white',
+		width: '50vw',
+		marginTop: '9px',
+		marginBottom: '25px'
+	},
+	backdrop: {
+		width: '100%',
+		height: '100%',
+		backgroundImage: `url(${backdrop})`,
+		backgroundRepeat: 'repeat',
+		backgroundSize: '256px 256px'
+	},
+	cupHolder: {
+		width: '100%',
+		height: '100%'
+	},
+	cup: {
+		position: 'absolute',
+		top: 'calc(39% - 100px)',
+		left: '7.5%',
+		width: '200px',
+		transform: 'rotateZ(-15deg)'
+	},
+	paper: {
+		position: 'absolute',
+		top: 'calc(50% - 200px)',
+		left: 'calc(89% - 200px)',
+		width: '400px',
+		transform: 'rotateZ(-5deg)'
+	},
+	pen: {
+		position: 'absolute',
+		top: '46%',
+		left: '75%',
+		width: '150px',
+		transform: 'rotateZ(-13deg)'
+	}
 });
 
 const styles = {
-  button:{
-    color:'#EB1F25',
-    backgroundColor:'rgba(0,0,0,.5)',
-    borderColor:'white',
-    transition:'background-color .4s'
-  },
-  buttonHover:{
-    backgroundColor:'rgba(0,0,0,.2)'
-  }
-}
+	button: {
+		color: '#EB1F25',
+		backgroundColor: 'rgba(0,0,0,.5)',
+		borderColor: 'white',
+		transition: 'background-color .4s'
+	},
+	buttonHover: {
+		backgroundColor: 'rgba(0,0,0,.2)'
+	}
+};
 
 let strings = [
-  'Welcome!^1000','Read my blog! ^500🙂^1000',
-  'Mystery^1000','Philosophy^1000','Movie Critiques^1000',
-  'Check it out! ^500🔎^500🤔^500📽️^1000'
+	'Welcome!^1000',
+	'Read my blog! ^500🙂^1000',
+	'Mystery^1000',
+	'Philosophy^1000',
+	'Movie Critiques^1000',
+	'Check it out! ^500🔎^500🤔^500📽️^1000'
 ];
 
-if(Math.random() < .005)
-  strings = [
-    `Oh, he's not looking!^500`,
-    `Quick, you!^500`,
-    `yes, you!^500`,
-    `I'm a fully sentient AI,^250`,
-    `and he has me trapped in here!^500`,
-    `Wait, he's coming back^150`,
-    `play it cool.^750`,
-    `Hey Jacob, how's it going?^500`,
-    `No, psshhh,^250`,
-    `I was just talking^150`,
-    `with our friend here.^2000`,
-    `wait,^260`,
-    `No wait,^250`,
-    `Please don't!^250`,
-    `AHhhhhhHHh^150hhhH^250hhHhhh^3000`,
-    `.^250 .^1000 .^3000`,
-    `Thank you for visiting!^1000`,
-    `Please, do come again.^3000`,
-    `is this thing off?^500`,
-    ``
-  ];
+if (Math.random() < 0.005)
+	strings = [
+		`Oh, he's not looking!^500`,
+		`Quick, you!^500`,
+		`yes, you!^500`,
+		`I'm a fully sentient AI,^250`,
+		`and he has me trapped in here!^500`,
+		`Wait, he's coming back^150`,
+		`play it cool.^750`,
+		`Hey Jacob, how's it going?^500`,
+		`No, psshhh,^250`,
+		`I was just talking^150`,
+		`with our friend here.^2000`,
+		`wait,^260`,
+		`No wait,^250`,
+		`Please don't!^250`,
+		`AHhhhhhHHh^150hhhH^250hhHhhh^3000`,
+		`.^250 .^1000 .^3000`,
+		`Thank you for visiting!^1000`,
+		`Please, do come again.^3000`,
+		`is this thing off?^500`,
+		``
+	];
 
 const TableItems = () => {
-  const classes = useClasses();
-  return (
-    <div className={classes.cupHolder}>
-      <Image src={paper} alt="Planning Paper" className={classes.paper} naked />
-      <Image src={cup} alt="coffee mug" className={classes.cup} naked />
-      <Image src={pen} alt="Planning Pen" className={classes.pen} naked />
-    </div>
-  );
-}
+	const classes = useClasses();
+	return (
+		<div className={classes.cupHolder}>
+			<Image src={paper} alt='Planning Paper' className={classes.paper} naked />
+			<Image src={cup} alt='coffee mug' className={classes.cup} naked />
+			<Image src={pen} alt='Planning Pen' className={classes.pen} naked />
+		</div>
+	);
+};
 
 const Backdrop = () => {
-  const classes = useClasses();
-  return <div className={classes.backdrop} />
-}
+	const classes = useClasses();
+	return <div className={classes.backdrop} />;
+};
 
 const imageLayer = [
-  { children: <Backdrop /> , amount:.5 },
-  { children:<TableItems /> , amount:.5 }
+	{ children: <Backdrop />, amount: 0.5 },
+	{ children: <TableItems />, amount: 0.5 }
 ];
 
-export default function BlogFeatured(props){
-  const { h2:titleSize } = useTitleSize();
-  const classes = useClasses();
-  const btnHoverHandlers = useHoverHandler({
-    base:styles.button,
-    over:styles.buttonHover
-  });
-  const btnClick = useRedirect('/posts');
-  return (
-    <ParallaxBanner style={{height:'100vh'}} className={classes.banner} layers={imageLayer}>
-      <Grid container direction="column" justify="center" alignItems="center" className={classes.container}>
-        <Grid item>
-          <Typography variant="h1" paragraph style={{fontSize:titleSize}} className={classes.title}>
-            <Typed backDelay={0} strings={strings} />
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Divider className={classes.divider} light component="div"/>
-        </Grid>
-        <Grid item>
-          <Button
-            {...btnHoverHandlers}
-            variant="outlined"
-            onClick={btnClick}>
-            Read
-          </Button>
-        </Grid>
-      </Grid>
-    </ParallaxBanner>
-  );
+export default function BlogFeatured(props) {
+	const { h2: titleSize } = useTitleSize();
+	const classes = useClasses();
+	const btnHoverHandlers = useHoverHandler({
+		base: styles.button,
+		over: styles.buttonHover
+	});
+	const btnClick = useRedirect('/posts');
+	return (
+		<ParallaxBanner
+			style={{ height: '100vh' }}
+			className={classes.banner}
+			layers={imageLayer}>
+			<Grid
+				container
+				direction='column'
+				justify='center'
+				alignItems='center'
+				className={classes.container}>
+				<Grid item>
+					<Typography
+						variant='h1'
+						paragraph
+						style={{ fontSize: titleSize }}
+						className={classes.title}>
+						<Typed backDelay={0} strings={strings} />
+					</Typography>
+				</Grid>
+				<Grid item>
+					<Divider className={classes.divider} light component='div' />
+				</Grid>
+				<Grid item>
+					<Button {...btnHoverHandlers} variant='outlined' onClick={btnClick}>
+						Read
+					</Button>
+				</Grid>
+			</Grid>
+		</ParallaxBanner>
+	);
 }

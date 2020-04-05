@@ -83,10 +83,11 @@ export default function BlogCard(props) {
 					</Typography>
 					<Typography variant='body2' style={styles.date} gutterBottom>
 						{getPost().date !== undefined
-							? new Date(getPost().date.toDate()).toLocaleDateString(
-									'default',
-									{ year: 'numeric', month: 'long', day: 'numeric' }
-							  )
+							? new Date(getPost().date.toDate()).toLocaleDateString('default', {
+									year: 'numeric',
+									month: 'long',
+									day: 'numeric'
+							  })
 							: null}
 					</Typography>
 					{screenTooSmall && getPost().snippit ? (

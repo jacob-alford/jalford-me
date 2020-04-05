@@ -8,10 +8,7 @@ import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
 
 import { themeSelect } from 'theme';
 
-const [cardPadding, borderRadius] = themeSelect([
-	'getCardPadding',
-	'getBorderRadius'
-]);
+const [cardPadding, borderRadius] = themeSelect(['getCardPadding', 'getBorderRadius']);
 
 export const NavItems = styled(a.div)`
 	display: flex;

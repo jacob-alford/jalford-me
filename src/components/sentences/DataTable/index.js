@@ -44,18 +44,13 @@ export default function DataTable(props) {
 					data.sort(
 						(datum1, datum2) =>
 							(ascending ? 1 : -1) *
-							(access(datum1[currentSort.ref]) -
-								access(datum2[currentSort.ref]))
+							(access(datum1[currentSort.ref]) - access(datum2[currentSort.ref]))
 					);
 				} else if (typeof access(data[0][currentSort.ref]) === 'boolean') {
 					data.sort((datum1, datum2) => {
-						if (
-							access(datum1[currentSort.ref]) < access(datum2[currentSort.ref])
-						)
+						if (access(datum1[currentSort.ref]) < access(datum2[currentSort.ref]))
 							return ascending ? -1 : 1;
-						else if (
-							access(datum1[currentSort.ref]) > access(datum2[currentSort.ref])
-						)
+						else if (access(datum1[currentSort.ref]) > access(datum2[currentSort.ref]))
 							return ascending ? 1 : -1;
 						else return 0;
 					});
@@ -63,8 +58,7 @@ export default function DataTable(props) {
 					data.sort((datum1, datum2) => {
 						return (
 							(ascending ? 1 : -1) *
-							(access(datum1[currentSort.ref]).seconds -
-								access(datum2[currentSort.ref]).seconds)
+							(access(datum1[currentSort.ref]).seconds - access(datum2[currentSort.ref]).seconds)
 						);
 					});
 				}
@@ -80,13 +74,11 @@ export default function DataTable(props) {
 				} else if (typeof data[0][currentSort.ref] === 'number') {
 					data.sort(
 						(datum1, datum2) =>
-							(ascending ? 1 : -1) *
-							(datum1[currentSort.ref] - datum2[currentSort.ref])
+							(ascending ? 1 : -1) * (datum1[currentSort.ref] - datum2[currentSort.ref])
 					);
 				} else if (typeof data[0][currentSort.ref] === 'boolean') {
 					data.sort((datum1, datum2) => {
-						if (datum1[currentSort.ref] < datum2[currentSort.ref])
-							return ascending ? -1 : 1;
+						if (datum1[currentSort.ref] < datum2[currentSort.ref]) return ascending ? -1 : 1;
 						else if (datum1[currentSort.ref] > datum2[currentSort.ref])
 							return ascending ? 1 : -1;
 						else return 0;
@@ -95,8 +87,7 @@ export default function DataTable(props) {
 					data.sort((datum1, datum2) => {
 						return (
 							(ascending ? 1 : -1) *
-							(datum1[currentSort.ref].seconds -
-								datum2[currentSort.ref].seconds)
+							(datum1[currentSort.ref].seconds - datum2[currentSort.ref].seconds)
 						);
 					});
 				}
@@ -136,24 +127,15 @@ export default function DataTable(props) {
 					{headerConfig
 						.filter(header => selectedFields.includes(header.label))
 						.map((header, headerIndex) => (
-							<TableCell
-								style={{ textAlign: 'center' }}
-								key={`header${headerIndex}`}>
-								<Grid
-									container
-									direction='row'
-									justify='center'
-									alignItems='center'>
+							<TableCell style={{ textAlign: 'center' }} key={`header${headerIndex}`}>
+								<Grid container direction='row' justify='center' alignItems='center'>
 									{currentSort && header.sortable ? (
 										<Grid item>
 											<Typography
 												variant='h6'
 												component='span'
 												style={styles.header}
-												onClick={createSortBy(
-													header.ref[0],
-													header.deepAccessor
-												)}>
+												onClick={createSortBy(header.ref[0], header.deepAccessor)}>
 												{header.label}
 											</Typography>
 										</Grid>
@@ -167,40 +149,20 @@ export default function DataTable(props) {
 											</Typography>
 										</Grid>
 									)}
-									{currentSort &&
-									header.sortable &&
-									currentSort.ref === header.ref[0] ? (
+									{currentSort && header.sortable && currentSort.ref === header.ref[0] ? (
 										<Grid item>
-											<IconButton
-												onClick={createSortBy(
-													header.ref[0],
-													header.deepAccessor
-												)}>
-												{currentSort.dir === 'a' ? (
-													<KeyboardArrowUp />
-												) : (
-													<KeyboardArrowDown />
-												)}
+											<IconButton onClick={createSortBy(header.ref[0], header.deepAccessor)}>
+												{currentSort.dir === 'a' ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
 											</IconButton>
 										</Grid>
 									) : null}
-									{currentSort &&
-									header.sortable &&
-									currentSort.ref !== header.ref[0] ? (
+									{currentSort && header.sortable && currentSort.ref !== header.ref[0] ? (
 										<Grid item>
-											<IconButton
-												onClick={createSortBy(
-													header.ref[0],
-													header.deepAccessor
-												)}>
+											<IconButton onClick={createSortBy(header.ref[0], header.deepAccessor)}>
 												{currentSort.dir === 'a' ? (
-													<KeyboardArrowUp
-														style={{ color: 'rgba(0,0,0,.25)' }}
-													/>
+													<KeyboardArrowUp style={{ color: 'rgba(0,0,0,.25)' }} />
 												) : (
-													<KeyboardArrowDown
-														style={{ color: 'rgba(0,0,0,.25)' }}
-													/>
+													<KeyboardArrowDown style={{ color: 'rgba(0,0,0,.25)' }} />
 												)}
 											</IconButton>
 										</Grid>
@@ -218,17 +180,13 @@ export default function DataTable(props) {
 							.map((header, dataIndex) => {
 								if (header.transform)
 									return (
-										<TableCell
-											style={{ textAlign: 'center' }}
-											key={`dataEntry${dataIndex}`}>
+										<TableCell style={{ textAlign: 'center' }} key={`dataEntry${dataIndex}`}>
 											{header.transform(...header.ref.map(ref => post[ref]))}
 										</TableCell>
 									);
 								else
 									return (
-										<TableCell
-											style={{ textAlign: 'center' }}
-											key={`dataEntry${dataIndex}`}>
+										<TableCell style={{ textAlign: 'center' }} key={`dataEntry${dataIndex}`}>
 											{post[header.ref[0]]}
 										</TableCell>
 									);

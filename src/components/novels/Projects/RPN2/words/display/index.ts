@@ -5,12 +5,4 @@ import TapeItem from './TapeItem';
 import TapeAndStack from './TapeAndStack';
 import EnteringValue from './EnteringValue';
 
-export {
-	Stack,
-	Tape,
-	StackItem,
-	TapeItem,
-	TapeAndStack,
-	EnteringValue,
-	formatNumber
-};
+export { Stack, Tape, StackItem, TapeItem, TapeAndStack, EnteringValue, formatNumber };

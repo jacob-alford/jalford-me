@@ -52,30 +52,27 @@ const About2 = () => {
 			opacity: 0
 		}
 	}));
-	const [[aLinAlg, aPhys, aPhil, aPsy, aTechWr], setScienceIcons] = useTrail(
-		5,
-		() => ({
-			from: {
-				opacity: 0
-			},
-			onRest: () => setCreativeIcons({ opacity: 1 })
-		})
-	);
+	const [[aLinAlg, aPhys, aPhil, aPsy, aTechWr], setScienceIcons] = useTrail(5, () => ({
+		from: {
+			opacity: 0
+		},
+		onRest: () => setCreativeIcons({ opacity: 1 })
+	}));
 	const [[aAws, aFirebase, aNode], setBackEndIcons] = useTrail(3, () => ({
 		from: {
 			opacity: 0
 		},
 		onRest: () => setScienceIcons({ opacity: 1 })
 	}));
-	const [
-		[aReact, aRedux, aTs, aJest, aWebgl, aMui],
-		setFrontEndIcons
-	] = useTrail(6, () => ({
-		from: {
-			opacity: 0
-		},
-		onRest: () => setBackEndIcons({ opacity: 1 })
-	}));
+	const [[aReact, aRedux, aTs, aJest, aWebgl, aMui], setFrontEndIcons] = useTrail(
+		6,
+		() => ({
+			from: {
+				opacity: 0
+			},
+			onRest: () => setBackEndIcons({ opacity: 1 })
+		})
+	);
 	const [textFade, setTextFade] = useSpring(() => ({
 		opacity: 0,
 		from: { opacity: 0 }
@@ -108,11 +105,7 @@ const About2 = () => {
 					/>
 					<MeText style={textFade}>
 						<HTML str='&#8220;' />
-						<Typed
-							shouldStart={shouldType}
-							strings={descriptionStrings}
-							backDelay={0}
-						/>
+						<Typed shouldStart={shouldType} strings={descriptionStrings} backDelay={0} />
 						<HTML str='&#8221;' />
 					</MeText>
 				</MeHolder>
@@ -120,30 +113,15 @@ const About2 = () => {
 					<Block style={frontEndFall} color='#62F8De'>
 						<Header color='#62F8De'>Front End</Header>
 						<IconList>
-							<Image
-								url='https://reactjs.org/'
-								style={aReact}
-								title='React'
-								src={reactLogo}
-							/>
-							<Image
-								url='https://redux.js.org/'
-								style={aRedux}
-								title='Redux'
-								src={reduxLogo}
-							/>
+							<Image url='https://reactjs.org/' style={aReact} title='React' src={reactLogo} />
+							<Image url='https://redux.js.org/' style={aRedux} title='Redux' src={reduxLogo} />
 							<Image
 								url='https://www.typescriptlang.org/'
 								style={aTs}
 								title='Typescript'
 								src={tsLogo}
 							/>
-							<Image
-								url='https://jestjs.io/en/'
-								style={aJest}
-								title='Jest'
-								src={jestLogo}
-							/>
+							<Image url='https://jestjs.io/en/' style={aJest} title='Jest' src={jestLogo} />
 							<Image
 								url='https://webglfundamentals.org/'
 								style={aWebgl}
@@ -173,12 +151,7 @@ const About2 = () => {
 								title='Firebase'
 								src={firebaseLogo}
 							/>
-							<Image
-								url='https://nodejs.org/en/'
-								style={aNode}
-								title='Node.js'
-								src={nodeLogo}
-							/>
+							<Image url='https://nodejs.org/en/' style={aNode} title='Node.js' src={nodeLogo} />
 						</IconList>
 					</Block>
 					<Block style={mathFall} color='#69beef'>

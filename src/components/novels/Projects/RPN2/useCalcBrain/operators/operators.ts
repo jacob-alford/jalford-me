@@ -26,11 +26,7 @@ const toStackItem = (number: number, UID?: string): stackItem => ({
 	number,
 	UID: UID || getRandomUID()
 });
-const condCat = (
-	arr: stackItem[],
-	item?: number,
-	UID?: string
-): stackItem[] => {
+const condCat = (arr: stackItem[], item?: number, UID?: string): stackItem[] => {
 	if (item === 0 || item) return concat(arr, toStackItem(item, UID));
 	else return arr;
 };
@@ -39,8 +35,7 @@ const factorial = (number: number): number => {
 	else return number * factorial(number - 1);
 };
 const getLast = (stack: stackItem[]): stackItem => stack[stack.length - 1];
-const getNextToLast = (stack: stackItem[]): stackItem =>
-	stack[stack.length - 2];
+const getNextToLast = (stack: stackItem[]): stackItem => stack[stack.length - 2];
 
 const enter: operator = {
 	type: op.enter,
@@ -99,9 +94,7 @@ const swap: operator = {
 	preVerify: (stack: stackItem[]): boolean => stack.length >= 2,
 	toTape: (stack: stackItem[]): tapeItem => [
 		`SWAP`,
-		`${shortNum(getNextToLast(stack).number)}, ${shortNum(
-			getLast(stack).number
-		)}`,
+		`${shortNum(getNextToLast(stack).number)}, ${shortNum(getLast(stack).number)}`,
 		getRandomUID()
 	],
 	error: (): calcError => null
@@ -122,9 +115,7 @@ const operators: opsForm = {
 		type: op.add,
 		fn: (x: number, y: number): number => x + y,
 		toTape: (stack: stackItem[]): tapeItem => [
-			`${shortNum(getNextToLast(stack).number)} + ${shortNum(
-				getLast(stack).number
-			)}`,
+			`${shortNum(getNextToLast(stack).number)} + ${shortNum(getLast(stack).number)}`,
 			`${shortNum(getLast(stack).number + getNextToLast(stack).number)}`,
 			getRandomUID()
 		]
@@ -133,9 +124,7 @@ const operators: opsForm = {
 		type: op.sub,
 		fn: (x: number, y: number): number => y - x,
 		toTape: (stack: stackItem[]): tapeItem => [
-			`${shortNum(getNextToLast(stack).number)} - ${shortNum(
-				getLast(stack).number
-			)}`,
+			`${shortNum(getNextToLast(stack).number)} - ${shortNum(getLast(stack).number)}`,
 			`${shortNum(getNextToLast(stack).number - getLast(stack).number)}`,
 			getRandomUID()
 		]
@@ -144,9 +133,7 @@ const operators: opsForm = {
 		type: op.mul,
 		fn: (x: number, y: number): number => x * y,
 		toTape: (stack: stackItem[]): tapeItem => [
-			`${shortNum(getNextToLast(stack).number)} * ${shortNum(
-				getLast(stack).number
-			)}`,
+			`${shortNum(getNextToLast(stack).number)} * ${shortNum(getLast(stack).number)}`,
 			`${shortNum(getLast(stack).number * getNextToLast(stack).number)}`,
 			getRandomUID()
 		]
@@ -155,9 +142,7 @@ const operators: opsForm = {
 		type: op.div,
 		fn: (x: number, y: number): number => y / x,
 		toTape: (stack: stackItem[]): tapeItem => [
-			`${shortNum(getNextToLast(stack).number)} / ${shortNum(
-				getLast(stack).number
-			)}`,
+			`${shortNum(getNextToLast(stack).number)} / ${shortNum(getLast(stack).number)}`,
 			`${shortNum(getNextToLast(stack).number / getLast(stack).number)}`,
 			getRandomUID()
 		],
@@ -229,11 +214,7 @@ const operators: opsForm = {
 	[op.product]: makeReducer({
 		type: op.product,
 		fn: (stack: number[]): number[] => [
-			reduce(
-				stack,
-				(product: number, next: number): number => product * next,
-				1
-			)
+			reduce(stack, (product: number, next: number): number => product * next, 1)
 		]
 	}),
 	[op.mean]: makeReducer({
@@ -253,8 +234,7 @@ const operators: opsForm = {
 				(1 / stack.length) *
 					reduce(
 						stack,
-						(sum: number, next: number): number =>
-							sum + Math.pow(next - mean, 2),
+						(sum: number, next: number): number => sum + Math.pow(next - mean, 2),
 						0
 					)
 			];

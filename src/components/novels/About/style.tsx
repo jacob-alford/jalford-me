@@ -55,8 +55,7 @@ export const Stack = styled.div`
 
 export const Block = styled(a.div)`
 	background: black;
-	border: 1px solid
-		${(props: { color?: string }): string => props.color ?? '#69beef'};
+	border: 1px solid ${(props: { color?: string }): string => props.color ?? '#69beef'};
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
