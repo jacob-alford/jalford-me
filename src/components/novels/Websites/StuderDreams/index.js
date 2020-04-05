@@ -9,32 +9,32 @@ import html5 from 'assets/websites/html5logo.svg';
 import jqueryLogo from 'assets/websites/jquery-icon.svg';
 
 export default function StuderDreams({ featured }) {
-	return (
-		<TemplateWebsite
-			heading='Studer Dreams'
-			tagline='You will be missed, old friend'
-			year='(2014)'
-			action={{
-				text: 'Rest in Peace',
-				href: 'https://youtu.be/XTzf8QA3-vs'
-			}}
-			image={{
-				source: studerdreams,
-				altSource: studerdreamsForLesserDevices,
-				alt: 'Rest in peace',
-				href: '/websites'
-			}}
-			featured={featured}
-			techRP={() => (
-				<React.Fragment>
-					<TechListing
-						img={html5}
-						text='HTML 5'
-						url='https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5'
-					/>
-					<TechListing img={jqueryLogo} text='jQuery' url='https://jquery.com/' />
-				</React.Fragment>
-			)}
-		/>
-	);
+  return (
+    <TemplateWebsite
+      heading='Studer Dreams'
+      tagline='You will be missed, old friend'
+      year='(2014)'
+      action={{
+        text: 'Rest in Peace',
+        href: 'https://youtu.be/XTzf8QA3-vs'
+      }}
+      image={{
+        source: studerdreams,
+        altSource: studerdreamsForLesserDevices,
+        alt: 'Rest in peace',
+        href: '/websites'
+      }}
+      featured={featured}
+      techRP={() => (
+        <React.Fragment>
+          <TechListing
+            img={html5}
+            text='HTML 5'
+            url='https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5'
+          />
+          <TechListing img={jqueryLogo} text='jQuery' url='https://jquery.com/' />
+        </React.Fragment>
+      )}
+    />
+  );
 }

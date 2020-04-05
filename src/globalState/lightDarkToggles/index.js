@@ -1,38 +1,38 @@
 const isNightTime = () => {
-	const time = new Date().getHours();
-	return time < 6 || time > 20;
+  const time = new Date().getHours();
+  return time < 6 || time > 20;
 };
 const getDefaultThemeState = (light, dark) =>
-	light && light.matches
-		? 'light'
-		: dark && dark.matches
-		? 'dark'
-		: isNightTime()
-		? 'dark'
-		: 'light';
+  light && light.matches
+    ? 'light'
+    : dark && dark.matches
+    ? 'dark'
+    : isNightTime()
+    ? 'dark'
+    : 'light';
 
 const prefersLight =
-	window.matchMedia && window.matchMedia('(prefers-color-scheme: light)');
+  window.matchMedia && window.matchMedia('(prefers-color-scheme: light)');
 const prefersDark =
-	window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+  window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
 
 const defaultTLDState = {
-	themeMode: getDefaultThemeState(prefersLight, prefersDark)
+  themeMode: getDefaultThemeState(prefersLight, prefersDark)
 };
 
 const actors = {
-	toggle: 'toggle'
+  toggle: 'toggle'
 };
 const actions = {
-	[actors.toggle]: ({ themeMode }) =>
-		themeMode === 'light' ? 'dark' : themeMode === 'dark' ? 'light' : 'light'
+  [actors.toggle]: ({ themeMode }) =>
+    themeMode === 'light' ? 'dark' : themeMode === 'dark' ? 'light' : 'light'
 };
 
 const selectees = {
-	getTLD: 'getTLD'
+  getTLD: 'getTLD'
 };
 const tldSelectors = {
-	[selectees.getTLD]: state => state.themeMode
+  [selectees.getTLD]: state => state.themeMode
 };
 
 export default actions;

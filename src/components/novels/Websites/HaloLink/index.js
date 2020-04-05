@@ -10,33 +10,33 @@ import graphQlLogo from 'assets/websites/GraphQL_Logo.svg';
 import tensorflowLogo from 'assets/websites/TF_White_Icon.svg';
 
 export default function HaloLink({ featured }) {
-	return (
-		<TemplateWebsite
-			heading='Halo Link'
-			tagline='I blended multiband images together with math'
-			year='(2019)'
-			action={{
-				text: 'Pathologize',
-				href: 'http://www.indicalab.com/halolink/'
-			}}
-			image={{
-				source: haloLink,
-				altSource: haloLinkGodDamnitApple,
-				alt: 'A pathologists toolbag',
-				href: 'http://www.indicalab.com/halolink/'
-			}}
-			featured={featured}
-			techRP={() => (
-				<React.Fragment>
-					<TechListing img={reactLogo} text='React' url='https://reactjs.org/' />
-					<TechListing img={graphQlLogo} text='GraphQL' url='https://graphql.org' />
-					<TechListing
-						img={tensorflowLogo}
-						text='TensorFlow'
-						url='https://www.tensorflow.org/js'
-					/>
-				</React.Fragment>
-			)}
-		/>
-	);
+  return (
+    <TemplateWebsite
+      heading='Halo Link'
+      tagline='I blended multiband images together with math'
+      year='(2019)'
+      action={{
+        text: 'Pathologize',
+        href: 'http://www.indicalab.com/halolink/'
+      }}
+      image={{
+        source: haloLink,
+        altSource: haloLinkGodDamnitApple,
+        alt: 'A pathologists toolbag',
+        href: 'http://www.indicalab.com/halolink/'
+      }}
+      featured={featured}
+      techRP={() => (
+        <React.Fragment>
+          <TechListing img={reactLogo} text='React' url='https://reactjs.org/' />
+          <TechListing img={graphQlLogo} text='GraphQL' url='https://graphql.org' />
+          <TechListing
+            img={tensorflowLogo}
+            text='TensorFlow'
+            url='https://www.tensorflow.org/js'
+          />
+        </React.Fragment>
+      )}
+    />
+  );
 }

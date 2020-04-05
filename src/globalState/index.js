@@ -11,48 +11,48 @@ const GlobalState = React.createContext();
 const MutateGlobalState = React.createContext();
 
 const actions = {
-	user: {
-		...userActions
-	},
-	notifications: {
-		...notificationActions
-	},
-	themeMode: {
-		...tldActions
-	}
+  user: {
+    ...userActions
+  },
+  notifications: {
+    ...notificationActions
+  },
+  themeMode: {
+    ...tldActions
+  }
 };
 
 const defaultState = {
-	...defaultUserState,
-	...defaultNotifState,
-	...defaultTLDState
+  ...defaultUserState,
+  ...defaultNotifState,
+  ...defaultTLDState
 };
 
 const reducer = (state, action) => {
-	const { domain, selector, payload } = action;
-	try {
-		return {
-			...state,
-			[domain]: actions[domain][selector](state, payload)
-		};
-	} catch (err) {
-		throw new Error(
-			`Either domain (${domain})
+  const { domain, selector, payload } = action;
+  try {
+    return {
+      ...state,
+      [domain]: actions[domain][selector](state, payload)
+    };
+  } catch (err) {
+    throw new Error(
+      `Either domain (${domain})
            or selector (${selector}) not recognized!
       err: ${err}`
-		);
-	}
+    );
+  }
 };
 
 function GlobalStateProvider(props) {
-	const [globalState, actOnState] = useReducer(reducer, defaultState);
-	return (
-		<GlobalState.Provider value={globalState}>
-			<MutateGlobalState.Provider value={actOnState}>
-				{props.children}
-			</MutateGlobalState.Provider>
-		</GlobalState.Provider>
-	);
+  const [globalState, actOnState] = useReducer(reducer, defaultState);
+  return (
+    <GlobalState.Provider value={globalState}>
+      <MutateGlobalState.Provider value={actOnState}>
+        {props.children}
+      </MutateGlobalState.Provider>
+    </GlobalState.Provider>
+  );
 }
 
 export { GlobalState, MutateGlobalState, useSelect, useDispatch };

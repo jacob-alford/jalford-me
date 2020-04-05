@@ -7,29 +7,29 @@ import squarespace from 'assets/websites/squarespacelogo.svg';
 import jalfordCO from 'assets/websites/jalford-co.png';
 
 export default function Jalfordco({ featured }) {
-	return (
-		<TemplateWebsite
-			heading='jalford.co the sequel'
-			tagline='Drag; drag; and drop!'
-			year='(early 2018)'
-			action={{
-				disabled: true
-			}}
-			image={{
-				source: jalfordCO,
-				alt: 'My squarespace site',
-				href: '/websites'
-			}}
-			featured={featured}
-			techRP={() => (
-				<React.Fragment>
-					<TechListing
-						img={squarespace}
-						text='Squarespace'
-						url='https://www.squarespace.com/'
-					/>
-				</React.Fragment>
-			)}
-		/>
-	);
+  return (
+    <TemplateWebsite
+      heading='jalford.co the sequel'
+      tagline='Drag; drag; and drop!'
+      year='(early 2018)'
+      action={{
+        disabled: true
+      }}
+      image={{
+        source: jalfordCO,
+        alt: 'My squarespace site',
+        href: '/websites'
+      }}
+      featured={featured}
+      techRP={() => (
+        <React.Fragment>
+          <TechListing
+            img={squarespace}
+            text='Squarespace'
+            url='https://www.squarespace.com/'
+          />
+        </React.Fragment>
+      )}
+    />
+  );
 }

@@ -1,63 +1,63 @@
 const comboBank = [
-	'&alpha;',
-	'&beta;',
-	'&gamma;',
-	'&delta;',
-	'&epsilon;',
-	'&zeta;',
-	'&eta;',
-	'&theta;',
-	'&iota;',
-	'&kappa;',
-	'&lambda;',
-	'&mu;',
-	'&nu;',
-	'&xi;',
-	'&omicron;',
-	'&pi;',
-	'&rho;',
-	'&sigma;',
-	'&tau;',
-	'&upsilon;',
-	'&phi;',
-	'&chi;',
-	'&psi;',
-	'&omega;'
+  '&alpha;',
+  '&beta;',
+  '&gamma;',
+  '&delta;',
+  '&epsilon;',
+  '&zeta;',
+  '&eta;',
+  '&theta;',
+  '&iota;',
+  '&kappa;',
+  '&lambda;',
+  '&mu;',
+  '&nu;',
+  '&xi;',
+  '&omicron;',
+  '&pi;',
+  '&rho;',
+  '&sigma;',
+  '&tau;',
+  '&upsilon;',
+  '&phi;',
+  '&chi;',
+  '&psi;',
+  '&omega;'
 ];
 const getRandomLetter = () => (Math.random() * 24) | 0;
 const initialState = [getRandomLetter(), getRandomLetter(), getRandomLetter()];
 const dec = value => (value - 1 >= 0 ? value - 1 : comboBank.length - 1);
 const inc = value => (value + 1 < comboBank.length ? value + 1 : 0);
 const operate = (state, indecies, operation) => {
-	indecies.forEach(index => (state[index] = operation(state[index])));
-	return state;
+  indecies.forEach(index => (state[index] = operation(state[index])));
+  return state;
 };
 
 const actors = {
-	leftInc: 'leftInc',
-	leftDec: 'leftDec',
-	outerInc: 'outerInc',
-	outerDec: 'outerDec',
-	rightInc: 'rightInc',
-	rightDec: 'rightDec',
-	shuffle: 'shuffle'
+  leftInc: 'leftInc',
+  leftDec: 'leftDec',
+  outerInc: 'outerInc',
+  outerDec: 'outerDec',
+  rightInc: 'rightInc',
+  rightDec: 'rightDec',
+  shuffle: 'shuffle'
 };
 const actions = {
-	[actors.leftInc]: state => operate([...state], [0, 1], inc),
-	[actors.leftDec]: state => operate([...state], [0, 1], dec),
-	[actors.outerInc]: state => operate([...state], [0, 2], inc),
-	[actors.outerDec]: state => operate([...state], [0, 2], dec),
-	[actors.rightInc]: state => operate([...state], [1, 2], inc),
-	[actors.rightDec]: state => operate([...state], [1, 2], dec),
-	[actors.shuffle]: () => [getRandomLetter(), getRandomLetter(), getRandomLetter()]
+  [actors.leftInc]: state => operate([...state], [0, 1], inc),
+  [actors.leftDec]: state => operate([...state], [0, 1], dec),
+  [actors.outerInc]: state => operate([...state], [0, 2], inc),
+  [actors.outerDec]: state => operate([...state], [0, 2], dec),
+  [actors.rightInc]: state => operate([...state], [1, 2], inc),
+  [actors.rightDec]: state => operate([...state], [1, 2], dec),
+  [actors.shuffle]: () => [getRandomLetter(), getRandomLetter(), getRandomLetter()]
 };
 
 const reducer = (state, { index, type }) => {
-	try {
-		return actions[type](state);
-	} catch (err) {
-		throw new Error(`Unknown reducer of type: ${type}; err: ${err}`);
-	}
+  try {
+    return actions[type](state);
+  } catch (err) {
+    throw new Error(`Unknown reducer of type: ${type}; err: ${err}`);
+  }
 };
 
 export { reducer, comboBank, initialState };

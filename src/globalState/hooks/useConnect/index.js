@@ -2,6 +2,6 @@ import { useContext } from 'react';
 import { GlobalState } from 'globalState';
 
 export default function useConnect(selector) {
-	const globalState = useContext(GlobalState);
-	return selector(globalState);
+  const globalState = useContext(GlobalState);
+  return selector(globalState);
 }

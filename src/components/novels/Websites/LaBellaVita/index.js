@@ -9,27 +9,27 @@ import labellavita from 'assets/websites/labellavita.webp';
 import labellavitaForApple from 'assets/websites/labellavita.jpg';
 
 export default function LaBellaVita({ featured }) {
-	return (
-		<TemplateWebsite
-			heading='La Bella Vita'
-			tagline='The Italian Eatery Made with Love (now closed)'
-			year='(2014)'
-			action={{
-				disabled: true
-			}}
-			image={{
-				source: labellavita,
-				altSource: labellavitaForApple,
-				alt: 'Rest in peace, old friend',
-				href: '/websites'
-			}}
-			featured={featured}
-			techRP={() => (
-				<React.Fragment>
-					<TechListing img={jqueryLogo} text='jQuery' url='https://jquery.com/' />
-					<TechListing img={cssLogo} text='CSS' url='https://www.w3schools.com/css/' />
-				</React.Fragment>
-			)}
-		/>
-	);
+  return (
+    <TemplateWebsite
+      heading='La Bella Vita'
+      tagline='The Italian Eatery Made with Love (now closed)'
+      year='(2014)'
+      action={{
+        disabled: true
+      }}
+      image={{
+        source: labellavita,
+        altSource: labellavitaForApple,
+        alt: 'Rest in peace, old friend',
+        href: '/websites'
+      }}
+      featured={featured}
+      techRP={() => (
+        <React.Fragment>
+          <TechListing img={jqueryLogo} text='jQuery' url='https://jquery.com/' />
+          <TechListing img={cssLogo} text='CSS' url='https://www.w3schools.com/css/' />
+        </React.Fragment>
+      )}
+    />
+  );
 }
