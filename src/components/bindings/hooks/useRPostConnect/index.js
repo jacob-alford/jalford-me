@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { firebase } from 'firebase.js';
+import { firebase } from 'firebase.ts';
 
 import useRHook from 'components/bindings/hooks/useRHook';
 

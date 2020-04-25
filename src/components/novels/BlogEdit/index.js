@@ -4,7 +4,7 @@ import { useTransition, animated as a } from 'react-spring';
 
 import * as MUI_COMPONENTS from './mui.js';
 
-import { firebase } from 'firebase.js';
+import { firebase } from 'firebase.ts';
 
 import withPageFade from 'components/bindings/wrappers/withPageFade';
 

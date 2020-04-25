@@ -20,7 +20,7 @@ export const defaultState: stateModel = {
       uid: '',
       color: '',
       image: '',
-      permissions: 0,
+      permissions: { value: 0 },
       username: '',
       puzzles: []
     }
@@ -47,7 +47,7 @@ export const MutateState = createContext(
   (selector: actionSelector, payload: actionPayload) => {}
 );
 
-const GlobalStateProvider = (props: { children: React.ReactChildren }) => {
+const GlobalStateProvider = (props: { children: any }) => {
   const [globalState, actOnGlobalState] = useStoreReducer(stateReducer, defaultState);
   return (
     <GlobalState.Provider value={globalState}>

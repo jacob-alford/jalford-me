@@ -6,7 +6,7 @@ import * as MUI_COMPONENTS from './mui.js';
 import withPageFade from 'components/bindings/wrappers/withPageFade';
 import { useHistory } from 'react-router-dom';
 
-import { firebase } from 'firebase.js';
+import { firebase } from 'firebase.ts';
 
 import useRHook from 'components/bindings/hooks/useRHook';
 import useNotify from 'components/bindings/hooks/useNotify';

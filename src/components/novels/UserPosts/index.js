@@ -11,7 +11,7 @@ import useRPostConnect from 'components/bindings/hooks/useRPostConnect';
 import useTitleSize from 'components/bindings/hooks/useTitleSize';
 import useNotify from 'components/bindings/hooks/useNotify';
 
-import { firebase } from 'firebase.js';
+import { firebase } from 'firebase.ts';
 
 const {
   Container,

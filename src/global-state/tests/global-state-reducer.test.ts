@@ -14,7 +14,7 @@ export const initialState = {
       uid: '',
       color: '',
       image: '',
-      permissions: 0,
+      permissions: { value: 0 },
       username: '',
       puzzles: []
     }
@@ -45,7 +45,7 @@ describe('global-state-reducer functions properly', () => {
             uid: '1234',
             color: 'red',
             image: 'src/img.jpg',
-            permissions: 69,
+            permissions: { value: 69 },
             username: 'jacob',
             puzzles: [puzzleList['19-2-22']]
           }
@@ -59,7 +59,7 @@ describe('global-state-reducer functions properly', () => {
           uid: '1234',
           color: 'red',
           image: 'src/img.jpg',
-          permissions: 69,
+          permissions: { value: 69 },
           username: 'jacob',
           puzzles: [puzzleList['19-2-22']]
         }
@@ -79,7 +79,7 @@ describe('global-state-reducer functions properly', () => {
           uid: '',
           color: '',
           image: '',
-          permissions: 0,
+          permissions: { value: 0 },
           username: '',
           puzzles: []
         }
@@ -143,7 +143,7 @@ describe('global-state-reducer functions properly', () => {
           uid: '',
           color: '',
           image: '',
-          permissions: 0,
+          permissions: { value: 0 },
           username: '',
           puzzles: []
         }
@@ -178,7 +178,7 @@ describe('global-state-reducer functions properly', () => {
           uid: '',
           color: '',
           image: '',
-          permissions: 0,
+          permissions: { value: 0 },
           username: '',
           puzzles: []
         }

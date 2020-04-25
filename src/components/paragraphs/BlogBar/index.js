@@ -10,7 +10,7 @@ import SignupDialogue from 'components/sentences/SignupDialogue';
 import BlogBarActions from 'components/sentences/BlogBarActions';
 import CreatePostDialogue from 'components/sentences/CreatePostDialogue';
 
-import { firebase } from 'firebase.js';
+import { firebase } from 'firebase.ts';
 
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useRHook from 'components/bindings/hooks/useRHook';
@@ -46,7 +46,7 @@ const styles = {
   }
 };
 
-const getUserPermissions = user => user.activeUser.permissions.value;
+const getUserPermissions = user => user.details.permissions.value;
 
 export default function BlogBar(props) {
   const { user } = useRHook();
@@ -99,7 +99,7 @@ export default function BlogBar(props) {
         });
       });
   };
-  let bgColor = user.activeUser.color;
+  let bgColor = user.details.color;
   let textColor = getTextColorBasedOnBg(bgColor);
   useEffect(() => {
     if (user.loggedIn && signInIsOpen) closeSignIn();
@@ -136,7 +136,7 @@ export default function BlogBar(props) {
                         {!screenTooSmall ? (
                           <Grid item>
                             <Typography variant='body2' style={{ color: textColor }}>
-                              Welcome, {user.activeUser.username}
+                              Welcome, {user.details.username}
                             </Typography>
                           </Grid>
                         ) : null}

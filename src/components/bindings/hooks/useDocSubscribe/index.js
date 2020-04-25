@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { firebase } from 'firebase.js';
+import { firebase } from 'firebase.ts';
 
 export default function useDocSubscribe(collection, doc) {
   const [data, setData] = useState(null);

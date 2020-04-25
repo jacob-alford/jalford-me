@@ -11,7 +11,7 @@ export interface userDetails {
   uid: string;
   color: string;
   image: string;
-  permissions: number;
+  permissions: { value: number };
   username: string;
   puzzles: puzzleList[];
 }

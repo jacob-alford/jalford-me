@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { firebase } from 'firebase.js';
+import { firebase } from 'firebase.ts';
 
 import { transformComments } from './selectors.js';
 

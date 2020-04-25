@@ -14,7 +14,7 @@ import useComments from 'components/bindings/hooks/useComments';
 
 import { strctureComments } from './commentStructure.js';
 
-import { firebase } from 'firebase.js';
+import { firebase } from 'firebase.ts';
 
 import { getRandomUID } from 'functions';
 

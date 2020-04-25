@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { firebase } from 'firebase.js';
+import { firebase } from 'firebase.ts';
 
 import useNotify from 'components/bindings/hooks/useNotify';
 

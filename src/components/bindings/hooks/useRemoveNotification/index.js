@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
-import { useDispatch } from 'globalState';
+import { useStoreActions } from 'global-state';
 
 export default function useRemoveNotification() {
-  const dispatchNotification = useDispatch('remove', 'notifications');
-  const removeNotification = useCallback(uid => dispatchNotification({ uid }), [
-    dispatchNotification
-  ]);
+  const dispatchNotification = useStoreActions(actions => actions.notifications.remove);
+  const removeNotification = useCallback(
+    notification => dispatchNotification({ notification }),
+    [dispatchNotification]
+  );
   return removeNotification;
 }

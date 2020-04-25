@@ -6,10 +6,10 @@ import * as serviceWorker from './serviceWorker';
 
 import { ParallaxProvider } from 'react-scroll-parallax';
 
-import GlobalStateProvider from 'globalState';
-import { useDispatch } from 'globalState';
+import { GlobalStateProvider } from 'global-state';
+import { useStoreActions } from 'global-state';
 
-import { firebaseConfig } from './firebase.js';
+import { firebaseConfig } from './firebase';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -21,22 +21,21 @@ const db = firebase.firestore();
 const usersDb = db.collection('users');
 
 const Root = () => {
-  const [setLoggedIn, setLoggedOut] = useDispatch(['login', 'logout'], 'user');
-  const unsubscribe = useRef(null);
+  const setLoggedIn = useStoreActions(store => store.user.login);
+  const setLoggedOut = useStoreActions(store => store.user.logout);
+  const unsubscribe = useRef<null | (() => void)>(null);
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         if (unsubscribe.current) unsubscribe.current();
         unsubscribe.current = usersDb.doc(user.uid).onSnapshot(databaseUser => {
           if (databaseUser.exists) {
-            const userData = databaseUser.data();
+            const userData = databaseUser.data() || {};
             setLoggedIn({
               user: {
                 uid: user.uid,
                 color: userData.color,
-                icon: userData.icon,
                 image: userData.image,
-                likes: userData.likes,
                 permissions: userData.permissions,
                 username: userData.username,
                 puzzles: userData.puzzles

@@ -16,7 +16,7 @@ export default function BlogBarActions(props) {
   const viewPost = () => history.push(`/posts/view/${getPostId(match)}`);
   return (
     <React.Fragment>
-      {user.activeUser.permissions.value >= 8 &&
+      {user.details.permissions.value >= 8 &&
       ['inPostView', 'inBlog'].includes(context) ? (
         <Fade in={user.loggedIn} timeout={1500}>
           <IconButton onClick={openCreatePost}>
@@ -24,14 +24,14 @@ export default function BlogBarActions(props) {
           </IconButton>
         </Fade>
       ) : null}
-      {user.activeUser.permissions.value >= 8 && context === 'inPostView' ? (
+      {user.details.permissions.value >= 8 && context === 'inPostView' ? (
         <Fade in={user.loggedIn} timeout={1500}>
           <IconButton onClick={editPost} color='inherit'>
             <Edit style={{ color: color }} />
           </IconButton>
         </Fade>
       ) : null}
-      {user.activeUser.permissions.value >= 8 && context === 'inPostEdit' ? (
+      {user.details.permissions.value >= 8 && context === 'inPostEdit' ? (
         <Fade in={user.loggedIn} timeout={1500}>
           <IconButton onClick={viewPost} color='inherit'>
             <Pageview style={{ color: color }} />

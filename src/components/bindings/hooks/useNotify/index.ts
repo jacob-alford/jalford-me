@@ -1,4 +1,4 @@
-import { useDispatch } from 'globalState';
+import { useStoreActions } from 'global-state';
 
 import { getRandomUID } from 'functions';
 
@@ -9,8 +9,8 @@ const defaultConfig = {
 };
 
 export default function useNotify(compStyle = {}) {
-  const addNotification = useDispatch('add', 'notifications');
-  return notification =>
+  const addNotification = useStoreActions(actions => actions.notifications.add);
+  return (notification: any) =>
     addNotification({
       notification: {
         ...defaultConfig,
