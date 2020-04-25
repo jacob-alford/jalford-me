@@ -1,16 +1,7 @@
 import produce from 'immer';
-import {
-  stateAction,
-  stateModel,
-  userPayload,
-  themePayload,
-  notificationPayload
-} from '../state-model/types';
+import { storeActions, stateModel, actionPayload } from '../state-model/types';
 
-const action = (stateAction: stateAction) =>
-  produce(
-    (draft: stateModel, payload: userPayload | themePayload | notificationPayload) =>
-      stateAction(draft, payload)
-  );
+const action = (stateAction: (store: stateModel, payload: actionPayload) => void) =>
+  produce((draft: stateModel, payload: actionPayload) => stateAction(draft, payload));
 
 export default action;

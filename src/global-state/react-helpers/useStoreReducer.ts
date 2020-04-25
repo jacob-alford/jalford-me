@@ -15,7 +15,7 @@ const useStoreReducer = (
     (selector: actionSelector, payload: actionPayload) => {
       updateStore(reducer(store, { selector, payload }));
     },
-    [store]
+    [store, reducer, updateStore]
   );
   return [store, mutate];
 };
