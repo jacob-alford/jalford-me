@@ -59,7 +59,6 @@ export interface stateModel {
 export interface actionPayload {
   user?: userDetails;
   notification?: notification | string;
-  theme?: themeState;
 }
 export type stateAction = (state: stateModel, payload: actionPayload) => stateModel;
 
@@ -75,5 +74,5 @@ export interface storeActions {
 export type actionSelector = (state: storeActions) => stateAction;
 export interface reducerAction {
   selector: actionSelector;
-  payload: actionPayload;
+  payload?: actionPayload;
 }

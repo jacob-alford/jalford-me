@@ -2,7 +2,7 @@ import React, { createContext } from 'react';
 import {
   stateModel,
   themeState,
-  storeActions,
+  storeActions as storeActionsType,
   reducerAction,
   actionSelector,
   actionPayload
@@ -29,14 +29,14 @@ export const defaultState: stateModel = {
   theme: themeState.light
 };
 
-const storeActions: storeActions = {
+const storeActions: storeActionsType = {
   user,
   notifications,
   theme
 };
 
-const stateReducer = (state: stateModel, action: reducerAction): stateModel => {
-  const { selector, payload } = action;
+export const stateReducer = (state: stateModel, action: reducerAction): stateModel => {
+  const { selector, payload = {} } = action;
   if (!selector(storeActions))
     throw new Error(`Unknown store selector: ${selector.toString()}`);
   return selector(storeActions)(state, payload);

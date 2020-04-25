@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 import { MutateState } from '../global-state';
-import { actionSelector } from '../state-model/types';
+import { actionSelector, actionPayload } from '../state-model/types';
 
 const useStoreActions = (selector: actionSelector) => {
-  const actions = useContext(MutateState);
-  return selector(actions);
+  const actOnGlobalState = useContext(MutateState);
+  return (payload: actionPayload) => actOnGlobalState(selector, payload);
 };
 
 export default useStoreActions;
