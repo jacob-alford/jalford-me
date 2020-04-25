@@ -4,6 +4,7 @@
 	"private": true,
 	"dependencies": {
 		"crypto-js": "3.1.9-1",
+		"immer": "^6.0.3",
 		"katex": "0.11.1",
 		"lodash": "^4.17.15",
 		"openseadragon": "2.4.1",
@@ -44,18 +45,18 @@
 		]
 	},
 	"devDependencies": {
-		"firebase": "^7.7.0",
-		"prettier": "^2.0.2",
-		"typescript": "^3.7.5",
 		"@material-ui/core": "4.8.3",
 		"@material-ui/icons": "4.5.1",
-		"@types/lodash": "^4.14.149",
 		"@types/jest": "^25.1.2",
 		"@types/katex": "^0.11.0",
+		"@types/lodash": "^4.14.149",
 		"@types/node": "^13.7.1",
 		"@types/react": "^16.9.19",
 		"@types/react-dom": "^16.9.5",
 		"@types/react-router": "^5.1.4",
-		"@types/styled-components": "^4.4.3"
+		"@types/styled-components": "^4.4.3",
+		"firebase": "^7.7.0",
+		"prettier": "^2.0.2",
+		"typescript": "^3.7.5"
 	}
 }
