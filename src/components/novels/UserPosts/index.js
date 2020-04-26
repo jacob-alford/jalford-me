@@ -11,7 +11,7 @@ import useRPostConnect from 'components/bindings/hooks/useRPostConnect';
 import useTitleSize from 'components/bindings/hooks/useTitleSize';
 import useNotify from 'components/bindings/hooks/useNotify';
 
-import { firebase } from 'firebase.ts';
+import { firebase } from 'index';
 
 const {
   Container,
@@ -137,7 +137,7 @@ const dateify = date =>
     day: 'numeric'
   });
 
-const getPermissions = user => user.activeUser.permissions.value;
+const getPermissions = user => user.details.permissions.value;
 
 function UserPosts(props) {
   const history = useHistory();

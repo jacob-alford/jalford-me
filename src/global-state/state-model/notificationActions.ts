@@ -19,7 +19,7 @@ const notificationActions: stateActions = {
       throw new Error(
         'Payload.notification needs to be a notification UID to remove a notification!'
       );
-    remove(state.notifications, ({ uid }) => uid === notification);
+    state.notifications = state.notifications.filter(({ uid }) => uid !== notification);
   })
 };
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { firebase } from 'firebase.ts';
+import { firebase } from 'index';
 
 import useRHook from 'components/bindings/hooks/useRHook';
 
@@ -16,14 +16,14 @@ export default function useRsConnect() {
         !error &&
         !users &&
         user.loggedIn &&
-        user.activeUser.permissions.value < 10
+        user.details.permissions.value < 10
       ) {
         setError('Insufficient permissions: Must be admin to view the users!');
       } else if (
         !error &&
         !users &&
         user.loggedIn &&
-        user.activeUser.permissions.value === 10
+        user.details.permissions.value === 10
       ) {
         const db = firebase.firestore();
         const usersDB = db.collection('users');

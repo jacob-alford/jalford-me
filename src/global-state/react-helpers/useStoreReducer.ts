@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
   stateModel,
   reducerAction,
@@ -13,10 +13,19 @@ const useStoreReducer = (
   const [store, updateStore] = useState<stateModel>(defaultState);
   const mutate = useCallback(
     (selector: actionSelector, payload: actionPayload) => {
+      console.log(
+        'Acting on global state, with: ',
+        selector.toString(),
+        'using state: ',
+        store
+      );
       updateStore(reducer(store, { selector, payload }));
     },
-    [store, reducer, updateStore]
+    [store, reducer]
   );
+  useEffect(() => {
+    console.log('updated store:', store);
+  }, [store]);
   return [store, mutate];
 };
 

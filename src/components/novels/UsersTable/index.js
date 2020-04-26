@@ -10,7 +10,7 @@ import useRsConnect from 'components/bindings/hooks/useRsConnect';
 import useTitleSize from 'components/bindings/hooks/useTitleSize';
 import useNotify from 'components/bindings/hooks/useNotify';
 
-import { firebase } from 'firebase.ts';
+import { firebase } from 'index';
 
 const {
   Container,
@@ -215,7 +215,7 @@ function UsersTable(props) {
             </Grid>
           );
         } else {
-          if (uid !== user.activeUser.uid && uid !== 'C7VXSRpoFcQvEp8kVC0EUrr0FkY2') {
+          if (uid !== user.details.uid && uid !== 'C7VXSRpoFcQvEp8kVC0EUrr0FkY2') {
             return (
               <Grid container direction='row' justify='center' alignItems='center'>
                 <Grid item>{perms.value}</Grid>

@@ -6,17 +6,17 @@ import * as MUI_COMPONENTS from './mui.js';
 import withPageFade from 'components/bindings/wrappers/withPageFade';
 import { useHistory } from 'react-router-dom';
 
-import { firebase } from 'firebase.ts';
+import { firebase } from 'index';
 
 import useRHook from 'components/bindings/hooks/useRHook';
 import useNotify from 'components/bindings/hooks/useNotify';
 
 import { getTextColorBasedOnBg } from 'functions';
 
-const getUser = user => user.activeUser;
+const getUser = user => user.details;
 const getPermissions = user => {
-  if ([8, 9].includes(user.activeUser.permissions.value)) return 'Writer';
-  else if (user.activeUser.permissions.value === 10) return 'Admin';
+  if ([8, 9].includes(user.details.permissions.value)) return 'Writer';
+  else if (user.details.permissions.value === 10) return 'Admin';
   else return 'None';
 };
 

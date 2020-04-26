@@ -7,7 +7,7 @@ const actions = {
     ...userState,
     loggedIn: true,
     hydrated: true,
-    activeUser: {
+    details: {
       uid: user.uid,
       color: user.color,
       icon: user.icon,
@@ -22,7 +22,7 @@ const actions = {
     ...userState,
     loggedIn: false,
     hydrated: true,
-    activeUser: {
+    details: {
       uid: null,
       color: '#303f9f',
       icon: 'person',
@@ -38,7 +38,7 @@ const defaultUserState = {
   user: {
     hydrated: false,
     loggedIn: false,
-    activeUser: {
+    details: {
       uid: null,
       color: '#303f9f',
       icon: 'person',

@@ -14,7 +14,7 @@ import useComments from 'components/bindings/hooks/useComments';
 
 import { strctureComments } from './commentStructure.js';
 
-import { firebase } from 'firebase.ts';
+import { firebase } from 'index';
 
 import { getRandomUID } from 'functions';
 
@@ -165,9 +165,9 @@ export default function CommentHolder(props) {
           id: commentId,
           date: new Date(),
           user: {
-            username: user.activeUser.username,
-            image: user.activeUser.image,
-            uid: user.activeUser.uid
+            username: user.details.username,
+            image: user.details.image,
+            uid: user.details.uid
           }
         })
         .then(() =>

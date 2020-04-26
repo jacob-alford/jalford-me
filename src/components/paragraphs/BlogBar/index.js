@@ -10,7 +10,7 @@ import SignupDialogue from 'components/sentences/SignupDialogue';
 import BlogBarActions from 'components/sentences/BlogBarActions';
 import CreatePostDialogue from 'components/sentences/CreatePostDialogue';
 
-import { firebase } from 'firebase.ts';
+import { firebase } from 'index';
 
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useRHook from 'components/bindings/hooks/useRHook';

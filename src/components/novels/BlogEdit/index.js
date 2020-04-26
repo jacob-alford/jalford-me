@@ -4,7 +4,7 @@ import { useTransition, animated as a } from 'react-spring';
 
 import * as MUI_COMPONENTS from './mui.js';
 
-import { firebase } from 'firebase.ts';
+import { firebase } from 'index';
 
 import withPageFade from 'components/bindings/wrappers/withPageFade';
 
@@ -292,9 +292,7 @@ function BlogEdit(props) {
   const hasPermissions = () => {
     if (!data.postData) return false;
     else
-      return (
-        user.activeUser.permissions === 10 || user.activeUser.uid === data.postData.owner
-      );
+      return user.details.permissions === 10 || user.details.uid === data.postData.owner;
   };
 
   const { h1: titleSize } = useTitleSize();

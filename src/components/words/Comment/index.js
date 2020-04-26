@@ -169,7 +169,7 @@ export default function Comment(props) {
                 </Holder>
                 <Holder direction='row'>
                   <CommentActions
-                    activeUser={loggedUser.details}
+                    details={loggedUser.details}
                     commentUser={user}
                     edit={handleEdit}
                     remove={handleDelete}

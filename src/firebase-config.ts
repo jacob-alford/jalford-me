@@ -1,5 +1,3 @@
-import { firebase } from './index';
-
 const firebaseConfig = {
   apiKey: 'AIzaSyCnBTUMBl2xJVEqifbks8fTT6qjU8ykaI8',
   authDomain: 'jalford-me.firebaseapp.com',
@@ -10,6 +8,4 @@ const firebaseConfig = {
   appId: '1:740241394258:web:8ff3404c581c763c'
 };
 
-export default firebase;
-
-export { firebase, firebaseConfig };
+export default firebaseConfig;

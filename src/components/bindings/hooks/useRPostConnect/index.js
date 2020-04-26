@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { firebase } from 'firebase.ts';
+import { firebase } from 'index';
 
 import useRHook from 'components/bindings/hooks/useRHook';
 
@@ -16,14 +16,14 @@ export default function useRPostConnect(orderBy) {
         !error &&
         !postData &&
         user.loggedIn &&
-        user.activeUser.permissions.value < 8
+        user.details.permissions.value < 8
       ) {
         setError('Insufficient permissions: Contact Jacob for a writing role!');
       } else if (
         !error &&
         !postData &&
         user.loggedIn &&
-        user.activeUser.permissions.value === 10
+        user.details.permissions.value === 10
       ) {
         const db = firebase.firestore();
         const posts = db.collection('posts');
@@ -42,12 +42,12 @@ export default function useRPostConnect(orderBy) {
         !error &&
         !postData &&
         user.loggedIn &&
-        user.activeUser.permissions.value >= 8
+        user.details.permissions.value >= 8
       ) {
         const db = firebase.firestore();
         const posts = db
           .collection('posts')
-          .where('owner', '==', user.activeUser.uid)
+          .where('owner', '==', user.details.uid)
           .where('erased', '==', false);
         const unsubscribe = posts.onSnapshot(
           snapshot => {

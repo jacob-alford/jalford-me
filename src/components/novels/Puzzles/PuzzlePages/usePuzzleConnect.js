@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { firebase } from 'firebase.ts';
+import { firebase } from 'index';
 
 export default function usePuzzleConnect(id) {
   const [isLoading, setIsLoading] = useState(true);
