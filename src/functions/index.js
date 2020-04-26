@@ -75,9 +75,20 @@ export const pipe = (...funcArr) => {
   );
 };
 
-export const aggregate = (action, ...funcArr) => (...args) => {
+export const asyncPipe = (firstFunc, ...funcArr) => async (...args) => {
+  let mutableState = await firstFunc(...args);
+  for (const operator of funcArr) {
+    try {
+      mutableState = await operator(mutableState);
+    } catch (err) {
+      console.error(`Error mutation state!  Error: ${err}`);
+    }
+  }
+  return mutableState;
+};
+
+export const aggregate = (...funcArr) => (...args) => {
   funcArr.forEach(func => func(...args));
-  return action(...args);
 };
 
 export const detectMobile = () => {

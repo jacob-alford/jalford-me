@@ -5,7 +5,7 @@ import {
   finalStoreAction,
   storeActions as storeActionsType
 } from '../state-model/types';
-import { aggregate } from 'functions';
+import { pipe } from 'functions';
 
 const deriveActions = (allActions: storeActionsType) =>
   Object.entries(allActions).reduce<finalStoreActions>(
@@ -19,7 +19,7 @@ const deriveActions = (allActions: storeActionsType) =>
       );
       calcActions[groupKey] = actions.reduce(
         (finalActions: finalStoreAction, [key, { operator }]) => {
-          finalActions[key] = aggregate(
+          finalActions[key] = pipe(
             operator,
             ...listenTos
               .filter(([, { selector }]) => {

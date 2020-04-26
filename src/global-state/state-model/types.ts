@@ -66,7 +66,8 @@ export enum actionTypes {
 }
 export type stateOperator = (
   state: stateModel,
-  payload: actionPayload
+  payload: actionPayload,
+  actions?: finalStoreActions
 ) => stateModel | void;
 export type actionSelector = (state: storeActions) => stateAction;
 export interface stateAction {

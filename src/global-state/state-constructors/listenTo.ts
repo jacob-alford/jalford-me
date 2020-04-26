@@ -2,12 +2,17 @@ import {
   actionTypes,
   actionSelector as actionSelectorType,
   stateModel,
-  actionPayload
+  actionPayload,
+  finalStoreActions
 } from '../state-model/types';
 
 const listenTo = (
   selector: actionSelectorType,
-  operator: (store: stateModel, payload: actionPayload) => void
+  operator: (
+    store: stateModel,
+    payload: actionPayload,
+    actions?: finalStoreActions
+  ) => void
 ) => ({
   type: actionTypes.listenTo,
   operator,

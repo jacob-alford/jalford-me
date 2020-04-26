@@ -1,17 +1,18 @@
-import { stateModel, reducerAction } from '../state-model/types';
-import deriveActions from './deriveActions';
-import { storeActions } from '../global-state';
+import { stateModel, reducerAction, finalStoreActions } from '../state-model/types';
 
-const calculatedActions = deriveActions(storeActions);
-
-export const stateReducer = (state: stateModel, action: reducerAction): stateModel => {
+export const makeReducer = (actions: finalStoreActions) => (
+  state: stateModel,
+  action: reducerAction
+): stateModel => {
   const { selector, payload = {} } = action;
-  if (!selector(calculatedActions))
+  if (!selector(actions))
     throw new Error(`Unknown store selector: ${selector.toString()}`);
-  const returnVal = selector(calculatedActions)(state, payload);
+  const returnVal = selector(actions)(state, payload, actions);
   if (!returnVal)
-    throw new Error(`Actions must have a return state!  Recieved value: ${returnVal}`);
+    throw new Error(
+      `Actions must have a return state!  Recieved value: ${returnVal}, with selector: ${selector.toString()}`
+    );
   return returnVal;
 };
 
-export default stateReducer;
+export default makeReducer;

@@ -5,7 +5,7 @@ import {
   actionPayload
 } from '../state-model/types';
 import useStoreReducer from '../react-helpers/useStoreReducer';
-import stateReducer from '../reducer/reducer';
+import stateReducer from '../global-state';
 
 export const GlobalState = createContext(defaultState);
 export const MutateState = createContext(

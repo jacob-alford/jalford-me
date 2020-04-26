@@ -6,6 +6,8 @@ import {
 import user from './state-model/userActions';
 import notifications from './state-model/notificationActions';
 import theme from './state-model/themeActions';
+import makeReducer from './reducer/reducer';
+import deriveActions from './reducer/deriveActions';
 
 export const defaultState: stateModel = {
   user: {
@@ -29,3 +31,7 @@ export const storeActions: storeActionsType = {
   notifications,
   theme
 };
+
+const globalStateReducer = makeReducer(deriveActions(storeActions));
+
+export default globalStateReducer;
