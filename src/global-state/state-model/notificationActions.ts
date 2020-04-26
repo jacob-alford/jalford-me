@@ -1,6 +1,5 @@
 import { stateActions } from './types';
 import action from '../state-constructors/action';
-import remove from 'lodash/remove';
 
 const notificationActions: stateActions = {
   add: action((state, { notification }) => {

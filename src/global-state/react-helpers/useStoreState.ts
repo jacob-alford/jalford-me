@@ -1,5 +1,5 @@
 import { useContext, useMemo } from 'react';
-import { GlobalState } from '../global-state';
+import { GlobalState } from '../Provider/Provider';
 import { stateModel } from '../state-model/types';
 
 const useStoreState = (selector: (state: stateModel) => any) => {

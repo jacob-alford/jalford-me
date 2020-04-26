@@ -1,12 +1,14 @@
-import { stateReducer } from '../global-state';
+import { stateReducer } from './reducer';
 import {
-  storeActions as actionType,
+  finalStoreActions,
+  storeActions as storeActionsType,
+  finalStoreAction,
   themeState,
   puzzleList,
   alertEnum
 } from '../state-model/types';
 
-export const initialState = {
+const initialState = {
   user: {
     hydrated: false,
     loggedIn: false,
@@ -23,23 +25,38 @@ export const initialState = {
   theme: themeState.light
 };
 
+// const mockDerive = (allActions: storeActionsType) =>
+//   Object.entries(allActions).reduce<finalStoreActions>(
+//     (finalActions, [groupKey, groupActions]) => {
+//       finalActions[groupKey] = Object.entries(groupActions).reduce(
+//         (subActions: finalStoreAction, [subKey, { operator }]) => {
+//           subActions[subKey] = operator;
+//           return subActions;
+//         },
+//         {}
+//       );
+//       return finalActions;
+//     },
+//     {}
+//   );
+
 describe('global-state-reducer functions properly', () => {
   it('throws with unrecognized state', () => {
     expect(() =>
       stateReducer(initialState, {
-        selector: (storeActions: actionType) => storeActions.user.butthole
+        selector: (storeActions: finalStoreActions) => storeActions.user.butthole
       })
     ).toThrow(`Unknown store selector: storeActions => storeActions.user.butthole`);
   });
   it('mutates user state', () => {
     expect(() =>
       stateReducer(initialState, {
-        selector: (storeActions: actionType) => storeActions.user.login
+        selector: (storeActions: finalStoreActions) => storeActions.user.login
       })
     ).toThrow('Payload.user is required to login!');
     expect(
       stateReducer(initialState, {
-        selector: (storeActions: actionType) => storeActions.user.login,
+        selector: (storeActions: finalStoreActions) => storeActions.user.login,
         payload: {
           user: {
             uid: '1234',
@@ -69,7 +86,7 @@ describe('global-state-reducer functions properly', () => {
     });
     expect(
       stateReducer(initialState, {
-        selector: (storeActions: actionType) => storeActions.user.logout
+        selector: (storeActions: finalStoreActions) => storeActions.user.logout
       })
     ).toStrictEqual({
       user: {
@@ -91,12 +108,12 @@ describe('global-state-reducer functions properly', () => {
   it('mutates notification state', () => {
     expect(() =>
       stateReducer(initialState, {
-        selector: (storeActions: actionType) => storeActions.notifications.add
+        selector: (storeActions: finalStoreActions) => storeActions.notifications.add
       })
     ).toThrow('Payload.notification is required to add a notification!');
     expect(() =>
       stateReducer(initialState, {
-        selector: (storeActions: actionType) => storeActions.notifications.add,
+        selector: (storeActions: finalStoreActions) => storeActions.notifications.add,
         payload: { notification: '1234' }
       })
     ).toThrow(
@@ -104,12 +121,12 @@ describe('global-state-reducer functions properly', () => {
     );
     expect(() =>
       stateReducer(initialState, {
-        selector: (storeActions: actionType) => storeActions.notifications.remove
+        selector: (storeActions: finalStoreActions) => storeActions.notifications.remove
       })
     ).toThrow('Payload.notification is required to remove a notification!');
     expect(() =>
       stateReducer(initialState, {
-        selector: (storeActions: actionType) => storeActions.notifications.remove,
+        selector: (storeActions: finalStoreActions) => storeActions.notifications.remove,
         payload: {
           notification: {
             body: 'ripped',
@@ -124,7 +141,7 @@ describe('global-state-reducer functions properly', () => {
       'Payload.notification needs to be a notification UID to remove a notification!'
     );
     const addedState = stateReducer(initialState, {
-      selector: (storeActions: actionType) => storeActions.notifications.add,
+      selector: (storeActions: finalStoreActions) => storeActions.notifications.add,
       payload: {
         notification: {
           body: 'ripped',
@@ -160,7 +177,7 @@ describe('global-state-reducer functions properly', () => {
       theme: themeState.light
     });
     const removeState = stateReducer(addedState, {
-      selector: (storeActions: actionType) => storeActions.notifications.remove,
+      selector: (storeActions: finalStoreActions) => storeActions.notifications.remove,
       payload: { notification: '1234' }
     });
     expect(removeState).toStrictEqual(initialState);
@@ -168,7 +185,7 @@ describe('global-state-reducer functions properly', () => {
   it('mutates theme state', () => {
     expect(
       stateReducer(initialState, {
-        selector: (storeActions: actionType) => storeActions.theme.toggle
+        selector: (storeActions: finalStoreActions) => storeActions.theme.toggle
       })
     ).toStrictEqual({
       user: {

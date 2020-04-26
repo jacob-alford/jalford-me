@@ -75,6 +75,11 @@ export const pipe = (...funcArr) => {
   );
 };
 
+export const aggregate = (action, ...funcArr) => (...args) => {
+  funcArr.forEach(func => func(...args));
+  return action(...args);
+};
+
 export const detectMobile = () => {
   // --- Gotten from the mozillas ---
   let hasTouchScreen = false;

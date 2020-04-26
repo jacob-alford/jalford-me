@@ -60,19 +60,35 @@ export interface actionPayload {
   user?: userDetails;
   notification?: notification | string;
 }
-export type stateAction = (state: stateModel, payload: actionPayload) => stateModel;
-
+export enum actionTypes {
+  action = 'action',
+  listenTo = 'listenTo'
+}
+export type stateOperator = (
+  state: stateModel,
+  payload: actionPayload
+) => stateModel | void;
+export type actionSelector = (state: storeActions) => stateAction;
+export interface stateAction {
+  operator: stateOperator;
+  type: actionTypes;
+  selector?: actionSelector;
+}
+export interface finalStoreAction {
+  [key: string]: stateOperator;
+}
+export interface finalStoreActions {
+  [key: string]: finalStoreAction;
+}
 export interface stateActions {
   [key: string]: stateAction;
 }
 
 export interface storeActions {
-  user: stateActions;
-  notifications: stateActions;
-  theme: stateActions;
+  [key: string]: stateActions;
 }
-export type actionSelector = (state: storeActions) => stateAction;
+export type finalActionSelector = (state: finalStoreActions) => stateOperator;
 export interface reducerAction {
-  selector: actionSelector;
+  selector: finalActionSelector;
   payload?: actionPayload;
 }

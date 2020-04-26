@@ -1,31 +1,22 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import {
   stateModel,
   reducerAction,
   actionPayload,
-  actionSelector
+  finalActionSelector
 } from '../state-model/types';
 
 const useStoreReducer = (
   reducer: (state: stateModel, action: reducerAction) => stateModel,
   defaultState: stateModel
-): [stateModel, (selector: actionSelector, payload: actionPayload) => void] => {
+): [stateModel, (selector: finalActionSelector, payload: actionPayload) => void] => {
   const [store, updateStore] = useState<stateModel>(defaultState);
   const mutate = useCallback(
-    (selector: actionSelector, payload: actionPayload) => {
-      console.log(
-        'Acting on global state, with: ',
-        selector.toString(),
-        'using state: ',
-        store
-      );
+    (selector: finalActionSelector, payload: actionPayload) => {
       updateStore(reducer(store, { selector, payload }));
     },
     [store, reducer]
   );
-  useEffect(() => {
-    console.log('updated store:', store);
-  }, [store]);
   return [store, mutate];
 };
 
