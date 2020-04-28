@@ -5,7 +5,7 @@ import * as serviceWorker from './serviceWorker';
 
 import { ParallaxProvider } from 'react-scroll-parallax';
 
-import { GlobalStateProvider } from 'global-state';
+import { Provider } from 'global-state';
 import useFirebase, { firebase } from 'components/bindings/userHooks/useFirebase';
 
 const Root = () => {
@@ -18,9 +18,9 @@ const Root = () => {
 };
 
 ReactDOM.render(
-  <GlobalStateProvider>
+  <Provider>
     <Root />
-  </GlobalStateProvider>,
+  </Provider>,
   document.getElementById('root')
 );
 

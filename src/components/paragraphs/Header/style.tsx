@@ -30,7 +30,7 @@ const AnimArrow = styled(a(KeyboardArrowUp))`
   color: white;
 `;
 type toggleArrowProps = {
-  setHeaderIsOpen: (val: boolean) => void;
+  setHeaderIsOpen: () => void;
   headerIsOpen: boolean;
 };
 export const ToggleArrow = (props: toggleArrowProps) => {
@@ -43,7 +43,7 @@ export const ToggleArrow = (props: toggleArrowProps) => {
   });
   return (
     <Toggler
-      onClick={() => setHeaderIsOpen(!headerIsOpen)}
+      onClick={setHeaderIsOpen}
       aria-expanded={headerIsOpen}
       aria-label='nav-toggle'>
       <AnimArrow style={animStyles} />

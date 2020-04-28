@@ -1,26 +1,28 @@
-import React, { createContext } from 'react';
-import { defaultState } from '../global-state';
-import {
-  finalActionSelector as actionSelector,
-  actionPayload
-} from '../state-model/types';
-import useStoreReducer from '../react-helpers/useStoreReducer';
-import stateReducer from '../global-state';
+import React, { createContext, useState, useCallback } from 'react';
+import { defaultState, storeActions } from '../global-state';
+import { actionPayload, actionSelector } from '../state-model/_types';
 
-export const GlobalState = createContext(defaultState);
-export const MutateState = createContext(
-  (selector: actionSelector, payload: actionPayload) => {}
-);
+export const GlobalStore = createContext(defaultState);
+export const GlobalActions = createContext<
+  (payload: { data: actionPayload; selector: actionSelector }) => void
+>(() => {});
 
-const GlobalStateProvider = (props: { children: any }) => {
-  const [globalState, actOnGlobalState] = useStoreReducer(stateReducer, defaultState);
+const Provider = (props: any) => {
+  const [globalStore, _setGlobalStore] = useState(defaultState);
+  const actOnGlobalStore = useCallback(
+    async (payload: { data: actionPayload; selector: actionSelector }) => {
+      const { selector, data } = payload;
+      _setGlobalStore(await selector(storeActions)(globalStore, storeActions, data));
+    },
+    [globalStore]
+  );
   return (
-    <GlobalState.Provider value={globalState}>
-      <MutateState.Provider value={actOnGlobalState}>
+    <GlobalStore.Provider value={globalStore}>
+      <GlobalActions.Provider value={actOnGlobalStore}>
         {props.children}
-      </MutateState.Provider>
-    </GlobalState.Provider>
+      </GlobalActions.Provider>
+    </GlobalStore.Provider>
   );
 };
 
-export default GlobalStateProvider;
+export default Provider;
