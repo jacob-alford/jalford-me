@@ -3,13 +3,18 @@ import useStoreState from './useStoreState';
 import { globalStoreSelector } from '../state-model/_types';
 interface ParentProps {
   selector: globalStoreSelector;
-  children: (storeValue: any) => JSX.Element;
+  otherProps: ReactPropTypes;
+  children: (storeValue: any, otherProps: ReactPropTypes) => JSX.Element;
 }
 
 const Parent = (props: ParentProps) => {
-  const { selector, children } = props;
+  const { selector, children, otherProps } = props;
   const storeValue = useStoreState(selector);
-  return useMemo(() => children(storeValue), [storeValue, children]);
+  return useMemo(() => children(storeValue, otherProps), [
+    storeValue,
+    children,
+    otherProps
+  ]);
 };
 
 type stateMapper = (
@@ -22,8 +27,10 @@ const withStoreState = (
   selector: globalStoreSelector,
   mapStateToProps: stateMapper = storeValue => ({ storeValue })
 ) => (WrappedComponent: FunctionComponent<any>) => (props: ReactPropTypes) => (
-  <Parent selector={selector}>
-    {storeValue => <WrappedComponent {...props} {...mapStateToProps(storeValue)} />}
+  <Parent selector={selector} otherProps={props}>
+    {(storeValue, otherProps) => (
+      <WrappedComponent {...otherProps} {...mapStateToProps(storeValue)} />
+    )}
   </Parent>
 );
 
