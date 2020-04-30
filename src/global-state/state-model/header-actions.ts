@@ -1,8 +1,8 @@
 import { actionCategory, globalStore } from './_types';
-import action from '../action-constructors/action';
+import simpleTrigger from '../action-constructors/simpleTrigger';
 
 const headerActions: actionCategory = {
-  toggle: action((store: globalStore) => {
+  toggle: simpleTrigger((store: globalStore) => {
     if (store.headerIsOpen) store.headerIsOpen = false;
     else store.headerIsOpen = true;
   })

@@ -55,29 +55,21 @@ export enum themeState {
  *
  */
 
-export type actionSelector = (actions: storeActions) => action;
+export type triggerSelector = (actions: storeActions) => trigger;
 export type actionPayload = {
   user?: userDetails;
   notification?: notificationDetails;
   theme?: themeState;
 };
 
-export type actionConstructor = (
-  store: globalStore,
-  actions: storeActions,
-  payload: actionPayload
-) => void | Promise<void>;
+export type actionConstructor = (store: globalStore, payload?: actionPayload) => void;
+export type action = (store: globalStore, payload?: actionPayload) => globalStore;
 
-export type action = (
-  store: globalStore,
-  actions: storeActions,
-  payload: actionPayload
-) => globalStore | Promise<globalStore>;
+export type trigger = (actions: storeActions) => action;
 
 export interface actionCategory {
-  [key: string]: action;
+  [key: string]: trigger;
 }
-
 export interface storeActions {
   [key: string]: actionCategory;
 }
