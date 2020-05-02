@@ -1,8 +1,9 @@
-import { actionCategory, globalStore, actionPayload } from './_types';
-import simpleTrigger from '../action-constructors/simpleTrigger';
+import { storeActionCategory, notificationPayload as NP } from './_types';
+import { notificationActors } from './_actors';
+import action from '../action-constructors/action';
 
-const notificationActions: actionCategory = {
-  add: simpleTrigger((store: globalStore, payload: actionPayload = {}) => {
+const notificationActions: storeActionCategory<NP> = {
+  [notificationActors.add]: action<NP>((store, payload = {}) => {
     const { notification } = payload;
     if (!notification)
       throw new Error('Payload.notification is required to add a notification!');
@@ -12,7 +13,7 @@ const notificationActions: actionCategory = {
       );
     store.notifications.unshift(notification);
   }),
-  remove: simpleTrigger((store: globalStore, payload: actionPayload = {}) => {
+  [notificationActors.remove]: action<NP>((store, payload = {}) => {
     const { notification } = payload;
     if (!notification)
       throw new Error('Payload.notification is required to remove a notification!');

@@ -1,19 +1,19 @@
-import {
-  triggerSelector,
-  globalStore,
-  actionPayload,
-  storeActions
-} from '../state-model/_types';
+import { Reducer } from 'redux';
+import { globalStore, actionPayload, storeActions } from '../state-model/_types';
+import { defaultState } from '../global-state';
 
-export type storeReducer = (
-  store: globalStore,
-  payload: { type: triggerSelector; data: actionPayload }
-) => globalStore;
+export type storeReducer = Reducer<globalStore, actionPayload>;
 
-const makeReducer = (actions: storeActions): storeReducer => (store, payload) => {
-  const { type: selector, data } = payload;
-  if (!selector(actions)) throw new Error(`Unknown store action, ${selector.toString()}`);
-  return selector(actions)(actions)(store, data);
+const makeReducer = (actions: storeActions): storeReducer => (
+  store = defaultState,
+  data
+) => {
+  const {
+    type: [domain, type],
+    payload
+  } = data;
+  if (!actions[domain][type]) throw new Error(`Unknown store action, ${type}`);
+  return actions[domain][type](store, payload);
 };
 
 export default makeReducer;

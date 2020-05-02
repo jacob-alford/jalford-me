@@ -1,6 +1,10 @@
 import produce from 'immer';
 import { action as actionType, actionConstructor } from '../state-model/_types';
 
-const action = (action: actionConstructor): actionType => produce(action);
+function action<payloadType>(
+  action: actionConstructor<payloadType>
+): actionType<payloadType> {
+  return produce(action);
+}
 
 export default action;

@@ -1,11 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { ParallaxProvider } from 'react-scroll-parallax';
+
+import { GlobalStore } from 'global-state';
+
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import { ParallaxProvider } from 'react-scroll-parallax';
-
-import { Provider } from 'global-state';
 import useFirebase, { firebase } from 'components/bindings/userHooks/useFirebase';
 
 const Root = () => {
@@ -18,7 +20,7 @@ const Root = () => {
 };
 
 ReactDOM.render(
-  <Provider>
+  <Provider store={GlobalStore}>
     <Root />
   </Provider>,
   document.getElementById('root')

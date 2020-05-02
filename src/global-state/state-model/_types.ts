@@ -20,6 +20,9 @@ export interface userState {
   loggedIn: boolean;
   details: userDetails;
 }
+export interface userPayload {
+  user?: userDetails;
+}
 
 /*
  *  Notification State
@@ -31,12 +34,15 @@ export enum alertEnum {
   info = 'info',
   success = 'success'
 }
-export interface notificationDetails {
+interface notificationDetails {
   body: string;
   alertType: alertEnum;
   timeout: number;
   timeoutColor: string[];
   uid: string;
+}
+export interface notificationPayload {
+  notification?: notificationDetails;
 }
 
 /*
@@ -47,6 +53,13 @@ export enum themeState {
   light = 'light',
   dark = 'dark'
 }
+export type themePayload = themeState.light | themeState.dark;
+
+/*
+ *  Header State
+ *
+ */
+export type headerPayload = boolean;
 
 /* ------------------ */
 
@@ -55,23 +68,36 @@ export enum themeState {
  *
  */
 
-export type triggerSelector = (actions: storeActions) => trigger;
+export enum domains {
+  user = 'user',
+  theme = 'theme',
+  notifications = 'notifications',
+  header = 'header'
+}
+
 export type actionPayload = {
-  user?: userDetails;
-  notification?: notificationDetails;
-  theme?: themeState;
+  type: [domains, string];
+  payload: any;
 };
 
-export type actionConstructor = (store: globalStore, payload?: actionPayload) => void;
-export type action = (store: globalStore, payload?: actionPayload) => globalStore;
+export type actionConstructor<payloadType> = (
+  store: globalStore,
+  payload?: payloadType
+) => void;
+export type action<payloadType> = (
+  store: globalStore,
+  payload?: payloadType
+) => globalStore;
 
-export type trigger = (actions: storeActions) => action;
-
-export interface actionCategory {
-  [key: string]: trigger;
+export interface storeActionCategory<payloadType> {
+  [key: string]: action<payloadType>;
 }
+
 export interface storeActions {
-  [key: string]: actionCategory;
+  [domains.user]: storeActionCategory<userPayload>;
+  [domains.notifications]: storeActionCategory<notificationPayload>;
+  [domains.theme]: storeActionCategory<themePayload>;
+  [domains.header]: storeActionCategory<headerPayload>;
 }
 
 /*
@@ -85,5 +111,3 @@ export interface globalStore {
   theme: themeState;
   headerIsOpen: boolean;
 }
-
-export type globalStoreSelector = (store: globalStore) => any;

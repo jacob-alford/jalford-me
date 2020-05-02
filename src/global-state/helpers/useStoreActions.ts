@@ -1,13 +1,9 @@
-import { useCallback, useContext } from 'react';
-import { GlobalActions } from '../Provider/Provider';
-import { actionPayload, triggerSelector } from '../state-model/_types';
+import { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { actionPayload } from '../state-model/_types';
 
-const useStoreActions = (selector: triggerSelector) => {
-  const storeActions = useContext(GlobalActions);
-  return useCallback((payload: actionPayload = {}) => storeActions(selector, payload), [
-    selector,
-    storeActions
-  ]);
+const useStoreActions = (payload: actionPayload) => {
+  const dispatch = useDispatch();
+  return useCallback(() => dispatch(payload), [payload]);
 };
-
 export default useStoreActions;

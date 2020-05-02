@@ -1,10 +1,6 @@
-import { useMemo, useContext } from 'react';
-import { GlobalStore } from '../Provider/Provider';
-import { globalStoreSelector } from '../state-model/_types';
+import { useSelector } from 'react-redux';
+import { globalStore } from 'global-state';
 
-const useStoreState = (selector: globalStoreSelector) => {
-  const globalStore = useContext(GlobalStore);
-  return useMemo(() => selector(globalStore), [selector, globalStore]);
-};
+const useStoreState = (selector: (store: globalStore) => any) => useSelector(selector);
 
 export default useStoreState;
