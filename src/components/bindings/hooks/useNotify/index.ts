@@ -1,4 +1,6 @@
-import { useStoreActions } from 'global-state';
+import { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { NOTIF_ADD } from 'global-state';
 
 import { getRandomUID } from 'functions';
 
@@ -9,14 +11,18 @@ const defaultConfig = {
 };
 
 export default function useNotify(compStyle = {}) {
-  const addNotification = useStoreActions(actions => actions.notifications.add);
-  return (notification: any) =>
-    addNotification({
-      notification: {
-        ...defaultConfig,
-        ...compStyle,
-        ...notification,
-        uid: getRandomUID()
-      }
-    });
+  const dispatch = useDispatch();
+  return useCallback(
+    (notification: any) =>
+      dispatch({
+        type: NOTIF_ADD,
+        payload: {
+          ...defaultConfig,
+          ...compStyle,
+          ...notification,
+          uid: getRandomUID()
+        }
+      }),
+    [dispatch, compStyle]
+  );
 }

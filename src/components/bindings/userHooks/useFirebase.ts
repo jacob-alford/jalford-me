@@ -1,5 +1,6 @@
 import { useRef } from 'react';
-import { useStoreActions } from 'global-state';
+import { useDispatch } from 'react-redux';
+import { USER_SYNC, USER_LOGOUT, USER_LOGIN } from 'global-state';
 
 import useInitEffect from 'components/bindings/utilityHooks/useInitEffect';
 
@@ -15,17 +16,20 @@ const db = firebase.firestore();
 const usersDb = db.collection('users');
 
 const useFirebase = () => {
-  const setLoggedIn = useStoreActions(store => store.user.login);
-  const setLoggedOut = useStoreActions(store => store.user.logout);
+  const dispatch = useDispatch();
   const unsubscribe = useRef<null | (() => void)>(null);
   useInitEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
+        dispatch({
+          type: USER_LOGIN
+        });
         unsubscribe.current = usersDb.doc(user.uid).onSnapshot(databaseUser => {
           if (databaseUser.exists) {
             const userData = databaseUser.data() || {};
-            setLoggedIn({
-              user: {
+            dispatch({
+              type: USER_SYNC,
+              payload: {
                 uid: user.uid,
                 color: userData.color,
                 image: userData.image,
@@ -34,13 +38,13 @@ const useFirebase = () => {
                 puzzles: userData.puzzles
               }
             });
-            return;
           }
-          setLoggedOut();
         });
         return;
       }
-      setLoggedOut();
+      dispatch({
+        type: USER_LOGOUT
+      });
     });
     return unsubscribe.current ? unsubscribe.current() : () => {};
   });

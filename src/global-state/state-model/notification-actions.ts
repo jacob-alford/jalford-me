@@ -3,8 +3,9 @@ import { notificationActors } from './_actors';
 import action from '../action-constructors/action';
 
 const notificationActions: storeActionCategory<NP> = {
-  [notificationActors.add]: action<NP>((store, payload = {}) => {
-    const { notification } = payload;
+  [notificationActors.add]: action<NP>((store, action) => {
+    console.log(action);
+    const notification = action?.payload;
     if (!notification)
       throw new Error('Payload.notification is required to add a notification!');
     if (typeof notification === 'string')
@@ -13,8 +14,8 @@ const notificationActions: storeActionCategory<NP> = {
       );
     store.notifications.unshift(notification);
   }),
-  [notificationActors.remove]: action<NP>((store, payload = {}) => {
-    const { notification } = payload;
+  [notificationActors.remove]: action<NP>((store, action) => {
+    const notification = action?.payload;
     if (!notification)
       throw new Error('Payload.notification is required to remove a notification!');
     if (typeof notification !== 'string')

@@ -1,3 +1,4 @@
+import * as actors from './_actors';
 /*
  *  User State
  *
@@ -21,7 +22,8 @@ export interface userState {
   details: userDetails;
 }
 export interface userPayload {
-  user?: userDetails;
+  type: payloadType<actors.userActors>;
+  payload?: userDetails;
 }
 
 /*
@@ -42,7 +44,8 @@ interface notificationDetails {
   uid: string;
 }
 export interface notificationPayload {
-  notification?: notificationDetails;
+  type: payloadType<actors.notificationActors>;
+  payload?: notificationDetails;
 }
 
 /*
@@ -53,13 +56,19 @@ export enum themeState {
   light = 'light',
   dark = 'dark'
 }
-export type themePayload = themeState.light | themeState.dark;
+export interface themePayload {
+  type: payloadType<actors.themeActors>;
+  payload?: any;
+}
 
 /*
  *  Header State
  *
  */
-export type headerPayload = boolean;
+export interface headerPayload {
+  type: payloadType<actors.headerActors>;
+  payload?: any;
+}
 
 /* ------------------ */
 
@@ -75,10 +84,13 @@ export enum domains {
   header = 'header'
 }
 
-export type actionPayload = {
-  type: [domains, string];
-  payload: any;
-};
+export type payloadType<actors> = [domains, actors];
+
+export type actionPayload =
+  | userPayload
+  | notificationPayload
+  | themePayload
+  | headerPayload;
 
 export type actionConstructor<payloadType> = (
   store: globalStore,

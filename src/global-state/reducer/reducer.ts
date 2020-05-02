@@ -6,14 +6,15 @@ export type storeReducer = Reducer<globalStore, actionPayload>;
 
 const makeReducer = (actions: storeActions): storeReducer => (
   store = defaultState,
-  data
+  action: actionPayload
 ) => {
+  if (!Array.isArray(action.type)) return store;
   const {
-    type: [domain, type],
-    payload
-  } = data;
+    type: [domain, type]
+  } = action;
   if (!actions[domain][type]) throw new Error(`Unknown store action, ${type}`);
-  return actions[domain][type](store, payload);
+  // @ts-ignore
+  return actions[domain][type](store, action);
 };
 
 export default makeReducer;

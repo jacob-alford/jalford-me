@@ -1,20 +1,16 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router';
 import { useTrail } from 'react-spring';
 
 import { navItems } from 'config';
 import { getActiveNavItem } from 'functions';
 import useRedirect from 'components/bindings/hooks/useRedirect';
-import { withHeader, useStoreActions } from 'global-state';
+import { useStoreState, useStoreActions, HEAD_TOG } from 'global-state';
 import { NavItems, NavItem, ToggleArrow } from './style';
 
-type HeaderProps = {
-  storeValue: boolean;
-};
-
-const Header = (props: HeaderProps) => {
-  const { storeValue: headerIsOpen } = props;
-  const setHeaderIsOpen = useStoreActions(actions => actions.header.toggle);
+const Header = () => {
+  const headerIsOpen = useStoreState(store => store.headerIsOpen);
+  const setHeaderIsOpen = useStoreActions({ type: HEAD_TOG });
   const location = useLocation();
   const redirect: (link: string) => () => void = useRedirect();
   const navItemStyles = useTrail(navItems.length, {
@@ -48,9 +44,4 @@ const Header = (props: HeaderProps) => {
   );
 };
 
-export default withHeader(
-  memo(
-    Header,
-    ({ storeValue: openPrev }, { storeValue: openNext }) => openPrev === openNext
-  )
-);
+export default Header;
