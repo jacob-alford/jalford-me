@@ -25,14 +25,6 @@ export interface userPayload {
   type: payloadType<actors.userActors>;
   payload: userDetails;
 }
-export interface stringPayload {
-  type: payloadType<actors.userActors>;
-  payload: string;
-}
-export interface mutatePayload {
-  type: payloadType<actors.userActors>;
-  payload: actionConstructor<null>;
-}
 
 /*
  *  Notification State
@@ -78,6 +70,35 @@ export interface headerPayload {
   payload: null;
 }
 
+/*
+ *  Error State
+ *
+ */
+export interface storeError {
+  message: string;
+  raw: Error;
+}
+export interface errorPayload {
+  type: payloadType<actors.errorActors>;
+  payload: storeError;
+}
+
+/*
+ * Generic Payloads
+ */
+export interface indexPayload<actors> {
+  type: payloadType<actors>;
+  payload: number;
+}
+export interface stringPayload<actors> {
+  type: payloadType<actors>;
+  payload: string;
+}
+export interface mutatePayload<actors> {
+  type: payloadType<actors>;
+  payload: actionConstructor<null>;
+}
+
 /* ------------------ */
 
 /*
@@ -89,18 +110,21 @@ export enum domains {
   user = 'user',
   theme = 'theme',
   notifications = 'notifications',
-  header = 'header'
+  header = 'header',
+  errors = 'errors'
 }
 
 export type payloadType<actors> = [domains, actors];
 
 export type actionPayload =
   | userPayload
-  | stringPayload
-  | mutatePayload
+  | stringPayload<actors.userActors>
+  | mutatePayload<actors.userActors>
   | notificationPayload
   | themePayload
-  | headerPayload;
+  | headerPayload
+  | errorPayload
+  | indexPayload<actors.errorActors>;
 
 export type actionConstructor<payloadType> = (
   store: globalStore,
@@ -116,20 +140,23 @@ export interface storeActionCategory<payloadType> {
 }
 
 export interface storeActions {
-  [domains.user]: storeActionCategory<userPayload & stringPayload & mutatePayload>;
+  [domains.user]: storeActionCategory<
+    userPayload & stringPayload<actors.userActors> & mutatePayload<actors.userActors>
+  >;
   [domains.notifications]: storeActionCategory<notificationPayload>;
   [domains.theme]: storeActionCategory<themePayload>;
   [domains.header]: storeActionCategory<headerPayload>;
+  [domains.errors]: storeActionCategory<errorPayload & indexPayload<actors.errorActors>>;
 }
 
 /*
  * Global store
  *
  */
-
 export interface globalStore {
   user: userState;
   notifications: notificationDetails[];
   theme: themeState;
   headerIsOpen: boolean;
+  errors: storeError[];
 }

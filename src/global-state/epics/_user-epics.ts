@@ -10,6 +10,7 @@ import {
   TRIG_USER_SYNC,
   UPDATE_USER
 } from '../state-model/_actors';
+import { handleError } from './helpers';
 
 import firebase from 'firebase-init';
 
@@ -65,7 +66,8 @@ export const updateUser: Epic = (action$, state$) =>
           return src;
         })
       )
-    )
+    ),
+    handleError()
   );
 
 /*
@@ -93,7 +95,8 @@ export const userSync: Epic = action$ =>
           )
         )
       )
-    )
+    ),
+    handleError()
   );
 
 /*

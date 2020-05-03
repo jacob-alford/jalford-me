@@ -8,8 +8,8 @@ import makeReducer from '../reducer/reducer';
 
 const rootEpic = (action$: any, store$: any, dependencies: any) =>
   combineEpics(...Object.values(epics))(action$, store$, dependencies).pipe(
-    catchError((error, source) => {
-      console.error(error);
+    catchError((err, source) => {
+      console.error(err);
       return source;
     })
   );

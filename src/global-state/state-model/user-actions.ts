@@ -9,7 +9,7 @@ import { defaultState } from '../global-state';
 import action from '../action-constructors/action';
 import doNothing from '../action-constructors/doNothing';
 
-const userActions: storeActionCategory<UP & SP & MP> = {
+const userActions: storeActionCategory<UP & SP<userActors> & MP<userActors>> = {
   [userActors.userSync]: action<UP>((store, action) => {
     const user = action.payload;
     if (!user) store.user.details = defaultState.user.details;
@@ -24,7 +24,7 @@ const userActions: storeActionCategory<UP & SP & MP> = {
     store.user.loggedIn = true;
     store.user.hydrated = true;
   }),
-  [userActors.authSync]: action<SP>((store, action) => {
+  [userActors.authSync]: action<SP<userActors>>((store, action) => {
     const uid = action?.payload;
     store.user.details.uid = uid;
   }),

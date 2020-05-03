@@ -48,3 +48,11 @@ export enum headerActors {
   toggle = 'toggle'
 }
 export const HEAD_TOG: pt<headerActors> = [domains.header, headerActors.toggle];
+
+/*
+ * Error Actors
+ */
+export enum errorActors {
+  setError = 'setError'
+}
+export const SET_ERROR: pt<errorActors> = [domains.errors, errorActors.setError];
