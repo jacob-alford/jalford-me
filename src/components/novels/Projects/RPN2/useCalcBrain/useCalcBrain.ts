@@ -1,5 +1,7 @@
 import { useReducer, useCallback } from 'react';
 
+import { alertEnum } from 'global-state';
+
 import useNotify from 'components/bindings/hooks/useNotify';
 import { op } from './operators/_types';
 import calcReducer, {
@@ -26,7 +28,7 @@ export default function useCalcBrain(
 ): [stackItem[], tapeItem[], any, boolean, boolean] {
   const [calcState, _mutateCalcHistory] = useReducer(calcReducer, defaultState);
   const notify = useNotify({
-    alertType: 'error',
+    alertType: alertEnum.error,
     timeout: Infinity
   });
   const mutateCalcHistory = useCallback(

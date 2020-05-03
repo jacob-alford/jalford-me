@@ -14,7 +14,7 @@ import zxcvbn from 'zxcvbn';
 
 import { validateEmail, validateUsername, randomColor } from 'functions';
 
-import { firebase } from 'firebase.js';
+import { firebase } from 'index';
 let db;
 
 const styles = {

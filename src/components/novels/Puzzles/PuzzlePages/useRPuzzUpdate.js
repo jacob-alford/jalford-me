@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
 
-import { firebase } from 'firebase.js';
+import { firebase } from 'index';
 
 import useRHook from 'components/bindings/hooks/useRHook';
 import useNotify from 'components/bindings/hooks/useNotify';
 
-const getUserId = user => user && user.activeUser.uid;
-const getPuzzles = user => (user && user.activeUser.puzzles) || [];
+const getUserId = user => user && user.details.uid;
+const getPuzzles = user => (user && user.details.puzzles) || [];
 
 export default function useRPuzzUpdate(puzzleId) {
   const { user, userLoading } = useRHook();

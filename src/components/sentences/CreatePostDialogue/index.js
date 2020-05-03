@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { firebase } from 'firebase.js';
+import { firebase } from 'index';
 
 import useNotify from 'components/bindings/hooks/useNotify';
 
@@ -80,7 +80,7 @@ export default function CreatePostDialogue(props) {
     [notify]
   );
   const handleCreate = () => {
-    if (user.activeUser && user.activeUser.permissions.value >= 8) {
+    if (user.details && user.details.permissions.value >= 8) {
       setLoading(true);
       const db = firebase.firestore();
       const newPost = db.collection('posts').doc(slug);
@@ -96,14 +96,14 @@ export default function CreatePostDialogue(props) {
             });
             newPost
               .set({
-                author: user.activeUser.username,
+                author: user.details.username,
                 body: '',
                 date: new Date(),
                 erased: false,
                 isPublic: false,
                 displayHeading: false,
                 likes: [],
-                owner: user.activeUser.uid,
+                owner: user.details.uid,
                 series: 'default',
                 snapshots: [],
                 snippit: '',

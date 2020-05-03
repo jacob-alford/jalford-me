@@ -1,7 +1,7 @@
-import { useSelect, useDispatch } from 'globalState';
+import { useStoreActions, useStoreState, THEME_TOG } from 'global-state';
 
 export default function useTLD() {
-  const tldState = useSelect('getTLD');
-  const toggleTld = useDispatch('toggle', 'themeMode');
+  const tldState = useStoreState(state => state.theme);
+  const toggleTld = useStoreActions({ type: THEME_TOG });
   return [tldState, toggleTld];
 }

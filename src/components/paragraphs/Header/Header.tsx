@@ -5,15 +5,12 @@ import { useTrail } from 'react-spring';
 import { navItems } from 'config';
 import { getActiveNavItem } from 'functions';
 import useRedirect from 'components/bindings/hooks/useRedirect';
+import { useStoreState, useStoreActions, HEAD_TOG } from 'global-state';
 import { NavItems, NavItem, ToggleArrow } from './style';
 
-type HeaderProps = {
-  headerIsOpen: boolean;
-  setHeaderIsOpen: (val: boolean) => void;
-};
-
-const Header = (props: HeaderProps) => {
-  const { headerIsOpen, setHeaderIsOpen } = props;
+const Header = () => {
+  const headerIsOpen = useStoreState(store => store.headerIsOpen);
+  const setHeaderIsOpen = useStoreActions({ type: HEAD_TOG, payload: null });
   const location = useLocation();
   const redirect: (link: string) => () => void = useRedirect();
   const navItemStyles = useTrail(navItems.length, {

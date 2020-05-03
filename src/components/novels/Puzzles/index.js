@@ -11,7 +11,7 @@ import withPageFade from 'components/bindings/wrappers/withPageFade';
 
 import useRHook from 'components/bindings/hooks/useRHook';
 
-const getPuzzles = user => (user && user.activeUser && user.activeUser.puzzles) || [];
+const getPuzzles = user => user.details.puzzles;
 
 function Puzzles() {
   const { user } = useRHook();

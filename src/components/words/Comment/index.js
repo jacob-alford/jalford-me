@@ -81,11 +81,7 @@ const useClasses = themeHook(['getGrayText', 'getDarkText'], ([grayText, darkTex
   }
 }));
 
-const isAdmin = user =>
-  user &&
-  user.activeUser &&
-  user.activeUser.permissions &&
-  user.activeUser.permissions.value === 10;
+const isAdmin = user => user.details.permissions.value === 10;
 
 export default function Comment(props) {
   const [tldState] = useTLD();
@@ -173,7 +169,7 @@ export default function Comment(props) {
                 </Holder>
                 <Holder direction='row'>
                   <CommentActions
-                    activeUser={loggedUser.activeUser}
+                    details={loggedUser.details}
                     commentUser={user}
                     edit={handleEdit}
                     remove={handleDelete}

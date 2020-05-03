@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { firebase } from 'firebase.js';
+import { firebase } from 'index';
 
 export default function useSeriesConnect(series) {
   const [isLoading, setIsLoading] = useState(true);

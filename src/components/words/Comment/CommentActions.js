@@ -26,15 +26,15 @@ export default function CommentActions(props) {
   const [confirmPermDelete, setConfirmPermDelete] = useState(false);
   const [tldState] = useTLD();
   const classes = useClasses({ tldState, ...props });
-  const { activeUser, commentUser, edit, remove, permDelete, isEditing } = props;
+  const { details, commentUser, edit, remove, permDelete, isEditing } = props;
   return (
     <React.Fragment>
-      {activeUser.uid === commentUser.uid ? (
+      {details.uid === commentUser.uid ? (
         <IconButton onClick={edit} disabled={isEditing}>
           <EditIcon className={classes.edit} />
         </IconButton>
       ) : null}
-      {activeUser.uid === commentUser.uid || activeUser.permissions.value === 10 ? (
+      {details.uid === commentUser.uid || details.permissions.value === 10 ? (
         <IconButton
           onClick={
             confirmDelete
@@ -48,7 +48,7 @@ export default function CommentActions(props) {
           <DeleteIcon />
         </IconButton>
       ) : null}
-      {activeUser.permissions.value === 10 ? (
+      {details.permissions.value === 10 ? (
         <IconButton
           onClick={
             confirmPermDelete

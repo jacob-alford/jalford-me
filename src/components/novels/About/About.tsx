@@ -78,7 +78,7 @@ const About2 = () => {
     from: { opacity: 0 }
   }));
 
-  const frontEndFall = useDropSlide(999, straight, () => {
+  const frontEndFall = useDropSlide(207, straight, () => {
     setMeImgStyles({
       opacity: 1,
       transform: `translate3d(0px, 0, 0) rotateZ(0deg)`
@@ -89,8 +89,8 @@ const About2 = () => {
     setTextFade({ opacity: 1 });
     setShouldType(true);
   });
-  const backEndFall = useDropSlide(666, straight);
-  const mathFall = useDropSlide(333, straight);
+  const backEndFall = useDropSlide(138, straight);
+  const mathFall = useDropSlide(69, straight);
   const creativeFall = useDropSlide(0, straight);
 
   return (

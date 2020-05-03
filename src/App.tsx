@@ -1,4 +1,4 @@
-import React, { useState, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import NotificationsHolder from './components/sentences/NotificationsHolder';
@@ -34,12 +34,11 @@ const Puzzle3 = React.lazy(() =>
 );
 
 export default function App() {
-  const [headerIsOpen, setHeaderIsOpen] = useState(true);
   return (
     <Background>
       <Router>
         <NotificationsHolder />
-        <Header headerIsOpen={headerIsOpen} setHeaderIsOpen={setHeaderIsOpen} />
+        <Header />
         <Suspense fallback={<Loader />}>
           <Switch>
             <Route exact path='/rpn' render={props => <RPN {...props} />} />
@@ -67,7 +66,7 @@ export default function App() {
               />
             </Route>
             <Route exact path='/puzzles/19-2-26'>
-              <Puzzle2 headerIsOpen={headerIsOpen} />
+              <Puzzle2 />
               <BlogBar
                 context='inPuzzles'
                 breadcrumb={{ link: '/puzzles', label: 'Puzzle' }}
@@ -123,7 +122,7 @@ export default function App() {
               }}
             />
             <Route exact path='/posts'>
-              <Blog headerIsOpen={headerIsOpen} />
+              <Blog />
               <BlogBar breadcrumb={{ link: '/posts', label: 'Posts' }} />
             </Route>
             <Route exact path='/oldHome' component={Home} />
