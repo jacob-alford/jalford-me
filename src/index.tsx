@@ -4,11 +4,12 @@ import { Provider } from 'react-redux';
 import { ParallaxProvider } from 'react-scroll-parallax';
 
 import { GlobalStore } from 'global-state';
+import firebase from 'firebase-init';
 
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import useFirebase, { firebase } from 'components/bindings/userHooks/useFirebase';
+import useFirebase from 'components/bindings/userHooks/useFirebase';
 
 const Root = () => {
   useFirebase();

@@ -23,6 +23,7 @@
     "react-spring": "8.0.27",
     "react-syntax-highlighter": "12.2.1",
     "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
     "redux-observable": "^1.2.0",
     "rxjs": "^6.5.5",
     "source-map-explorer": "2.2.2",

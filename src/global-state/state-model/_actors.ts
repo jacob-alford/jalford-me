@@ -3,13 +3,17 @@ import { domains, payloadType as pt } from './_types';
  * User Actors
  */
 export enum userActors {
-  syncUser = 'syncUser',
+  userSync = 'userSync',
   logoutUser = 'logoutUser',
-  loginUser = 'loginUser'
+  loginUser = 'loginUser',
+  authSync = 'authSync',
+  triggerUserSync = 'triggerUserSync'
 }
-export const USER_SYNC: pt<userActors> = [domains.user, userActors.syncUser];
+export const TRIG_USER_SYNC: pt<userActors> = [domains.user, userActors.triggerUserSync];
+export const USER_SYNC: pt<userActors> = [domains.user, userActors.userSync];
 export const USER_LOGOUT: pt<userActors> = [domains.user, userActors.logoutUser];
 export const USER_LOGIN: pt<userActors> = [domains.user, userActors.loginUser];
+export const AUTH_SYNC: pt<userActors> = [domains.user, userActors.authSync];
 
 /*
  * Notifications Actors

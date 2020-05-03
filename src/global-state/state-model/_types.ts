@@ -23,7 +23,11 @@ export interface userState {
 }
 export interface userPayload {
   type: payloadType<actors.userActors>;
-  payload?: userDetails;
+  payload: userDetails;
+}
+export interface stringPayload {
+  type: payloadType<actors.userActors>;
+  payload: string;
 }
 
 /*
@@ -45,7 +49,7 @@ interface notificationDetails {
 }
 export interface notificationPayload {
   type: payloadType<actors.notificationActors>;
-  payload?: notificationDetails;
+  payload: notificationDetails;
 }
 
 /*
@@ -58,7 +62,7 @@ export enum themeState {
 }
 export interface themePayload {
   type: payloadType<actors.themeActors>;
-  payload?: any;
+  payload: null;
 }
 
 /*
@@ -67,7 +71,7 @@ export interface themePayload {
  */
 export interface headerPayload {
   type: payloadType<actors.headerActors>;
-  payload?: any;
+  payload: null;
 }
 
 /* ------------------ */
@@ -88,17 +92,18 @@ export type payloadType<actors> = [domains, actors];
 
 export type actionPayload =
   | userPayload
+  | stringPayload
   | notificationPayload
   | themePayload
   | headerPayload;
 
 export type actionConstructor<payloadType> = (
   store: globalStore,
-  payload?: payloadType
+  payload: payloadType
 ) => void;
 export type action<payloadType> = (
   store: globalStore,
-  payload?: payloadType
+  payload: payloadType
 ) => globalStore;
 
 export interface storeActionCategory<payloadType> {
@@ -106,7 +111,7 @@ export interface storeActionCategory<payloadType> {
 }
 
 export interface storeActions {
-  [domains.user]: storeActionCategory<userPayload>;
+  [domains.user]: storeActionCategory<userPayload & stringPayload>;
   [domains.notifications]: storeActionCategory<notificationPayload>;
   [domains.theme]: storeActionCategory<themePayload>;
   [domains.header]: storeActionCategory<headerPayload>;

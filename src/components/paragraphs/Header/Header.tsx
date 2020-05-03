@@ -10,7 +10,7 @@ import { NavItems, NavItem, ToggleArrow } from './style';
 
 const Header = () => {
   const headerIsOpen = useStoreState(store => store.headerIsOpen);
-  const setHeaderIsOpen = useStoreActions({ type: HEAD_TOG });
+  const setHeaderIsOpen = useStoreActions({ type: HEAD_TOG, payload: null });
   const location = useLocation();
   const redirect: (link: string) => () => void = useRedirect();
   const navItemStyles = useTrail(navItems.length, {

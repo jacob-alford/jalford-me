@@ -4,7 +4,6 @@ import action from '../action-constructors/action';
 
 const notificationActions: storeActionCategory<NP> = {
   [notificationActors.add]: action<NP>((store, action) => {
-    console.log(action);
     const notification = action?.payload;
     if (!notification)
       throw new Error('Payload.notification is required to add a notification!');
