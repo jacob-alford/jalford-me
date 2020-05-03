@@ -29,6 +29,10 @@ export interface stringPayload {
   type: payloadType<actors.userActors>;
   payload: string;
 }
+export interface mutatePayload {
+  type: payloadType<actors.userActors>;
+  payload: actionConstructor<null>;
+}
 
 /*
  *  Notification State
@@ -40,7 +44,7 @@ export enum alertEnum {
   info = 'info',
   success = 'success'
 }
-interface notificationDetails {
+export interface notificationDetails {
   body: string;
   alertType: alertEnum;
   timeout: number;
@@ -93,6 +97,7 @@ export type payloadType<actors> = [domains, actors];
 export type actionPayload =
   | userPayload
   | stringPayload
+  | mutatePayload
   | notificationPayload
   | themePayload
   | headerPayload;
@@ -111,7 +116,7 @@ export interface storeActionCategory<payloadType> {
 }
 
 export interface storeActions {
-  [domains.user]: storeActionCategory<userPayload & stringPayload>;
+  [domains.user]: storeActionCategory<userPayload & stringPayload & mutatePayload>;
   [domains.notifications]: storeActionCategory<notificationPayload>;
   [domains.theme]: storeActionCategory<themePayload>;
   [domains.header]: storeActionCategory<headerPayload>;

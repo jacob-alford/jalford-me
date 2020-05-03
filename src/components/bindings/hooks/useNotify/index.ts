@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { NOTIF_ADD } from 'global-state';
+import { NOTIF_ADD, notificationDetails } from 'global-state';
 
 import { getRandomUID } from 'functions';
 
@@ -10,10 +10,10 @@ const defaultConfig = {
   timeout: 10000 // ms
 };
 
-export default function useNotify(compStyle = {}) {
+export default function useNotify(compStyle: Partial<notificationDetails> = {}) {
   const dispatch = useDispatch();
   return useCallback(
-    (notification: any) =>
+    (notification: Partial<notificationDetails> = {}) =>
       dispatch({
         type: NOTIF_ADD,
         payload: {

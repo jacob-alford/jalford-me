@@ -7,13 +7,15 @@ export enum userActors {
   logoutUser = 'logoutUser',
   loginUser = 'loginUser',
   authSync = 'authSync',
-  triggerUserSync = 'triggerUserSync'
+  triggerUserSync = 'triggerUserSync',
+  updateUser = 'updateUser'
 }
 export const TRIG_USER_SYNC: pt<userActors> = [domains.user, userActors.triggerUserSync];
 export const USER_SYNC: pt<userActors> = [domains.user, userActors.userSync];
 export const USER_LOGOUT: pt<userActors> = [domains.user, userActors.logoutUser];
 export const USER_LOGIN: pt<userActors> = [domains.user, userActors.loginUser];
 export const AUTH_SYNC: pt<userActors> = [domains.user, userActors.authSync];
+export const UPDATE_USER: pt<userActors> = [domains.user, userActors.updateUser];
 
 /*
  * Notifications Actors

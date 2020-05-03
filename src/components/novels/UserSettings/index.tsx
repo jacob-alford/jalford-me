@@ -1,20 +1,21 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, SyntheticEvent } from 'react';
 import { SketchPicker } from 'react-color';
 
 import * as MUI_COMPONENTS from './mui.js';
 
-import withPageFade from 'components/bindings/wrappers/withPageFade';
 import { useHistory } from 'react-router-dom';
 
-import { firebase } from 'index';
+import { userState, alertEnum } from 'global-state';
 
+import withPageFade from 'components/bindings/wrappers/withPageFade';
 import useRHook from 'components/bindings/hooks/useRHook';
 import useNotify from 'components/bindings/hooks/useNotify';
+import useUpdateUser from 'components/bindings/userHooks/useUserUpdate';
 
 import { getTextColorBasedOnBg } from 'functions';
 
-const getUser = user => user.details;
-const getPermissions = user => {
+const getUser = (user: userState) => user.details;
+const getPermissions = (user: userState) => {
   if ([8, 9].includes(user.details.permissions.value)) return 'Writer';
   else if (user.details.permissions.value === 10) return 'Admin';
   else return 'None';
@@ -94,7 +95,7 @@ const styles = {
   }
 };
 
-function UserSettings(props) {
+const UserSettings = () => {
   const history = useHistory();
   // --- State Hooks ---
   const [mightDelete, setMightDelete] = useState(false);
@@ -102,88 +103,70 @@ function UserSettings(props) {
   const [usernameField, setUsernameField] = useState('');
   const [colorField, setColorField] = useState('');
   const [imageField, setImageField] = useState('');
-  const notify = useNotify({
-    timeout: 4500
+  const updateUser = useUpdateUser();
+  const notifyUpdate = useNotify({
+    body: 'Successfully updated user!',
+    alertType: alertEnum.success
   });
-  const notifyError = useCallback(
-    (error, msg) => {
-      console.error(error);
-      notify({
-        body: msg || error.toString(),
-        alertType: 'error'
-      });
-    },
-    [notify]
-  );
-  const notifyUpdate = useCallback(
-    msg => {
-      notify({
-        body: msg || 'Successfully updated user!',
-        alertType: 'success'
-      });
-    },
-    [notify]
-  );
-  const db = useRef(firebase.firestore());
   // --- Handlers ---
-  const fieldHandlerConstructor = setter => {
-    return evt => {
-      setter(evt.target.value);
+  const fieldHandlerConstructor = (setter: (val: any) => void) => {
+    return (evt: SyntheticEvent<HTMLInputElement>) => {
+      setter((evt.target as HTMLInputElement).value);
     };
   };
-  const handleUserImageUpdate = () => {
-    if (db.current && user.loggedIn) {
-      const dbUser = db.current.collection('users').doc(getUser(user).uid);
-      dbUser
-        .update({
-          username: usernameField,
-          image: imageField
-        })
-        .then(notifyUpdate)
-        .catch(notifyError);
+  const handleUserImageUpdate = async () => {
+    if (user.loggedIn) {
+      await updateUser({
+        image: imageField,
+        username: usernameField
+      });
+      notifyUpdate();
     }
   };
   const handleColorUpdate = () => {
-    if (db.current && user.loggedIn) {
-      const dbUser = db.current.collection('users').doc(getUser(user).uid);
-      dbUser
-        .update({
-          color: colorField
-        })
-        .then(notifyUpdate)
-        .catch(notifyError);
+    if (user.loggedIn) {
+      updateUser({
+        color: colorField
+      });
+      notifyUpdate({
+        body: `Sucessfully updated colour to: ${colorField}`
+      });
     }
   };
   const handleUserDelete = () => {
-    if (firebase && db.current && user.loggedIn) {
-      const authUser = firebase.auth().currentUser;
-      if (authUser) {
-        authUser
-          .delete()
-          .then(() => {
-            const dbUser = db.current.collection('users').doc(authUser.uid);
-            dbUser
-              .delete()
-              .then(() => {
-                notifyUpdate('Successfully deleted user :-(');
-              })
-              .catch(error =>
-                notifyError(
-                  'Unable to fully delete user, please contact Jacob for assistance!  Sorry about that! :-('
-                )
-              );
-          })
-          .catch(notifyError);
-      }
-    }
+    return;
+    // if (firebase && db.current && user.loggedIn) {
+    //   const authUser = firebase.auth().currentUser;
+    //   if (authUser) {
+    //     authUser
+    //       .delete()
+    //       .then(() => {
+    //         const dbUser = db.current.collection('users').doc(authUser.uid);
+    //         dbUser
+    //           .delete()
+    //           .then(() => {
+    //             notifyUpdate('Successfully deleted user :-(');
+    //           })
+    //           .catch(error =>
+    //             notifyError(
+    //               'Unable to fully delete user, please contact Jacob for assistance!  Sorry about that! :-('
+    //             )
+    //           );
+    //       })
+    //       .catch(notifyError);
+    //   }
+    // }
   };
   // --- Custom Hooks ---
   const { userLoading: isLoading, user } = useRHook();
   // --- Anchors ---
   const [nameEditAnchor, setNameEditAnchor] = useState(null);
   const [colorEditAnchor, setColorEditAnchor] = useState(null);
-  const handleAnchorUpdateConstructor = (anchor, setter) => {
-    return evt => {
+  const handleAnchorUpdateConstructor = (
+    anchor: HTMLElement,
+    setter: (val: any) => void
+  ) => {
+    return (evt: SyntheticEvent<HTMLElement>) => {
       setter(anchor ? null : evt.currentTarget);
     };
   };
@@ -205,6 +188,8 @@ function UserSettings(props) {
   }, [user]);
   return (
     <React.Fragment>
+      {/* 
+      // @ts-ignore */}
       <Grid style={styles.loader} container justify='center'>
         <Grid item>
           <Fade in={isLoading}>
@@ -256,6 +241,7 @@ function UserSettings(props) {
                       />
                       <IconButton
                         onClick={handleAnchorUpdateConstructor(
+                          // @ts-ignore
                           nameEditAnchor,
                           setNameEditAnchor
                         )}>
@@ -281,6 +267,7 @@ function UserSettings(props) {
                       />
                       <IconButton
                         onClick={handleAnchorUpdateConstructor(
+                          // @ts-ignore
                           colorEditAnchor,
                           setColorEditAnchor
                         )}>
@@ -364,6 +351,7 @@ function UserSettings(props) {
                       variant='outlined'
                       label='Username'
                       value={usernameField}
+                      // @ts-ignore
                       onChange={fieldHandlerConstructor(setUsernameField)}
                     />
                   </Grid>
@@ -373,6 +361,7 @@ function UserSettings(props) {
                       style={{ marginTop: '12px' }}
                       label='Image URL'
                       value={imageField}
+                      // @ts-ignore
                       onChange={fieldHandlerConstructor(setImageField)}
                     />
                   </Grid>
@@ -419,6 +408,6 @@ function UserSettings(props) {
       </Popper>
     </React.Fragment>
   );
-}
+};
 
 export default withPageFade(UserSettings);

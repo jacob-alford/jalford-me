@@ -1,5 +1,5 @@
 import { from, Observable, iif, of } from 'rxjs';
-import { mapTo, mergeMap, map } from 'rxjs/operators';
+import { mapTo, mergeMap, map, filter, pluck, catchError } from 'rxjs/operators';
 import { Epic, ofType } from 'redux-observable';
 import { userDetails } from '../state-model/_types';
 import {
@@ -7,7 +7,8 @@ import {
   USER_SYNC,
   USER_LOGOUT,
   USER_LOGIN,
-  TRIG_USER_SYNC
+  TRIG_USER_SYNC,
+  UPDATE_USER
 } from '../state-model/_actors';
 
 import firebase from 'firebase-init';
@@ -23,6 +24,11 @@ const getUserData = (userDoc: firebase.firestore.DocumentData): userDetails | nu
   } else return null;
 };
 
+const setUserData = (
+  userUid: string,
+  newUserDetails: Partial<userDetails>
+): Observable<void> => from(usersDb.doc(userUid).update(newUserDetails));
+
 /*
  * Triggers firestore document retrieval
  * on firebase auth change
@@ -36,6 +42,30 @@ export const authSync: Epic = action$ =>
       type: TRIG_USER_SYNC,
       payload
     }))
+  );
+
+/*
+ * On user update, triggers resync with userdb
+ * in: UPDATE_USER(userDetails)
+ * out: USER_SYNC(userDetails) | USER_LOGOUT
+ */
+export const updateUser: Epic = (action$, state$) =>
+  action$.pipe(
+    ofType(UPDATE_USER),
+    filter(action => Boolean(action.payload)),
+    pluck('payload'),
+    mergeMap(userDetails =>
+      setUserData(state$.value.user.details.uid, userDetails).pipe(
+        map(() => ({
+          type: TRIG_USER_SYNC,
+          payload: state$.value.user.details.uid
+        })),
+        catchError((err, src) => {
+          console.error(err);
+          return src;
+        })
+      )
+    )
   );
 
 /*
