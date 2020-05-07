@@ -1,6 +1,8 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
+import usePostFetch from 'components/bindings/postHooks/usePostFetch';
+
 import NotificationsHolder from './components/sentences/NotificationsHolder';
 import Background from 'components/paragraphs/Background/Background';
 import Header from './components/paragraphs/Header/Header';
@@ -34,6 +36,7 @@ const Puzzle3 = React.lazy(() =>
 );
 
 export default function App() {
+  // usePostFetch();
   return (
     <Background>
       <Router>

@@ -84,6 +84,22 @@ export interface errorPayload {
 }
 
 /*
+ *  Post State
+ *
+ */
+export interface blogPost {
+  body: string;
+  title: string;
+  tags: string[];
+  date: Date;
+  public: boolean;
+}
+export interface blogPayload {
+  type: payloadType<actors.postActors>;
+  payload: blogPost[];
+}
+
+/*
  * Generic Payloads
  */
 export interface indexPayload<actors> {
@@ -98,6 +114,9 @@ export interface mutatePayload<actors> {
   type: payloadType<actors>;
   payload: actionConstructor<null>;
 }
+export interface emptyPayload<actors> {
+  type: payloadType<actors>;
+}
 
 /* ------------------ */
 
@@ -111,7 +130,9 @@ export enum domains {
   theme = 'theme',
   notifications = 'notifications',
   header = 'header',
-  errors = 'errors'
+  errors = 'errors',
+  posts = 'posts',
+  general = 'general'
 }
 
 export type payloadType<actors> = [domains, actors];
@@ -124,7 +145,8 @@ export type actionPayload =
   | themePayload
   | headerPayload
   | errorPayload
-  | indexPayload<actors.errorActors>;
+  | indexPayload<actors.errorActors>
+  | blogPayload;
 
 export type actionConstructor<payloadType> = (
   store: globalStore,
@@ -147,6 +169,8 @@ export interface storeActions {
   [domains.theme]: storeActionCategory<themePayload>;
   [domains.header]: storeActionCategory<headerPayload>;
   [domains.errors]: storeActionCategory<errorPayload & indexPayload<actors.errorActors>>;
+  [domains.posts]: storeActionCategory<blogPayload>;
+  [domains.general]: storeActionCategory<emptyPayload<actors.generalActors>>;
 }
 
 /*
@@ -159,4 +183,5 @@ export interface globalStore {
   theme: themeState;
   headerIsOpen: boolean;
   errors: storeError[];
+  posts: blogPost[];
 }

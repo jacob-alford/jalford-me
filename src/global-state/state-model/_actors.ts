@@ -56,3 +56,22 @@ export enum errorActors {
   setError = 'setError'
 }
 export const SET_ERROR: pt<errorActors> = [domains.errors, errorActors.setError];
+
+/*
+ * Post Actors
+ */
+export enum postActors {
+  refreshPosts = 'refreshPosts'
+}
+export const UPDATE_POSTS: pt<postActors> = [domains.posts, postActors.refreshPosts];
+
+/*
+ * General Actors
+ */
+export enum generalActors {
+  initialLoad = 'initialLoad'
+}
+export const INITIAL_LOAD: pt<generalActors> = [
+  domains.general,
+  generalActors.initialLoad
+];

@@ -3,11 +3,13 @@ import {
   themeState,
   storeActions as storeActionsType
 } from './state-model/_types';
-import user from './state-model/user-actions';
 import notifications from './state-model/notification-actions';
-import theme from './state-model/theme-actions';
-import header from './state-model/header-actions';
+import general from './state-model/general-actions';
 import errors from './state-model/error-actions';
+import header from './state-model/header-actions';
+import theme from './state-model/theme-actions';
+import posts from './state-model/post-actions';
+import user from './state-model/user-actions';
 
 const getDefaultThemeState = (): themeState => {
   const light = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)');
@@ -41,13 +43,16 @@ export const defaultState: globalStore = {
   notifications: [],
   theme: getDefaultThemeState(),
   headerIsOpen: true,
-  errors: []
+  errors: [],
+  posts: []
 };
 
 export const storeActions: storeActionsType = {
-  user,
   notifications,
-  theme,
+  general,
+  errors,
   header,
-  errors
+  theme,
+  posts,
+  user
 };
