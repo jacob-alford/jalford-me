@@ -88,11 +88,13 @@ export interface errorPayload {
  *
  */
 export interface blogPost {
+  id: string;
   body: string;
   title: string;
   tags: string[];
   date: Date;
   public: boolean;
+  category: string;
 }
 export interface blogPayload {
   type: payloadType<actors.postActors>;

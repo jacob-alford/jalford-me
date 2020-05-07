@@ -36,7 +36,7 @@ const Puzzle3 = React.lazy(() =>
 );
 
 export default function App() {
-  // usePostFetch();
+  usePostFetch();
   return (
     <Background>
       <Router>
