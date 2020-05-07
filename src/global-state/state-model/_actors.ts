@@ -61,9 +61,16 @@ export const SET_ERROR: pt<errorActors> = [domains.errors, errorActors.setError]
  * Post Actors
  */
 export enum postActors {
-  refreshPosts = 'refreshPosts'
+  refreshPosts = 'refreshPosts',
+  addPostBody = 'addPostBody',
+  triggerBodyUpdate = 'triggerBodyUpdate'
 }
 export const UPDATE_POSTS: pt<postActors> = [domains.posts, postActors.refreshPosts];
+export const ADD_BODY: pt<postActors> = [domains.posts, postActors.addPostBody];
+export const TRIG_BODY_UPDATE: pt<postActors> = [
+  domains.posts,
+  postActors.triggerBodyUpdate
+];
 
 /*
  * General Actors

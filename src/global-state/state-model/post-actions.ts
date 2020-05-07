@@ -1,11 +1,20 @@
-import { storeActionCategory, blogPayload as BP } from './_types';
+import {
+  storeActionCategory,
+  blogPayload as BP,
+  addBodyBlogPayload as ABP
+} from './_types';
 import { postActors } from './_actors';
 import action from '../action-constructors/action';
+import doNothing from '../action-constructors/doNothing';
 
-const postActions: storeActionCategory<BP> = {
+const postActions: storeActionCategory<BP & ABP> = {
   [postActors.refreshPosts]: action<BP>((store, action) => {
-    const posts = action.payload;
-    store.posts = posts;
+    store.posts = action.payload;
+  }),
+  [postActors.triggerBodyUpdate]: doNothing(),
+  [postActors.addPostBody]: action<ABP>((store, action) => {
+    const { index, body } = action.payload;
+    store.posts[index].body = body;
   })
 };
 

@@ -89,7 +89,7 @@ export interface errorPayload {
  */
 export interface blogPost {
   id: string;
-  body: string;
+  body: string | null;
   title: string;
   tags: string[];
   date: Date;
@@ -99,6 +99,13 @@ export interface blogPost {
 export interface blogPayload {
   type: payloadType<actors.postActors>;
   payload: blogPost[];
+}
+export interface addBodyBlogPayload {
+  type: payloadType<actors.postActors>;
+  payload: {
+    index: number;
+    body: string;
+  };
 }
 
 /*
@@ -148,7 +155,9 @@ export type actionPayload =
   | headerPayload
   | errorPayload
   | indexPayload<actors.errorActors>
-  | blogPayload;
+  | indexPayload<actors.postActors>
+  | blogPayload
+  | addBodyBlogPayload;
 
 export type actionConstructor<payloadType> = (
   store: globalStore,
@@ -171,7 +180,7 @@ export interface storeActions {
   [domains.theme]: storeActionCategory<themePayload>;
   [domains.header]: storeActionCategory<headerPayload>;
   [domains.errors]: storeActionCategory<errorPayload & indexPayload<actors.errorActors>>;
-  [domains.posts]: storeActionCategory<blogPayload>;
+  [domains.posts]: storeActionCategory<blogPayload & indexPayload<actors.postActors>>;
   [domains.general]: storeActionCategory<emptyPayload<actors.generalActors>>;
 }
 
