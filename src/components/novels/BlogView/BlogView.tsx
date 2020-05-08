@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useMemo, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import Markdown from 'react-markdown';
+
+import find from 'lodash/find';
+import findIndex from 'lodash/findIndex';
+import isEmpty from 'lodash/isEmpty';
 
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
 
 import CommentHolder from 'components/sentences/CommentHolder';
 import Holder from 'components/words/Holder';
@@ -13,12 +17,11 @@ import LightDarkToggler from 'components/words/LightDarkToggler';
 
 import withPageFade from 'components/bindings/wrappers/withPageFade';
 
-import useRHook from 'components/bindings/hooks/useRHook';
-import usePostConnect from 'components/bindings/hooks/usePostConnect';
-import useTitleSize from 'components/bindings/hooks/useTitleSize';
 import useTLD from 'components/bindings/hooks/useTLD';
 
-import getPostId from './selectors.js';
+import { useStoreState, globalStore, TRIG_BODY_UPDATE, blogPost } from 'global-state';
+
+import getPostId from './selectors';
 
 import markdownConfig from 'helpers/blogParse.js';
 import { katexMarkdown } from 'helpers/blogParse.js';
@@ -27,15 +30,17 @@ import { themeHook } from 'theme';
 
 const useClasses = themeHook(
   ['getMajorSpacing', 'getMinorSpacing'],
+  // @ts-ignore
   ([majorSpacing, minorSpacing]) => ({
     header: {
       textAlign: 'center',
       color: 'rgba(0,0,0,.87)'
     },
     container: {
-      color: ({ tldState }) =>
-        tldState === 'light' ? 'rgba(0,0,0,.87)' : 'rgba(255,255,255,1)',
-      background: ({ tldState }) => (tldState === 'light' ? '#fff' : '#232323'),
+      color: (config: { tldState: string }) =>
+        config.tldState === 'light' ? 'rgba(0,0,0,.87)' : 'rgba(255,255,255,1)',
+      background: (config: { tldState: string }) =>
+        config.tldState === 'light' ? '#fff' : '#232323',
       paddingTop: minorSpacing,
       paddingBottom: majorSpacing,
       marginBottom: minorSpacing,
@@ -50,8 +55,8 @@ const useClasses = themeHook(
       color: 'rgba(0,0,0,.87)'
     },
     lead: {
-      color: ({ tldState }) =>
-        tldState === 'light' ? 'rgba(0,0,0,.69)' : 'rgba(255,255,255,.85)',
+      color: (config: { tldState: string }) =>
+        config.tldState === 'light' ? 'rgba(0,0,0,.69)' : 'rgba(255,255,255,.85)',
       transition: 'color .5s',
       fontSize: '1.42rem',
       fontWeight: '300',
@@ -84,22 +89,38 @@ const NotFoundPlaceholder = () => {
   );
 };
 
-function BlogView(props) {
-  const [tldState, toggleTld] = useTLD();
+function BlogView(props: { match: { params: { postId: string } } }) {
+  const posts = useStoreState((state: globalStore) => state.posts);
+  const user = useStoreState((state: globalStore) => state.user);
+  const dispatch = useDispatch();
   const postId = getPostId(props);
-  const { user } = useRHook();
-  const data = usePostConnect(postId, user);
-  const { h1: titleSize } = useTitleSize();
+  const selectedPost =
+    useMemo(() => find(posts, post => post.id === postId), [posts, postId]) || {};
+  const selectedPostIndex = useMemo(
+    () => findIndex<blogPost>(posts, post => post.id === postId),
+    [posts, postId]
+  );
+  const [tldState, toggleTld] = useTLD();
   const classes = useClasses({ tldState });
+  const notFound = isEmpty(selectedPost);
+  const isLoading = !isEmpty(selectedPost) && !selectedPost.body;
+  useEffect(() => {
+    if (selectedPost.path)
+      dispatch({
+        type: TRIG_BODY_UPDATE,
+        payload: {
+          path: selectedPost.path,
+          index: selectedPostIndex
+        }
+      });
+  }, [selectedPost.path, dispatch, selectedPostIndex]);
   return (
     <React.Fragment>
       <Grid container justify='center'>
         <Container className={classes.container}>
-          {!data.isLoading && (data.error || !data.postData) ? (
-            <NotFoundPlaceholder />
-          ) : null}
-          {data.isLoading ? <LoadingPlaceholder /> : null}
-          {!data.isLoading && data.postData && !data.error ? (
+          {notFound && <NotFoundPlaceholder />}
+          {!notFound && isLoading && <LoadingPlaceholder />}
+          {!isLoading && !notFound ? (
             <React.Fragment>
               <Holder
                 className={classes.togglerHolder}
@@ -107,51 +128,18 @@ function BlogView(props) {
                 direction='row'>
                 <LightDarkToggler mode={tldState} toggle={toggleTld} />
               </Holder>
-              {data.postData.displayHeading ? (
-                <React.Fragment>
-                  <Typography
-                    paragraph
-                    className={classes.title}
-                    style={{ fontSize: titleSize }}
-                    variant='h1'>
-                    {data.postData.title}
-                  </Typography>
-                  <Typography paragraph variant='h4' style={{ textAlign: 'center' }}>
-                    <small>{`by ${data.postData.author} `}</small>|
-                    <strong>
-                      {` ${new Date(data.postData.date.toDate()).toLocaleDateString(
-                        'default',
-                        {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        }
-                      )}`}
-                    </strong>
-                  </Typography>
-                  <Divider style={{ marginTop: '15px', marginBottom: '15px' }} />
-                  {data.postData.snippit ? (
-                    <Typography paragraph className={classes.lead}>
-                      {data.postData.snippit}
-                    </Typography>
-                  ) : null}
-                </React.Fragment>
-              ) : null}
               <Markdown
                 renderers={markdownConfig}
-                source={katexMarkdown(data.postData.body)}
+                source={katexMarkdown(selectedPost.body)}
               />
             </React.Fragment>
           ) : null}
         </Container>
       </Grid>
-      {!data.isLoading && !data.error && data.postData ? (
+      {!isLoading && !notFound && selectedPost.comments ? (
         <CommentHolder
           user={user}
-          comments={
-            (data.postData && data.postData.sandbox && data.postData.sandbox.comments) ||
-            []
-          }
+          comments={selectedPost.comments || []}
           docId={postId}
         />
       ) : null}

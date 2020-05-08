@@ -12,7 +12,8 @@ const toString = (base64: string): string => {
   const charZarr = Uint8Array.from({ length: decoded.length }, (_, index) =>
     decoded.charCodeAt(index)
   );
-  return String.fromCharCode(...new Uint16Array(charZarr.buffer));
+  const returnVal = new TextDecoder('utf-8').decode(charZarr);
+  return returnVal;
 };
 
 /*
@@ -24,8 +25,11 @@ export const fetchBlogPost: Epic = action$ =>
   action$.pipe(
     ofType(TRIG_BODY_UPDATE),
     mergeMap(
-      ({ payload }) => fetchGitHubObject(payload),
-      (_, ajax) => toString(ajax.response.content)
+      ({ payload }) => fetchGitHubObject(payload.path),
+      ({ payload }, ajax) => ({
+        body: toString(ajax.response.content),
+        index: payload.index
+      })
     ),
     map(payload => ({
       type: ADD_BODY,

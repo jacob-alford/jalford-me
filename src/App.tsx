@@ -11,14 +11,14 @@ import BlogBar from './components/paragraphs/BlogBar';
 import NoMatch from 'components/novels/NotFound';
 import Loader from 'components/words/Loader';
 
+const BlogView = React.lazy(() => import('./components/novels/BlogView/BlogView'));
 const UserSettings = React.lazy(() => import('./components/novels/UserSettings'));
-const BlogView = React.lazy(() => import('./components/novels/BlogView'));
-const Websites = React.lazy(() => import('./components/novels/Websites'));
-const Home2 = React.lazy(() => import('./components/novels/Home2/Home2'));
-const Puzzles = React.lazy(() => import('./components/novels/Puzzles'));
 const About = React.lazy(() => import('./components/novels/About/About'));
-const Blog = React.lazy(() => import('./components/novels/Blog'));
+const Home2 = React.lazy(() => import('./components/novels/Home2/Home2'));
+const Websites = React.lazy(() => import('./components/novels/Websites'));
+const Puzzles = React.lazy(() => import('./components/novels/Puzzles'));
 const RPN = React.lazy(() => import('./components/novels/RPN/RPN'));
+const Blog = React.lazy(() => import('./components/novels/Blog'));
 
 /* Puzzles */
 const Puzzle1 = React.lazy(() =>
@@ -32,8 +32,12 @@ const Puzzle3 = React.lazy(() =>
 );
 
 export default function App() {
-  useBlogCategoryFetch('the-duncan-strauss-mysteries', 'chapters');
-  useBlogCategoryFetch('posts', 'philosophy');
+  useBlogCategoryFetch(
+    'the-duncan-strauss-mysteries',
+    'chapters',
+    'the-duncan-strauss-mysteries'
+  );
+  useBlogCategoryFetch('posts', 'philosophy', 'philosophy');
   return (
     <Background>
       <Router>
