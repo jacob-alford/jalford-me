@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import usePostFetch from 'components/bindings/postHooks/usePostFetch';
+import useBlogCategoryFetch from 'components/bindings/postHooks/useBlogCategoryFetch';
 
 import NotificationsHolder from './components/sentences/NotificationsHolder';
 import Background from 'components/paragraphs/Background/Background';
@@ -36,7 +36,8 @@ const Puzzle3 = React.lazy(() =>
 );
 
 export default function App() {
-  usePostFetch();
+  useBlogCategoryFetch('the-duncan-strauss-mysteries', 'chapters');
+  useBlogCategoryFetch('posts', 'philosophy');
   return (
     <Background>
       <Router>
