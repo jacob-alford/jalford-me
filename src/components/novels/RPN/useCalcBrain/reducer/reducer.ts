@@ -9,7 +9,7 @@ import {
   tapeHistoryItem
 } from '../operators/_types';
 import getNextStackAndTape from './iterate';
-import { drEnum } from '../../RPN2';
+import { drEnum } from '../../RPN';
 
 export enum reducerOpEnum {
   push = 'push',

@@ -12,17 +12,13 @@ import NoMatch from 'components/novels/NotFound';
 import Loader from 'components/words/Loader';
 
 const UserSettings = React.lazy(() => import('./components/novels/UserSettings'));
-const UsersTable = React.lazy(() => import('./components/novels/UsersTable'));
-const UserPosts = React.lazy(() => import('./components/novels/UserPosts'));
-const BlogEdit = React.lazy(() => import('./components/novels/BlogEdit'));
 const BlogView = React.lazy(() => import('./components/novels/BlogView'));
 const Websites = React.lazy(() => import('./components/novels/Websites'));
 const Home2 = React.lazy(() => import('./components/novels/Home2/Home2'));
 const Puzzles = React.lazy(() => import('./components/novels/Puzzles'));
 const About = React.lazy(() => import('./components/novels/About/About'));
 const Blog = React.lazy(() => import('./components/novels/Blog'));
-const Home = React.lazy(() => import('./components/novels/Home'));
-const RPN = React.lazy(() => import('./components/novels/Projects/RPN2/RPN2'));
+const RPN = React.lazy(() => import('./components/novels/RPN/RPN'));
 
 /* Puzzles */
 const Puzzle1 = React.lazy(() =>
@@ -47,17 +43,6 @@ export default function App() {
           <Switch>
             <Route exact path='/rpn' render={props => <RPN {...props} />} />
             <Route exact path='/websites' component={Websites} />
-            <Route exact path='/admin/users'>
-              <UsersTable />
-              <BlogBar breadcrumb={{ link: '/admin/users', label: 'Users' }} />
-            </Route>
-            <Route exact path='/user/posts'>
-              <UserPosts />
-              <BlogBar
-                context='inBlog'
-                breadcrumb={{ link: '/user/posts', label: 'Posts' }}
-              />
-            </Route>
             <Route exact path='/user'>
               <UserSettings />
               <BlogBar context='inUser' breadcrumb={{ link: '/user', label: 'User' }} />
@@ -109,27 +94,10 @@ export default function App() {
                 );
               }}
             />
-            <Route
-              exact
-              path='/posts/edit/:postId'
-              children={props => {
-                const { match } = props;
-                return (
-                  <React.Fragment>
-                    <BlogEdit match={match} {...props} />
-                    <BlogBar
-                      context='inPostEdit'
-                      breadcrumb={{ link: '/posts', label: 'Posts' }}
-                    />
-                  </React.Fragment>
-                );
-              }}
-            />
             <Route exact path='/posts'>
               <Blog />
               <BlogBar breadcrumb={{ link: '/posts', label: 'Posts' }} />
             </Route>
-            <Route exact path='/oldHome' component={Home} />
             <Route exact path='/' component={Home2} />
             <Route path='*' component={NoMatch} />
           </Switch>

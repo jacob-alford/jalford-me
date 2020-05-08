@@ -12,7 +12,7 @@ import calcReducer, {
 } from './reducer/reducer';
 import { tapeItem, stackItem } from './operators/_types';
 import { getRandomUID } from 'functions';
-import { drEnum } from '../RPN2';
+import { drEnum } from '../RPN';
 
 type almostOperation = {
   type: reducerOpEnum;

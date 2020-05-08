@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import * as MUI_COMPONENTS from './mui.js';
 
@@ -7,8 +7,6 @@ import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
 import LoginDialogue from 'components/sentences/LoginDialogue';
 import SignupDialogue from 'components/sentences/SignupDialogue';
-import BlogBarActions from 'components/sentences/BlogBarActions';
-import CreatePostDialogue from 'components/sentences/CreatePostDialogue';
 
 import { firebase } from 'index';
 
@@ -32,9 +30,7 @@ const {
   Fade,
   Slide,
   AccountCircle,
-  Group,
   Lock,
-  ListAlt,
   Eject
 } = MUI_COMPONENTS;
 
@@ -46,8 +42,6 @@ const styles = {
   }
 };
 
-const getUserPermissions = user => user.details.permissions.value;
-
 export default function BlogBar(props) {
   const { user } = useRHook();
   const scrollTrigger = useScrollTrigger();
@@ -57,15 +51,12 @@ export default function BlogBar(props) {
   const screenTooSmall = useMediaQuery('(max-width:500px)');
   const [signInIsOpen, setSignInIsOpen] = useState(false);
   const [signUpIsOpen, setSignUpIsOpen] = useState(false);
-  const [createPostIsOpen, setCreatePostIsOpen] = useState(false);
   const openSignIn = () => setSignInIsOpen(true);
   const openSignUp = () => setSignUpIsOpen(true);
   const closeSignIn = () => setSignInIsOpen(false);
   const closeSignUp = () => setSignUpIsOpen(false);
   const [userMenuAnchor, setUserMenuAnchor] = useState(null);
   const history = useHistory();
-  const match = useParams();
-  const { context = 'inBlog' } = props;
   const { breadcrumb = { link: '/posts', label: 'Posts' } } = props;
   const handleLinkRedirect = url => {
     setUserMenuAnchor(null);
@@ -121,16 +112,6 @@ export default function BlogBar(props) {
               {user.loggedIn ? (
                 <React.Fragment>
                   <Grid item>
-                    <BlogBarActions
-                      setCreatePostIsOpen={setCreatePostIsOpen}
-                      color={textColor}
-                      user={user}
-                      match={match}
-                      history={history}
-                      context={context}
-                    />
-                  </Grid>
-                  <Grid item>
                     <Fade in={user.loggedIn === true} timeout={1500}>
                       <Grid container direction='row' alignItems='center'>
                         {!screenTooSmall ? (
@@ -175,26 +156,6 @@ export default function BlogBar(props) {
           </ListItemIcon>
           <ListItemText primary='Account' />
         </MenuItem>
-        {getUserPermissions(user) >= 8 ? (
-          <MenuItem onClick={() => handleLinkRedirect('/user/posts')}>
-            <ListItemIcon>
-              <ListAlt />
-            </ListItemIcon>
-            <ListItemText
-              primary={`Manage${
-                [8, 9].includes(getUserPermissions(user)) ? ' My ' : ' '
-              }Posts`}
-            />
-          </MenuItem>
-        ) : null}
-        {getUserPermissions(user) === 10 ? (
-          <MenuItem onClick={() => handleLinkRedirect('/admin/users')}>
-            <ListItemIcon>
-              <Group />
-            </ListItemIcon>
-            <ListItemText primary='Manage Users' />
-          </MenuItem>
-        ) : null}
         <MenuItem onClick={handleSignout}>
           <ListItemIcon>
             <Eject />
@@ -202,12 +163,6 @@ export default function BlogBar(props) {
           <ListItemText primary='Sign Out' />
         </MenuItem>
       </Menu>
-      <CreatePostDialogue
-        user={user}
-        history={history}
-        createPostIsOpen={createPostIsOpen}
-        setCreatePostIsOpen={setCreatePostIsOpen}
-      />
       <LoginDialogue signInIsOpen={signInIsOpen} setSignInIsOpen={setSignInIsOpen} />
       <SignupDialogue signUpIsOpen={signUpIsOpen} setSignUpIsOpen={setSignUpIsOpen} />
     </React.Fragment>

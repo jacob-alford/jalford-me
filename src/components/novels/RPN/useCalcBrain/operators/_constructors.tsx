@@ -6,7 +6,7 @@ import { getRandomUID } from 'functions';
 
 import { operator, op, tapeItem, calcError, stackItem } from './_types';
 
-import { drEnum } from '../../RPN2';
+import { drEnum } from '../../RPN';
 
 const shouldExp = (num: number): boolean => {
   const str = num.toString();

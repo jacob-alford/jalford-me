@@ -1,4 +1,4 @@
-import { drEnum } from '../../RPN2';
+import { drEnum } from '../../RPN';
 
 export enum op {
   sin = 'sin',
