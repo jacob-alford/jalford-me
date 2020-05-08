@@ -8,8 +8,8 @@ import action from '../action-constructors/action';
 import doNothing from '../action-constructors/doNothing';
 
 const postActions: storeActionCategory<BP & ABP> = {
-  [postActors.refreshPosts]: action<BP>((store, action) => {
-    store.posts = action.payload;
+  [postActors.concatPosts]: action<BP>((store, action) => {
+    store.posts.push(...action.payload);
   }),
   [postActors.triggerBodyUpdate]: doNothing(),
   [postActors.addPostBody]: action<ABP>((store, action) => {

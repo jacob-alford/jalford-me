@@ -181,7 +181,7 @@ export interface storeActions {
   [domains.theme]: storeActionCategory<themePayload>;
   [domains.header]: storeActionCategory<headerPayload>;
   [domains.errors]: storeActionCategory<errorPayload & indexPayload<actors.errorActors>>;
-  [domains.posts]: storeActionCategory<blogPayload & indexPayload<actors.postActors>>;
+  [domains.posts]: storeActionCategory<blogPayload & addBodyBlogPayload>;
   [domains.general]: storeActionCategory<emptyPayload<actors.generalActors>>;
 }
 
