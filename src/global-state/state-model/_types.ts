@@ -89,6 +89,7 @@ export interface errorPayload {
  */
 export interface blogPost {
   id: string;
+  path: string;
   body: string | null;
   title: string;
   tags: string[];
