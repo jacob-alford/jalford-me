@@ -5,10 +5,9 @@ export type homeProps = {
 };
 
 export const Landscape = styled(a.div)`
-  position: absolute;
   width: 100%;
-  min-height: 125vh;
-  height: max-content;
+  height: 50vh;
+  position: absolute;
 `;
 
 export const House = styled.canvas`

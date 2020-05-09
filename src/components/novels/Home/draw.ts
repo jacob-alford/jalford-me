@@ -132,9 +132,7 @@ export const init = (params: {
   store.orange = 0.5 - alpha / 2;
 
   context.lineWidth = 10;
-  store.rainParticles = new Array([7, 31, 69, 169][(Math.random() * 4) | 0])
-    .fill(null)
-    .map(() => rainParticle(width, height));
+  store.rainParticles = new Array(7).fill(null).map(() => rainParticle(width, height));
   context.beginPath();
   context.ellipse(
     width / 2,
@@ -168,7 +166,7 @@ export const draw = (params: {
 }): void => {
   const { width, height, context, store } = params;
   context.clearRect(0, 0, width, height);
-  context.strokeStyle = '#69beef';
+  context.strokeStyle = '#c70066';
   if (Math.random() <= 0.00069) store.lightning = 1;
   drawCircle(context, width, height, store);
   drawWindowFrame(context, width, height, store);

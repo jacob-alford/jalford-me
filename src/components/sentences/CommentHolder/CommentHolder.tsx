@@ -15,7 +15,7 @@ import { strctureComments } from './commentStructure';
 
 import { themeHook } from 'theme';
 
-import { userState, postComment, alertEnum } from 'global-state';
+import { userState, postComment } from 'global-state';
 
 const useClasses = themeHook({
   newCommentHolder: {

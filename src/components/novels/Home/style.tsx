@@ -6,7 +6,7 @@ export const Splash = styled(a.div)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 50vh;
   width: 100%;
 `;
 
@@ -19,6 +19,7 @@ export const Orbital = styled(a.canvas)`
     width: 400px;
     height: 400px;
   }
+  position: absolute;
   backdrop-filter: saturate(0);
   border-radius: 200px;
 `;

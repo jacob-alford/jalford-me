@@ -1,16 +1,25 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { useSpring } from 'react-spring';
-import useCanvas from 'components/bindings/hooks/useCanvas/useCanvas';
+import useCanvas from 'components/bindings/utilityHooks/useCanvas';
 import { House, Landscape } from './st';
 import { draw, init, store } from './draw';
 
-const Background = (props: { children: any }) => {
-  const { children } = props;
-  const horizonPerc = useRef(0.613);
+const Background = () => {
+  const horizonSpring = useSpring({
+    horizon: 0.5,
+    from: {
+      horizon: 0.69
+    },
+    config: {
+      tension: 69,
+      friction: 42,
+      precision: 0.0001
+    }
+  });
   const canvas = useCanvas<store>(
     params => {
       const { store } = params;
-      store.horizonPerc = horizonPerc.current;
+      store.horizonPerc = horizonSpring.horizon.getValue();
       draw(params);
     },
     { horizonPerc: 0 },
@@ -27,16 +36,8 @@ const Background = (props: { children: any }) => {
       precision: 0.0001
     }
   });
-  useEffect(() => {
-    const scrollSpy = (evt: Event) => {
-      horizonPerc.current = 0.613 - window.scrollY / window.innerHeight;
-    };
-    window.addEventListener('scroll', scrollSpy);
-    return () => window.removeEventListener('scroll', scrollSpy);
-  }, []);
   return (
     <Landscape style={fade}>
-      {children}
       <House ref={canvas}></House>
     </Landscape>
   );

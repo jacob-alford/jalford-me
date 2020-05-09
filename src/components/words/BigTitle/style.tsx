@@ -2,26 +2,27 @@ import { animated as a } from 'react-spring';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 
-const MUITitle = styled(a(Typography))`
+export const MUITitle = styled(a(Typography))`
   font-weight: bolder !important;
   user-select: none !important;
+  z-index: 2;
+  margin-top: -53px !important;
   @media (max-width: 450px) {
     font-size: 64px !important;
-    margin-top: -76.67px !important;
   }
   @media (min-width: 451px) {
     font-size: 96px !important;
-    margin-top: -115.33px !important;
   }
 `;
-const DB = styled.span`
-  color: #212832;
+export const DB = styled.span`
+  color: #304261;
 `;
-const Blue = styled.span`
-  color: #69beef;
+export const Blue = styled.span`
+  color: #14b2c7;
 `;
-const Gray = styled.span`
-  color: #262626;
+export const Mag = styled.span`
+  color: #c70066;
 `;
-
-export { MUITitle, DB, Blue, Gray };
+export const Red = styled.span`
+  color: #fa2400;
+`;
