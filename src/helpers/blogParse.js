@@ -27,7 +27,7 @@ import { CheckCircleOutline, RadioButtonUnchecked } from '@material-ui/icons';
 import AdaptiveHeading from 'components/words/AdaptiveHeading';
 import Image from 'components/words/Image';
 
-import useRedirect from 'components/bindings/hooks/useRedirect';
+import useRedirect from 'components/bindings/utilityHooks/useRedirect';
 
 const getInnermostProps = props => {
   if (typeof props.children === 'string' || typeof props.value === 'string') return props;

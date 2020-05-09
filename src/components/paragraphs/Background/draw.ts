@@ -79,7 +79,6 @@ export const draw = (params: {
 }): void => {
   const { height, store } = params;
   const { drawSky, drawGround, drawGrid, horizonPerc } = store || {};
-  console.log(horizonPerc);
   const skylinePos = horizonPerc;
   const skylineH = getHeight(14) * height * skylinePos + (1 - skylinePos) * height;
   if (drawSky) drawSky(skylineH);

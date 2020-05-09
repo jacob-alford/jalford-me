@@ -1,6 +1,7 @@
 import React, { useMemo, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Markdown from 'react-markdown';
+import { useParams } from 'react-router';
 
 import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
@@ -21,8 +22,6 @@ import useTLD from 'components/bindings/hooks/useTLD';
 import useFetchComments from 'components/bindings/postHooks/usePostComments';
 
 import { useStoreState, globalStore, TRIG_BODY_UPDATE, blogPost } from 'global-state';
-
-import getPostId from './selectors';
 
 import markdownConfig from 'helpers/blogParse.js';
 import { katexMarkdown } from 'helpers/blogParse.js';
@@ -90,11 +89,11 @@ const NotFoundPlaceholder = () => {
   );
 };
 
-function BlogView(props: { match: { params: { postId: string } } }) {
+function BlogView() {
+  const { postId } = useParams();
   const posts = useStoreState((state: globalStore) => state.posts);
   const user = useStoreState((state: globalStore) => state.user);
   const dispatch = useDispatch();
-  const postId = getPostId(props);
   const selectedPost =
     useMemo(() => find(posts, post => post.id === postId), [posts, postId]) || {};
   const selectedPostIndex = useMemo(

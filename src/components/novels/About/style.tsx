@@ -3,7 +3,7 @@ import { animated as a } from 'react-spring';
 import styled from 'styled-components';
 import Avatar from '@material-ui/core/Avatar';
 
-import useRedirect from 'components/bindings/hooks/useRedirect';
+import useRedirect from 'components/bindings/utilityHooks/useRedirect';
 import { themeSelect } from 'theme';
 
 const [radius] = themeSelect(['getBorderRadius']);
@@ -113,17 +113,17 @@ export const HTML = (props: { str: string }) => (
 );
 export const Image = (props: ImageProps) => {
   const { src, Render, title, style, url } = props;
-  const handleClick = useRedirect(url);
+  const handleClick = useRedirect(url) as () => void;
   if (src)
     return (
-      <ImgHolder onClick={handleClick} style={style}>
+      <ImgHolder onClick={() => handleClick()} style={style}>
         <Img onDragStart={evt => evt.preventDefault()} src={src} alt={title} />
         <ImgTitle>{title}</ImgTitle>
       </ImgHolder>
     );
   if (Render)
     return (
-      <ImgHolder onClick={handleClick} style={style}>
+      <ImgHolder onClick={() => handleClick()} style={style}>
         <Render />
         <ImgTitle>{title}</ImgTitle>
       </ImgHolder>

@@ -6,7 +6,7 @@ export const MUITitle = styled(a(Typography))`
   font-weight: bolder !important;
   user-select: none !important;
   z-index: 2;
-  margin-top: -53px !important;
+
   @media (max-width: 450px) {
     font-size: 64px !important;
   }

@@ -3,8 +3,6 @@ import { SketchPicker } from 'react-color';
 
 import * as MUI_COMPONENTS from './mui.js';
 
-import { useHistory } from 'react-router-dom';
-
 import { userState, alertEnum } from 'global-state';
 
 import withPageFade from 'components/bindings/wrappers/withPageFade';
@@ -34,7 +32,6 @@ const {
   Fade,
   CircularProgress,
   Button,
-  Grow,
   IconButton,
   Popper,
   TextField,
@@ -45,8 +42,7 @@ const {
 
 const styles = {
   userContainer: {
-    width: '100vw',
-    marginTop: '24px'
+    width: '100vw'
   },
   settingText: {
     paddingRight: '15px'
@@ -96,10 +92,6 @@ const styles = {
 };
 
 const UserSettings = () => {
-  const history = useHistory();
-  // --- State Hooks ---
-  const [mightDelete, setMightDelete] = useState(false);
-  const [willDelete, setWillDelete] = useState(false);
   const [usernameField, setUsernameField] = useState('');
   const [colorField, setColorField] = useState('');
   const [imageField, setImageField] = useState('');
@@ -133,33 +125,7 @@ const UserSettings = () => {
       });
     }
   };
-  const handleUserDelete = () => {
-    return;
-    // if (firebase && db.current && user.loggedIn) {
-    //   const authUser = firebase.auth().currentUser;
-    //   if (authUser) {
-    //     authUser
-    //       .delete()
-    //       .then(() => {
-    //         const dbUser = db.current.collection('users').doc(authUser.uid);
-    //         dbUser
-    //           .delete()
-    //           .then(() => {
-    //             notifyUpdate('Successfully deleted user :-(');
-    //           })
-    //           .catch(error =>
-    //             notifyError(
-    //               'Unable to fully delete user, please contact Jacob for assistance!  Sorry about that! :-('
-    //             )
-    //           );
-    //       })
-    //       .catch(notifyError);
-    //   }
-    // }
-  };
-  // --- Custom Hooks ---
   const { userLoading: isLoading, user } = useRHook();
-  // --- Anchors ---
   const [nameEditAnchor, setNameEditAnchor] = useState(null);
   const [colorEditAnchor, setColorEditAnchor] = useState(null);
   const handleAnchorUpdateConstructor = (
@@ -170,13 +136,6 @@ const UserSettings = () => {
       setter(anchor ? null : evt.currentTarget);
     };
   };
-  // --- Effects ---
-  useEffect(() => {
-    if (!user.loggedIn) history.push('/');
-  }, [user, history]);
-  useEffect(() => {
-    if (willDelete && !mightDelete) setWillDelete(false);
-  }, [mightDelete, willDelete]);
   useEffect(() => {
     setUsernameField(getUser(user).username);
   }, [user]);
@@ -293,44 +252,6 @@ const UserSettings = () => {
                   </List>
                 </Grid>
               </Grid>
-              <Grid item style={{ textAlign: 'center' }}>
-                <Button
-                  onClick={() => setMightDelete(true)}
-                  variant='outlined'
-                  style={styles.deleteText}>
-                  Delete Account
-                </Button>
-              </Grid>
-              <Grow in={mightDelete} mountOnEnter unmountOnExit>
-                <Grid item style={{ textAlign: 'center', marginTop: '15px' }}>
-                  <Button
-                    onClick={() => setWillDelete(true)}
-                    variant='outlined'
-                    style={styles.deleteText}>
-                    Are you sure?
-                  </Button>
-                </Grid>
-              </Grow>
-              <Grow in={willDelete && mightDelete} mountOnEnter unmountOnExit>
-                <React.Fragment>
-                  <Grid item style={{ textAlign: 'center', marginTop: '15px' }}>
-                    <Button
-                      onClick={handleUserDelete}
-                      variant='outlined'
-                      style={styles.deleteText}>
-                      Yes, Delete My Account
-                    </Button>
-                  </Grid>
-                  <Grid item style={{ textAlign: 'center', marginTop: '15px' }}>
-                    <Button
-                      onClick={() => setMightDelete(false)}
-                      variant='outlined'
-                      style={styles.dontDeleteText}>
-                      No, keep my account
-                    </Button>
-                  </Grid>
-                </React.Fragment>
-              </Grow>
             </Paper>
           </Fade>
         </Grid>

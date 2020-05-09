@@ -16,14 +16,13 @@ export const NavItems = styled(a.div)`
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  position: fixed;
+  position: fixed !important;
   padding: ${cardPadding};
   z-index: 1;
   border-radius: ${borderRadius};
 `;
 
 const Toggler = styled(IconButton)`
-  position: fixed;
   z-index: 1;
 `;
 const AnimArrow = styled(a(KeyboardArrowUp))`
@@ -59,14 +58,13 @@ type navItemsProps = {
 };
 const temp = a(Typography);
 export const NavItem = styled(temp)`
-  color: #69beef;
-  backdrop-filter: saturate(0.3) blur(0.25rem);
-  margin: 2px !important;
+  color: #14b2c7;
+  margin: 3px !important;
   padding: 2px !important;
   padding-left: 7px !important;
   padding-right: 7px !important;
   border-radius: ${borderRadius};
-  border: 1px solid #69beef;
+  border: 2px solid #14b2c7;
   filter: ${(props: navItemsProps) =>
     props.active ? 'grayscale(0%)' : 'grayscale(100%)'};
   cursor: ${(props: navItemsProps) => (props.active ? 'default' : 'pointer')};

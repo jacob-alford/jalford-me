@@ -6,7 +6,8 @@ import useBlogCategoryFetch from 'components/bindings/postHooks/useBlogCategoryF
 import NotificationsHolder from './components/sentences/NotificationsHolder';
 import Header from './components/paragraphs/Header/Header';
 import Footing from './components/novels/Footer';
-import BlogBar from './components/paragraphs/BlogBar';
+import UserCircle from './components/paragraphs/UserCircle/UserCircle';
+import ThemeCircle from './components/paragraphs/ThemeCircle/ThemeCircle';
 import NoMatch from 'components/novels/NotFound';
 import Loader from 'components/words/Loader';
 
@@ -38,73 +39,30 @@ export default function App() {
   );
   useBlogCategoryFetch('posts', 'philosophy', 'philosophy');
   return (
-    <Router>
-      <NotificationsHolder />
-      <Header />
-      <Suspense fallback={<Loader />}>
-        <Switch>
-          <Route exact path='/rpn' render={props => <RPN {...props} />} />
-          <Route exact path='/websites' component={Websites} />
-          <Route exact path='/user'>
-            <UserSettings />
-            <BlogBar context='inUser' breadcrumb={{ link: '/user', label: 'User' }} />
-          </Route>
-          <Route exact path='/puzzles/19-2-22'>
-            <Puzzle1 />
-            <BlogBar
-              context='inPuzzles'
-              breadcrumb={{ link: '/puzzles', label: 'Puzzle' }}
-            />
-          </Route>
-          <Route exact path='/puzzles/19-2-26'>
-            <Puzzle2 />
-            <BlogBar
-              context='inPuzzles'
-              breadcrumb={{ link: '/puzzles', label: 'Puzzle' }}
-            />
-          </Route>
-          <Route exact path='/puzzles/19-3-3'>
-            <Puzzle3 />
-            <BlogBar
-              context='inPuzzles'
-              breadcrumb={{ link: '/puzzles', label: 'Puzzle' }}
-            />
-          </Route>
-          <Route exact path='/puzzles'>
-            <Puzzles />
-            <BlogBar
-              context='inPuzzles'
-              breadcrumb={{ link: '/puzzles', label: 'Puzzles' }}
-            />
-          </Route>
-          <Route exact path='/about' component={About} />
-          <Route
-            exact
-            path='/posts/view/:postId'
-            children={props => {
-              const { match, history } = props;
-              return (
-                <React.Fragment>
-                  <BlogView match={match} {...props} />
-                  <BlogBar
-                    match={match}
-                    history={history}
-                    context='inPostView'
-                    breadcrumb={{ link: '/posts', label: 'Posts' }}
-                  />
-                </React.Fragment>
-              );
-            }}
-          />
-          <Route exact path='/posts'>
-            <Blog />
-            <BlogBar breadcrumb={{ link: '/posts', label: 'Posts' }} />
-          </Route>
-          <Route exact path='/' component={Home2} />
-          <Route path='*' component={NoMatch} />
-        </Switch>
-      </Suspense>
-      <Footing />
-    </Router>
+    <>
+      <Router>
+        <ThemeCircle />
+        <NotificationsHolder />
+        <UserCircle />
+        <Header />
+        <Suspense fallback={<Loader />}>
+          <Switch>
+            <Route exact path='/rpn' render={props => <RPN {...props} />} />
+            <Route exact path='/user' component={UserSettings} />
+            <Route exact path='/websites' component={Websites} />
+            <Route exact path='/puzzles/19-2-22' component={Puzzle1} />
+            <Route exact path='/posts/view/:postId' component={BlogView} />
+            <Route exact path='/puzzles/19-2-26' component={Puzzle2} />
+            <Route exact path='/puzzles/19-3-3' component={Puzzle3} />
+            <Route exact path='/puzzles' component={Puzzles} />
+            <Route exact path='/about' component={About} />
+            <Route exact path='/posts' component={Blog} />
+            <Route exact path='/' component={Home2} />
+            <Route path='*' component={NoMatch} />
+          </Switch>
+        </Suspense>
+        <Footing />
+      </Router>
+    </>
   );
 }
