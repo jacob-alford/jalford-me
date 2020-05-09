@@ -13,7 +13,7 @@ import Container from '@material-ui/core/Container';
 import InputBase from '@material-ui/core/InputBase';
 
 import Holder from 'components/words/Holder';
-import CommentActions from './CommentActions.js';
+import CommentActions from './CommentActions';
 
 import markdownConfig from 'helpers/blogParse.js';
 import { katexMarkdown } from 'helpers/blogParse.js';
@@ -22,17 +22,20 @@ import useTLD from 'components/bindings/hooks/useTLD';
 
 import { themeHook } from 'theme';
 
-const useClasses = themeHook(['getGrayText', 'getDarkText'], ([grayText, darkText]) => ({
+import { userState, structuredComments, postComment } from 'global-state';
+
+const useClasses = themeHook({
   card: {
     marginTop: '8px',
     flexGrow: 1,
-    color: ({ tldState }) =>
-      tldState === 'light' ? 'rgba(0,0,0,.87)' : 'rgba(255,255,255,1)',
-    background: ({ tldState }) => (tldState === 'light' ? '#fff' : '#232323')
+    color: (config: { tldState: string }) =>
+      config.tldState === 'light' ? 'rgba(0,0,0,.87)' : 'rgba(255,255,255,1)',
+    background: (config: { tldState: string }) =>
+      config.tldState === 'light' ? '#fff' : '#232323'
   },
   user: {
-    color: ({ tldState }) =>
-      tldState === 'light' ? 'rgba(0,0,0,1)' : 'rgba(255,255,255,1)',
+    color: (config: { tldState: string }) =>
+      config.tldState === 'light' ? 'rgba(0,0,0,1)' : 'rgba(255,255,255,1)',
     fontSize: '24px',
     paddingLeft: '8px'
   },
@@ -67,28 +70,35 @@ const useClasses = themeHook(['getGrayText', 'getDarkText'], ([grayText, darkTex
   },
   date: {
     fontSize: '.75rem',
-    color: ({ tldState }) =>
-      tldState === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,.85)',
+    color: (config: { tldState: string }) =>
+      config.tldState === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,.85)',
     marginTop: '5px'
   },
   button: {
-    color: ({ tldState }) =>
-      tldState === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,.85)'
+    color: (config: { tldState: string }) =>
+      config.tldState === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,.85)'
   },
   textEdit: {
-    color: ({ tldState }) =>
-      tldState === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,.85)'
+    color: (config: { tldState: string }) =>
+      config.tldState === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,.85)'
   }
-}));
+});
 
-const isAdmin = user => user.details.permissions.value === 10;
+const isAdmin = (user: userState) => user.details.permissions.value === 10;
 
-export default function Comment(props) {
+export default function Comment(props: {
+  comment: structuredComments | postComment;
+  updateComment: (newText: string, id: string) => void;
+  deleteComment: (id: string) => void;
+  handleReply: (depth: number, id: string) => void;
+  permDelete: (id: string) => void;
+  addComment: () => void;
+  loggedUser: userState;
+}) {
   const [tldState] = useTLD();
   const classes = useClasses({ ...props, tldState });
   const {
-    comment: { body, depth, comments, user, date, deleted, id: commentId },
-    docId,
+    comment,
     updateComment,
     deleteComment,
     handleReply,
@@ -96,9 +106,14 @@ export default function Comment(props) {
     addComment,
     loggedUser
   } = props;
+  const { body, depth, user, date, id: commentId } = comment;
+  /* This is dumb */
+  // @ts-ignore
+  const comments = comment.comments || [];
   /* Edit Comment */
   const [bodyText, setBodyText] = useState(body);
-  const handleBodyTextChange = evt => setBodyText(evt.target.value);
+  const handleBodyTextChange = (evt: React.ChangeEvent<HTMLInputElement>) =>
+    setBodyText(evt.target.value);
   const [isEditing, setIsEditing] = useState(false);
   const handleEdit = () => setIsEditing(true);
   const handleSave = () => {
@@ -113,7 +128,7 @@ export default function Comment(props) {
   const handlePermDelete = () => permDelete(commentId);
   const handleDoReply = () => handleReply(depth + 1, commentId);
 
-  const subcommentTrail = useTransition(comments || [], comment => comment.id, {
+  const subcommentTrail = useTransition(comments, comment => comment.id, {
     config: {
       mass: 5,
       tension: 2000,
@@ -141,7 +156,7 @@ export default function Comment(props) {
         ))}
         <Card className={classes.card}>
           <CardContent>
-            {!deleted || isAdmin(loggedUser) ? (
+            {isAdmin(loggedUser) ? (
               <Holder direction='row' justify='space-between'>
                 <Holder direction='row' justify='flex-start'>
                   {user.image ? (
@@ -156,7 +171,7 @@ export default function Comment(props) {
                 <Holder>
                   {date ? (
                     <Typography variant='body1' className={classes.date}>
-                      {date.toDate().toLocaleString('default', {
+                      {date.toLocaleString('default', {
                         year: 'numeric',
                         month: '2-digit',
                         day: 'numeric',
@@ -169,8 +184,8 @@ export default function Comment(props) {
                 </Holder>
                 <Holder direction='row'>
                   <CommentActions
-                    details={loggedUser.details}
-                    commentUser={user}
+                    loggedUser={loggedUser}
+                    user={user}
                     edit={handleEdit}
                     remove={handleDelete}
                     permDelete={handlePermDelete}
@@ -200,7 +215,7 @@ export default function Comment(props) {
             )}
           </CardContent>
           <CardActions>
-            {depth < 6 && !isEditing && loggedUser.loggedIn && !deleted ? (
+            {depth < 6 && !isEditing && loggedUser.loggedIn ? (
               <Button size='small' onClick={handleDoReply} className={classes.button}>
                 Reply
               </Button>
@@ -221,7 +236,6 @@ export default function Comment(props) {
       {subcommentTrail.map(({ item: comment, key, props: newStyles }) => (
         <a.div key={key} style={newStyles}>
           <Comment
-            docId={docId}
             updateComment={updateComment}
             deleteComment={deleteComment}
             permDelete={permDelete}
@@ -229,7 +243,6 @@ export default function Comment(props) {
             loggedUser={loggedUser}
             handleReply={handleReply}
             comment={comment}
-            user={comment.user}
             key={comment.id}
           />
         </a.div>

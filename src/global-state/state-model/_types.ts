@@ -87,6 +87,21 @@ export interface errorPayload {
  *  Post State
  *
  */
+export interface postComment {
+  body: string;
+  date: Date;
+  depth: number;
+  id: string;
+  parentId: null | string;
+  user: {
+    image: string;
+    uid: string;
+    username: string;
+  };
+}
+export interface structuredComments extends postComment {
+  comments: structuredComments[];
+}
 export interface blogPost {
   id: string;
   path: string;
@@ -96,6 +111,7 @@ export interface blogPost {
   date: Date;
   public: boolean;
   category: string;
+  comments: null | postComment[];
 }
 export interface blogPayload {
   type: payloadType<actors.postActors>;
@@ -106,6 +122,13 @@ export interface addBodyBlogPayload {
   payload: {
     index: number;
     body: string;
+  };
+}
+export interface addPostCommentsPayload {
+  type: payloadType<actors.postActors>;
+  payload: {
+    index: number;
+    comments: postComment[];
   };
 }
 
@@ -158,7 +181,8 @@ export type actionPayload =
   | indexPayload<actors.errorActors>
   | indexPayload<actors.postActors>
   | blogPayload
-  | addBodyBlogPayload;
+  | addBodyBlogPayload
+  | addPostCommentsPayload;
 
 export type actionConstructor<payloadType> = (
   store: globalStore,
@@ -181,7 +205,9 @@ export interface storeActions {
   [domains.theme]: storeActionCategory<themePayload>;
   [domains.header]: storeActionCategory<headerPayload>;
   [domains.errors]: storeActionCategory<errorPayload & indexPayload<actors.errorActors>>;
-  [domains.posts]: storeActionCategory<blogPayload & addBodyBlogPayload>;
+  [domains.posts]: storeActionCategory<
+    blogPayload & addBodyBlogPayload & addPostCommentsPayload
+  >;
   [domains.general]: storeActionCategory<emptyPayload<actors.generalActors>>;
 }
 

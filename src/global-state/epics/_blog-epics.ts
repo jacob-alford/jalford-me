@@ -1,5 +1,5 @@
 import { ajax } from 'rxjs/ajax';
-import { mergeMap, map } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 import { Epic, ofType } from 'redux-observable';
 
 import { TRIG_BODY_UPDATE, ADD_BODY } from '../state-model/_actors';
@@ -24,7 +24,7 @@ const toString = (base64: string): string => {
 export const fetchBlogPost: Epic = action$ =>
   action$.pipe(
     ofType(TRIG_BODY_UPDATE),
-    mergeMap(
+    switchMap(
       ({ payload }) => fetchGitHubObject(payload.path),
       ({ payload }, ajax) => ({
         body: toString(ajax.response.content),

@@ -22,6 +22,7 @@ const getPosts = (
     const data = post.data();
     outArr.push({
       date: (data.date as firebase.firestore.Timestamp).toDate(),
+      comments: null,
       public: data.public as boolean,
       tags: data.tags as string[],
       title: data.title as string,

@@ -63,6 +63,7 @@ export const SET_ERROR: pt<errorActors> = [domains.errors, errorActors.setError]
 export enum postActors {
   concatPosts = 'concatPosts',
   addPostBody = 'addPostBody',
+  addPostComments = 'addPostComments',
   triggerBodyUpdate = 'triggerBodyUpdate'
 }
 export const CONCAT_POSTS: pt<postActors> = [domains.posts, postActors.concatPosts];
@@ -71,6 +72,7 @@ export const TRIG_BODY_UPDATE: pt<postActors> = [
   domains.posts,
   postActors.triggerBodyUpdate
 ];
+export const ADD_COMMENTS: pt<postActors> = [domains.posts, postActors.addPostComments];
 
 /*
  * General Actors

@@ -10,33 +10,38 @@ import Typography from '@material-ui/core/Typography';
 import Holder from 'components/words/Holder';
 import Loader from 'components/words/Loader';
 
-import useRHook from 'components/bindings/hooks/useRHook';
-import useTLD from 'components/bindings/hooks/useTLD';
+import { userState, useStoreState } from 'global-state';
 
 import { themeHook } from 'theme';
 
 const useClasses = themeHook({
   loginMessage: {
-    color: ({ tldState }) =>
-      tldState === 'light' ? 'rgba(0,0,0,.87)' : 'rgba(255,255,255,1)',
+    color: (config: { tldState: string }) =>
+      config.tldState === 'light' ? 'rgba(0,0,0,.87)' : 'rgba(255,255,255,1)',
     marginTop: '8px',
     textAlign: 'center'
   },
   newCommentCard: {
-    background: ({ tldState }) => (tldState === 'light' ? '#fff' : '#454545')
+    background: (config: { tldState: string }) =>
+      config.tldState === 'light' ? '#fff' : '#454545'
   },
   commentText: {
-    color: ({ tldState }) =>
-      tldState === 'light' ? 'rgba(0,0,0,.87)' : 'rgba(255,255,255,1)'
+    color: (config: { tldState: string }) =>
+      config.tldState === 'light' ? 'rgba(0,0,0,.87)' : 'rgba(255,255,255,1)'
   }
 });
-export default function NewComment(props) {
-  const { addComment, closeModal = val => val } = props;
-  const { user, userLoading } = useRHook();
-  const [tldState] = useTLD();
+export default function NewComment(props: {
+  addComment: (commentText: string) => void;
+  closeModal: () => void;
+  user: userState;
+}) {
+  const { addComment, closeModal = () => {}, user } = props;
+  const userLoading = user.hydrated === false;
+  const tldState = useStoreState(state => state.theme);
   const [commentText, setCommentText] = useState('');
   const classes = useClasses({ tldState });
-  const handleCommentEdit = evt => setCommentText(evt.target.value);
+  const handleCommentEdit = (evt: React.ChangeEvent<HTMLInputElement>) =>
+    setCommentText(evt.target.value);
   if (userLoading) return <Loader />;
   return (
     <Card className={classes.newCommentCard}>
@@ -57,7 +62,7 @@ export default function NewComment(props) {
               />
               <Typography variant='body1' className={classes.loginMessage}>
                 **<strong>[bold]</strong>** — *<i>[italic]</i>* — ~~
-                <strike>[strikethrough]</strike>~~
+                <s>[strikethrough]</s>~~
               </Typography>
             </React.Fragment>
           )}

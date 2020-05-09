@@ -11,13 +11,14 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 
-import CommentHolder from 'components/sentences/CommentHolder';
+import CommentHolder from 'components/sentences/CommentHolder/CommentHolder';
 import Holder from 'components/words/Holder';
 import LightDarkToggler from 'components/words/LightDarkToggler';
 
 import withPageFade from 'components/bindings/wrappers/withPageFade';
 
 import useTLD from 'components/bindings/hooks/useTLD';
+import useFetchComments from 'components/bindings/postHooks/usePostComments';
 
 import { useStoreState, globalStore, TRIG_BODY_UPDATE, blogPost } from 'global-state';
 
@@ -104,6 +105,8 @@ function BlogView(props: { match: { params: { postId: string } } }) {
   const classes = useClasses({ tldState });
   const notFound = isEmpty(selectedPost);
   const isLoading = !isEmpty(selectedPost) && !selectedPost.body;
+  const commentsLoading = selectedPost.comments === null;
+  useFetchComments(selectedPostIndex, selectedPost.path?.split('.')[0]);
   useEffect(() => {
     if (selectedPost.path)
       dispatch({
@@ -136,13 +139,13 @@ function BlogView(props: { match: { params: { postId: string } } }) {
           ) : null}
         </Container>
       </Grid>
-      {!isLoading && !notFound && selectedPost.comments ? (
+      {!commentsLoading && !notFound && (
         <CommentHolder
           user={user}
-          comments={selectedPost.comments || []}
-          docId={postId}
+          path={selectedPost.path}
+          comments={selectedPost.comments}
         />
-      ) : null}
+      )}
     </React.Fragment>
   );
 }
