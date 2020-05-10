@@ -10,6 +10,7 @@ import puzzleListings from './puzzleListing.js';
 import withPageFade from 'components/bindings/wrappers/withPageFade';
 
 import useRHook from 'components/bindings/hooks/useRHook';
+import C from 'theme-constants';
 
 const getPuzzles = user => user.details.puzzles;
 
@@ -27,7 +28,7 @@ function Puzzles() {
     }
   );
   return (
-    <Holder direction='row' style={{ paddingTop: '128px' }}>
+    <Holder direction='row' style={{ paddingTop: C.pagePad }}>
       {puzzleAnim.map(({ item: { emoji, difficulty, link, uid }, props: newStyles }) => (
         <a.div style={newStyles} key={uid}>
           <PuzzleCard

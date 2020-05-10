@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useTrail, useSpring } from 'react-spring';
 import Katex from 'components/words/Katex/Katex';
 import Typed from 'components/sentences/Typed';
+import { useStoreState } from 'global-state';
 import useDropSlide from './useDropSlide';
+import C from 'theme-constants';
 import {
   AboutMe,
   Stack,
@@ -33,7 +35,7 @@ const descriptionStrings = [
 const About2 = () => {
   const [straight, setStraight] = useState(false);
   const [shouldType, setShouldType] = useState(false);
-
+  const theme = useStoreState(store => store.theme);
   const [meImgStyles, setMeImgStyles] = useSpring(() => ({
     opacity: 0,
     transform: `translate3d(-100px, 0, 0) rotateZ(-30deg)`,
@@ -110,7 +112,7 @@ const About2 = () => {
           </MeText>
         </MeHolder>
         <Stack>
-          <Block style={frontEndFall} color='#62F8De'>
+          <Block theme={theme} style={frontEndFall} color='#62F8De'>
             <Header color='#62F8De'>Front End</Header>
             <IconList>
               <Image
@@ -118,40 +120,46 @@ const About2 = () => {
                 style={aReact}
                 title='React'
                 src={reactLogo}
+                theme={theme}
               />
               <Image
                 url='https://redux.js.org/'
                 style={aRedux}
                 title='Redux'
                 src={reduxLogo}
+                theme={theme}
               />
               <Image
                 url='https://www.typescriptlang.org/'
                 style={aTs}
                 title='Typescript'
                 src={tsLogo}
+                theme={theme}
               />
               <Image
                 url='https://jestjs.io/en/'
                 style={aJest}
                 title='Jest'
                 src={jestLogo}
+                theme={theme}
               />
               <Image
                 url='https://webglfundamentals.org/'
                 style={aWebgl}
                 title='WebGL'
                 src={webglLogo}
+                theme={theme}
               />
               <Image
                 url='https://material-ui.com/'
                 style={aMui}
                 title='Material UI'
                 src={muiLogo}
+                theme={theme}
               />
             </IconList>
           </Block>
-          <Block style={backEndFall} color='#55CBD9'>
+          <Block theme={theme} style={backEndFall} color='#55CBD9'>
             <Header color='#55CBD9'>Back End</Header>
             <IconList>
               <Image
@@ -159,34 +167,39 @@ const About2 = () => {
                 style={aAws}
                 title='Amazon Web Services'
                 src={awsLogo}
+                theme={theme}
               />
               <Image
                 url='https://firebase.google.com/'
                 style={aFirebase}
                 title='Firebase'
                 src={firebaseLogo}
+                theme={theme}
               />
               <Image
                 url='https://nodejs.org/en/'
                 style={aNode}
                 title='Node.js'
                 src={nodeLogo}
+                theme={theme}
               />
             </IconList>
           </Block>
-          <Block style={mathFall} color='#69beef'>
+          <Block theme={theme} style={mathFall} color='#69beef'>
             <Header color='#69beef'>Science</Header>
             <IconList>
               <Image
                 url='https://en.wikipedia.org/wiki/Numerical_linear_algebra'
                 style={aLinAlg}
                 title='Numerical Mathematics'
+                theme={theme}
                 Render={() => (
                   <Katex
                     str={String.raw`\bold{A} = \bold{Q}\bold{\Lambda}\bold{Q}^{-1}`}
                     inline
                     style={{
-                      color: 'white',
+                      transition: 'color .5s',
+                      color: C.text(theme),
                       fontSize: '2rem',
                       border: '1px solid rgba(255,255,255,.5)',
                       borderRadius: '12px',
@@ -199,12 +212,14 @@ const About2 = () => {
                 url='https://en.wikipedia.org/wiki/Physics'
                 style={aPhys}
                 title='Physics'
+                theme={theme}
                 Render={() => (
                   <Katex
                     str={String.raw`\frac{\partial^2 u}{\partial t^2}=k \bold{\nabla^2}u`}
                     inline
                     style={{
-                      color: 'white',
+                      transition: 'color .5s',
+                      color: C.text(theme),
                       fontSize: '2rem',
                       border: '1px solid rgba(255,255,255,.5)',
                       borderRadius: '12px',
@@ -217,12 +232,14 @@ const About2 = () => {
                 url='https://en.wikipedia.org/wiki/Philosophy'
                 style={aPhil}
                 title='Philosophy'
+                theme={theme}
                 Render={() => (
                   <Katex
                     str={String.raw`\Phi`}
                     inline
                     style={{
-                      color: 'white',
+                      transition: 'color .5s',
+                      color: C.text(theme),
                       fontSize: '2rem',
                       border: '1px solid rgba(255,255,255,.5)',
                       borderRadius: '12px',
@@ -235,12 +252,14 @@ const About2 = () => {
                 url='https://en.wikipedia.org/wiki/Psychology'
                 style={aPsy}
                 title='Psychology'
+                theme={theme}
                 Render={() => (
                   <Katex
                     str={String.raw`\Psi`}
                     inline
                     style={{
-                      color: 'white',
+                      transition: 'color .5s',
+                      color: C.text(theme),
                       fontSize: '2rem',
                       border: '1px solid rgba(255,255,255,.5)',
                       borderRadius: '12px',
@@ -253,12 +272,14 @@ const About2 = () => {
                 url='https://en.wikipedia.org/wiki/Technical_writing'
                 style={aTechWr}
                 title='Technical Writing'
+                theme={theme}
                 Render={() => (
                   <Katex
                     str={String.raw`\text{click my face}`}
                     inline
                     style={{
-                      color: 'white',
+                      transition: 'color .5s',
+                      color: C.text(theme),
                       fontSize: '2rem',
                       border: '1px solid rgba(255,255,255,.5)',
                       borderRadius: '12px',
@@ -269,21 +290,23 @@ const About2 = () => {
               />
             </IconList>
           </Block>
-          <Block style={creativeFall} color='#6171F8'>
+          <Block theme={theme} style={creativeFall} color='#6171F8'>
             <Header color='#6171F8'>Creative</Header>
             <IconList>
               <Image
                 url='https://developer.apple.com/design/human-interface-guidelines/'
                 style={aUx}
                 title='design'
-                Render={() => <Design color='rgba(0,0,0,0)'>UX</Design>}
+                theme={theme}
+                Render={() => <Design theme={theme}>UX</Design>}
               />
               <Image
                 url='/posts'
                 style={aBook}
                 title='creative writing'
+                theme={theme}
                 Render={() => (
-                  <Design color='black'>
+                  <Design theme={theme}>
                     <span aria-label='books' role='img'>
                       📚
                     </span>
@@ -294,8 +317,9 @@ const About2 = () => {
                 url='https://northrup.photo/product/stunning-digital-photography/'
                 style={aCamera}
                 title='photography'
+                theme={theme}
                 Render={() => (
-                  <Design color='black'>
+                  <Design theme={theme}>
                     <span aria-label='camera' role='img'>
                       📷
                     </span>

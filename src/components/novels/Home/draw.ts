@@ -132,7 +132,7 @@ export const init = (params: {
   store.orange = 0.5 - alpha / 2;
 
   context.lineWidth = 10;
-  store.rainParticles = new Array(23).fill(null).map(() => rainParticle(width, height));
+  store.rainParticles = new Array(8).fill(null).map(() => rainParticle(width, height));
   context.beginPath();
   context.ellipse(
     width / 2,

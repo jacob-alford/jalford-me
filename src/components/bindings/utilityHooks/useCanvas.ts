@@ -13,7 +13,8 @@ function useCanvas<store>(
     height: number;
     context: CanvasRenderingContext2D;
     store: store;
-  }) => void
+  }) => void,
+  shouldDraw = true
 ): React.Ref<HTMLCanvasElement> {
   const canvas = useRef<HTMLCanvasElement>(null);
   const store = useRef<store>(initialStore);
@@ -34,7 +35,7 @@ function useCanvas<store>(
           });
         let request: number;
         const update = () => {
-          request = requestAnimationFrame(update);
+          if (shouldDraw) request = requestAnimationFrame(update);
           draw({
             width,
             height,

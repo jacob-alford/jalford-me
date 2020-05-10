@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import Typography from '@material-ui/core/Typography';
 
-import LightDarkToggler from 'components/words/LightDarkToggler';
 import Image from 'components/words/Image';
 import Container from 'components/words/Holder';
 import LiveDemo from 'components/words/ArrowLink';
@@ -79,7 +78,7 @@ const resolveDirection = tooSmall => (tooSmall ? 'col' : 'row');
 export default function TemplateWebsite(props) {
   const { heading, tagline, action, techRP, image, year, video } = props;
   const { h2: titleSize, h5: captionSize } = useTitleSize();
-  const [tldState, toggleTld] = useTLD();
+  const [tldState] = useTLD();
   const screenTooSmall = useMediaQuery('(max-width:450px)');
   const tooSmall4Img = useMediaQuery('(max-width:600px)');
   const classes = useClasses({ ...props, tldState });
@@ -96,9 +95,6 @@ export default function TemplateWebsite(props) {
         className={classes.superContainer}
         wrap='noWrap'
         justifyContent={tooSmall4Img ? 'space-around' : 'center'}>
-        <Container className={classes.togglerHolder} justify='flex-end' direction='row'>
-          <LightDarkToggler mode={tldState} toggle={toggleTld} />
-        </Container>
         <Container direction='col'>
           <Container direction='col'>
             <Typography

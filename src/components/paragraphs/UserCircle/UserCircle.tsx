@@ -3,6 +3,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import Lock from '@material-ui/icons/Lock';
@@ -103,7 +104,8 @@ const UserCircle = () => {
         ]}
       </Menu>
       <CircleButton mode={theme} onClick={openModal}>
-        <AccountIcon />
+        {!Boolean(user.details.image) && <AccountIcon />}
+        {Boolean(user.details.image) && <Avatar src={user.details.image} />}
       </CircleButton>
     </>
   );

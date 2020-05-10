@@ -6,8 +6,6 @@ import useBlogCategoryFetch from 'components/bindings/postHooks/useBlogCategoryF
 import NotificationsHolder from './components/sentences/NotificationsHolder';
 import Header from './components/paragraphs/Header/Header';
 import Footing from './components/novels/Footer';
-import UserCircle from './components/paragraphs/UserCircle/UserCircle';
-import ThemeCircle from './components/paragraphs/ThemeCircle/ThemeCircle';
 import NoMatch from 'components/novels/NotFound';
 import Loader from 'components/words/Loader';
 
@@ -41,9 +39,7 @@ export default function App() {
   return (
     <>
       <Router>
-        <ThemeCircle />
         <NotificationsHolder />
-        <UserCircle />
         <Header />
         <Suspense fallback={<Loader />}>
           <Switch>

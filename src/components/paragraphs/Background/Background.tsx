@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSpring } from 'react-spring';
 import useCanvas from 'components/bindings/utilityHooks/useCanvas';
 import { House, Landscape } from './st';
 import { draw, init, store } from './draw';
 
 const Background = () => {
+  const [shouldDraw, setShouldDraw] = useState(true);
   const horizonSpring = useSpring({
     horizon: 0.5,
     from: {
@@ -23,7 +24,8 @@ const Background = () => {
       draw(params);
     },
     { horizonPerc: 0 },
-    init
+    init,
+    shouldDraw
   );
   const fade = useSpring({
     opacity: 1,
@@ -34,7 +36,8 @@ const Background = () => {
       tension: 69,
       friction: 42,
       precision: 0.0001
-    }
+    },
+    onRest: () => setShouldDraw(false)
   });
   return (
     <Landscape style={fade}>

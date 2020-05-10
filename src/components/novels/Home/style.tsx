@@ -6,8 +6,10 @@ export const Splash = styled(a.div)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 50vh;
+  height: 66vh;
   width: 100%;
+  overflow: hidden;
+  z-index: -1;
 `;
 
 export const Orbital = styled(a.canvas)`
@@ -22,4 +24,6 @@ export const Orbital = styled(a.canvas)`
   position: absolute;
   backdrop-filter: saturate(0);
   border-radius: 200px;
+  overflow: hidden;
+  z-index: -1;
 `;
