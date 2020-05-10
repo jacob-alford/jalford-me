@@ -16,17 +16,20 @@ export const NavItems = styled(a.div)`
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  position: fixed !important;
-  padding: ${cardPadding};
+  background: white;
   z-index: 1;
-  border-radius: ${borderRadius};
+  width: 100%;
+  height: 66px;
 `;
 
 const Toggler = styled(IconButton)`
   z-index: 1;
+  position: absolute !important;
+  left: 12px;
+  top: 9px;
 `;
 const AnimArrow = styled(a(KeyboardArrowUp))`
-  color: white;
+  color: black;
 `;
 type toggleArrowProps = {
   setHeaderIsOpen: () => void;
@@ -35,9 +38,9 @@ type toggleArrowProps = {
 export const ToggleArrow = (props: toggleArrowProps) => {
   const { headerIsOpen, setHeaderIsOpen } = props;
   const animStyles = useSpring({
-    transform: headerIsOpen ? `rotateZ(90deg)` : `rotateZ(270deg)`,
+    transform: headerIsOpen ? `rotateZ(0deg)` : `rotateZ(180deg)`,
     from: {
-      transform: headerIsOpen ? `rotateZ(90deg)` : `rotateZ(270deg)`
+      transform: headerIsOpen ? `rotateZ(0deg)` : `rotateZ(180deg)`
     }
   });
   return (
@@ -49,16 +52,15 @@ export const ToggleArrow = (props: toggleArrowProps) => {
     </Toggler>
   );
 };
-
 type navItemsProps = {
   active: number;
   onClick: () => void;
   key: string;
-  style: any;
 };
 const temp = a(Typography);
 export const NavItem = styled(temp)`
   color: #14b2c7;
+  background: black;
   margin: 3px !important;
   padding: 2px !important;
   padding-left: 7px !important;
