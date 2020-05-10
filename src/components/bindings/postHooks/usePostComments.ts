@@ -6,8 +6,8 @@ import firebase from 'firebase-init';
 import { postComment, ADD_COMMENTS } from 'global-state';
 
 const db = firebase.firestore();
-const getCommentCollection = (path: string) =>
-  db.collection(`authorship/${path}/comments`);
+const getCommentCollection = (doc: string) =>
+  db.collection('authorship').doc(doc).collection('comments');
 
 const getComments = (snapshot: firebase.firestore.QuerySnapshot): postComment[] => {
   const comments: postComment[] = [];
@@ -26,12 +26,12 @@ const getComments = (snapshot: firebase.firestore.QuerySnapshot): postComment[] 
   return comments;
 };
 
-const usePostComments = (postIndex: number, postPath: string) => {
+const usePostComments = (postIndex: number, postDoc: string) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!postIndex || !postPath) return;
+    if (!postIndex || !postDoc) return;
     const comments$ = new Subject<firebase.firestore.QuerySnapshot>();
-    const unsub = getCommentCollection(postPath).onSnapshot(comments$);
+    const unsub = getCommentCollection(postDoc).onSnapshot(comments$);
     comments$
       .pipe(
         map(commentSnap => getComments(commentSnap)),
@@ -48,7 +48,7 @@ const usePostComments = (postIndex: number, postPath: string) => {
       comments$.unsubscribe();
       unsub();
     };
-  }, [postPath, postIndex, dispatch]);
+  }, [postDoc, postIndex, dispatch]);
 };
 
 export default usePostComments;

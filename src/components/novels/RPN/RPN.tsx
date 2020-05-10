@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useTransition, animated as a } from 'react-spring';
+import { useStoreState } from 'global-state';
 import toNumber from 'lodash/toNumber';
 import BackspaceIcon from '@material-ui/icons/Backspace';
 import FunctionsIcon from '@material-ui/icons/Functions';
@@ -7,6 +8,7 @@ import AddIcon from '@material-ui/icons/Add';
 import SubtractIcon from '@material-ui/icons/Remove';
 import MultiplyIcon from '@material-ui/icons/Clear';
 import withPageFade from 'components/bindings/wrappers/withPageFade';
+import C2 from 'theme-constants';
 
 import {
   Group,
@@ -62,6 +64,7 @@ const Product = () => <span dangerouslySetInnerHTML={{ __html: '&Pi;' }} />;
 
 const RPN2 = () => {
   const [degRad, setDegRad] = useState(drEnum.rad);
+  const theme = useStoreState(store => store.theme);
   const [constOpen, setConstOpen] = useState(false);
   const [funcOpen, setFuncOpen] = useState(false);
   const [stack, tape, _operate, canUndo, canRedo] = useCalcBrain(degRad);
@@ -131,7 +134,7 @@ const RPN2 = () => {
     else setFuncOpen(true);
   }, [setConstOpen, setFuncOpen, constOpen, funcOpen]);
   return (
-    <RPNContainer>
+    <RPNContainer theme={theme}>
       <Row flexGrow={2}>
         <TapeAndStack>
           <Row>
@@ -148,7 +151,7 @@ const RPN2 = () => {
                 )
               )}
             </Stack>
-            <Tape>
+            <Tape theme={theme}>
               {tapeAnim.map(
                 ({ item: [operation, value, UID], props: animatedStyles }, index) => {
                   return (
@@ -166,7 +169,7 @@ const RPN2 = () => {
         </TapeAndStack>
       </Row>
       <Row>
-        <EnteringValue>{entry || '0'}</EnteringValue>
+        <EnteringValue theme={theme}>{entry || '0'}</EnteringValue>
       </Row>
       <Row>
         <Wrapper>
@@ -207,14 +210,14 @@ const RPN2 = () => {
             </Row>
             <Row>
               <Danger
-                backgroundColor={C.blue(1)}
-                color='white'
+                backgroundColor={C2.prim(1)}
+                color='black'
                 onClick={() => amendEntry(press(npButt.clear))}>
                 C
               </Danger>
               <Danger
-                backgroundColor={C.blue(1)}
-                color='white'
+                backgroundColor={C2.prim(1)}
+                color='black'
                 onClick={() => amendEntry(press(npButt.backspace))}>
                 <BackspaceIcon fontSize='inherit' />
               </Danger>

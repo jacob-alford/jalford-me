@@ -1,56 +1,40 @@
-import React from 'react';
-import { useSpring } from 'react-spring';
-import useCanvas from 'components/bindings/utilityHooks/useCanvas';
-import { draw, store, init } from './draw';
-import { Splash, Orbital } from './style';
-import Title from 'components/words/BigTitle/BigTitle';
-import Background from 'components/paragraphs/Background/Background';
+import React, { useMemo } from 'react';
+import orderBy from 'lodash/orderBy';
+import filter from 'lodash/filter';
+import Intro from 'components/paragraphs/Intro/Intro';
+import PostCategory from 'components/paragraphs/PostCategory/PostCategory';
+import { useStoreState } from 'global-state';
 
 const Home = () => {
-  const orbitCnv = useCanvas<store>(
-    draw,
-    {
-      rainParticles: [],
-      lightning: 0,
-      apeSideLength: Math.exp(-1) - 7 / 200,
-      magenta: 0,
-      blue: 0,
-      orange: 0
-    },
-    init
+  const posts = useStoreState(store => store.posts);
+  const postsByDate = useMemo(() => orderBy(posts, ['date', 'title'], ['desc', 'asc']), [
+    posts
+  ]);
+  const dsPosts = useMemo(
+    () =>
+      orderBy(
+        filter(posts, ['category', 'The Duncan Strauss Mysteries']),
+        ['id'],
+        ['asc']
+      ),
+    [posts]
   );
-  const [titleFade, setTitleFade] = useSpring(() => ({
-    opacity: 0,
-    from: {
-      opacity: 0
-    },
-    config: {
-      tension: 69,
-      friction: 42,
-      precision: 0.0001
-    }
-  }));
-  const zoom = useSpring({
-    transform: `translate3d(0, 0px, 0)`,
-    opacity: 1,
-    from: {
-      transform: `translate3d(0, 112px, 0)`,
-      opacity: 0
-    },
-    config: {
-      tension: 69,
-      friction: 23,
-      precision: 0.0001
-    },
-    onRest: () => setTitleFade({ opacity: 1 })
-  });
-
+  const philPosts = useMemo(
+    () =>
+      orderBy(
+        filter(posts, ['category', 'Philosophy']),
+        ['date', 'title'],
+        ['desc', 'asc']
+      ),
+    [posts]
+  );
   return (
-    <Splash>
-      <Background />
-      <Title style={titleFade}>jalford</Title>
-      <Orbital style={zoom} ref={orbitCnv} />
-    </Splash>
+    <>
+      <Intro />
+      <PostCategory posts={postsByDate} title='Latest Posts' />
+      <PostCategory posts={dsPosts} title='The Duncan Strauss Mysteries' />
+      <PostCategory posts={philPosts} title='Philosophy' />
+    </>
   );
 };
 

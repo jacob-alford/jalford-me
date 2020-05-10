@@ -13,7 +13,7 @@ const BlogView = React.lazy(() => import('./components/novels/BlogView/BlogView'
 const UserSettings = React.lazy(() => import('./components/novels/UserSettings'));
 const About = React.lazy(() => import('./components/novels/About/About'));
 const Websites = React.lazy(() => import('./components/novels/Websites'));
-const Home2 = React.lazy(() => import('./components/novels/Home/Home'));
+const Home = React.lazy(() => import('./components/novels/Home/Home'));
 const Puzzles = React.lazy(() => import('./components/novels/Puzzles'));
 const RPN = React.lazy(() => import('./components/novels/RPN/RPN'));
 const Blog = React.lazy(() => import('./components/novels/Blog'));
@@ -47,13 +47,13 @@ export default function App() {
             <Route exact path='/user' component={UserSettings} />
             <Route exact path='/websites' component={Websites} />
             <Route exact path='/puzzles/19-2-22' component={Puzzle1} />
-            <Route exact path='/posts/view/:postId' component={BlogView} />
+            <Route exact path='/posts/:postId' component={BlogView} />
             <Route exact path='/puzzles/19-2-26' component={Puzzle2} />
             <Route exact path='/puzzles/19-3-3' component={Puzzle3} />
             <Route exact path='/puzzles' component={Puzzles} />
             <Route exact path='/about' component={About} />
             <Route exact path='/posts' component={Blog} />
-            <Route exact path='/' component={Home2} />
+            <Route exact path='/' component={Home} />
             <Route path='*' component={NoMatch} />
           </Switch>
         </Suspense>

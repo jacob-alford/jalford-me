@@ -2,11 +2,14 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import startCase from 'lodash/startCase';
 import { CONCAT_POSTS, blogPost } from 'global-state';
 import fb from 'firebase';
 import firebase from 'firebase-init';
 
 const db = firebase.firestore();
+
+const pathToCat = (path: string): string => startCase(path);
 
 const fetchBlogDetails = (collection: string, subCollection: string) =>
   db.collection('authorship').doc(collection).collection(subCollection);
@@ -26,7 +29,7 @@ const getPosts = (
       public: data.public as boolean,
       tags: data.tags as string[],
       title: data.title as string,
-      category: group,
+      category: pathToCat(pathPrefix),
       body: null,
       path: `${pathPrefix}/${id}.md`,
       id

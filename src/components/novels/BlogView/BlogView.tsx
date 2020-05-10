@@ -105,7 +105,7 @@ function BlogView() {
   const notFound = isEmpty(selectedPost);
   const isLoading = !isEmpty(selectedPost) && !selectedPost.body;
   const commentsLoading = selectedPost.comments === null;
-  useFetchComments(selectedPostIndex, selectedPost.path?.split('.')[0]);
+  useFetchComments(selectedPostIndex, selectedPost.id);
   useEffect(() => {
     if (selectedPost.path)
       dispatch({

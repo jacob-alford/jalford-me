@@ -2,6 +2,7 @@ import React from 'react';
 import { animated as a } from 'react-spring';
 import styled from 'styled-components';
 import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
 import { themeState } from 'global-state';
 import useRedirect from 'components/bindings/utilityHooks/useRedirect';
 import C from 'theme-constants';
@@ -12,6 +13,8 @@ export const Centerer = styled.div`
   align-items: center;
   padding: 16px;
   padding-top: ${C.pagePad};
+  background: ${(props: { theme: themeState }) => C.contBackAlt(props.theme)};
+  transition: background 0.5s;
 `;
 export const AboutMe = styled.div`
   display: grid;
@@ -33,15 +36,15 @@ export const Me = styled(a(Avatar))`
   cursor: pointer;
   width: 300px !important;
   height: 300px !important;
-  filter: ${C.shadow(3)} !important;
+  filter: ${C.shadow(1)} !important;
 `;
 export const MeText = styled(a.div)`
+  transition: color 0.5s;
   color: ${(props: { theme: themeState }) => C.text(props.theme)};
   width: 50vw;
   font-size: 2rem;
   flex-grow: 2;
   padding: 12px;
-  filter: ${C.shadow(3)} !important;
 `;
 
 export const Stack = styled.div`
@@ -52,7 +55,7 @@ export const Stack = styled.div`
 `;
 
 export const Block = styled(a.div)`
-  transition: background 0.5s color 0.5s;
+  transition: background 0.5s, color 0.5s;
   color: ${(props: { theme: themeState }) => C.text(props.theme)};
   background: ${(props: { theme: themeState }) => C.contBack(props.theme)};
   border: 1px solid ${(props: { color?: string }): string => props.color ?? C.prim(0)};
@@ -61,7 +64,7 @@ export const Block = styled(a.div)`
   justify-content: center;
   padding: 12px;
   width: 85vw;
-  filter: ${C.shadow(3)};
+  filter: ${C.shadow(2)};
 `;
 
 export const IconList = styled.div`
@@ -71,16 +74,19 @@ export const IconList = styled.div`
   align-items: center;
 `;
 
-export const Header = styled.div`
-  color: ${C.prim(0)};
-  font-weight: lighter;
+interface HeaderProps {
+  theme: themeState;
+  colour?: string;
+}
+
+export const Header = styled(Typography)`
+  transition: color 0.5s;
+  font-weight: 900 !important;
   width: 100%;
   text-align: center;
-  font-size: 3rem;
-  letter-spacing: 12px;
-  border-bottom: 1px solid
-    ${(props: { color?: string }): string => props.color ?? C.prim(0)};
-  color: ${(props: { color?: string }): string => props.color ?? C.prim(0)};
+  margin: 0px;
+  border-bottom: 1px solid ${(props: HeaderProps): string => props.colour ?? C.prim(0)};
+  color: ${(props: HeaderProps) => C.text(props.theme)} !important;
 `;
 
 const Img = styled(a.img)`

@@ -23,13 +23,26 @@ import meImg from 'assets/me/CUMP_jalford-me.jpg';
 import Logos from './logos';
 
 const {
-  FrontEnd: { reactLogo, tsLogo, reduxLogo, jestLogo, webglLogo, muiLogo },
+  FrontEnd: { reactLogo, tsLogo, reduxLogo, jestLogo, webglLogo, muiLogo, rxjslogo },
   BackEnd: { awsLogo, firebaseLogo, nodeLogo }
 } = Logos;
 
-const descriptionStrings = [
+const philFocus = [
   'A philosophy focused mathematician who likes^333',
   'A philosophy focused mathematician who loves web stuff.'
+];
+const designFocused = [
+  'I like good design as an end in itself.  ^333 Striving for the divine is what makes us human.'
+];
+const frontEndStuff = [
+  `I learned RxJS recently!  RxJS + Redux Observables + Redux === ❤️`
+];
+const goodDesign = [
+  `Good design is really defined as suiting the purpose of that for which it was originally intended.  ^333 The purpose of this site is to demonstrate good design.`
+];
+
+const descriptionStrings = [philFocus, designFocused, frontEndStuff, goodDesign][
+  (Math.random() * 4) | 0
 ];
 
 const About2 = () => {
@@ -66,8 +79,8 @@ const About2 = () => {
     },
     onRest: () => setScienceIcons({ opacity: 1 })
   }));
-  const [[aReact, aRedux, aTs, aJest, aWebgl, aMui], setFrontEndIcons] = useTrail(
-    6,
+  const [[aReact, aRedux, aRxjs, aTs, aJest, aWebgl, aMui], setFrontEndIcons] = useTrail(
+    7,
     () => ({
       from: {
         opacity: 0
@@ -96,7 +109,7 @@ const About2 = () => {
   const creativeFall = useDropSlide(0, straight);
 
   return (
-    <Centerer>
+    <Centerer theme={theme}>
       <AboutMe>
         <MeHolder>
           <Me
@@ -105,7 +118,7 @@ const About2 = () => {
             src={meImg}
             onClick={() => setStraight(!straight)}
           />
-          <MeText style={textFade}>
+          <MeText theme={theme} style={textFade}>
             <HTML str='&#8220;' />
             <Typed shouldStart={shouldType} strings={descriptionStrings} backDelay={0} />
             <HTML str='&#8221;' />
@@ -113,7 +126,9 @@ const About2 = () => {
         </MeHolder>
         <Stack>
           <Block theme={theme} style={frontEndFall} color='#62F8De'>
-            <Header color='#62F8De'>Front End</Header>
+            <Header variant='h2' theme={theme} colour='#62F8De'>
+              Front End
+            </Header>
             <IconList>
               <Image
                 url='https://reactjs.org/'
@@ -127,6 +142,13 @@ const About2 = () => {
                 style={aRedux}
                 title='Redux'
                 src={reduxLogo}
+                theme={theme}
+              />
+              <Image
+                url='https://rxjs.dev/'
+                style={aRxjs}
+                title='RxJS'
+                src={rxjslogo}
                 theme={theme}
               />
               <Image
@@ -160,7 +182,9 @@ const About2 = () => {
             </IconList>
           </Block>
           <Block theme={theme} style={backEndFall} color='#55CBD9'>
-            <Header color='#55CBD9'>Back End</Header>
+            <Header variant='h2' theme={theme} colour='#55CBD9'>
+              Back End
+            </Header>
             <IconList>
               <Image
                 url='https://aws.amazon.com/'
@@ -186,7 +210,9 @@ const About2 = () => {
             </IconList>
           </Block>
           <Block theme={theme} style={mathFall} color='#69beef'>
-            <Header color='#69beef'>Science</Header>
+            <Header variant='h2' theme={theme} colour='#69beef'>
+              Science
+            </Header>
             <IconList>
               <Image
                 url='https://en.wikipedia.org/wiki/Numerical_linear_algebra'
@@ -291,7 +317,9 @@ const About2 = () => {
             </IconList>
           </Block>
           <Block theme={theme} style={creativeFall} color='#6171F8'>
-            <Header color='#6171F8'>Creative</Header>
+            <Header variant='h2' theme={theme} colour='#6171F8'>
+              Creative
+            </Header>
             <IconList>
               <Image
                 url='https://developer.apple.com/design/human-interface-guidelines/'
