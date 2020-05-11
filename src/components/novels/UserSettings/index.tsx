@@ -10,6 +10,7 @@ import C from 'theme-constants';
 import withPageFade from 'components/bindings/wrappers/withPageFade';
 import useRHook from 'components/bindings/hooks/useRHook';
 import useNotify from 'components/bindings/hooks/useNotify';
+import useRedirect from 'components/bindings/utilityHooks/useRedirect';
 import useUpdateUser from 'components/bindings/userHooks/useUserUpdate';
 
 import { getTextColorBasedOnBg } from 'functions';
@@ -129,6 +130,10 @@ const UserSettings = () => {
     }
   };
   const { userLoading: isLoading, user } = useRHook();
+  const redirect = useRedirect('/') as () => void;
+  useEffect(() => {
+    if (!user.loggedIn) redirect();
+  }, [user, redirect]);
   const [nameEditAnchor, setNameEditAnchor] = useState(null);
   const [colorEditAnchor, setColorEditAnchor] = useState(null);
   const handleAnchorUpdateConstructor = (
