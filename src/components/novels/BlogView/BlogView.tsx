@@ -13,20 +13,26 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 
 import CommentHolder from 'components/sentences/CommentHolder/CommentHolder';
-import Holder from 'components/words/Holder';
-import LightDarkToggler from 'components/words/LightDarkToggler';
 
 import withPageFade from 'components/bindings/wrappers/withPageFade';
 
 import useTLD from 'components/bindings/hooks/useTLD';
 import useFetchComments from 'components/bindings/postHooks/usePostComments';
 
-import { useStoreState, globalStore, TRIG_BODY_UPDATE, blogPost } from 'global-state';
+import {
+  useStoreState,
+  globalStore,
+  TRIG_BODY_UPDATE,
+  blogPost,
+  themeState
+} from 'global-state';
 
 import markdownConfig from 'helpers/blogParse.js';
 import { katexMarkdown } from 'helpers/blogParse.js';
 
 import { themeHook } from 'theme';
+
+import C from 'theme-constants';
 
 const useClasses = themeHook(
   ['getMajorSpacing', 'getMinorSpacing'],
@@ -37,10 +43,8 @@ const useClasses = themeHook(
       color: 'rgba(0,0,0,.87)'
     },
     container: {
-      color: (config: { tldState: string }) =>
-        config.tldState === 'light' ? 'rgba(0,0,0,.87)' : 'rgba(255,255,255,1)',
-      background: (config: { tldState: string }) =>
-        config.tldState === 'light' ? '#fff' : '#232323',
+      color: (props: { tldState: themeState }) => C.text(props.tldState),
+      background: (props: { tldState: themeState }) => C.contBack(props.tldState),
       paddingTop: minorSpacing,
       paddingBottom: majorSpacing,
       marginBottom: minorSpacing,
@@ -53,14 +57,6 @@ const useClasses = themeHook(
       marginTop: minorSpacing,
       textAlign: 'center',
       color: 'rgba(0,0,0,.87)'
-    },
-    lead: {
-      color: (config: { tldState: string }) =>
-        config.tldState === 'light' ? 'rgba(0,0,0,.69)' : 'rgba(255,255,255,.85)',
-      transition: 'color .5s',
-      fontSize: '1.42rem',
-      fontWeight: '300',
-      textAlign: 'center'
     },
     title: {
       fontSize: '4.7rem',
@@ -100,14 +96,14 @@ function BlogView() {
     () => findIndex<blogPost>(posts, post => post.id === postId),
     [posts, postId]
   );
-  const [tldState, toggleTld] = useTLD();
+  const [tldState] = useTLD();
   const classes = useClasses({ tldState });
   const notFound = isEmpty(selectedPost);
   const isLoading = !isEmpty(selectedPost) && !selectedPost.body;
   const commentsLoading = selectedPost.comments === null;
-  useFetchComments(selectedPostIndex, selectedPost.id);
+  useFetchComments(selectedPostIndex, selectedPost.fbPath);
   useEffect(() => {
-    if (selectedPost.path)
+    if (selectedPost.path && !selectedPost.body)
       dispatch({
         type: TRIG_BODY_UPDATE,
         payload: {
@@ -115,7 +111,7 @@ function BlogView() {
           index: selectedPostIndex
         }
       });
-  }, [selectedPost.path, dispatch, selectedPostIndex]);
+  }, [selectedPost.path, selectedPost.body, dispatch, selectedPostIndex]);
   return (
     <React.Fragment>
       <Grid container justify='center'>
@@ -124,12 +120,6 @@ function BlogView() {
           {!notFound && isLoading && <LoadingPlaceholder />}
           {!isLoading && !notFound ? (
             <React.Fragment>
-              <Holder
-                className={classes.togglerHolder}
-                justify='flex-end'
-                direction='row'>
-                <LightDarkToggler mode={tldState} toggle={toggleTld} />
-              </Holder>
               <Markdown
                 renderers={markdownConfig}
                 source={katexMarkdown(selectedPost.body)}
@@ -141,7 +131,7 @@ function BlogView() {
       {!commentsLoading && !notFound && (
         <CommentHolder
           user={user}
-          path={selectedPost.path}
+          fbPath={selectedPost.fbPath}
           comments={selectedPost.comments}
         />
       )}

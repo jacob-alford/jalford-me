@@ -104,6 +104,7 @@ export interface structuredComments extends postComment {
 }
 export interface blogPost {
   id: string;
+  fbPath: string;
   path: string;
   body: string | null;
   title: string;

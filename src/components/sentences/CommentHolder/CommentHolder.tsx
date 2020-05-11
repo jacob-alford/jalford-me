@@ -1,20 +1,16 @@
 import React, { useMemo, useState } from 'react';
-
 import { useTransition, animated as a } from 'react-spring';
-
 import Container from '@material-ui/core/Container';
 import Modal from '@material-ui/core/Modal';
 import Typography from '@material-ui/core/Typography';
-
 import Comment from 'components/words/Comment/Comment';
 import NewComment from 'components/words/NewComment/NewComment';
-
-import useNotify from 'components/bindings/hooks/useNotify';
+import useCommentAdd from 'components/bindings/postHooks/useCommentAdd';
+import useCommentDelete from 'components/bindings/postHooks/useCommentDelete';
+import useCommentUpdate from 'components/bindings/postHooks/useCommentUpdate';
 
 import { strctureComments } from './commentStructure';
-
 import { themeHook } from 'theme';
-
 import { userState, postComment } from 'global-state';
 
 const useClasses = themeHook({
@@ -33,10 +29,10 @@ const useClasses = themeHook({
 
 const CommentHolder = (props: {
   user: userState;
-  path: string;
+  fbPath: string;
   comments: postComment[];
 }) => {
-  const { user, path, comments } = props;
+  const { user, fbPath, comments } = props;
   const isLoading = comments === null;
   const mappedComments = useMemo(() => strctureComments(comments), [comments]);
   const commentTrail = useTransition(mappedComments, comment => comment.id, {
@@ -67,15 +63,11 @@ const CommentHolder = (props: {
     depth: number;
     commentId: string;
   } | null>(null);
-  const notify = useNotify({
-    timeout: 4500
-  });
   const classes = useClasses();
 
-  const permDelete = (id: string) => {};
-  const deleteComment = (id: string) => {};
-  const updateComment = (newText: string, id: string) => {};
-  const addComment = () => {};
+  const permDelete = useCommentDelete(fbPath);
+  const updateComment = useCommentUpdate(fbPath);
+  const addComment = useCommentAdd(fbPath);
 
   return (
     <React.Fragment>
@@ -89,7 +81,18 @@ const CommentHolder = (props: {
           <NewComment
             user={user}
             closeModal={() => setCurrentReply(null)}
-            addComment={text => addComment()}
+            addComment={(body: string) =>
+              addComment({
+                body,
+                depth: 0,
+                parentId: null,
+                user: {
+                  image: user.details.image,
+                  uid: user.details.uid,
+                  username: user.details.username
+                }
+              })
+            }
           />
         </Container>
       </Modal>
@@ -97,7 +100,18 @@ const CommentHolder = (props: {
         <NewComment
           user={user}
           closeModal={() => setCurrentReply(null)}
-          addComment={text => addComment()}
+          addComment={(body: string) =>
+            addComment({
+              body,
+              depth: 0,
+              parentId: null,
+              user: {
+                image: user.details.image,
+                uid: user.details.uid,
+                username: user.details.username
+              }
+            })
+          }
         />
         {mappedComments && !isLoading && mappedComments.length === 0 ? (
           <Typography paragraph variant='body2' className={classes.beTheFirst}>
@@ -109,9 +123,16 @@ const CommentHolder = (props: {
             <Comment
               comment={comment}
               loggedUser={user}
-              addComment={addComment}
-              updateComment={updateComment}
-              deleteComment={deleteComment}
+              updateComment={(body: string, id: string) =>
+                updateComment(id, {
+                  body
+                })
+              }
+              deleteComment={(id: string) =>
+                updateComment(id, {
+                  body: '*COMMENT REMOVED*'
+                })
+              }
               handleReply={(depth: number, id: string) =>
                 setCurrentReply({
                   depth: depth,

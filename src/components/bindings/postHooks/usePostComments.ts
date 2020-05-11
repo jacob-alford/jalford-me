@@ -4,10 +4,10 @@ import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import firebase from 'firebase-init';
 import { postComment, ADD_COMMENTS } from 'global-state';
+import { handleError } from 'global-state/epics/helpers';
 
 const db = firebase.firestore();
-const getCommentCollection = (doc: string) =>
-  db.collection('authorship').doc(doc).collection('comments');
+const getCommentCollection = (path: string) => db.collection(`${path}/comments`);
 
 const getComments = (snapshot: firebase.firestore.QuerySnapshot): postComment[] => {
   const comments: postComment[] = [];
@@ -26,12 +26,12 @@ const getComments = (snapshot: firebase.firestore.QuerySnapshot): postComment[] 
   return comments;
 };
 
-const usePostComments = (postIndex: number, postDoc: string) => {
+const usePostComments = (postIndex: number, path: string) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!postIndex || !postDoc) return;
+    if (postIndex === -1 || !path) return;
     const comments$ = new Subject<firebase.firestore.QuerySnapshot>();
-    const unsub = getCommentCollection(postDoc).onSnapshot(comments$);
+    const unsub = getCommentCollection(path).onSnapshot(comments$);
     comments$
       .pipe(
         map(commentSnap => getComments(commentSnap)),
@@ -41,14 +41,15 @@ const usePostComments = (postIndex: number, postDoc: string) => {
             index: postIndex,
             comments
           }
-        }))
+        })),
+        handleError()
       )
       .subscribe(dispatch);
     return () => {
       comments$.unsubscribe();
       unsub();
     };
-  }, [postDoc, postIndex, dispatch]);
+  }, [path, postIndex, dispatch]);
 };
 
 export default usePostComments;

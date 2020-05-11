@@ -7,19 +7,19 @@ const puzzleAccessors = {
 
 const puzzles = {
   [puzzleAccessors.feb22_19]: {
-    emoji: 'symbols',
+    text: '1',
     link: `/puzzles/${puzzleAccessors.feb22_19}`,
     difficulty: 'easy',
     uid: puzzleAccessors.feb22_19
   },
   [puzzleAccessors.feb26_19]: {
-    emoji: 'frame_with_picture',
+    text: '2',
     link: `/puzzles/${puzzleAccessors.feb26_19}`,
     difficulty: 'medium',
     uid: puzzleAccessors.feb26_19
   },
   [puzzleAccessors.mar3_19]: {
-    emoji: 'book',
+    text: '3',
     link: `/puzzles/${puzzleAccessors.mar3_19}`,
     difficulty: 'hard',
     uid: puzzleAccessors.mar3_19

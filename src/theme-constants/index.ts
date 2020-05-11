@@ -7,6 +7,7 @@ interface themeConstants {
   acc: getValueLevel;
   success: string;
   danger: string;
+  warn: string;
   contBackAlt: getColorFromTheme;
   contBack: getColorFromTheme;
   text: getColorFromTheme;
@@ -36,6 +37,7 @@ const C: themeConstants = {
   prim: (num: number) => ['#14b2c7', '#55CBD9', '#62F8DE', '#6171F8'][num],
   success: '#54F780',
   danger: '#F73B41',
+  warn: '#FFD952',
   acc: (num: number) => ['#164B6B', '#C70066', '#C74F06'][num],
   contBack: mkThmSlct('#ffffff', '#000000'),
   contBackAlt: mkThmSlct('#cdcdcd', '#232323'),

@@ -8,25 +8,24 @@ import Header from './components/paragraphs/Header/Header';
 import Footing from './components/novels/Footer';
 import NoMatch from 'components/novels/NotFound';
 import Loader from 'components/words/Loader';
+import RedirectHome from 'components/words/RedirectHome/RedirectHome';
 
 const BlogView = React.lazy(() => import('./components/novels/BlogView/BlogView'));
 const UserSettings = React.lazy(() => import('./components/novels/UserSettings'));
 const About = React.lazy(() => import('./components/novels/About/About'));
 const Websites = React.lazy(() => import('./components/novels/Websites'));
 const Home = React.lazy(() => import('./components/novels/Home/Home'));
-const Puzzles = React.lazy(() => import('./components/novels/Puzzles'));
 const RPN = React.lazy(() => import('./components/novels/RPN/RPN'));
-const Blog = React.lazy(() => import('./components/novels/Blog'));
 
 /* Puzzles */
 const Puzzle1 = React.lazy(() =>
-  import('./components/novels/Puzzles/PuzzlePages/Puzzle1')
+  import('./components/sentences/Puzzles/PuzzlePages/Puzzle1')
 );
 const Puzzle2 = React.lazy(() =>
-  import('./components/novels/Puzzles/PuzzlePages/Puzzle2')
+  import('./components/sentences/Puzzles/PuzzlePages/Puzzle2')
 );
 const Puzzle3 = React.lazy(() =>
-  import('./components/novels/Puzzles/PuzzlePages/Puzzle3')
+  import('./components/sentences/Puzzles/PuzzlePages/Puzzle3')
 );
 
 export default function App() {
@@ -50,9 +49,9 @@ export default function App() {
             <Route exact path='/posts/:postId' component={BlogView} />
             <Route exact path='/puzzles/19-2-26' component={Puzzle2} />
             <Route exact path='/puzzles/19-3-3' component={Puzzle3} />
-            <Route exact path='/puzzles' component={Puzzles} />
+            <Route exact path='/puzzles' component={RedirectHome} />
             <Route exact path='/about' component={About} />
-            <Route exact path='/posts' component={Blog} />
+            <Route exact path='/posts' component={RedirectHome} />
             <Route exact path='/' component={Home} />
             <Route path='*' component={NoMatch} />
           </Switch>

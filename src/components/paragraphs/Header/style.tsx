@@ -44,7 +44,7 @@ const Toggler = styled(IconButton)`
   transition: top 0.5s;
   left: 12px;
   top: 9px;
-  @media (max-width: 750px) {
+  @media (max-width: 624px) {
     top: ${(props: { headerisopen: string }) =>
       props.headerisopen === 'true' ? '131px' : '9px'};
   }

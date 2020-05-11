@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Markdown from 'react-markdown';
 
 import { useTransition, animated as a } from 'react-spring';
@@ -92,7 +92,6 @@ export default function Comment(props: {
   deleteComment: (id: string) => void;
   handleReply: (depth: number, id: string) => void;
   permDelete: (id: string) => void;
-  addComment: () => void;
   loggedUser: userState;
 }) {
   const [tldState] = useTLD();
@@ -103,7 +102,6 @@ export default function Comment(props: {
     deleteComment,
     handleReply,
     permDelete,
-    addComment,
     loggedUser
   } = props;
   const { body, depth, user, date, id: commentId } = comment;
@@ -112,6 +110,10 @@ export default function Comment(props: {
   const comments = comment.comments || [];
   /* Edit Comment */
   const [bodyText, setBodyText] = useState(body);
+  const hidden = body === '*COMMENT REMOVED*';
+  useEffect(() => {
+    setBodyText(body);
+  }, [body]);
   const handleBodyTextChange = (evt: React.ChangeEvent<HTMLInputElement>) =>
     setBodyText(evt.target.value);
   const [isEditing, setIsEditing] = useState(false);
@@ -194,7 +196,7 @@ export default function Comment(props: {
                 </Holder>
               </Holder>
             ) : null}
-            {isEditing ? (
+            {!hidden && isEditing ? (
               <Holder className={classes.bodyHolder}>
                 <InputBase
                   value={bodyText}
@@ -214,23 +216,25 @@ export default function Comment(props: {
               </Holder>
             )}
           </CardContent>
-          <CardActions>
-            {depth < 6 && !isEditing && loggedUser.loggedIn ? (
-              <Button size='small' onClick={handleDoReply} className={classes.button}>
-                Reply
-              </Button>
-            ) : null}
-            {isEditing ? (
-              <React.Fragment>
-                <Button size='small' color='primary' onClick={handleSave}>
-                  Save
+          {!hidden && (
+            <CardActions>
+              {depth < 6 && !isEditing && loggedUser.loggedIn ? (
+                <Button size='small' onClick={handleDoReply} className={classes.button}>
+                  Reply
                 </Button>
-                <Button size='small' onClick={handleRevert} className={classes.button}>
-                  Cancel
-                </Button>
-              </React.Fragment>
-            ) : null}
-          </CardActions>
+              ) : null}
+              {isEditing ? (
+                <React.Fragment>
+                  <Button size='small' color='primary' onClick={handleSave}>
+                    Save
+                  </Button>
+                  <Button size='small' onClick={handleRevert} className={classes.button}>
+                    Cancel
+                  </Button>
+                </React.Fragment>
+              ) : null}
+            </CardActions>
+          )}
         </Card>
       </Container>
       {subcommentTrail.map(({ item: comment, key, props: newStyles }) => (
@@ -239,7 +243,6 @@ export default function Comment(props: {
             updateComment={updateComment}
             deleteComment={deleteComment}
             permDelete={permDelete}
-            addComment={addComment}
             loggedUser={loggedUser}
             handleReply={handleReply}
             comment={comment}

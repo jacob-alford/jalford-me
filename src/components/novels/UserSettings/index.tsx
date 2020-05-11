@@ -5,6 +5,8 @@ import * as MUI_COMPONENTS from './mui.js';
 
 import { userState, alertEnum } from 'global-state';
 
+import C from 'theme-constants';
+
 import withPageFade from 'components/bindings/wrappers/withPageFade';
 import useRHook from 'components/bindings/hooks/useRHook';
 import useNotify from 'components/bindings/hooks/useNotify';
@@ -42,7 +44,8 @@ const {
 
 const styles = {
   userContainer: {
-    width: '100vw'
+    width: '100vw',
+    marginTop: C.pagePad
   },
   settingText: {
     paddingRight: '15px'

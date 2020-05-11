@@ -13,7 +13,7 @@ import { NavItems, NavItem, ToggleArrow, HeaderHolder, AccountButtons } from './
 
 const Header = () => {
   const headerIsOpen = useStoreState(store => store.headerIsOpen);
-  const shouldWrap = useMediaQuery('(max-width:750px)');
+  const shouldWrap = useMediaQuery('(max-width:624px)');
   const theme = useStoreState(store => store.theme);
   const setHeaderIsOpen = useStoreActions({ type: HEAD_TOG, payload: null });
   const location = useLocation();

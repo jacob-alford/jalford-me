@@ -29,12 +29,12 @@ function Puzzles() {
   );
   return (
     <Holder direction='row' style={{ paddingTop: C.pagePad }}>
-      {puzzleAnim.map(({ item: { emoji, difficulty, link, uid }, props: newStyles }) => (
+      {puzzleAnim.map(({ item: { text, difficulty, link, uid }, props: newStyles }) => (
         <a.div style={newStyles} key={uid}>
           <PuzzleCard
             completed={getPuzzles(user).includes(uid)}
             difficulty={difficulty}
-            emoji={emoji}
+            text={text}
             key={link}
             link={link}
           />
