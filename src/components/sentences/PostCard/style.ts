@@ -8,8 +8,7 @@ export const Card = styled(a.div)`
   transition: background 0.5s;
   display: flex;
   flex-flow: column nowrap;
-  width: ${C.hm};
-  min-width: min-content;
+  min-width: max-content;
   min-height: min-content;
   padding: ${C.spacing(0)};
   border: 2px solid ${C.prim(2)};
