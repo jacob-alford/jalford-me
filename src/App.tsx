@@ -35,6 +35,7 @@ export default function App() {
     'the-duncan-strauss-mysteries'
   );
   useBlogCategoryFetch('posts', 'philosophy', 'philosophy');
+  useBlogCategoryFetch('posts', 'general', 'general');
   return (
     <>
       <Router>

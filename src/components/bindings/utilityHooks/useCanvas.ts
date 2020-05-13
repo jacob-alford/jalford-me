@@ -18,6 +18,7 @@ function useCanvas<store>(
 ): React.Ref<HTMLCanvasElement> {
   const canvas = useRef<HTMLCanvasElement>(null);
   const store = useRef<store>(initialStore);
+  const request = useRef<number>(0);
   useEffect(() => {
     if (canvas.current) {
       const context = canvas.current.getContext('2d');
@@ -33,9 +34,8 @@ function useCanvas<store>(
             context,
             store: store.current
           });
-        let request: number;
         const update = () => {
-          if (shouldDraw) request = requestAnimationFrame(update);
+          if (shouldDraw) request.current = requestAnimationFrame(update);
           draw({
             width,
             height,
@@ -44,10 +44,10 @@ function useCanvas<store>(
           });
         };
         requestAnimationFrame(update);
-        return () => cancelAnimationFrame(request);
       }
     }
-  });
+    return () => cancelAnimationFrame(request.current);
+  }, [draw, init, shouldDraw]);
   return canvas;
 }
 

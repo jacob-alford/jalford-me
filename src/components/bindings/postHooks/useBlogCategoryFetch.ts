@@ -11,7 +11,11 @@ import firebase from 'firebase-init';
 const db = firebase.firestore();
 
 const fetchBlogDetails = (collection: string, subCollection: string) =>
-  db.collection('authorship').doc(collection).collection(subCollection);
+  db
+    .collection('authorship')
+    .doc(collection)
+    .collection(subCollection)
+    .where('public', '==', true);
 
 const getPosts = (
   snapshot: fb.firestore.QuerySnapshot,
@@ -24,7 +28,7 @@ const getPosts = (
     const id = post.id;
     const data = post.data();
     outArr.push({
-      date: (data.date as firebase.firestore.Timestamp).toDate(),
+      date: (data.date?.toDate && data.date.toDate()) || new Date(),
       comments: null,
       public: data.public as boolean,
       tags: data.tags as string[],
