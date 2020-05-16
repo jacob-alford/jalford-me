@@ -18,13 +18,14 @@ const getDefaultThemeState = (): themeState => {
     const time = new Date().getHours();
     return time < 6 || time > 20;
   })();
-  return light && light.matches
-    ? themeState.light
-    : dark && dark.matches
-    ? themeState.dark
-    : isNightTime
-    ? themeState.dark
-    : themeState.light;
+  const themeStorage = window.localStorage.getItem('theme');
+  const manuallySet =
+    (themeStorage === themeState.light && themeState.light) ||
+    (themeStorage === themeState.dark && themeState.dark);
+  const prefersLight = light && light.matches && themeState.light;
+  const prefersDark = dark && dark.matches && themeState.dark;
+  const fallback = isNightTime ? themeState.dark : themeState.light;
+  return manuallySet || prefersLight || prefersDark || fallback;
 };
 
 export const defaultState: globalStore = {

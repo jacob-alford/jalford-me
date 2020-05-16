@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import Markdown from 'react-markdown';
-
+import React, { useState, useEffect, useMemo } from 'react';
 import { useTransition, animated as a } from 'react-spring';
-
 import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -11,33 +8,37 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import InputBase from '@material-ui/core/InputBase';
-
 import Holder from 'components/words/Holder';
 import CommentActions from './CommentActions';
-
-import markdownConfig from 'helpers/blogParse.js';
-import { katexMarkdown } from 'helpers/blogParse.js';
-
-import useTLD from 'components/bindings/hooks/useTLD';
-
+import { Link } from './renderers';
 import { themeHook } from 'theme';
-
-import { userState, structuredComments, postComment } from 'global-state';
+import unified from 'unified';
+import parse from 'remark-parse';
+// @ts-ignore
+import remark2react from 'remark-react';
+import {
+  userState,
+  structuredComments,
+  postComment,
+  themeState,
+  useStoreState
+} from 'global-state';
+import C from 'theme-constants';
+import 'components/novels/BlogView/markdown.css';
 
 const useClasses = themeHook({
   card: {
     marginTop: '8px',
     flexGrow: 1,
-    color: (config: { tldState: string }) =>
-      config.tldState === 'light' ? 'rgba(0,0,0,.87)' : 'rgba(255,255,255,1)',
-    background: (config: { tldState: string }) =>
-      config.tldState === 'light' ? '#fff' : '#232323'
+    color: (config: { tldState: themeState }) => C.text(config.tldState),
+    background: (config: { tldState: themeState }) => C.contBack(config.tldState),
+    transition: 'background .5s, color .5s'
   },
   user: {
-    color: (config: { tldState: string }) =>
-      config.tldState === 'light' ? 'rgba(0,0,0,1)' : 'rgba(255,255,255,1)',
+    color: (config: { tldState: themeState }) => C.text(config.tldState),
     fontSize: '24px',
-    paddingLeft: '8px'
+    paddingLeft: '8px',
+    transition: 'background .5s, color .5s'
   },
   avatar: {
     width: '25px',
@@ -58,10 +59,28 @@ const useClasses = themeHook({
   holderHolder: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'stretch'
+    alignItems: 'stretch',
+    marginBottom: C.spacing(0) + ' !important'
   },
-  commyMarkdown: {
-    width: '100%'
+  comment: {
+    width: '100%',
+    color: (props: { tldState: themeState }) => C.text(props.tldState) + ' !important',
+    textAlign: 'left !important',
+    transition: 'background .5s, color .5s',
+    hr: {
+      width: '100%',
+      height: '1px',
+      transition: 'background .5s',
+      background: (props: { tldState: themeState }) =>
+        C.div(props.tldState) + ' !important',
+      margin: `${C.spacing(0)} 0px ${C.spacing(0)} 0px !important`
+    },
+    blockquote: {
+      color: (props: { tldState: themeState }) =>
+        C.textHighlight(props.tldState) + ' !important',
+      borderLeft: `0.25rem solid ${(props: { tldState: themeState }) =>
+        C.textHighlight(props.tldState)} !important`
+    }
   },
   newCommentHolder: {
     display: 'flex',
@@ -70,21 +89,26 @@ const useClasses = themeHook({
   },
   date: {
     fontSize: '.75rem',
-    color: (config: { tldState: string }) =>
-      config.tldState === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,.85)',
-    marginTop: '5px'
+    color: (config: { tldState: themeState }) => C.textDim(config.tldState),
+    marginTop: '5px',
+    transition: 'background .5s, color .5s'
   },
   button: {
-    color: (config: { tldState: string }) =>
-      config.tldState === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,.85)'
+    color: (config: { tldState: themeState }) => C.text(config.tldState),
+
+    transition: 'background .5s, color .5s'
   },
   textEdit: {
-    color: (config: { tldState: string }) =>
-      config.tldState === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,.85)'
+    color: (config: { tldState: themeState }) => C.textAlt(config.tldState),
+    transition: 'background .5s, color .5s'
   }
 });
 
 const isAdmin = (user: userState) => user.details.permissions.value === 10;
+
+const remarkReactComponents = {
+  a: Link
+};
 
 export default function Comment(props: {
   comment: structuredComments | postComment;
@@ -94,7 +118,7 @@ export default function Comment(props: {
   permDelete: (id: string) => void;
   loggedUser: userState;
 }) {
-  const [tldState] = useTLD();
+  const tldState = useStoreState(store => store.theme);
   const classes = useClasses({ ...props, tldState });
   const {
     comment,
@@ -150,6 +174,18 @@ export default function Comment(props: {
     }
   });
 
+  const commentDom = useMemo(
+    () =>
+      (bodyText &&
+        unified()
+          .use(parse)
+          .use(remark2react, { remarkReactComponents })
+          //@ts-ignore
+          .processSync(bodyText).result) ||
+      null,
+    [bodyText]
+  );
+
   return (
     <React.Fragment>
       <Container className={classes.holderHolder}>
@@ -159,7 +195,10 @@ export default function Comment(props: {
         <Card className={classes.card}>
           <CardContent>
             {isAdmin(loggedUser) ? (
-              <Holder direction='row' justify='space-between'>
+              <Holder
+                style={{ marginBottom: C.spacing(0) }}
+                direction='row'
+                justify='space-between'>
                 <Holder direction='row' justify='flex-start'>
                   {user.image ? (
                     <Avatar src={user.image} />
@@ -207,12 +246,8 @@ export default function Comment(props: {
                 />
               </Holder>
             ) : (
-              <Holder className={classes.bodyHolder}>
-                <Markdown
-                  className={classes.commyMarkdown}
-                  renderers={markdownConfig}
-                  source={katexMarkdown(bodyText)}
-                />
+              <Holder className='markdown-body'>
+                <div className={classes.comment}>{commentDom}</div>
               </Holder>
             )}
           </CardContent>

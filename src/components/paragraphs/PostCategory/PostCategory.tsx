@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import slice from 'lodash/slice';
 import { blogPost, useStoreState } from 'global-state';
 import PostCard from 'components/sentences/PostCard/PostCard';
 import { CatCont, Title, Divider, PostHolder } from './style';
@@ -7,13 +8,15 @@ import Loader from 'components/words/Loader';
 interface Props {
   posts: blogPost[];
   title: string;
+  limit?: number;
   bgOvrd?: string;
   textOvrd?: string;
   divOvrd?: string;
 }
 
 const PostCategory = (props: Props) => {
-  const { posts, title, bgOvrd, textOvrd, divOvrd } = props;
+  const { posts, limit, title, bgOvrd, textOvrd, divOvrd } = props;
+  const slicedPosts = useMemo(() => slice(posts, 0, limit), [posts, limit]);
   const theme = useStoreState(store => store.theme);
   const loading = posts.length === 0;
   return (
@@ -23,7 +26,7 @@ const PostCategory = (props: Props) => {
       {loading && <Loader />}
       {!loading && (
         <PostHolder>
-          {posts.map(({ title, date, id, path, category }, index) => (
+          {slicedPosts.map(({ title, date, id, path, category }, index) => (
             <PostCard
               key={id}
               theme={theme}

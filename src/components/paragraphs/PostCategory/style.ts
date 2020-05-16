@@ -37,7 +37,7 @@ export const Divider = styled.div`
 export const PostHolder = styled.div`
   width: 100%;
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: row wrap;
   overflow-x: auto;
   height: max-content;
   filter: ${C.shadow(2)};

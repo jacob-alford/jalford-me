@@ -13,6 +13,7 @@ interface themeConstants {
   text: getColorFromTheme;
   textAlt: getColorFromTheme;
   textDim: getColorFromTheme;
+  textHighlight: getColorFromTheme;
   div: getColorFromTheme;
   action: getColorFromTheme;
   actionHov: getColorFromTheme;
@@ -44,6 +45,7 @@ const C: themeConstants = {
   text: mkThmSlct('#000000', '#ffffff'),
   textAlt: mkThmSlct('#232323', '#bcbcbc'),
   textDim: mkThmSlct('rgba(0,0,0,.69)', '#cdcdcd'),
+  textHighlight: mkThmSlct('#164B6B', '#62F8DE'),
   div: mkThmSlct('#C70066', '#164B6B'),
   action: mkThmSlct('#000000', '#ffffff'),
   actionHov: mkThmSlct('#232323', '#cdcdcd'),

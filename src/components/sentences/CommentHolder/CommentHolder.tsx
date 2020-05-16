@@ -11,7 +11,8 @@ import useCommentUpdate from 'components/bindings/postHooks/useCommentUpdate';
 
 import { strctureComments } from './commentStructure';
 import { themeHook } from 'theme';
-import { userState, postComment } from 'global-state';
+import C from 'theme-constants';
+import { userState, postComment, useStoreState, themeState } from 'global-state';
 
 const useClasses = themeHook({
   newCommentHolder: {
@@ -20,7 +21,8 @@ const useClasses = themeHook({
     justifyContent: 'center'
   },
   beTheFirst: {
-    color: 'rgba(255,255,255,.6)',
+    color: (props: { theme: themeState }) => C.textDim(props.theme),
+    transition: 'color .5s',
     marginTop: '16px',
     textAlign: 'center',
     fontSize: '1.46rem'
@@ -63,7 +65,8 @@ const CommentHolder = (props: {
     depth: number;
     commentId: string;
   } | null>(null);
-  const classes = useClasses();
+  const theme = useStoreState(store => store.theme);
+  const classes = useClasses({ theme });
 
   const permDelete = useCommentDelete(fbPath);
   const updateComment = useCommentUpdate(fbPath);
@@ -84,8 +87,8 @@ const CommentHolder = (props: {
             addComment={(body: string) =>
               addComment({
                 body,
-                depth: 0,
-                parentId: null,
+                depth: currentReply?.depth ?? 0,
+                parentId: currentReply?.commentId ?? null,
                 user: {
                   image: user.details.image,
                   uid: user.details.uid,

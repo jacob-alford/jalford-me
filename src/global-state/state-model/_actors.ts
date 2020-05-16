@@ -37,9 +37,11 @@ export const NOTIF_REM: pt<notificationActors> = [
  * Theme Actors
  */
 export enum themeActors {
-  toggle = 'toggle'
+  toggle = 'toggle',
+  togInt = 'togInt'
 }
 export const THEME_TOG: pt<themeActors> = [domains.theme, themeActors.toggle];
+export const THEME_TOG_INT: pt<themeActors> = [domains.theme, themeActors.togInt];
 
 /*
  * Header Actors

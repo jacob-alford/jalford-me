@@ -1,107 +1,56 @@
-import React, { useMemo, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import Markdown from 'react-markdown';
+import React, { useMemo, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-
-import find from 'lodash/find';
+import { useDispatch } from 'react-redux';
+import { animated as a, useSpring } from 'react-spring';
+import unified from 'unified';
+import parse from 'remark-parse';
+// @ts-ignore
+import remark2react from 'remark-react';
 import findIndex from 'lodash/findIndex';
-import isEmpty from 'lodash/isEmpty';
-
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Grid from '@material-ui/core/Grid';
-
-import CommentHolder from 'components/sentences/CommentHolder/CommentHolder';
-
-import withPageFade from 'components/bindings/wrappers/withPageFade';
-
-import useTLD from 'components/bindings/hooks/useTLD';
+import { useStoreState, blogPost, globalStore, TRIG_BODY_UPDATE } from 'global-state';
 import useFetchComments from 'components/bindings/postHooks/usePostComments';
+import useTriggerScroll from 'components/bindings/utilityHooks/useTriggerScroll';
+import CommentHolder from 'components/sentences/CommentHolder/CommentHolder';
+import Loader from 'components/words/Loader';
+import { ViewContainer, SuperContainer } from './styles';
+import { Link } from './renderers';
+import './markdown.css';
 
-import {
-  useStoreState,
-  globalStore,
-  TRIG_BODY_UPDATE,
-  blogPost,
-  themeState
-} from 'global-state';
-
-import markdownConfig from 'helpers/blogParse.js';
-import { katexMarkdown } from 'helpers/blogParse.js';
-
-import { themeHook } from 'theme';
-
-import C from 'theme-constants';
-
-const useClasses = themeHook(
-  ['getMajorSpacing', 'getMinorSpacing'],
-  // @ts-ignore
-  ([majorSpacing, minorSpacing]) => ({
-    header: {
-      textAlign: 'center',
-      color: 'rgba(0,0,0,.87)'
-    },
-    container: {
-      color: (props: { tldState: themeState }) => C.text(props.tldState),
-      background: (props: { tldState: themeState }) => C.contBack(props.tldState),
-      paddingTop: minorSpacing,
-      paddingBottom: majorSpacing,
-      marginBottom: minorSpacing,
-      transition: 'background .5s, color .5s'
-    },
-    sheet: {
-      padding: '34px'
-    },
-    notFound: {
-      marginTop: minorSpacing,
-      textAlign: 'center',
-      color: 'rgba(0,0,0,.87)'
-    },
-    title: {
-      fontSize: '4.7rem',
-      textAlign: 'center'
-    },
-    togglerHolder: {
-      width: '100%'
-    }
-  })
-);
-
-const LoadingPlaceholder = () => (
-  <Grid container direction='column' alignItems='center' justify='center'>
-    <Grid item>
-      <CircularProgress />
-    </Grid>
-  </Grid>
-);
-
-const NotFoundPlaceholder = () => {
-  const classes = useClasses();
-  return (
-    <Typography className={classes.notFound} variant='h6'>
-      Post not found!
-    </Typography>
-  );
+const remarkReactComponents = {
+  a: Link
 };
 
-function BlogView() {
+const BlogView = () => {
   const { postId } = useParams();
+  const [hasWaited, setHasWaited] = useState(false);
+  const triggerScroll = useTriggerScroll();
   const posts = useStoreState((state: globalStore) => state.posts);
+  const theme = useStoreState((state: globalStore) => state.theme);
   const user = useStoreState((state: globalStore) => state.user);
   const dispatch = useDispatch();
-  const selectedPost =
-    useMemo(() => find(posts, post => post.id === postId), [posts, postId]) || {};
   const selectedPostIndex = useMemo(
     () => findIndex<blogPost>(posts, post => post.id === postId),
     [posts, postId]
   );
-  const [tldState] = useTLD();
-  const classes = useClasses({ tldState });
-  const notFound = isEmpty(selectedPost);
-  const isLoading = !isEmpty(selectedPost) && !selectedPost.body;
+  const selectedPost = posts[selectedPostIndex] || {};
+  const postNotFound = hasWaited && selectedPostIndex === -1;
+  const isLoading = !selectedPost.body && !postNotFound;
+  const postFade = useSpring({
+    opacity: isLoading ? 0 : 1,
+    transform: isLoading ? `translate3d(0, -19px, 0)` : `translate3d(0, 0px, 0)`,
+    from: {
+      opacity: 0,
+      transform: `translate3d(0, -19px, 0)`
+    },
+    config: {
+      tension: 169,
+      friction: 42,
+      precision: 0.0001
+    }
+  });
   const commentsLoading = selectedPost.comments === null;
   useFetchComments(selectedPostIndex, selectedPost.fbPath);
+  useEffect(() => void setTimeout(() => setHasWaited(true), 5000), []);
   useEffect(() => {
     if (selectedPost.path && !selectedPost.body)
       dispatch({
@@ -112,31 +61,42 @@ function BlogView() {
         }
       });
   }, [selectedPost.path, selectedPost.body, dispatch, selectedPostIndex]);
+  useEffect(() => {
+    if (selectedPost.body) triggerScroll();
+  }, [selectedPost.body, triggerScroll]);
+  const domPost = useMemo(
+    () =>
+      (selectedPost.body &&
+        unified()
+          .use(parse)
+          .use(remark2react, { remarkReactComponents })
+          //@ts-ignore
+          .processSync(selectedPost.body).result) ||
+      null,
+    [selectedPost.body]
+  );
   return (
-    <React.Fragment>
-      <Grid container justify='center'>
-        <Container className={classes.container}>
-          {notFound && <NotFoundPlaceholder />}
-          {!notFound && isLoading && <LoadingPlaceholder />}
-          {!isLoading && !notFound ? (
-            <React.Fragment>
-              <Markdown
-                renderers={markdownConfig}
-                source={katexMarkdown(selectedPost.body)}
-              />
-            </React.Fragment>
-          ) : null}
-        </Container>
-      </Grid>
-      {!commentsLoading && !notFound && (
+    <SuperContainer theme={theme}>
+      <ViewContainer theme={theme} className='markdown-body'>
+        {isLoading && <Loader style={{ padding: 0 }} />}
+        <a.div style={postFade}>
+          {!postNotFound && domPost}
+          {postNotFound && (
+            <h2>
+              <i>Oops!</i> This post has yet to be written!
+            </h2>
+          )}
+        </a.div>
+      </ViewContainer>
+      {!commentsLoading && !isLoading && !postNotFound && (
         <CommentHolder
           user={user}
           fbPath={selectedPost.fbPath}
           comments={selectedPost.comments}
         />
       )}
-    </React.Fragment>
+    </SuperContainer>
   );
-}
+};
 
-export default withPageFade(BlogView);
+export default BlogView;

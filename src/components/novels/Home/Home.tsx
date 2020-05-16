@@ -32,7 +32,7 @@ const Home = () => {
   return (
     <>
       <Intro />
-      <PostCategory posts={postsByDate} title='Latest Posts' />
+      <PostCategory posts={postsByDate} title='Latest Posts' limit={5} />
       <PostCategory posts={dsPosts} title='The Duncan Strauss Mysteries' />
       <PostCategory posts={philPosts} title='Philosophy' />
       <PuzzleCategory title='Puzzles' />

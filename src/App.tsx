@@ -10,7 +10,7 @@ import NoMatch from 'components/novels/NotFound';
 import Loader from 'components/words/Loader';
 import RedirectHome from 'components/words/RedirectHome/RedirectHome';
 
-const BlogView = React.lazy(() => import('./components/novels/BlogView2/BlogView2'));
+const BlogView = React.lazy(() => import('./components/novels/BlogView/BlogView'));
 const UserSettings = React.lazy(() => import('./components/novels/UserSettings'));
 const About = React.lazy(() => import('./components/novels/About/About'));
 const Websites = React.lazy(() => import('./components/novels/Websites'));
