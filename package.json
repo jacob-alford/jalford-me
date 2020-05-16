@@ -23,10 +23,13 @@
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-observable": "^1.2.0",
+    "remark-parse": "^8.0.2",
+    "remark-react": "^7.0.1",
     "rxjs": "^6.5.5",
     "source-map-explorer": "2.2.2",
     "styled-components": "5.0.0",
     "typed.js": "2.0.11",
+    "unified": "^9.0.0",
     "zxcvbn": "4.4.2"
   },
   "scripts": {
