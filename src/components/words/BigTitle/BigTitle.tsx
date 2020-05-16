@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { MUITitle, DB, Blue, Gray } from './style';
+import { MUITitle, Blue } from './style';
 
 const BeegTitle = (props: { children: string; style: any }) => {
   const { style, children } = props;
   return (
     <MUITitle align='center' variant='h1' style={style}>
-      <DB>{children[0]}</DB>
+      <Blue>{children[0]}</Blue>
       <Blue>{children[1]}</Blue>
-      <Gray>{children.slice(2)}</Gray>
+      <Blue>{children.slice(2)}</Blue>
     </MUITitle>
   );
 };

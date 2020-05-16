@@ -84,6 +84,56 @@ export interface errorPayload {
 }
 
 /*
+ *  Post State
+ *
+ */
+export interface postComment {
+  body: string;
+  date: Date;
+  depth: number;
+  id: string;
+  parentId: null | string;
+  user: {
+    image: string;
+    uid: string;
+    username: string;
+  };
+}
+export interface structuredComments extends postComment {
+  comments: structuredComments[];
+}
+export interface blogPost {
+  id: string;
+  fbPath: string;
+  path: string;
+  body: string | null;
+  title: string;
+  tags: string[];
+  date: Date;
+  public: boolean;
+  category: string;
+  comments: null | postComment[];
+}
+export interface blogPayload {
+  type: payloadType<actors.postActors>;
+  payload: blogPost[];
+}
+export interface addBodyBlogPayload {
+  type: payloadType<actors.postActors>;
+  payload: {
+    index: number;
+    body: string;
+  };
+}
+export interface addPostCommentsPayload {
+  type: payloadType<actors.postActors>;
+  payload: {
+    index: number;
+    comments: postComment[];
+  };
+}
+
+/*
  * Generic Payloads
  */
 export interface indexPayload<actors> {
@@ -98,6 +148,9 @@ export interface mutatePayload<actors> {
   type: payloadType<actors>;
   payload: actionConstructor<null>;
 }
+export interface emptyPayload<actors> {
+  type: payloadType<actors>;
+}
 
 /* ------------------ */
 
@@ -111,7 +164,9 @@ export enum domains {
   theme = 'theme',
   notifications = 'notifications',
   header = 'header',
-  errors = 'errors'
+  errors = 'errors',
+  posts = 'posts',
+  general = 'general'
 }
 
 export type payloadType<actors> = [domains, actors];
@@ -124,7 +179,11 @@ export type actionPayload =
   | themePayload
   | headerPayload
   | errorPayload
-  | indexPayload<actors.errorActors>;
+  | indexPayload<actors.errorActors>
+  | indexPayload<actors.postActors>
+  | blogPayload
+  | addBodyBlogPayload
+  | addPostCommentsPayload;
 
 export type actionConstructor<payloadType> = (
   store: globalStore,
@@ -147,6 +206,10 @@ export interface storeActions {
   [domains.theme]: storeActionCategory<themePayload>;
   [domains.header]: storeActionCategory<headerPayload>;
   [domains.errors]: storeActionCategory<errorPayload & indexPayload<actors.errorActors>>;
+  [domains.posts]: storeActionCategory<
+    blogPayload & addBodyBlogPayload & addPostCommentsPayload
+  >;
+  [domains.general]: storeActionCategory<emptyPayload<actors.generalActors>>;
 }
 
 /*
@@ -159,4 +222,5 @@ export interface globalStore {
   theme: themeState;
   headerIsOpen: boolean;
   errors: storeError[];
+  posts: blogPost[];
 }

@@ -37,9 +37,11 @@ export const NOTIF_REM: pt<notificationActors> = [
  * Theme Actors
  */
 export enum themeActors {
-  toggle = 'toggle'
+  toggle = 'toggle',
+  togInt = 'togInt'
 }
 export const THEME_TOG: pt<themeActors> = [domains.theme, themeActors.toggle];
+export const THEME_TOG_INT: pt<themeActors> = [domains.theme, themeActors.togInt];
 
 /*
  * Header Actors
@@ -56,3 +58,31 @@ export enum errorActors {
   setError = 'setError'
 }
 export const SET_ERROR: pt<errorActors> = [domains.errors, errorActors.setError];
+
+/*
+ * Post Actors
+ */
+export enum postActors {
+  concatPosts = 'concatPosts',
+  addPostBody = 'addPostBody',
+  addPostComments = 'addPostComments',
+  triggerBodyUpdate = 'triggerBodyUpdate'
+}
+export const CONCAT_POSTS: pt<postActors> = [domains.posts, postActors.concatPosts];
+export const ADD_BODY: pt<postActors> = [domains.posts, postActors.addPostBody];
+export const TRIG_BODY_UPDATE: pt<postActors> = [
+  domains.posts,
+  postActors.triggerBodyUpdate
+];
+export const ADD_COMMENTS: pt<postActors> = [domains.posts, postActors.addPostComments];
+
+/*
+ * General Actors
+ */
+export enum generalActors {
+  initialLoad = 'initialLoad'
+}
+export const INITIAL_LOAD: pt<generalActors> = [
+  domains.general,
+  generalActors.initialLoad
+];

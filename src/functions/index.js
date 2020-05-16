@@ -112,3 +112,6 @@ export const detectMobile = () => {
   }
   return hasTouchScreen;
 };
+
+export const longDate = date =>
+  date.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' });

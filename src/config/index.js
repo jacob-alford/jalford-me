@@ -14,8 +14,6 @@ export const navItems = [
   { text: 'about', url: '/about' },
   { text: 'rpn', url: '/rpn' },
   { text: 'websites', url: '/websites' },
-  { text: 'posts', url: '/posts' },
-  { text: 'puzzles', url: '/puzzles' },
   { text: 'github', url: 'https://github.com/jacob-alford' },
   { text: 'resume', url: 'https://www.visualcv.com/jacob-alford' }
 ];
