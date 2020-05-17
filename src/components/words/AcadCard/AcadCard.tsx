@@ -9,7 +9,8 @@ interface AcedCardProps {
   img?: string;
   imgTitle?: string;
   description: string;
-  read: () => void;
+  read: (evt: React.SyntheticEvent<HTMLButtonElement>) => void;
+  href: string;
   imageWidthOD?: number;
   Renderer?: React.ElementType;
 }
@@ -22,6 +23,7 @@ const AcedCard = (props: AcedCardProps) => {
     imgTitle,
     description,
     read,
+    href,
     imageWidthOD = 250,
     Renderer
   } = props;
@@ -38,7 +40,7 @@ const AcedCard = (props: AcedCardProps) => {
       ) : (
         <Image width={imageWidthOD} src={img} alt={imgTitle || title} />
       )}
-      <AlfordButton type={types.secondary} onClick={read}>
+      <AlfordButton href={href} type={types.secondary} onClick={read}>
         Read
       </AlfordButton>
     </Card>
