@@ -59,7 +59,7 @@ const Header = () => {
           {navItems.map((navItem, index) => (
             <NavItem
               active={getActiveNavItem(location.pathname) === index ? 1 : 0}
-              onClick={redirect(navItem.url)}
+              onClick={() => redirect(navItem.url)}
               key={navItem.text}
               style={navItemStyles}>
               {navItem.text}

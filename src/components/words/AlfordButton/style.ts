@@ -20,7 +20,8 @@ export const Primary = styled(Button)`
 `;
 
 export const Secondary = styled(Button)`
-  background: ${C.acc(2)} !important;
+  background: ${C.acc(1)} !important;
+  color: white !important;
   ${base}
 `;
 
@@ -31,6 +32,7 @@ export const Success = styled(Button)`
 
 export const Danger = styled(Button)`
   background: ${C.danger} !important;
+  color: white !important;
   ${base}
 `;
 

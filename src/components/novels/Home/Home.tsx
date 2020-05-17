@@ -4,6 +4,7 @@ import filter from 'lodash/filter';
 import Intro from 'components/paragraphs/Intro/Intro';
 import PostCategory from 'components/paragraphs/PostCategory/PostCategory';
 import PuzzleCategory from 'components/paragraphs/PuzzleCategory/PuzzleCategory';
+import AcadCategory from 'components/paragraphs/AcadCategory/AcadCategory';
 import { useStoreState } from 'global-state';
 
 const Home = () => {
@@ -36,6 +37,7 @@ const Home = () => {
       <PostCategory posts={dsPosts} title='The Duncan Strauss Mysteries' />
       <PostCategory posts={philPosts} title='Philosophy' />
       <PuzzleCategory title='Puzzles' />
+      <AcadCategory title='Academic Papers' />
     </>
   );
 };
