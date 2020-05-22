@@ -10,7 +10,9 @@ interface themeConstants {
   warn: string;
   contBackAlt: getColorFromTheme;
   contBack: getColorFromTheme;
+  contBackInv: getColorFromTheme;
   text: getColorFromTheme;
+  textInv: getColorFromTheme;
   textAlt: getColorFromTheme;
   textDim: getColorFromTheme;
   textHighlight: getColorFromTheme;
@@ -41,8 +43,10 @@ const C: themeConstants = {
   warn: '#FFD952',
   acc: (num: number) => ['#164B6B', '#C70066', '#C74F06'][num],
   contBack: mkThmSlct('#ffffff', '#000000'),
+  contBackInv: mkThmSlct('#000000', '#ffffff'),
   contBackAlt: mkThmSlct('#cdcdcd', '#232323'),
   text: mkThmSlct('#000000', '#ffffff'),
+  textInv: mkThmSlct('#ffffff', '#000000'),
   textAlt: mkThmSlct('#232323', '#bcbcbc'),
   textDim: mkThmSlct('rgba(0,0,0,.69)', '#cdcdcd'),
   textHighlight: mkThmSlct('#164B6B', '#62F8DE'),
