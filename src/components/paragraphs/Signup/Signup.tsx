@@ -20,6 +20,7 @@ interface SignupProps {
   theme: themeState;
   submitByPassword: (email: string, password: string, color: string) => void;
   submitByGoogle: () => void;
+  submitByApple: () => void;
 }
 
 const mapWidth = (level: number) => `${Math.min(4, Math.max(level, 1)) * 52}px`;
@@ -27,7 +28,7 @@ const getColorLevel = (level: number) =>
   [C.danger, C.danger, C.warn, C.warn, C.success][level];
 
 const Signup = (props: SignupProps) => {
-  const { theme, submitByPassword, submitByGoogle } = props;
+  const { theme, submitByPassword, submitByGoogle, submitByApple } = props;
   const [email, setEmail] = useState('');
   const [colour, setColour] = useState(C.prim(1));
   const [password, setPassword] = useState('');
@@ -55,6 +56,27 @@ const Signup = (props: SignupProps) => {
       <Title variant='h4' theme={theme}>
         Signup
       </Title>
+      <Divider theme={theme} />
+      <BrandButton
+        onClick={() => submitByApple()}
+        prefix='/publicAssets/brand-buttons/apple/apple-signin'
+        width={191}
+        height={46}
+        ariaLabel='sign in with apple'
+        useHighlight
+        theme={theme}
+        shadowOverride='drop-shadow(1px 1px .9px rgba(0,0,0,.2))'
+        marginOverride='0px 0px 7px 0px'
+      />
+      <BrandButton
+        onClick={() => submitByGoogle()}
+        prefix='/publicAssets/brand-buttons/google/google-signin'
+        marginOverride='7px 0px 0px 0px'
+        ariaLabel='sign in with google'
+        width={191}
+        height={46}
+        theme={theme}
+      />
       <Divider theme={theme} />
       <Form noValidate theme={theme}>
         <FormField
@@ -94,14 +116,6 @@ const Signup = (props: SignupProps) => {
           Submit
         </Button>
       </Form>
-      <Divider theme={theme} />
-      <BrandButton
-        onClick={() => submitByGoogle()}
-        prefix='/publicAssets/brand-buttons/google/google-signin'
-        width={191}
-        height={46}
-        theme={theme}
-      />
     </SignupDialogue>
   );
 };

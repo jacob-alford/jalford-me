@@ -32,7 +32,7 @@ export const Title = styled(Typography)`
 
 export const Divider = styled.div`
   background: ${(props: { theme: themeState }) => C.div(props.theme)};
-  height: 1px;
+  height: 2px;
   width: 100%;
   margin: ${C.spacing(0)} 0px ${C.spacing(0)} 0px !important;
   transition: background 0.5s, color 0.5s;
