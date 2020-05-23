@@ -5,9 +5,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
-import useTLD from 'components/bindings/hooks/useTLD';
-
-import { userState } from 'global-state';
+import { userState, themeState } from 'global-state';
 
 import { themeHook } from 'theme';
 
@@ -36,10 +34,11 @@ export default function CommentActions(props: {
   remove: () => void;
   permDelete: () => void;
   isEditing: boolean;
+  theme: themeState;
 }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmPermDelete, setConfirmPermDelete] = useState(false);
-  const [tldState] = useTLD();
+  const { theme: tldState } = props;
   const classes = useClasses({ tldState, ...props });
   const { loggedUser, user, edit, remove, permDelete, isEditing } = props;
   return (

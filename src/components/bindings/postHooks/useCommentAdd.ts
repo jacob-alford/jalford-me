@@ -13,6 +13,7 @@ interface partialComment {
     image: string;
     uid: string;
     username: string;
+    color: string;
   };
 }
 
@@ -37,7 +38,8 @@ const useCommentAdd = (postPath: string) => {
         user: {
           image: newComment.user.image,
           uid: newComment.user.uid,
-          username: newComment.user.username
+          username: newComment.user.username,
+          color: newComment.user.color
         }
       };
       getCommentCollection(postPath)

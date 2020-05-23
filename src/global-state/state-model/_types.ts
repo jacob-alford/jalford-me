@@ -97,6 +97,7 @@ export interface postComment {
     image: string;
     uid: string;
     username: string;
+    color: string;
   };
 }
 export interface structuredComments extends postComment {

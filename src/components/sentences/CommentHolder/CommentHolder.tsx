@@ -92,7 +92,8 @@ const CommentHolder = (props: {
                 user: {
                   image: user.details.image,
                   uid: user.details.uid,
-                  username: user.details.username
+                  username: user.details.username,
+                  color: user.details.color
                 }
               })
             }
@@ -111,7 +112,8 @@ const CommentHolder = (props: {
               user: {
                 image: user.details.image,
                 uid: user.details.uid,
-                username: user.details.username
+                username: user.details.username,
+                color: user.details.color
               }
             })
           }
@@ -124,16 +126,23 @@ const CommentHolder = (props: {
         {commentTrail.map(({ item: comment, key, props: newStyles }) => (
           <a.div key={key} style={newStyles}>
             <Comment
+              theme={theme}
               comment={comment}
               loggedUser={user}
               updateComment={(body: string, id: string) =>
                 updateComment(id, {
-                  body
+                  body,
+                  user: {
+                    image: user.details.image,
+                    uid: user.details.uid,
+                    username: user.details.username,
+                    color: user.details.color
+                  }
                 })
               }
               deleteComment={(id: string) =>
                 updateComment(id, {
-                  body: '*COMMENT REMOVED*'
+                  body: '###### COMMENT REMOVED'
                 })
               }
               handleReply={(depth: number, id: string) =>
