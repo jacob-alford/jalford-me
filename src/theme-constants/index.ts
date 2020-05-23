@@ -51,7 +51,7 @@ const C: themeConstants = {
   textDim: mkThmSlct('rgba(0,0,0,.69)', '#cdcdcd'),
   textHighlight: mkThmSlct('#164B6B', '#62F8DE'),
   div: mkThmSlct('#C70066', '#164B6B'),
-  action: mkThmSlct('#000000', '#ffffff'),
+  action: mkThmSlct('#6171F8', '#14b2c7'),
   actionHov: mkThmSlct('#232323', '#cdcdcd'),
   borderRadius: '16px',
   shadow: (num: number) =>

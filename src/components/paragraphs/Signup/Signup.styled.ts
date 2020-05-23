@@ -45,10 +45,8 @@ export const Button = styled(AlfordButton)`
 export const Form = styled.form`
   display: flex;
   flex-flow: column;
-  background: white;
   justify-content: center;
   align-items: center;
-  padding: ${C.spacing(0)};
   & > * {
     width: 100%;
   }

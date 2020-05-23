@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSpring } from 'react-spring';
 import zxcvbn from 'zxcvbn';
 import BrandButton from 'components/words/BrandButton/BrandButton';
+import FormField from 'components/words/AlfordField/AlfordField';
 import { types } from 'components/words/AlfordButton/AlfordButton';
 import { themeState } from 'global-state';
 import {
@@ -10,8 +11,7 @@ import {
   PasswordMeter,
   Title,
   Divider,
-  Form,
-  FormField
+  Form
 } from './Signup.styled';
 import C from 'theme-constants';
 import { validateEmail } from 'functions';
@@ -103,7 +103,6 @@ const Signup = (props: SignupProps) => {
           value={email}
           error={!(email === '' || emailValid)}
           onChange={evt => setEmail(evt.target.value)}
-          variant='outlined'
           label='Email'
           type='email'
           autoComplete='email'
@@ -114,7 +113,6 @@ const Signup = (props: SignupProps) => {
           type='password'
           error={!(password === '' || passwordValid)}
           onChange={evt => setPassword(evt.target.value)}
-          variant='outlined'
           label='Password'
           autoComplete='new-password'
         />
@@ -124,7 +122,6 @@ const Signup = (props: SignupProps) => {
           error={!colorValid}
           value={colour}
           onChange={evt => setColour(evt.target.value)}
-          variant='outlined'
           label='Color'
           type='color'
         />
