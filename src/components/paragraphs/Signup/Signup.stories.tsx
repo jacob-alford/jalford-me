@@ -20,6 +20,7 @@ export const SignupDialogueDarkTheme = () => (
     }}>
     <Signup
       submitByPassword={action('Submit by Password')}
+      submitByGithub={action('Submit by Github')}
       submitByGoogle={action('Submit by Google')}
       submitByApple={action('Submit by Apple')}
       theme={themeState.dark}
@@ -42,6 +43,7 @@ export const SignupDialogueLightTheme = () => (
     }}>
     <Signup
       submitByPassword={action('Submit by Password')}
+      submitByGithub={action('Submit by Github')}
       submitByGoogle={action('Submit by Google')}
       submitByApple={action('Submit by Apple')}
       theme={themeState.light}

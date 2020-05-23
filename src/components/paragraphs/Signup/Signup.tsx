@@ -21,6 +21,7 @@ interface SignupProps {
   submitByPassword: (email: string, password: string, color: string) => void;
   submitByGoogle: () => void;
   submitByApple: () => void;
+  submitByGithub: () => void;
 }
 
 const mapWidth = (level: number) => `${Math.min(4, Math.max(level, 1)) * 52}px`;
@@ -28,7 +29,13 @@ const getColorLevel = (level: number) =>
   [C.danger, C.danger, C.warn, C.warn, C.success][level];
 
 const Signup = (props: SignupProps) => {
-  const { theme, submitByPassword, submitByGoogle, submitByApple } = props;
+  const {
+    theme,
+    submitByPassword,
+    submitByGoogle,
+    submitByApple,
+    submitByGithub
+  } = props;
   const [email, setEmail] = useState('');
   const [colour, setColour] = useState(C.prim(1));
   const [password, setPassword] = useState('');
@@ -69,6 +76,17 @@ const Signup = (props: SignupProps) => {
         marginOverride='0px 0px 7px 0px'
       />
       <BrandButton
+        onClick={() => submitByGithub()}
+        prefix='/publicAssets/brand-buttons/github/github-signin'
+        shadowOverride='drop-shadow(1px 1px .9px rgba(0,0,0,.2))'
+        marginOverride='7px 0px 7px 0px'
+        ariaLabel='sign in with github'
+        useHighlight
+        width={191}
+        height={46}
+        theme={theme}
+      />
+      <BrandButton
         onClick={() => submitByGoogle()}
         prefix='/publicAssets/brand-buttons/google/google-signin'
         marginOverride='7px 0px 0px 0px'
@@ -77,6 +95,7 @@ const Signup = (props: SignupProps) => {
         height={46}
         theme={theme}
       />
+
       <Divider theme={theme} />
       <Form noValidate theme={theme}>
         <FormField
