@@ -9,20 +9,17 @@ interface Props {
   posts: blogPost[];
   title: string;
   limit?: number;
-  bgOvrd?: string;
-  textOvrd?: string;
-  divOvrd?: string;
 }
 
 const PostCategory = (props: Props) => {
-  const { posts, limit, title, bgOvrd, textOvrd, divOvrd } = props;
+  const { posts, limit, title } = props;
   const slicedPosts = useMemo(() => slice(posts, 0, limit), [posts, limit]);
   const theme = useStoreState(store => store.theme);
   const loading = posts.length === 0;
   return (
-    <CatCont theme={theme} bgOvrd={bgOvrd} textOvrd={textOvrd}>
+    <CatCont theme={theme}>
       <Title variant='h2'>{title}</Title>
-      <Divider theme={theme} divOvrd={divOvrd} />
+      <Divider theme={theme} />
       {loading && <Loader />}
       {!loading && (
         <PostHolder>

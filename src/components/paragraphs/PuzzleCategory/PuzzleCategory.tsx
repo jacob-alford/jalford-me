@@ -5,19 +5,16 @@ import Puzzles from 'components/paragraphs/Puzzles/Puzzles';
 
 interface Props {
   title: string;
-  bgOvrd?: string;
-  textOvrd?: string;
-  divOvrd?: string;
 }
 
 const PuzzleCategory = (props: Props) => {
-  const { title, bgOvrd, textOvrd, divOvrd } = props;
+  const { title } = props;
   const theme = useStoreState(store => store.theme);
   const user = useStoreState(store => store.user);
   return (
-    <CatCont theme={theme} bgOvrd={bgOvrd} textOvrd={textOvrd}>
+    <CatCont theme={theme}>
       <Title variant='h2'>{title}</Title>
-      <Divider theme={theme} divOvrd={divOvrd} />
+      <Divider theme={theme} />
       <PuzzleHolder>
         <Puzzles user={user} />
       </PuzzleHolder>

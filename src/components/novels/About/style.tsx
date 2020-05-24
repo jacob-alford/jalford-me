@@ -76,7 +76,7 @@ export const IconList = styled.div`
 
 interface HeaderProps {
   theme: themeState;
-  colour?: string;
+  color?: string;
 }
 
 export const Header = styled(Typography)`
@@ -85,7 +85,7 @@ export const Header = styled(Typography)`
   width: 100%;
   text-align: center;
   margin: 0px;
-  border-bottom: 1px solid ${(props: HeaderProps): string => props.colour ?? C.prim(0)};
+  border-bottom: 1px solid ${C.prim(2)};
   color: ${(props: HeaderProps) => C.text(props.theme)} !important;
 `;
 

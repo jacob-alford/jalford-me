@@ -37,28 +37,26 @@ export default function App() {
   useBlogCategoryFetch('posts', 'philosophy', 'philosophy');
   useBlogCategoryFetch('posts', 'general', 'general');
   return (
-    <>
-      <Router>
-        <NotificationsHolder />
-        <Header />
-        <Suspense fallback={<Loader />}>
-          <Switch>
-            <Route exact path='/rpn' render={props => <RPN {...props} />} />
-            <Route exact path='/user' component={UserSettings} />
-            <Route exact path='/websites' component={Websites} />
-            <Route exact path='/puzzles/19-2-22' component={Puzzle1} />
-            <Route exact path='/posts/:postId' component={BlogView} />
-            <Route exact path='/puzzles/19-2-26' component={Puzzle2} />
-            <Route exact path='/puzzles/19-3-3' component={Puzzle3} />
-            <Route exact path='/puzzles' component={RedirectHome} />
-            <Route exact path='/about' component={About} />
-            <Route exact path='/posts' component={RedirectHome} />
-            <Route exact path='/' component={Home} />
-            <Route path='*' component={NoMatch} />
-          </Switch>
-        </Suspense>
-        <Footing />
-      </Router>
-    </>
+    <Router>
+      <NotificationsHolder />
+      <Header />
+      <Suspense fallback={<Loader />}>
+        <Switch>
+          <Route exact path='/rpn' render={props => <RPN {...props} />} />
+          <Route exact path='/user' component={UserSettings} />
+          <Route exact path='/websites' component={Websites} />
+          <Route exact path='/puzzles/19-2-22' component={Puzzle1} />
+          <Route exact path='/posts/:postId' component={BlogView} />
+          <Route exact path='/puzzles/19-2-26' component={Puzzle2} />
+          <Route exact path='/puzzles/19-3-3' component={Puzzle3} />
+          <Route exact path='/puzzles' component={RedirectHome} />
+          <Route exact path='/about' component={About} />
+          <Route exact path='/posts' component={RedirectHome} />
+          <Route exact path='/' component={Home} />
+          <Route path='*' component={NoMatch} />
+        </Switch>
+      </Suspense>
+      <Footing />
+    </Router>
   );
 }

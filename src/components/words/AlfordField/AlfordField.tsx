@@ -14,11 +14,11 @@ const AlfordField = (props: AlfordFieldProps) => {
   const { variant = 'outlined', value, onChange } = props;
   return (
     <Field
+      {...props}
       variant={variant}
       value={value}
       onChange={onChange}
       theme={props.theme}
-      {...props}
     />
   );
 };

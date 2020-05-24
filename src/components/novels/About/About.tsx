@@ -126,7 +126,7 @@ const About2 = () => {
         </MeHolder>
         <Stack>
           <Block theme={theme} style={frontEndFall} color='#62F8De'>
-            <Header variant='h2' theme={theme} colour='#62F8De'>
+            <Header variant='h2' theme={theme}>
               Front End
             </Header>
             <IconList>
@@ -182,7 +182,7 @@ const About2 = () => {
             </IconList>
           </Block>
           <Block theme={theme} style={backEndFall} color='#55CBD9'>
-            <Header variant='h2' theme={theme} colour='#55CBD9'>
+            <Header variant='h2' theme={theme}>
               Back End
             </Header>
             <IconList>
@@ -210,7 +210,7 @@ const About2 = () => {
             </IconList>
           </Block>
           <Block theme={theme} style={mathFall} color='#69beef'>
-            <Header variant='h2' theme={theme} colour='#69beef'>
+            <Header variant='h2' theme={theme}>
               Science
             </Header>
             <IconList>
@@ -317,7 +317,7 @@ const About2 = () => {
             </IconList>
           </Block>
           <Block theme={theme} style={creativeFall} color='#6171F8'>
-            <Header variant='h2' theme={theme} colour='#6171F8'>
+            <Header variant='h2' theme={theme}>
               Creative
             </Header>
             <IconList>

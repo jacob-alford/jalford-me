@@ -7,13 +7,10 @@ import { acadPapers } from 'config';
 
 interface Props {
   title: string;
-  bgOvrd?: string;
-  textOvrd?: string;
-  divOvrd?: string;
 }
 
 const AcadCategory = (props: Props) => {
-  const { title, bgOvrd, textOvrd, divOvrd } = props;
+  const { title } = props;
   const theme = useStoreState(store => store.theme);
   const _redirect = useRedirect() as (url: string) => void;
   const redirect = useCallback(
@@ -24,9 +21,9 @@ const AcadCategory = (props: Props) => {
     [_redirect]
   );
   return (
-    <CatCont theme={theme} bgOvrd={bgOvrd} textOvrd={textOvrd}>
+    <CatCont theme={theme}>
       <Title variant='h2'>{title}</Title>
-      <Divider theme={theme} divOvrd={divOvrd} />
+      <Divider theme={theme} />
       <PapersHolder>
         {acadPapers.map(paper => (
           <AcadCard
