@@ -1,30 +1,40 @@
-import React, { useState } from 'react';
-
+import React, { useCallback } from 'react';
 import Slide from '@material-ui/core/Slide';
 import Modal from '@material-ui/core/Modal';
-import Grid from '@material-ui/core/Grid';
+import renderOnPropDiff from 'helpers/renderOnPropDiff';
+import { ModalPaper } from './SignupDialogue.styled';
+import Signup from 'components/paragraphs/Signup/Signup';
+import { themeState } from 'global-state';
 
-import { ModalPaper } from './styled';
-import SignupForm from 'components/words/SignupForm';
-
-export default function SignupDialogue(props: {
+interface SignupDialogueProps {
   signUpOpen: boolean;
   setSignUpOpen: (val: boolean) => void;
-}) {
-  const { signUpOpen, setSignUpOpen } = props;
-  const [loading, setLoading] = useState(false);
-  const closeModal = () => setSignUpOpen(false);
+  theme: themeState;
+}
+
+const SignupDialogue = (props: SignupDialogueProps) => {
+  const { signUpOpen, setSignUpOpen, theme } = props;
+  const closeModal = useCallback(() => setSignUpOpen(false), [setSignUpOpen]);
+  const signupWithGoogle = useCallback(() => Promise.resolve(), []);
+  const signupWithApple = useCallback(() => Promise.resolve(), []);
+  const signupWithGithub = useCallback(() => Promise.resolve(), []);
+  const signupByPassword = useCallback(() => Promise.resolve(), []);
   return (
-    <Modal open={signUpOpen || loading} onClose={closeModal}>
+    <Modal open={signUpOpen} onClose={closeModal}>
       <Slide direction='left' in={signUpOpen} mountOnEnter unmountOnExit>
         <ModalPaper>
-          <Grid container justify='center'>
-            <Grid item>
-              <SignupForm loading={loading} setLoading={setLoading} />
-            </Grid>
-          </Grid>
+          <Signup
+            theme={theme}
+            completeSignup={closeModal}
+            submitByPassword={signupByPassword}
+            submitByGoogle={signupWithGoogle}
+            submitByApple={signupWithApple}
+            submitByGithub={signupWithGithub}
+          />
         </ModalPaper>
       </Slide>
     </Modal>
   );
-}
+};
+
+export default renderOnPropDiff(SignupDialogue);

@@ -15,6 +15,7 @@ interface ButtonProps {
 export const Button = styled(ButtonBase)`
   width: ${(props: ButtonProps) => props.width}px;
   height: ${(props: ButtonProps) => props.height}px;
+  min-height: ${(props: ButtonProps) => props.height}px;
   filter: ${(props: ButtonProps) => props.shadowoverride};
   margin: ${(props: ButtonProps) => props.marginoverride} !important;
   background: url(${(props: ButtonProps) => props.prefix}-normal.png);

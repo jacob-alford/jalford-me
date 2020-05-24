@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSpring } from 'react-spring';
 import zxcvbn from 'zxcvbn';
+import renderOnPropDiff from 'helpers/renderOnPropDiff';
 import BrandButton from 'components/words/BrandButton/BrandButton';
 import FormField from 'components/words/AlfordField/AlfordField';
 import { types } from 'components/words/AlfordButton/AlfordButton';
@@ -11,7 +12,10 @@ import {
   PasswordMeter,
   Title,
   Divider,
-  Form
+  Form,
+  SubmitContainer,
+  Loader,
+  LoadingCircle
 } from './Signup.styled';
 import C from 'theme-constants';
 import { validateEmail } from 'functions';
@@ -19,12 +23,13 @@ import { validateEmail } from 'functions';
 interface SignupProps {
   theme: themeState;
   submitByPassword: (email: string, password: string, color: string) => void;
-  submitByGoogle: () => void;
-  submitByApple: () => void;
-  submitByGithub: () => void;
+  submitByGoogle: () => Promise<void>;
+  submitByApple: () => Promise<void>;
+  submitByGithub: () => Promise<void>;
+  completeSignup: () => void;
 }
 
-const mapWidth = (level: number) => `${Math.min(4, Math.max(level, 1)) * 52}px`;
+const mapWidth = (level: number) => `${Math.min(4, Math.max(level, 1)) * 51.72}px`;
 const getColorLevel = (level: number) =>
   [C.danger, C.danger, C.warn, C.warn, C.success][level];
 
@@ -34,8 +39,10 @@ const Signup = (props: SignupProps) => {
     submitByPassword,
     submitByGoogle,
     submitByApple,
-    submitByGithub
+    submitByGithub,
+    completeSignup
   } = props;
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [colour, setColour] = useState(C.prim(1));
   const [password, setPassword] = useState('');
@@ -49,6 +56,16 @@ const Signup = (props: SignupProps) => {
       background: C.danger
     }
   });
+
+  const asyncDo = useCallback(
+    (func: () => Promise<void>) => async () => {
+      setLoading(true);
+      await func();
+      setLoading(false);
+      completeSignup();
+    },
+    [completeSignup]
+  );
 
   const passwordValid = passwordStrength === 4;
   const emailValid = validateEmail(email);
@@ -65,7 +82,7 @@ const Signup = (props: SignupProps) => {
       </Title>
       <Divider theme={theme} />
       <BrandButton
-        onClick={() => submitByApple()}
+        onClick={asyncDo(submitByApple)}
         prefix='/publicAssets/brand-buttons/apple/apple-signin'
         width={191}
         height={46}
@@ -73,13 +90,13 @@ const Signup = (props: SignupProps) => {
         useHighlight
         theme={theme}
         shadowOverride='drop-shadow(1px 1px .9px rgba(0,0,0,.2))'
-        marginOverride='0px 0px 7px 0px'
+        marginOverride='0px 0px 0px 0px'
       />
       <BrandButton
-        onClick={() => submitByGithub()}
+        onClick={asyncDo(submitByGithub)}
         prefix='/publicAssets/brand-buttons/github/github-signin'
         shadowOverride='drop-shadow(1px 1px .9px rgba(0,0,0,.2))'
-        marginOverride='7px 0px 7px 0px'
+        marginOverride='0px 0px 0px 0px'
         ariaLabel='sign in with github'
         useHighlight
         width={191}
@@ -87,9 +104,9 @@ const Signup = (props: SignupProps) => {
         theme={theme}
       />
       <BrandButton
-        onClick={() => submitByGoogle()}
+        onClick={asyncDo(submitByGoogle)}
         prefix='/publicAssets/brand-buttons/google/google-signin'
-        marginOverride='7px 0px 0px 0px'
+        marginOverride='0px 0px 0px 0px'
         ariaLabel='sign in with google'
         width={191}
         height={46}
@@ -125,15 +142,22 @@ const Signup = (props: SignupProps) => {
           label='Color'
           type='color'
         />
-        <Button
-          disabled={!passwordValid || !emailValid || !colorValid}
-          type={types.success}
-          onClick={() => submitByPassword(email, password, colour)}>
-          Submit
-        </Button>
+        <SubmitContainer>
+          {loading && (
+            <Loader>
+              <LoadingCircle color='secondary' />
+            </Loader>
+          )}
+          <Button
+            disabled={loading || !passwordValid || !emailValid || !colorValid}
+            type={types.success}
+            onClick={asyncDo(async () => submitByPassword(email, password, colour))}>
+            Submit
+          </Button>
+        </SubmitContainer>
       </Form>
     </SignupDialogue>
   );
 };
 
-export default Signup;
+export default renderOnPropDiff(Signup);

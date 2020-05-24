@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { animated as a } from 'react-spring';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import AlfordButton from 'components/words/AlfordButton/AlfordButton';
 import C from 'theme-constants';
 import { themeState } from 'global-state';
@@ -12,11 +13,11 @@ export const SignupDialogue = styled.div`
   display: flex;
   flex-flow: column;
   padding: ${C.spacing(0)};
-  margin: ${C.spacing(0)};
   border: 2px solid ${(props: { colour: string }) => isL6Fbck(props.colour)};
   text-align: center;
   width: max-content;
   height: max-content;
+  max-height: 100vh;
   justify-content: center;
   align-items: center;
   background: ${(props: { theme: themeState }) => C.contBack(props.theme)};
@@ -38,8 +39,28 @@ export const Divider = styled.div`
   transition: background 0.5s, color 0.5s;
 `;
 
+export const SubmitContainer = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  margin: 7px 0px 0px 0px !important;
+`;
+
+export const Loader = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+export const LoadingCircle = styled(CircularProgress)`
+  width: 30px !important;
+  height: 30px !important;
+  margin-right: -40px;
+  z-index: 1;
+`;
+
 export const Button = styled(AlfordButton)`
-  margin: 7px 0px 7px 0px !important;
+  width: 100%;
 `;
 
 export const Form = styled.form`
