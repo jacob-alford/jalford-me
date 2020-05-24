@@ -4,6 +4,7 @@ import Modal from '@material-ui/core/Modal';
 import renderOnPropDiff from 'helpers/renderOnPropDiff';
 import { ModalPaper } from './SignupDialogue.styled';
 import Signup from 'components/paragraphs/Signup/Signup';
+import useGoogleSignin from 'components/bindings/authHooks/useGoogleSignin';
 import { themeState } from 'global-state';
 
 interface SignupDialogueProps {
@@ -15,7 +16,7 @@ interface SignupDialogueProps {
 const SignupDialogue = (props: SignupDialogueProps) => {
   const { signUpOpen, setSignUpOpen, theme } = props;
   const closeModal = useCallback(() => setSignUpOpen(false), [setSignUpOpen]);
-  const signupWithGoogle = useCallback(() => Promise.resolve(), []);
+  const signupWithGoogle = useGoogleSignin();
   const signupWithApple = useCallback(() => Promise.resolve(), []);
   const signupWithGithub = useCallback(() => Promise.resolve(), []);
   const signupByPassword = useCallback(() => Promise.resolve(), []);
