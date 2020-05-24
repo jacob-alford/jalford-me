@@ -14,7 +14,7 @@ export interface userDetails {
   image: string;
   permissions: { value: number };
   username: string;
-  puzzles: puzzleList[];
+  puzzles: string[];
 }
 export interface userState {
   hydrated: boolean;

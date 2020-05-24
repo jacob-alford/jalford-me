@@ -1,4 +1,5 @@
 import Typography from '@material-ui/core/Typography';
+import IconEdit from '@material-ui/icons/Edit';
 import styled from 'styled-components';
 import { themeState } from 'global-state';
 import C from 'theme-constants';
@@ -20,6 +21,18 @@ export const CommentCard = styled.div`
   border: 2px solid ${(props: CommentCardProps) => props.color || '#14b2c7'};
   background: ${(props: CommentCardProps) => C.contBack(props.theme)};
   transition: background 0.5s, color 0.5s;
+`;
+
+const getLightIconColor = (isEditing: boolean) =>
+  isEditing ? 'rgba(0,0,0,.5)' : 'rgba(0,0,0,1)';
+const getDarkIconColor = (isEditing: boolean) =>
+  isEditing ? 'rgba(255,255,255,.5)' : 'rgba(255,255,255,1)';
+const getIconColor = (tldState: string, isEditing: boolean) =>
+  tldState === 'light' ? getLightIconColor(isEditing) : getDarkIconColor(isEditing);
+
+export const EditIcon = styled(IconEdit)`
+  color: ${(props: { theme: string; isEditing: boolean }) =>
+    getIconColor(props.theme, props.isEditing)};
 `;
 
 export const CommentHeader = styled.div`

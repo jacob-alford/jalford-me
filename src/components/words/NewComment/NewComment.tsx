@@ -1,32 +1,28 @@
-import React, { useState } from 'react';
-
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
+import React, { useState, useCallback, memo } from 'react';
 
 import TextField from 'components/words/AlfordField/AlfordField';
 import Button, { types as btnTypes } from 'components/words/AlfordButton/AlfordButton';
-import Holder from 'components/words/Holder';
 import Loader from 'components/words/Loader';
 
 import { NewCommentCard, CardButtons, NotLoggedIn } from './NewComment.styled';
 
 import { userState, useStoreState } from 'global-state';
 
-import { themeHook } from 'theme';
-
-export default function NewComment(props: {
+interface NewCommentProps {
   addComment: (commentText: string) => void;
   closeModal: () => void;
   user: userState;
-}) {
+}
+
+const NewComment = (props: NewCommentProps) => {
   const { addComment, closeModal = () => {}, user } = props;
-  const userLoading = user.hydrated === false;
   const theme = useStoreState(state => state.theme);
   const [commentText, setCommentText] = useState('');
-  const handleCommentEdit = (evt: React.ChangeEvent<HTMLInputElement>) =>
-    setCommentText(evt.target.value);
+  const handleCommentEdit = useCallback(
+    (evt: React.ChangeEvent<HTMLInputElement>) => setCommentText(evt.target.value),
+    []
+  );
+  const userLoading = user.hydrated === false;
   if (userLoading) return <Loader />;
   return (
     <NewCommentCard theme={theme}>
@@ -50,7 +46,7 @@ export default function NewComment(props: {
           </NotLoggedIn>
         </>
       )}
-      {user.loggedIn ? (
+      {user.loggedIn && (
         <CardButtons>
           <Button
             type={btnTypes.success}
@@ -63,7 +59,15 @@ export default function NewComment(props: {
             Submit
           </Button>
         </CardButtons>
-      ) : null}
+      )}
     </NewCommentCard>
   );
-}
+};
+
+const Eq = (i1: any, i2: any) => i1 === i2;
+
+export default memo(
+  NewComment,
+  ({ user: userP }, { user: userN }) =>
+    Eq(userP.loggedIn, userN.loggedIn) && Eq(userP.hydrated, userN.hydrated)
+);

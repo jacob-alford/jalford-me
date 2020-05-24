@@ -1,10 +1,11 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { useSpring } from 'react-spring';
 import { themeState } from 'global-state';
 import useRedirect from 'components/bindings/utilityHooks/useRedirect';
 import { Card, PostTitle, Date, TandD, Actions, Cat } from './style';
 import { longDate } from 'functions';
 import AlfordButton, { types } from 'components/words/AlfordButton/AlfordButton';
+import renderOnPropDiff from 'helpers/renderOnPropDiff';
 
 interface Props {
   title: string;
@@ -51,4 +52,4 @@ const PostCard = (props: Props) => {
   );
 };
 
-export default memo(PostCard);
+export default renderOnPropDiff(PostCard);

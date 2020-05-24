@@ -3,29 +3,29 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import useBlogCategoryFetch from 'components/bindings/postHooks/useBlogCategoryFetch';
 
-import NotificationsHolder from './components/sentences/NotificationsHolder';
-import Header from './components/paragraphs/Header/Header';
-import Footing from './components/novels/Footer';
+import NotificationsHolder from 'components/sentences/NotificationsHolder';
+import Header from 'components/paragraphs/Header/Header';
+import Footing from 'components/novels/Footer';
 import NoMatch from 'components/novels/NotFound';
 import Loader from 'components/words/Loader';
 import RedirectHome from 'components/words/RedirectHome/RedirectHome';
 
-const BlogView = React.lazy(() => import('./components/novels/BlogView/BlogView'));
-const UserSettings = React.lazy(() => import('./components/novels/UserSettings'));
-const About = React.lazy(() => import('./components/novels/About/About'));
-const Websites = React.lazy(() => import('./components/novels/Websites'));
-const Home = React.lazy(() => import('./components/novels/Home/Home'));
-const RPN = React.lazy(() => import('./components/novels/RPN/RPN'));
+const BlogView = React.lazy(() => import('components/novels/BlogView/BlogView'));
+const UserSettings = React.lazy(() => import('components/novels/UserSettings'));
+const About = React.lazy(() => import('components/novels/About/About'));
+const Websites = React.lazy(() => import('components/novels/Websites'));
+const Home = React.lazy(() => import('components/novels/Home/Home'));
+const RPN = React.lazy(() => import('components/novels/RPN/RPN'));
 
 /* Puzzles */
 const Puzzle1 = React.lazy(() =>
-  import('./components/sentences/Puzzles/PuzzlePages/Puzzle1')
+  import('components/paragraphs/Puzzles/PuzzlePages/Puzzle1')
 );
 const Puzzle2 = React.lazy(() =>
-  import('./components/sentences/Puzzles/PuzzlePages/Puzzle2')
+  import('components/paragraphs/Puzzles/PuzzlePages/Puzzle2')
 );
 const Puzzle3 = React.lazy(() =>
-  import('./components/sentences/Puzzles/PuzzlePages/Puzzle3')
+  import('components/paragraphs/Puzzles/PuzzlePages/Puzzle3')
 );
 
 export default function App() {

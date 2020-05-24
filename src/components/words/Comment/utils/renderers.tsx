@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import useRedirect from 'components/bindings/utilityHooks/useRedirect';
 
 interface LinkProps {
@@ -6,7 +6,7 @@ interface LinkProps {
   href: string;
 }
 
-export const Link = (props: LinkProps) => {
+export const Link = memo((props: LinkProps) => {
   const { href, children } = props;
   const redirect = useRedirect(href) as () => void;
   return (
@@ -19,4 +19,4 @@ export const Link = (props: LinkProps) => {
       {children}
     </a>
   );
-};
+});
