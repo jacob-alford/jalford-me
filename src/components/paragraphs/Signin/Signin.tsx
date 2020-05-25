@@ -69,7 +69,7 @@ const Signin = (props: SigninProps) => {
           type='password'
           onChange={evt => setPassword(evt.target.value)}
           label='Password'
-          autoComplete='new-password'
+          autoComplete='current-password'
         />
         <SubmitContainer>
           {loading && (
