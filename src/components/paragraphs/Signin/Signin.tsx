@@ -51,7 +51,7 @@ const Signin = (props: SigninProps) => {
   return (
     <SigninDialogue style={signinSpring} theme={theme}>
       <Title variant='h4' theme={theme}>
-        Signin
+        Sign In
       </Title>
       <Divider theme={theme} />
       <Form noValidate theme={theme}>

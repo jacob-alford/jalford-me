@@ -76,7 +76,7 @@ const Signup = (props: SignupProps) => {
   return (
     <SignupDialogue style={signProviderSpring} theme={theme} colour={colour}>
       <Title variant='h4' theme={theme}>
-        Signup
+        Sign Up
       </Title>
       <Divider theme={theme} />
       <Form noValidate theme={theme}>
