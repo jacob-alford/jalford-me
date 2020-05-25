@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
-import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import Lock from '@material-ui/icons/Lock';
 import Eject from '@material-ui/icons/Eject';
 
@@ -15,15 +14,12 @@ import { useStoreState, alertEnum } from 'global-state';
 import useRedirect from 'components/bindings/utilityHooks/useRedirect';
 import useNotify from 'components/bindings/hooks/useNotify';
 
-import LoginDialogue from 'components/sentences/LoginDialogue/LoginDialogue';
-import SignupDialogue from 'components/sentences/SignupDialogue/SignupDialogue';
-
-import { AccountIcon, CircleButton } from './styles';
+import { AccountIcon, CircleButton } from './UserCircle.styled';
 
 const UserCircle = () => {
   const theme = useStoreState(store => store.theme);
   const user = useStoreState(store => store.user);
-  const redirect = useRedirect('/user') as () => void;
+  const redirect = useRedirect() as (str: string) => void;
   const notify = useNotify({ timeout: 4500 });
   /*
    * <- Menu Popup ->
@@ -32,15 +28,7 @@ const UserCircle = () => {
   const openModal = (evt: React.MouseEvent<HTMLElement>) =>
     setMenuAnchor(evt.currentTarget);
   const closeModal = () => setMenuAnchor(null);
-  /*
-   * <- Signin/Signout Popup ->
-   */
-  const [signInOpen, setSignInOpen] = useState(false);
-  const [signUpOpen, setSignUpOpen] = useState(false);
-  useEffect(() => {
-    if (user.loggedIn && signInOpen) setSignInOpen(false);
-    if (user.loggedIn && signUpOpen) setSignUpOpen(false);
-  }, [user, signInOpen, signUpOpen]);
+
   const handleSignout = async () => {
     setMenuAnchor(null);
     await firebase.auth().signOut();
@@ -51,8 +39,6 @@ const UserCircle = () => {
   };
   return (
     <>
-      <LoginDialogue signInOpen={signInOpen} setSignInOpen={setSignInOpen} />
-      <SignupDialogue signUpOpen={signUpOpen} setSignUpOpen={setSignUpOpen} />
       <Menu
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'bottom', horizontal: 'right' }}
@@ -61,33 +47,22 @@ const UserCircle = () => {
         onClose={closeModal}>
         {!user.loggedIn && [
           <MenuItem
-            key='sign-in-button'
+            key='sign-in-up-button'
             onClick={() => {
-              setSignInOpen(true);
+              redirect('/auth');
               setMenuAnchor(null);
             }}>
             <ListItemIcon>
               <LockOpenIcon />
             </ListItemIcon>
-            <ListItemText>Sign In</ListItemText>
-          </MenuItem>,
-          <MenuItem
-            key='sign-up-button'
-            onClick={() => {
-              setSignUpOpen(true);
-              setMenuAnchor(null);
-            }}>
-            <ListItemIcon>
-              <AssignmentIndIcon />
-            </ListItemIcon>
-            <ListItemText>Sign Up</ListItemText>
+            <ListItemText>Sign In / Sign Up</ListItemText>
           </MenuItem>
         ]}
         {user.loggedIn && [
           <MenuItem
             key='account-button'
             onClick={() => {
-              redirect();
+              redirect('/user');
               setMenuAnchor(null);
             }}>
             <ListItemIcon>

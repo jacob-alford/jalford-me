@@ -7,20 +7,18 @@ import AlfordButton from 'components/words/AlfordButton/AlfordButton';
 import C from 'theme-constants';
 import { themeState } from 'global-state';
 
-const isL6Fbck = (str: string) => (str.length === 7 ? str : '#14b2c7');
-
-export const SignupDialogue = styled(a.div)`
+export const SigninDialogue = styled(a.div)`
   display: flex;
   flex-flow: column;
   padding: ${C.spacing(0)};
   margin: 7px;
-  border: 2px solid ${(props: { colour: string }) => isL6Fbck(props.colour)};
   text-align: center;
   width: 226px;
   height: max-content;
   max-height: 100vh;
   justify-content: center;
   align-items: center;
+  border: 2px solid #14b2c7;
   background: ${(props: { theme: themeState }) => C.contBack(props.theme)};
   transition: background 0.5s, color 0.5s, border 0.5s;
 `;
@@ -76,12 +74,4 @@ export const Form = styled.form`
 
 export const FormField = styled(TextField)`
   margin: 7px !important;
-`;
-
-export const PasswordMeter = styled(a.div)`
-  height: ${C.spacing(0)};
-  margin: ${C.spacing(0)};
-  margin-left: 0px;
-  margin-right: 0px;
-  border-radius: ${C.borderRadius};
 `;

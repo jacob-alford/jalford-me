@@ -16,6 +16,7 @@ const About = React.lazy(() => import('components/novels/About/About'));
 const Websites = React.lazy(() => import('components/novels/Websites'));
 const Home = React.lazy(() => import('components/novels/Home/Home'));
 const RPN = React.lazy(() => import('components/novels/RPN/RPN'));
+const Auth = React.lazy(() => import('components/novels/Auth/Auth'));
 
 /* Puzzles */
 const Puzzle1 = React.lazy(() =>
@@ -42,7 +43,8 @@ export default function App() {
       <Header />
       <Suspense fallback={<Loader />}>
         <Switch>
-          <Route exact path='/rpn' render={props => <RPN {...props} />} />
+          <Route exact path='/rpn' component={RPN} />
+          <Route exact path='/auth' component={Auth} />
           <Route exact path='/user' component={UserSettings} />
           <Route exact path='/websites' component={Websites} />
           <Route exact path='/puzzles/19-2-22' component={Puzzle1} />

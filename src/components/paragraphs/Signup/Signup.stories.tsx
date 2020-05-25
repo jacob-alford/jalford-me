@@ -26,7 +26,7 @@ export const SignupDialogueDarkTheme = () => (
     style={{
       background: '#232323',
       width: '100vw',
-      height: '100vh',
+      height: '200vh',
       display: 'flex',
       justifyContent: 'center',
       padding: '14px'
