@@ -107,6 +107,8 @@ const Comment = (props: CommentProps) => {
     [bodyText]
   );
 
+  const canChange = loggedUser.details.permissions.value === 10 || (isEditing && !hidden);
+
   return (
     <>
       <SuperContainer>
@@ -140,17 +142,19 @@ const Comment = (props: CommentProps) => {
               )}
             </UserIdentity>
           </CommentHeader>
-          <ActionsHolder>
-            <CommentActions
-              theme={theme}
-              loggedUser={loggedUser}
-              user={user}
-              edit={handleEdit}
-              remove={handleDelete}
-              permDelete={handlePermDelete}
-              isEditing={isEditing}
-            />
-          </ActionsHolder>
+          {canChange && (
+            <ActionsHolder>
+              <CommentActions
+                theme={theme}
+                loggedUser={loggedUser}
+                user={user}
+                edit={handleEdit}
+                remove={handleDelete}
+                permDelete={handlePermDelete}
+                isEditing={isEditing}
+              />
+            </ActionsHolder>
+          )}
           {!hidden && isEditing ? (
             <Padding>
               <Field
@@ -167,7 +171,7 @@ const Comment = (props: CommentProps) => {
               {commentDom}
             </MarkdownBody>
           )}
-          {!hidden && depth < 6 && !isEditing && loggedUser.loggedIn && (
+          {canChange && !hidden && depth < 6 && !isEditing && loggedUser.loggedIn && (
             <ButtonContainer>
               <Button
                 theme={theme}
@@ -178,7 +182,7 @@ const Comment = (props: CommentProps) => {
               </Button>
             </ButtonContainer>
           )}
-          {!hidden && isEditing && (
+          {canChange && !hidden && isEditing && (
             <ButtonContainer>
               <Button
                 type={btnTypes.success}

@@ -23,30 +23,33 @@ const SignProviders = (props: SignProvidersProps) => {
     },
     delay: 538
   });
+
   return (
     <SignProviderDialogue style={signProviderSpring} theme={theme}>
       <Title variant='h4' theme={theme}>
         Provider
       </Title>
       <Divider theme={theme} />
-      <BrandButton
-        onClick={submitByApple}
-        prefix='/publicAssets/brand-buttons/apple/apple-signin'
-        width={191}
-        height={46}
-        ariaLabel='sign in with apple'
-        useHighlight
-        theme={theme}
-        shadowOverride='drop-shadow(1px 1px .9px rgba(0,0,0,.2))'
-        marginOverride='0px 0px 0px 0px'
-      />
+      {false && (
+        <BrandButton
+          onClick={submitByApple}
+          prefix='/publicAssets/brand-buttons/apple/apple-signin'
+          width={191}
+          height={46}
+          ariaLabel='sign in with apple'
+          useHighlight='true'
+          theme={theme}
+          shadowOverride='drop-shadow(1px 1px .9px rgba(0,0,0,.2))'
+          marginOverride='0px 0px 0px 0px'
+        />
+      )}
       <BrandButton
         onClick={submitByGithub}
         prefix='/publicAssets/brand-buttons/github/github-signin'
         shadowOverride='drop-shadow(1px 1px .9px rgba(0,0,0,.2))'
         marginOverride='0px 0px 0px 0px'
         ariaLabel='sign in with github'
-        useHighlight
+        useHighlight='true'
         width={191}
         height={46}
         theme={theme}

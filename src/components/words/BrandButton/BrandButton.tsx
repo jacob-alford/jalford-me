@@ -11,7 +11,7 @@ interface BrandButtonProps {
   shadowOverride?: string;
   marginOverride?: string;
   ariaLabel?: string;
-  useHighlight?: boolean;
+  useHighlight?: string;
 }
 const BrandButton = (props: BrandButtonProps) => {
   const {

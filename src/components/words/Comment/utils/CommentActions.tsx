@@ -29,7 +29,7 @@ const CommentActions = (props: CommentActionsProps) => {
     <>
       {loggedUser.details.uid === user.uid && (
         <IconButton onClick={edit} disabled={isEditing}>
-          <EditIcon theme={theme} isEditing={isEditing} />
+          <EditIcon theme={theme} isediting={isEditing.toString()} />
         </IconButton>
       )}
       {(loggedUser.details.uid === user.uid ||

@@ -21,17 +21,22 @@ import { validateEmail } from 'functions';
 
 interface SignupProps {
   theme: themeState;
-  submitByPassword: (email: string, password: string, color: string) => void;
-  completeSignup: () => void;
+  submitByPassword: (
+    email: string,
+    displayName: string,
+    password: string,
+    color: string
+  ) => void;
 }
 
-const mapWidth = (level: number) => `${Math.min(4, Math.max(level, 1)) * 51.72}px`;
+const mapWidth = (level: number) => `${Math.min(4, Math.max(level, 1)) * 48.5}px`;
 const getColorLevel = (level: number) =>
   [C.danger, C.danger, C.warn, C.warn, C.success][level];
 
 const Signup = (props: SignupProps) => {
-  const { theme, submitByPassword, completeSignup } = props;
+  const { theme, submitByPassword } = props;
   const [loading, setLoading] = useState(false);
+  const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [colour, setColour] = useState(C.prim(1));
   const [password, setPassword] = useState('');
@@ -57,14 +62,15 @@ const Signup = (props: SignupProps) => {
 
   const asyncDo = useCallback(
     (func: () => Promise<void>) => async () => {
+      console.log('fuck');
       setLoading(true);
       await func();
       setLoading(false);
-      completeSignup();
     },
-    [completeSignup]
+    []
   );
 
+  const displayNameValid = displayName !== '';
   const passwordValid = passwordStrength === 4;
   const emailValid = validateEmail(email);
   const colorValid = !Number.isNaN(parseInt(colour.substr(1), 16));
@@ -87,6 +93,7 @@ const Signup = (props: SignupProps) => {
           onChange={evt => setEmail(evt.target.value)}
           label='Email'
           type='email'
+          required
           autoComplete='email'
         />
         <FormField
@@ -96,15 +103,26 @@ const Signup = (props: SignupProps) => {
           error={!(password === '' || passwordValid)}
           onChange={evt => setPassword(evt.target.value)}
           label='Password'
+          required
           autoComplete='new-password'
         />
         <PasswordMeter style={strengthSpring} />
+        <FormField
+          theme={theme}
+          value={displayName}
+          onChange={evt => setDisplayName(evt.target.value)}
+          label='Display Name'
+          type='name'
+          required
+          autoComplete='name'
+        />
         <FormField
           theme={theme}
           error={!colorValid}
           value={colour}
           onChange={evt => setColour(evt.target.value)}
           label='Color'
+          required
           type='color'
         />
         <SubmitContainer>
@@ -114,9 +132,13 @@ const Signup = (props: SignupProps) => {
             </Loader>
           )}
           <Button
-            disabled={loading || !passwordValid || !emailValid || !colorValid}
+            disabled={
+              loading || !displayNameValid || !passwordValid || !emailValid || !colorValid
+            }
             type={types.success}
-            onClick={asyncDo(async () => submitByPassword(email, password, colour))}>
+            onClick={asyncDo(async () =>
+              submitByPassword(email, displayName, password, colour)
+            )}>
             Submit
           </Button>
         </SubmitContainer>

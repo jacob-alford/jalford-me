@@ -10,9 +10,9 @@ const usersDb = db.collection('users');
 
 const accessUserDB = (uid: string): firebase.firestore.DocumentData => usersDb.doc(uid);
 
-const googleProvider = new firebase.auth.GoogleAuthProvider();
+const githubProvider = new firebase.auth.GithubAuthProvider();
 
-const useGoogleSignin = () => {
+const useGithubSignin = () => {
   const dispatch = useDispatch();
   const redirect = useRedirect('/') as () => void;
   const notifySuccess = useNotify({
@@ -21,7 +21,7 @@ const useGoogleSignin = () => {
   });
   return useCallback(async () => {
     try {
-      const userDetails = await firebase.auth().signInWithPopup(googleProvider);
+      const userDetails = await firebase.auth().signInWithPopup(githubProvider);
       if (!userDetails.user?.uid) throw new Error('UID not supplied in Auth!');
       const userDoc = await accessUserDB(userDetails.user.uid).get();
       if (!userDoc.exists)
@@ -50,4 +50,4 @@ const useGoogleSignin = () => {
   }, [dispatch, notifySuccess, redirect]);
 };
 
-export default useGoogleSignin;
+export default useGithubSignin;

@@ -31,8 +31,8 @@ const getIconColor = (tldState: string, isEditing: boolean) =>
   tldState === 'light' ? getLightIconColor(isEditing) : getDarkIconColor(isEditing);
 
 export const EditIcon = styled(IconEdit)`
-  color: ${(props: { theme: string; isEditing: boolean }) =>
-    getIconColor(props.theme, props.isEditing)};
+  color: ${(props: { theme: string; isediting: string }) =>
+    getIconColor(props.theme, props.isediting === 'true')};
 `;
 
 export const CommentHeader = styled.div`

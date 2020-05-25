@@ -80,7 +80,7 @@ export interface storeError {
 }
 export interface errorPayload {
   type: payloadType<actors.errorActors>;
-  payload: storeError;
+  payload: Error;
 }
 
 /*

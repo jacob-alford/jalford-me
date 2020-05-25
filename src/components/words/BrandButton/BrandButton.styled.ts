@@ -9,7 +9,7 @@ interface ButtonProps {
   marginoverride?: string;
   shadowoverride?: string;
   onClick: (evt: MouseEvent<HTMLDivElement>) => void;
-  usehighlight?: boolean;
+  usehighlight?: string;
 }
 
 export const Button = styled(ButtonBase)`
@@ -24,7 +24,7 @@ export const Button = styled(ButtonBase)`
     background: url(${(props: ButtonProps) => props.prefix}-focus.png);
     background-size: 100% 100%;
     ${props =>
-      props.usehighlight
+      props.usehighlight === 'true'
         ? `outline: 4px solid rgba(85, 203, 217, 0.4);
     outline-offset: -4px;`
         : ''}
@@ -33,7 +33,7 @@ export const Button = styled(ButtonBase)`
     background: url(${(props: ButtonProps) => props.prefix}-pressed.png);
     background-size: 100% 100%;
     ${props =>
-      props.usehighlight
+      props.usehighlight === 'true'
         ? `outline: 4px solid rgba(85, 203, 217, .78);
     outline-offset: -4px;`
         : ''}
