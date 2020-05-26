@@ -4,7 +4,7 @@ const useRedirect = (link?: string): (() => void) | ((link: string) => void) => 
   const history = useHistory();
   if (!link)
     return (lick: string) => {
-      if (lick.includes('http')) window.location.href = lick;
+      if (lick.includes('http') || lick.includes('mailto')) window.location.href = lick;
       else history.push(lick);
     };
   if (link.includes('http') || link.includes('mailto'))
