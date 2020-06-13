@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import orderBy from 'lodash/orderBy';
 import filter from 'lodash/filter';
-import Intro from 'components/paragraphs/Intro/Intro';
+import Intro from 'components/paragraphs/IntroII/IntroII';
 import PostCategory from 'components/paragraphs/PostCategory/PostCategory';
 import PuzzleCategory from 'components/paragraphs/PuzzleCategory/PuzzleCategory';
 import AcadCategory from 'components/paragraphs/AcadCategory/AcadCategory';
