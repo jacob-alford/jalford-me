@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@babylonjs/core": "^4.1.0",
+    "@babylonjs/materials": "^4.1.0",
     "crypto-js": "3.1.9-1",
     "immer": "^6.0.3",
     "katex": "0.11.1",

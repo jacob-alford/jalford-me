@@ -30,10 +30,11 @@ export const Divider = styled.div`
 
 export const PostHolder = styled.div`
   width: 100%;
-  display: flex;
-  flex-flow: row wrap;
-  overflow-x: auto;
-  height: max-content;
+  --auto-grid-min-size: 16rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--auto-grid-min-size), 2fr));
+  grid-gap: ${C.spacing(0)};
   filter: ${C.shadow(2)};
   overflow-y: hidden;
+  overflow-x: auto;
 `;

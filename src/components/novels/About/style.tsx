@@ -36,15 +36,18 @@ export const Me = styled(a(Avatar))`
   cursor: pointer;
   width: 300px !important;
   height: 300px !important;
-  filter: ${C.shadow(1)} !important;
+  filter: ${C.shadow(2)} !important;
 `;
 export const MeText = styled(a.div)`
   transition: color 0.5s;
   color: ${(props: { theme: themeState }) => C.text(props.theme)};
-  width: 50vw;
+  width: 100%;
+  height: max-content;
+  min-height: 50px;
   font-size: 2rem;
   flex-grow: 2;
   padding: 12px;
+  filter: ${C.shadow(0)};
 `;
 
 export const Stack = styled.div`
@@ -52,19 +55,20 @@ export const Stack = styled.div`
   flex-flow: column wrap;
   justify-content: center;
   align-items: center;
+  filter: ${C.shadow(0)};
 `;
 
 export const Block = styled(a.div)`
   transition: background 0.5s, color 0.5s;
   color: ${(props: { theme: themeState }) => C.text(props.theme)};
   background: ${(props: { theme: themeState }) => C.contBack(props.theme)};
-  border: 1px solid ${(props: { color?: string }): string => props.color ?? C.prim(0)};
+  border: 2px solid ${(props: { color?: string }): string => props.color ?? C.prim(0)};
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 12px;
   width: 85vw;
-  filter: ${C.shadow(2)};
+  margin: 6px 0px 6px 0px;
 `;
 
 export const IconList = styled.div`
@@ -76,16 +80,16 @@ export const IconList = styled.div`
 
 interface HeaderProps {
   theme: themeState;
-  color?: string;
+  colour: string;
 }
 
 export const Header = styled(Typography)`
   transition: color 0.5s;
-  font-weight: 900 !important;
+  font-weight: 100 !important;
   width: 100%;
   text-align: center;
   margin: 0px;
-  border-bottom: 1px solid ${C.prim(2)};
+  border-bottom: 2px solid ${(props: HeaderProps): string => props.colour};
   color: ${(props: HeaderProps) => C.text(props.theme)} !important;
 `;
 
@@ -146,7 +150,7 @@ export const Design = styled.div`
   background-clip: text;
   -webkit-background-clip: text;
   font-weight: bold;
-  border: 1px dashed rgba(255, 255, 255, 0.35);
+  border: 1px dashed ${(props: { theme: themeState }) => C.text(props.theme)};
   border-radius: ${C.borderRadius};
   padding: 8px;
   color: ${(props: { theme: themeState }) => C.text(props.theme)};

@@ -7,7 +7,6 @@ export const Card = styled.div`
   display: flex;
   flex-flow: column wrap;
   padding: ${C.spacing(0)};
-  margin: ${C.spacing(0)};
   border: 2px solid ${C.prim(0)};
   width: 300px;
   text-align: center;

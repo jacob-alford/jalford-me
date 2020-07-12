@@ -13,9 +13,7 @@ const getCamera = (scene: Scene, canvas: HTMLCanvasElement): ArcRotateCamera => 
 };
 
 const init: InitFunction<{}> = (scene, _, canvas) => {
-  const camera = getCamera(scene, canvas);
-  camera.attachControl(canvas);
-
+  getCamera(scene, canvas);
   ParticleHelper.CreateAsync('rain', scene, false).then(set => {
     set.start();
   });
