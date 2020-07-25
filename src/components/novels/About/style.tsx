@@ -34,8 +34,10 @@ export const MeHolder = styled.div`
 `;
 export const Me = styled(a(Avatar))`
   cursor: pointer;
-  width: 300px !important;
-  height: 300px !important;
+  max-width: 95vw;
+  max-height: 95vw;
+  width: 375px !important;
+  height: 375px !important;
   filter: ${C.shadow(2)} !important;
 `;
 export const MeText = styled(a.div)`

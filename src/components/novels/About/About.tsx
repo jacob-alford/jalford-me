@@ -15,7 +15,7 @@ import {
   Centerer,
   Design
 } from './style';
-import meImg from 'assets/me/CUMP_jalford-me.jpg';
+import meImg from 'assets/me/6-20-pro-alt-1024-70.jpg';
 import Logos from './logos';
 
 const {
