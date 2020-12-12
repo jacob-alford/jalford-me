@@ -32,11 +32,13 @@ const useClasses = themeHook({
 const CommentHolder = (props: {
   user: userState;
   fbPath: string;
-  comments: postComment[];
+  comments: postComment[] | null;
 }) => {
   const { user, fbPath, comments } = props;
   const isLoading = comments === null;
-  const mappedComments = useMemo(() => strctureComments(comments), [comments]);
+  const mappedComments = useMemo(() => comments && strctureComments(comments), [
+    comments
+  ]);
   const commentTrail = useTransition(mappedComments, comment => comment.id, {
     config: {
       mass: 5,

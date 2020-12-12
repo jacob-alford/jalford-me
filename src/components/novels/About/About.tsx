@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTrail, useSpring } from 'react-spring';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Katex from 'components/words/Katex/Katex';
 import Typed from 'components/sentences/Typed';
 import { useStoreState } from 'global-state';
@@ -9,35 +10,117 @@ import {
   Stack,
   Me,
   MeText,
-  Block,
-  Image,
-  IconList,
   Centerer,
-  Design
-} from './style';
+  Item,
+  ItemText,
+  Text,
+  ItemsGroup,
+  Icon
+} from './About.styled';
 import meImg from 'assets/me/6-20-pro-alt-1024-70.jpg';
 import Logos from './logos';
-
-const {
-  FrontEnd: {
-    reactLogo,
-    tsLogo,
-    reduxLogo,
-    jestLogo,
-    webglLogo,
-    rxjslogo,
-    haskellLogo,
-    elmLogo
-  },
-  BackEnd: { awsLogo, firebaseLogo }
-} = Logos;
+import useRedirect from 'components/bindings/utilityHooks/useRedirect';
+import ICON_APIG from 'assets/AWS/apigateway.svg';
+import ICON_CF from 'assets/AWS/cloudfront.svg';
+import ICON_COGNITO from 'assets/AWS/cognito.svg';
+import ICON_DYNAMO from 'assets/AWS/dynamo.svg';
+import ICON_IAM from 'assets/AWS/iam.svg';
+import ICON_LAMBDA from 'assets/AWS/lambda.svg';
+import ICON_R53 from 'assets/AWS/route53.svg';
+import ICON_S3 from 'assets/AWS/s3.svg';
+import ICON_SM from 'assets/AWS/secretsmanager.svg';
+import ICON_SUM from 'assets/AWS/sumerian.svg';
 
 const descriptionStrings = [
-  `&#8220;All told,^333 a monad^111 is just a monoid^333 in the category of endofunctors.&#8221;^666 -Saunders MacLane`
+  `&#8220;My far-reaching preference of proclivity,^333 is matched singularly^33 by my intuitive peculiarity.&#8221;`
+];
+
+interface Skill {
+  title: string;
+  description: string;
+  link: string;
+  icon: string;
+}
+
+interface SkillGroup {
+  title: string;
+  items: Array<Skill>;
+}
+
+const skill = (
+  title: string,
+  description: string,
+  link: string,
+  icon: string
+): Skill => ({
+  title,
+  description,
+  link,
+  icon
+});
+const skillGroup = (title: string, ...items: Array<Skill>) => ({
+  title,
+  items
+});
+
+const skills: Array<SkillGroup> = [
+  skillGroup(
+    'AWS',
+    skill(
+      'AWS Cognito',
+      'User identity service',
+      'https://aws.amazon.com/cognito/',
+      ICON_COGNITO
+    ),
+    skill(
+      'AWS IAM',
+      'Organization resource permissions',
+      'https://aws.amazon.com/iam/',
+      ICON_IAM
+    ),
+    skill(
+      'AWS Secrets Manager',
+      'Sensitive strings',
+      'https://aws.amazon.com/secrets-manager/',
+      ICON_SM
+    ),
+    skill('AWS S3', 'Extensible online storage', 'https://aws.amazon.com/s3/', ICON_S3),
+    skill(
+      'AWS Sumerian',
+      '3d browser rendering, with human-like hosts (deprecated)',
+      'https://aws.amazon.com/sumerian/',
+      ICON_SUM
+    ),
+    skill(
+      'AWS DynamoDB',
+      'NoSQL database solution',
+      'https://aws.amazon.com/dynamodb/',
+      ICON_DYNAMO
+    ),
+    skill(
+      'AWS API Gateway',
+      'Routing for REST APIs',
+      'https://aws.amazon.com/api-gateway/',
+      ICON_APIG
+    ),
+    skill(
+      'AWS CloudFront',
+      'Content delivery networking',
+      'https://aws.amazon.com/cloudfront/',
+      ICON_CF
+    ),
+    skill('AWS Route 53', 'Domains', 'https://aws.amazon.com/route53/', ICON_R53),
+    skill(
+      'AWS Lambda',
+      'Serverless function execution',
+      'https://aws.amazon.com/lambda/',
+      ICON_LAMBDA
+    )
+  )
 ];
 
 const About2 = () => {
-  const [shouldType, setShouldType] = useState(false);
+  const redirect = useRedirect();
   const theme = useStoreState(store => store.theme);
   const meImgStyles = useSpring({
     opacity: 1,
@@ -52,51 +135,10 @@ const About2 = () => {
       precision: 0.00001
     }
   });
-  const [[aUx, aBook, aCamera], setCreativeIcons] = useTrail(3, () => ({
-    from: {
-      opacity: 0
-    }
-  }));
-  const [[aCat, aLinAlg, aPhys, aPhil], setScienceIcons] = useTrail(4, () => ({
-    from: {
-      opacity: 0
-    },
-    onRest: () => setCreativeIcons({ opacity: 1 })
-  }));
-  const [[aAws, aFirebase], setBackEndIcons] = useTrail(2, () => ({
-    from: {
-      opacity: 0
-    },
-    onRest: () => setScienceIcons({ opacity: 1 })
-  }));
-  const [
-    [aHask, aElm, aTs, aReact, aRedux, aRxjs, aJest, aWebgl],
-    setFrontEndIcons
-  ] = useTrail(8, () => ({
-    from: {
-      opacity: 0
-    },
-    onRest: () => setBackEndIcons({ opacity: 1 })
-  }));
-  const [textFade, setTextFade] = useSpring(() => ({
-    opacity: 0,
-    from: { opacity: 0 }
-  }));
-
-  const [frontEndFall, backEndFall, mathFall, creativeFall] = useTrail(4, {
+  const textFade = useSpring({
     opacity: 1,
-    from: {
-      opacity: 0
-    },
-    onRest: () => {
-      setFrontEndIcons({
-        opacity: 1
-      });
-      setTextFade({ opacity: 1 });
-      setShouldType(true);
-    }
+    from: { opacity: 0 }
   });
-
   return (
     <Centerer theme={theme}>
       <AboutMe>
@@ -107,238 +149,29 @@ const About2 = () => {
           src={meImg}
         />
         <MeText theme={theme} style={textFade}>
-          <Typed
-            shouldStart={shouldType}
-            typeSpeed={42}
-            strings={descriptionStrings}
-            backDelay={0}
-          />
+          <Typed typeSpeed={42} strings={descriptionStrings} backDelay={0} />
         </MeText>
-        <Stack>
-          <Block theme={theme} style={frontEndFall} color='#62F8De'>
-            <IconList>
-              <Image
-                url='https://www.haskell.org'
-                style={aHask}
-                title='Haskell'
-                src={haskellLogo}
-                theme={theme}
-              />
-              <Image
-                url='https://elm-lang.org'
-                style={aElm}
-                title='Elm'
-                src={elmLogo}
-                theme={theme}
-              />
-              <Image
-                url='https://www.typescriptlang.org/'
-                style={aTs}
-                title='Typescript'
-                src={tsLogo}
-                theme={theme}
-              />
-              <Image
-                url='https://reactjs.org/'
-                style={aReact}
-                title='React'
-                src={reactLogo}
-                theme={theme}
-              />
-              <Image
-                url='https://redux.js.org/'
-                style={aRedux}
-                title='Redux'
-                src={reduxLogo}
-                theme={theme}
-              />
-              <Image
-                url='https://rxjs.dev/'
-                style={aRxjs}
-                title='RxJS'
-                src={rxjslogo}
-                theme={theme}
-              />
-
-              <Image
-                url='https://jestjs.io/en/'
-                style={aJest}
-                title='Jest'
-                src={jestLogo}
-                theme={theme}
-              />
-              <Image
-                url='https://webglfundamentals.org/'
-                style={aWebgl}
-                title='WebGL'
-                src={webglLogo}
-                theme={theme}
-              />
-            </IconList>
-          </Block>
-          <Block theme={theme} style={backEndFall} color='#55CBD9'>
-            <IconList>
-              <Image
-                url='https://aws.amazon.com/'
-                style={aAws}
-                title='AWS'
-                src={awsLogo}
-                theme={theme}
-              />
-              <Image
-                url='https://firebase.google.com/'
-                style={aFirebase}
-                title='Firebase and GCP'
-                src={firebaseLogo}
-                theme={theme}
-              />
-            </IconList>
-          </Block>
-          <Block theme={theme} style={mathFall} color='#69beef'>
-            <IconList>
-              <Image
-                url='https://plato.stanford.edu/entries/category-theory/'
-                style={aCat}
-                title='Category Theory'
-                theme={theme}
-                Render={() => (
-                  <Katex
-                    str={String.raw`a \rightarrow ma`}
-                    inline
-                    style={{
-                      transition: 'color .5s',
-                      color: C.text(theme),
-                      fontSize: '2rem',
-                      border: `1px solid ${C.text(theme)}`,
-                      borderRadius: '12px',
-                      padding: '8px'
-                    }}
-                  />
-                )}
-              />
-              <Image
-                url='https://en.wikipedia.org/wiki/Numerical_linear_algebra'
-                style={aLinAlg}
-                title='Numerical Mathematics'
-                theme={theme}
-                Render={() => (
-                  <Katex
-                    str={String.raw`\bold{A} = \bold{Q}\bold{\Lambda}\bold{Q}^{-1}`}
-                    inline
-                    style={{
-                      transition: 'color .5s, border .5s',
-                      color: C.text(theme),
-                      fontSize: '2rem',
-                      border: `1px solid ${C.text(theme)}`,
-                      borderRadius: '12px',
-                      padding: '8px'
-                    }}
-                  />
-                )}
-              />
-              <Image
-                url='https://en.wikipedia.org/wiki/Physics'
-                style={aPhys}
-                title='Physics'
-                theme={theme}
-                Render={() => (
-                  <Katex
-                    str={String.raw`\frac{\partial^2 u}{\partial t^2}=k \bold{\nabla^2}u`}
-                    inline
-                    style={{
-                      transition: 'color .5s',
-                      color: C.text(theme),
-                      fontSize: '2rem',
-                      border: `1px solid ${C.text(theme)}`,
-                      borderRadius: '12px',
-                      padding: '8px'
-                    }}
-                  />
-                )}
-              />
-              <Image
-                url='https://en.wikipedia.org/wiki/Philosophy'
-                style={aPhil}
-                title='Philosophy'
-                theme={theme}
-                Render={() => (
-                  <Katex
-                    str={String.raw`\Phi`}
-                    inline
-                    style={{
-                      transition: 'color .5s',
-                      color: C.text(theme),
-                      fontSize: '2rem',
-                      border: `1px solid ${C.text(theme)}`,
-                      borderRadius: '12px',
-                      padding: '8px'
-                    }}
-                  />
-                )}
-              />
-            </IconList>
-          </Block>
-          <Block theme={theme} style={creativeFall} color='#6171F8'>
-            <IconList>
-              <Image
-                url='https://developer.apple.com/design/human-interface-guidelines/'
-                style={aUx}
-                title='design'
-                theme={theme}
-                Render={() => <Design theme={theme}>UX</Design>}
-              />
-              <Image
-                url='/posts'
-                style={aBook}
-                title='creative writing'
-                theme={theme}
-                Render={() => (
-                  <Design theme={theme}>
-                    <span aria-label='books' role='img'>
-                      📚
-                    </span>
-                  </Design>
-                )}
-              />
-              <Image
-                url='https://northrup.photo/product/stunning-digital-photography/'
-                style={aCamera}
-                title='photography'
-                theme={theme}
-                Render={() => (
-                  <Design theme={theme}>
-                    <span aria-label='camera' role='img'>
-                      📷
-                    </span>
-                  </Design>
-                )}
-              />
-            </IconList>
-          </Block>
-        </Stack>
+        <Text variant='h2'>Skills</Text>
+        {skills.map(({ title, items }) => (
+          <>
+            <Text variant='h4'>{title}</Text>
+            <Stack>
+              {items.map(({ title: text, description, link, icon }) => (
+                <ItemsGroup>
+                  <Item theme={theme} button onClick={() => redirect(link)}>
+                    <ListItemIcon>
+                      <Icon src={icon} alt={text} />
+                    </ListItemIcon>
+                    <ItemText theme={theme} primary={text} secondary={description} />
+                  </Item>
+                </ItemsGroup>
+              ))}
+            </Stack>
+          </>
+        ))}
       </AboutMe>
     </Centerer>
   );
 };
 
 export default About2;
-
-/*
-
-const philFocus = [
-  'A philosophy focused mathematician who likes^333',
-  'A philosophy focused mathematician who loves web stuff.'
-];
-const designFocused = [
-  'I like good design as an end in itself.  ^333 Striving for the divine is what makes us human.'
-];
-const frontEndStuff = [
-  `I learned RxJS recently!  RxJS + Redux Observables + Redux === ❤️`
-];
-const goodDesign = [
-  `Good design is really defined as suiting the purpose of that for which it was originally intended.  ^333 The purpose of this site is to demonstrate good design.`
-];
-
-
-
-*/
