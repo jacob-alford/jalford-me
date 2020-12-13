@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
-import { useTrail, useSpring } from 'react-spring';
+import React from 'react';
+import { useSpring } from 'react-spring';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Katex from 'components/words/Katex/Katex';
 import Typed from 'components/sentences/Typed';
 import { useStoreState } from 'global-state';
-import C from 'theme-constants';
 import {
   AboutMe,
   Stack,
@@ -15,108 +13,18 @@ import {
   ItemText,
   Text,
   ItemsGroup,
-  Icon
+  Icon,
+  Circle,
+  CirlceHolder,
+  NoBreak,
+  Divider
 } from './About.styled';
 import meImg from 'assets/me/6-20-pro-alt-1024-70.jpg';
-import Logos from './logos';
 import useRedirect from 'components/bindings/utilityHooks/useRedirect';
-import ICON_APIG from 'assets/AWS/apigateway.svg';
-import ICON_CF from 'assets/AWS/cloudfront.svg';
-import ICON_COGNITO from 'assets/AWS/cognito.svg';
-import ICON_DYNAMO from 'assets/AWS/dynamo.svg';
-import ICON_IAM from 'assets/AWS/iam.svg';
-import ICON_LAMBDA from 'assets/AWS/lambda.svg';
-import ICON_R53 from 'assets/AWS/route53.svg';
-import ICON_S3 from 'assets/AWS/s3.svg';
-import ICON_SM from 'assets/AWS/secretsmanager.svg';
-import ICON_SUM from 'assets/AWS/sumerian.svg';
+import skills from './About.skills';
 
 const descriptionStrings = [
   `&#8220;My far-reaching preference of proclivity,^333 is matched singularly^33 by my intuitive peculiarity.&#8221;`
-];
-
-interface Skill {
-  title: string;
-  description: string;
-  link: string;
-  icon: string;
-}
-
-interface SkillGroup {
-  title: string;
-  items: Array<Skill>;
-}
-
-const skill = (
-  title: string,
-  description: string,
-  link: string,
-  icon: string
-): Skill => ({
-  title,
-  description,
-  link,
-  icon
-});
-const skillGroup = (title: string, ...items: Array<Skill>) => ({
-  title,
-  items
-});
-
-const skills: Array<SkillGroup> = [
-  skillGroup(
-    'AWS',
-    skill(
-      'AWS Cognito',
-      'User identity service',
-      'https://aws.amazon.com/cognito/',
-      ICON_COGNITO
-    ),
-    skill(
-      'AWS IAM',
-      'Organization resource permissions',
-      'https://aws.amazon.com/iam/',
-      ICON_IAM
-    ),
-    skill(
-      'AWS Secrets Manager',
-      'Sensitive strings',
-      'https://aws.amazon.com/secrets-manager/',
-      ICON_SM
-    ),
-    skill('AWS S3', 'Extensible online storage', 'https://aws.amazon.com/s3/', ICON_S3),
-    skill(
-      'AWS Sumerian',
-      '3d browser rendering, with human-like hosts (deprecated)',
-      'https://aws.amazon.com/sumerian/',
-      ICON_SUM
-    ),
-    skill(
-      'AWS DynamoDB',
-      'NoSQL database solution',
-      'https://aws.amazon.com/dynamodb/',
-      ICON_DYNAMO
-    ),
-    skill(
-      'AWS API Gateway',
-      'Routing for REST APIs',
-      'https://aws.amazon.com/api-gateway/',
-      ICON_APIG
-    ),
-    skill(
-      'AWS CloudFront',
-      'Content delivery networking',
-      'https://aws.amazon.com/cloudfront/',
-      ICON_CF
-    ),
-    skill('AWS Route 53', 'Domains', 'https://aws.amazon.com/route53/', ICON_R53),
-    skill(
-      'AWS Lambda',
-      'Serverless function execution',
-      'https://aws.amazon.com/lambda/',
-      ICON_LAMBDA
-    )
-  )
 ];
 
 const About2 = () => {
@@ -151,14 +59,30 @@ const About2 = () => {
         <MeText theme={theme} style={textFade}>
           <Typed typeSpeed={42} strings={descriptionStrings} backDelay={0} />
         </MeText>
-        <Text variant='h2'>Skills</Text>
+        <CirlceHolder>
+          <NoBreak>
+            <Circle level='novice' />
+            <Text theme={theme}>Novice</Text>
+          </NoBreak>
+          <NoBreak>
+            <Circle level='intermediate' />
+            <Text theme={theme}>Intermediate</Text>
+          </NoBreak>
+          <NoBreak>
+            <Circle level='advanced' />
+            <Text theme={theme}>Advanced</Text>
+          </NoBreak>
+        </CirlceHolder>
         {skills.map(({ title, items }) => (
           <>
-            <Text variant='h4'>{title}</Text>
+            <Text theme={theme} variant='h3'>
+              {title}
+            </Text>
+            <Divider theme={theme} />
             <Stack>
-              {items.map(({ title: text, description, link, icon }) => (
+              {items.map(({ title: text, description, link, icon, level }) => (
                 <ItemsGroup>
-                  <Item theme={theme} button onClick={() => redirect(link)}>
+                  <Item level={level} theme={theme} button onClick={() => redirect(link)}>
                     <ListItemIcon>
                       <Icon src={icon} alt={text} />
                     </ListItemIcon>
