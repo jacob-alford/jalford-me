@@ -5,6 +5,9 @@ type getValueLevel = (index: number) => string;
 interface themeConstants {
   prim: getValueLevel;
   acc: getValueLevel;
+  bronze: string;
+  silver: getColorFromTheme;
+  gold: string;
   success: string;
   danger: string;
   warn: string;
@@ -38,13 +41,16 @@ const mkThmSlct = (valLight: string, valDark: string) => (theme: themeState): st
 
 const C: themeConstants = {
   prim: (num: number) => ['#14b2c7', '#55CBD9', '#62F8DE', '#6171F8'][num],
+  bronze: '#cd7f32',
+  silver: mkThmSlct('#efefef', '#a7a7a7'),
+  gold: '#FFD700',
   success: '#54F780',
   danger: '#F73B41',
   warn: '#FFD952',
   acc: (num: number) => ['#164B6B', '#C70066', '#C74F06'][num],
   contBack: mkThmSlct('#ffffff', '#000000'),
   contBackInv: mkThmSlct('#000000', '#ffffff'),
-  contBackAlt: mkThmSlct('#cdcdcd', '#232323'),
+  contBackAlt: mkThmSlct('#d2d2d2', '#232323'),
   text: mkThmSlct('#000000', '#ffffff'),
   textInv: mkThmSlct('#ffffff', '#000000'),
   textAlt: mkThmSlct('#232323', '#bcbcbc'),

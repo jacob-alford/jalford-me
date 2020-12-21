@@ -24,7 +24,7 @@ import useRedirect from 'components/bindings/utilityHooks/useRedirect';
 import skills from './About.skills';
 
 const descriptionStrings = [
-  `&#8220;My far-reaching preference of proclivity,^333 is matched singularly^33 by my intuitive peculiarity.&#8221;`
+  `&#8220;My far-reaching preference of proclivity^333 is matched singularly^33 by my intuitive peculiarity.&#8221;`
 ];
 
 const About2 = () => {
@@ -61,15 +61,15 @@ const About2 = () => {
         </MeText>
         <CirlceHolder>
           <NoBreak>
-            <Circle level='novice' />
+            <Circle theme={theme} level='novice' />
             <Text theme={theme}>Novice</Text>
           </NoBreak>
           <NoBreak>
-            <Circle level='intermediate' />
+            <Circle theme={theme} level='intermediate' />
             <Text theme={theme}>Intermediate</Text>
           </NoBreak>
           <NoBreak>
-            <Circle level='advanced' />
+            <Circle theme={theme} level='advanced' />
             <Text theme={theme}>Advanced</Text>
           </NoBreak>
         </CirlceHolder>
@@ -80,11 +80,11 @@ const About2 = () => {
             </Text>
             <Divider theme={theme} />
             <Stack>
-              {items.map(({ title: text, description, link, icon, level }) => (
+              {items.map(({ title: text, description, link, icon, level, bg }) => (
                 <ItemsGroup>
                   <Item level={level} theme={theme} button onClick={() => redirect(link)}>
                     <ListItemIcon>
-                      <Icon src={icon} alt={text} />
+                      <Icon src={icon} alt={text} background={bg} />
                     </ListItemIcon>
                     <ItemText theme={theme} primary={text} secondary={description} />
                   </Item>

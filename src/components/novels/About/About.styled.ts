@@ -35,6 +35,7 @@ export const Icon = styled.img`
   height: 50px;
   clip-path: polygon(${squirclePath}) !important;
   margin-right: 16px;
+  background-color: ${({ background }: { background: string }) => background};
 `;
 
 export const Text = styled(Typography)`
@@ -55,11 +56,12 @@ export const Item = styled(ListItem)`
   color: ${({ theme }: ItemProps) => C.text(theme)} !important;
   border-radius: ${C.borderRadius};
   border: 2px solid
-    ${({ level }: ItemProps) =>
-      (level === 'novice' && C.success) ||
-      (level === 'intermediate' && C.warn) ||
-      (level === 'advanced' && C.danger)} !important;
-  transition: color 0.5s, background 0.5s;
+    ${({ level, theme }: ItemProps) =>
+      (level === 'novice' && C.bronze) ||
+      (level === 'intermediate' && C.silver(theme)) ||
+      (level === 'advanced' && C.gold)} !important;
+  transition: color 0.5s, background 0.5s, border 0.5s;
+  filter: ${C.shadow(1)} !important;
 `;
 
 export const CirlceHolder = styled.div`
@@ -72,16 +74,18 @@ export const CirlceHolder = styled.div`
 
 interface CircleProps {
   level: 'novice' | 'intermediate' | 'advanced';
+  theme: themeState;
 }
 export const Circle = styled.div`
   width: 30px;
   height: 30px;
   border-radius: 15px;
   margin: 25px 10px 25px 25px;
-  background-color: ${({ level }: CircleProps) =>
-    (level === 'novice' && C.success) ||
-    (level === 'intermediate' && C.warn) ||
-    (level === 'advanced' && C.danger)} !important;
+  transition: background 0.5s;
+  background-color: ${({ level, theme }: CircleProps) =>
+    (level === 'novice' && C.bronze) ||
+    (level === 'intermediate' && C.silver(theme)) ||
+    (level === 'advanced' && C.gold)} !important;
 `;
 export const NoBreak = styled.div`
   display: flex;
@@ -149,6 +153,7 @@ export const Stack = styled.div`
   justify-items: center;
   align-items: center;
   margin-bottom: 25px;
+  width: 100%;
   @media (max-width: 600px) {
     grid-template-columns: repeat(1, minmax(16rem, 2fr));
   }

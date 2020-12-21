@@ -18,12 +18,46 @@ import ICON_SECRETS from 'assets/GCP/secrets.svg';
 import ICON_CFG from 'assets/GCP/cloudfunctions.svg';
 import ICON_CS from 'assets/GCP/cloudstorage.svg';
 
+/* Back-end */
+import ICON_NODEJS from 'assets/back-end/node.svg';
+import ICON_NESTJS from 'assets/back-end/nest.svg';
+import ICON_TYPEORM from 'assets/back-end/typeorm.png';
+import ICON_RESTAPI from 'assets/back-end/rest.png';
+import ICON_POSTGRES from 'assets/back-end/postgres.svg';
+import ICON_MYSQL from 'assets/back-end/mysql.svg';
+import ICON_FLASK from 'assets/back-end/flask.svg';
+
+/* Front-end */
+import ICON_REACT from 'assets/front-end/react.svg';
+import ICON_ELECTRON from 'assets/front-end/electron.svg';
+import ICON_STYLEDCOMPS from 'assets/front-end/styledcomponents.png';
+import ICON_MUI from 'assets/front-end/mui.png';
+import ICON_REDUX from 'assets/front-end/redux.svg';
+import ICON_ANTD from 'assets/front-end/antd.png';
+import ICON_SCSS from 'assets/front-end/scss.svg';
+import ICON_BOOTSTRAP from 'assets/front-end/bootstrap.svg';
+import ICON_BLUETOOTH from 'assets/front-end/bluetooth.svg';
+import ICON_HTML5 from 'assets/front-end/html5.svg';
+
+/* Technologies */
+import ICON_TS from 'assets/technologies/typescript.svg';
+import ICON_HASK from 'assets/technologies/haskell.svg';
+import ICON_ELM from 'assets/technologies/elm.svg';
+import ICON_PY from 'assets/technologies/python.svg';
+import ICON_RML from 'assets/technologies/reasonml.svg';
+import ICON_GIT from 'assets/technologies/git.svg';
+import ICON_RXJS from 'assets/technologies/rxjs.svg';
+import ICON_FPTS from 'assets/technologies/fpts.png';
+import ICON_RDXOBS from 'assets/technologies/reduxobservable.gif';
+import ICON_GITHUB from 'assets/technologies/github.png';
+
 interface Skill {
   title: string;
   description: string;
   link: string;
   icon: string;
   level: 'novice' | 'intermediate' | 'advanced';
+  bg: string;
 }
 
 interface SkillGroup {
@@ -36,18 +70,219 @@ const skill = (
   description: string,
   level: 'novice' | 'intermediate' | 'advanced',
   link: string,
-  icon: string
+  icon: string,
+  bg: string = ''
 ): Skill => ({
   title,
   description,
   link,
   level,
-  icon
+  icon,
+  bg
 });
 const skillGroup = (title: string, ...items: Array<Skill>) => ({
   title,
   items
 });
+
+const TechLang = skillGroup(
+  'Technologies / Languages',
+  skill(
+    'Typescript',
+    'Statically typed Javascript',
+    'advanced',
+    'https://www.typescriptlang.org/',
+    ICON_TS
+  ),
+  skill(
+    'fp-ts',
+    'Beautifully functional system for Typescript',
+    'advanced',
+    'https://github.com/gcanti/fp-ts',
+    ICON_FPTS
+  ),
+  skill(
+    'elm',
+    'Purely functional front-end',
+    'novice',
+    'https://elm-lang.org/',
+    ICON_ELM
+  ),
+  skill(
+    'Python',
+    'Multi-purpose (great for data-science) language',
+    'intermediate',
+    'https://www.python.org/',
+    ICON_PY
+  ),
+  skill(
+    'ReasonML',
+    'Functional programming for React',
+    'novice',
+    'https://reasonml.github.io/',
+    ICON_RML
+  ),
+  skill(
+    'Git',
+    'Ubiquitous version control',
+    'advanced',
+    'https://git-scm.com/',
+    ICON_GIT
+  ),
+  skill(
+    'RxJS',
+    'Handling streams of data functionally',
+    'advanced',
+    'https://rxjs-dev.firebaseapp.com/',
+    ICON_RXJS
+  ),
+  skill(
+    'redux-observable',
+    'Actions in, actions out',
+    'advanced',
+    'https://redux-observable.js.org/',
+    ICON_RDXOBS
+  ),
+  skill(
+    'Haskell',
+    'Categorical in beauty, purely functional',
+    'novice',
+    'https://www.haskell.org/',
+    ICON_HASK
+  ),
+  skill(
+    'Github',
+    'Repository / organization management and CI/CD',
+    'intermediate',
+    'https://github.com/',
+    ICON_GITHUB,
+    'black'
+  )
+);
+
+const Frontend = skillGroup(
+  'Front-end',
+  skill(
+    'React',
+    'Fast and scalable UI library',
+    'advanced',
+    'https://reactjs.org/',
+    ICON_REACT
+  ),
+  skill(
+    'Redux',
+    'Functional and scalable state management',
+    'advanced',
+    'https://redux.js.org/',
+    ICON_REDUX
+  ),
+  skill('Sass', 'CSS with extensions', 'advanced', 'https://sass-lang.com/', ICON_SCSS),
+  skill(
+    'styled-components',
+    'Clean and declarative css in js',
+    'advanced',
+    'https://styled-components.com/',
+    ICON_STYLEDCOMPS
+  ),
+  skill(
+    'Electron',
+    'Chromium based desktop apps',
+    'intermediate',
+    'https://www.electronjs.org/',
+    ICON_ELECTRON
+  ),
+  skill(
+    'Material-UI',
+    "Google's design for React Apps",
+    'advanced',
+    'https://material-ui.com/',
+    ICON_MUI
+  ),
+  skill(
+    'Ant Design',
+    'Design system + UI Library',
+    'intermediate',
+    'https://ant.design/',
+    ICON_ANTD
+  ),
+  skill(
+    'Bootstrap',
+    'Responsive UI framework',
+    'intermediate',
+    'https://getbootstrap.com/',
+    ICON_BOOTSTRAP
+  ),
+  skill(
+    'Web Bluetooth',
+    'Chrome Bluetooth in the browser',
+    'advanced',
+    'https://web.dev/bluetooth/',
+    ICON_BLUETOOTH
+  ),
+  skill(
+    'HTML5',
+    'The latest in browser technology',
+    'advanced',
+    'https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5',
+    ICON_HTML5
+  )
+);
+
+const Backend = skillGroup(
+  'Infrastructure',
+  skill(
+    'Express',
+    'REST API with Express and Node.js',
+    'advanced',
+    'https://expressjs.com/',
+    ICON_NODEJS
+  ),
+  skill(
+    'REST API',
+    'Database request standards and design',
+    'intermediate',
+    'https://restfulapi.net/',
+    ICON_RESTAPI
+  ),
+  skill(
+    'PostgreSQL',
+    'Open source relational database',
+    'novice',
+    'https://www.postgresql.org/',
+    ICON_POSTGRES
+  ),
+  skill(
+    'NestJS',
+    'Modern high-level back-end routing logic',
+    'intermediate',
+    'https://nestjs.com/',
+    ICON_NESTJS
+  ),
+  skill(
+    'TypeORM',
+    'Modern table schematic declaration',
+    'novice',
+    'https://typeorm.io/#/',
+    ICON_TYPEORM,
+    'white'
+  ),
+  skill(
+    'MySQL',
+    "The world's most popular open source database",
+    'intermediate',
+    'https://www.mysql.com/',
+    ICON_MYSQL,
+    'white'
+  ),
+  skill(
+    'Flask',
+    'Request routing in Python',
+    'intermediate',
+    'https://flask.palletsprojects.com/en/1.1.x/',
+    ICON_FLASK,
+    'white'
+  )
+);
 
 const AWS = skillGroup(
   'AWS',
@@ -169,6 +404,6 @@ const GCP = skillGroup(
   )
 );
 
-const skills: Array<SkillGroup> = [AWS, GCP];
+const skills: Array<SkillGroup> = [TechLang, Frontend, Backend, AWS, GCP];
 
 export default skills;
