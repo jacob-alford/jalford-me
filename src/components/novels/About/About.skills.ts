@@ -50,6 +50,10 @@ import ICON_RXJS from 'assets/technologies/rxjs.svg';
 import ICON_FPTS from 'assets/technologies/fpts.png';
 import ICON_RDXOBS from 'assets/technologies/reduxobservable.gif';
 import ICON_GITHUB from 'assets/technologies/github.png';
+// import ICON_MATLAB from 'assets/technologies/matlab.png';
+// import ICON_R from 'assets/technologies/r.svg';
+import ICON_BABYLON from 'assets/technologies/babylon.svg';
+import ICON_JEST from 'assets/technologies/jest.svg';
 
 interface Skill {
   title: string;
@@ -96,7 +100,7 @@ const TechLang = skillGroup(
   ),
   skill(
     'fp-ts',
-    'Beautifully functional system for Typescript',
+    'Strongly-typed functional ecosystem for Typescript',
     'advanced',
     'https://github.com/gcanti/fp-ts',
     ICON_FPTS
@@ -157,6 +161,34 @@ const TechLang = skillGroup(
     'https://github.com/',
     ICON_GITHUB,
     'black'
+  ),
+  // skill(
+  //   'Matlab',
+  //   'Popular data-science toolkit',
+  //   'novice',
+  //   'https://www.mathworks.com/products/matlab.html',
+  //   ICON_MATLAB
+  // ),
+  // skill(
+  //   'R language',
+  //   'Convenient statistics',
+  //   'intermediate',
+  //   'https://www.r-project.org/',
+  //   ICON_R
+  // )
+  skill(
+    'Babylon.js',
+    'Browser-based rendering engine',
+    'novice',
+    'https://www.babylonjs.com/',
+    ICON_BABYLON
+  ),
+  skill(
+    'Jest',
+    'Ubiquitous test runner for Javascript',
+    'advanced',
+    'https://jestjs.io/',
+    ICON_JEST
   )
 );
 
