@@ -19,7 +19,10 @@ export const navItems = [
   { text: 'rpn', url: '/rpn' },
   { text: 'websites', url: '/websites' },
   { text: 'github', url: 'https://github.com/jacob-alford' },
-  { text: 'resume', url: 'https://www.visualcv.com/jacob-alford' }
+  {
+    text: 'resume',
+    url: 'https://www.dropbox.com/s/d13rgapjem842u6/resume_2021.pdf?dl=0'
+  }
 ];
 
 export const acadPapers = [

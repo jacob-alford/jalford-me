@@ -14,17 +14,13 @@ import user from './state-model/user-actions';
 const getDefaultThemeState = (): themeState => {
   const light = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)');
   const dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
-  const isNightTime = (() => {
-    const time = new Date().getHours();
-    return time < 6 || time > 20;
-  })();
   const themeStorage = window.localStorage.getItem('theme');
   const manuallySet =
     (themeStorage === themeState.light && themeState.light) ||
     (themeStorage === themeState.dark && themeState.dark);
   const prefersLight = light && light.matches && themeState.light;
   const prefersDark = dark && dark.matches && themeState.dark;
-  const fallback = isNightTime ? themeState.dark : themeState.light;
+  const fallback = themeState.dark;
   return manuallySet || prefersLight || prefersDark || fallback;
 };
 
