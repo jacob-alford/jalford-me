@@ -54,7 +54,8 @@ export default function App() {
           <Route exact path='/puzzles' component={RedirectHome} />
           <Route exact path='/about' component={About} />
           <Route exact path='/posts' component={RedirectHome} />
-          <Route exact path='/' component={Home} />
+          <Route exact path='/' component={About} />
+          <Route exact path='/home' component={Home} />
           <Route path='*' component={NoMatch} />
         </Switch>
       </Suspense>

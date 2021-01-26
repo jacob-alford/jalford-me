@@ -14,8 +14,8 @@ export const socialMedia = {
 };
 
 export const navItems = [
-  { text: 'home', url: '/' },
-  { text: 'about', url: '/about' },
+  { text: 'home', url: '/home' },
+  { text: 'about', url: '/' },
   { text: 'rpn', url: '/rpn' },
   { text: 'websites', url: '/websites' },
   { text: 'github', url: 'https://github.com/jacob-alford' },

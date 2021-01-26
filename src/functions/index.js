@@ -4,7 +4,7 @@ export const getRandomUID = () => Math.random().toString(35).substr(2);
 
 export const getActiveNavItem = path => {
   let returnValue = false;
-  if (path === '/') return 0;
+  if (path === '/') return 1;
   navItems.forEach((item, index) => {
     if (item.url.split('/')[1] === path.split('/')[1]) returnValue = index;
   });

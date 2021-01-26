@@ -56,15 +56,18 @@ const Header = () => {
       />
       <HeaderHolder theme={theme} style={headerStyles}>
         <NavItems>
-          {navItems.map((navItem, index) => (
-            <NavItem
-              active={getActiveNavItem(location.pathname) === index ? 1 : 0}
-              onClick={() => redirect(navItem.url)}
-              key={navItem.text}
-              style={navItemStyles}>
-              {navItem.text}
-            </NavItem>
-          ))}
+          {navItems.map((navItem, index) => {
+            console.log(navItem, index, getActiveNavItem(location.pathname));
+            return (
+              <NavItem
+                active={getActiveNavItem(location.pathname) === index ? 1 : 0}
+                onClick={() => redirect(navItem.url)}
+                key={navItem.text}
+                style={navItemStyles}>
+                {navItem.text}
+              </NavItem>
+            );
+          })}
         </NavItems>
         <AccountButtons style={navItemStyles}>
           <ThemeCircle />
