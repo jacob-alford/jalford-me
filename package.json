@@ -8,7 +8,7 @@
     "@devexperts/remote-data-ts": "^2.0.4",
     "crypto-js": "3.1.9-1",
     "fp-ts": "^2.9.1",
-    "immer": "^6.0.3",
+    "immer": "^9.0.6",
     "katex": "0.11.1",
     "lodash": "^4.17.15",
     "openseadragon": "2.4.1",
